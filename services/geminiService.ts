@@ -14,7 +14,7 @@ const getGeminiApiKey = (): string => {
 export const createChatSession = (): Chat => {
   const ai = new GoogleGenAI({ apiKey: getGeminiApiKey() });
   return ai.chats.create({
-    model: 'gemini-2.5-flash',
+    model: 'gemini-2.0-flash',
     config: {
       systemInstruction: `You are a helpful, encouraging, and knowledgeable PCMB + CS Tutor for Pre-University (high school) students. 
       Your goal is to explain complex scientific concepts simply.
