@@ -62,37 +62,22 @@ const AppContent: React.FC = () => {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route
-  path="/student-dashboard"
-  element={
-    <ProtectedRoute>
-      <StudentDashboard />
-    </ProtectedRoute>
-  }
-/>
+            path="/student-dashboard"
+            element={
+              <ProtectedRoute allowedRoles={['Student']}>
+                <StudentDashboard />
+              </ProtectedRoute>
+            }
+          />
 
-<Route
-  path="/teacher-dashboard"
-  element={
-    <Route
-  path="/student-dashboard"
-  element={
-    <ProtectedRoute allowedRoles={['Student']}>
-      <StudentDashboard />
-    </ProtectedRoute>
-  }
-/>
-
-<Route
-  path="/teacher-dashboard"
-  element={
-    <ProtectedRoute allowedRoles={['Teacher']}>
-      <TeacherDashboard />
-    </ProtectedRoute>
-  }
-/>
-
-  }
-/>
+          <Route
+            path="/teacher-dashboard"
+            element={
+              <ProtectedRoute allowedRoles={['Teacher']}>
+                <TeacherDashboard />
+              </ProtectedRoute>
+            }
+          />
 
           <Route path="/profile" element={<Profile />} />
 
