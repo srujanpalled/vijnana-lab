@@ -2,11 +2,6 @@ import { getApps, getApp, initializeApp } from 'firebase/app';
 import { 
   getAuth, 
   GoogleAuthProvider, 
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  signInWithPopup,
-  signOut,
-  onAuthStateChanged,
   updateProfile,
   setPersistence,
   browserLocalPersistence
@@ -14,8 +9,6 @@ import {
 import { 
   getFirestore, 
   doc, 
-  setDoc, 
-  getDoc,
   updateDoc
 } from 'firebase/firestore';
 
@@ -70,20 +63,27 @@ const updateUserData = async (uid: string, data: any) => {
     }
 };
 
-// Export services and direct SDK functions
+// Export direct SDK functions using cleaner syntax
 export { 
-  auth, 
-  db, 
-  googleProvider,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signInWithPopup,
   signOut,
   onAuthStateChanged,
-  updateProfile,
-  doc,
-  setDoc,
+  updateProfile
+} from 'firebase/auth';
+
+export { 
+  doc, 
+  setDoc, 
   getDoc,
-  updateDoc,
+  updateDoc
+} from 'firebase/firestore';
+
+// Export services and custom helpers
+export { 
+  auth, 
+  db, 
+  googleProvider,
   updateUserData
 };
