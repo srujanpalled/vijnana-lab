@@ -22,17 +22,30 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, async (currentUser) => {
-      if (currentUser) {
+      try {
+        if (currentUser) {
+          setUser(currentUser);
+
+          // Fetch role from Firestore
+          const snap = await getDoc(doc(db, 'users', currentUser.uid));
+          if (snap.exists()) {
+            setRole(snap.data().role);
+          } else {
+            // Default role if not in DB yet (or just created)
+            setRole('Student');
+          }
+        } else {
+          setUser(null);
+          setRole(null);
+        }
+      } catch (error) {
+        console.error("Auth context error:", error);
+        // Fallback to avoid infinite loading if Firestore fails
         setUser(currentUser);
-
-        const snap = await getDoc(doc(db, 'users', currentUser.uid));
-        setRole(snap.exists() ? snap.data().role : null);
-      } else {
-        setUser(null);
-        setRole(null);
+        setRole('Student'); 
+      } finally {
+        setLoading(false);
       }
-
-      setLoading(false);
     });
 
     return () => unsub();

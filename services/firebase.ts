@@ -1,4 +1,4 @@
-import { initializeApp } from 'firebase/app';
+import { getApps, getApp, initializeApp } from 'firebase/app';
 import { 
   getAuth, 
   GoogleAuthProvider, 
@@ -7,7 +7,9 @@ import {
   signInWithPopup,
   signOut,
   onAuthStateChanged,
-  updateProfile
+  updateProfile,
+  setPersistence,
+  browserLocalPersistence
 } from 'firebase/auth';
 import { 
   getFirestore, 
@@ -27,10 +29,14 @@ const firebaseConfig = {
   appId: "1:407063617574:web:11f5ac68215576f5d6c6e7"
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+// Initialize Firebase (Robust pattern)
+const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 const auth = getAuth(app);
 const db = getFirestore(app);
+
+// Set default persistence
+setPersistence(auth, browserLocalPersistence).catch(err => console.error("Auth persistence error:", err));
+
 const googleProvider = new GoogleAuthProvider();
 
 // Configure Google Provider
