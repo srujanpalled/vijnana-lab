@@ -3,9 +3,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { 
   Zap, Brain, Cpu, FlaskConical, 
-  Eye, Sliders, BarChart3, ChevronRight 
+  Eye, SlidersHorizontal, BarChart3, ArrowDown
 } from 'lucide-react';
-import GlassCard from './GlassCard';
 
 const MotionDiv = motion.div as any;
 
@@ -13,117 +12,160 @@ const PIPELINE_STEPS = [
   {
     phase: "01",
     title: "Concept Input",
-    desc: "The student enters a scientific inquiry in natural language (e.g., 'How does the concentration of HCl affect the rate of reaction with Mg?').",
+    desc: "The student types a scientific question in plain language. Our NLP interface accepts queries like \"What happens when light passes through a prism?\" or \"How does concentration affect reaction rates?\"",
     icon: Zap,
-    color: "amber"
+    color: "amber",
+    bgClass: "bg-amber-500/10",
+    textClass: "text-amber-500",
+    borderClass: "border-amber-500/30",
+    glowClass: "shadow-amber-500/20"
   },
   {
     phase: "02",
     title: "Semantic Analysis",
-    desc: "Our LLM-driven engine parses the query to identify independent/dependent variables, required physical constants, and relevant thermal/chemical laws.",
+    desc: "Our AI engine parses the query to identify independent and dependent variables, relevant physical constants, scientific laws, and the domain (Physics, Chemistry, Biology).",
     icon: Brain,
-    color: "indigo"
+    color: "indigo",
+    bgClass: "bg-indigo-500/10",
+    textClass: "text-indigo-500",
+    borderClass: "border-indigo-500/30",
+    glowClass: "shadow-indigo-500/20"
   },
   {
     phase: "03",
-    title: "Architectural Blueprinting",
-    desc: "The system generates a structured JSON schema defining the apparatus, initialization parameters, and safety boundaries for the session.",
+    title: "Experiment Generation",
+    desc: "The system architects a structured experiment blueprint — defining the virtual apparatus, initialization parameters, step-by-step procedures, and safety constraints.",
     icon: Cpu,
-    color: "emerald"
+    color: "emerald",
+    bgClass: "bg-emerald-500/10",
+    textClass: "text-emerald-500",
+    borderClass: "border-emerald-500/30",
+    glowClass: "shadow-emerald-500/20"
   },
   {
     phase: "04",
-    title: "Simulation Synthesis",
-    desc: "A headless physics/chemistry engine calculates the mathematical outcome of every interaction using real-time differential equations.",
+    title: "Simulation Engine",
+    desc: "A headless physics or chemistry engine runs real-time calculations using differential equations, stoichiometric balances, or kinematic models to produce accurate outcomes.",
     icon: FlaskConical,
-    color: "sky"
+    color: "sky",
+    bgClass: "bg-sky-500/10",
+    textClass: "text-sky-500",
+    borderClass: "border-sky-500/30",
+    glowClass: "shadow-sky-500/20"
   },
   {
     phase: "05",
-    title: "Dynamic Rendering",
-    desc: "Translates raw data into high-fidelity 3D assets or SVG-based fluid animations for visual immersion.",
+    title: "3D Visualization",
+    desc: "Raw simulation data is transformed into interactive 3D models or smooth SVG-based animations — molecules rotating, waves propagating, circuits glowing.",
     icon: Eye,
-    color: "violet"
+    color: "violet",
+    bgClass: "bg-violet-500/10",
+    textClass: "text-violet-500",
+    borderClass: "border-violet-500/30",
+    glowClass: "shadow-violet-500/20"
   },
   {
     phase: "06",
-    title: "Interactive Feedback",
-    desc: "Students manipulate parameters like Force, Molarity, or Heat through glass-morphic sliders, triggering instant re-simulation.",
-    icon: Sliders,
-    color: "rose"
+    title: "User Interaction",
+    desc: "Students manipulate variables through glass-morphic sliders and knobs — adjusting Force, Molarity, Temperature, or Voltage — triggering instant re-simulation and visual feedback.",
+    icon: SlidersHorizontal,
+    color: "rose",
+    bgClass: "bg-rose-500/10",
+    textClass: "text-rose-500",
+    borderClass: "border-rose-500/30",
+    glowClass: "shadow-rose-500/20"
   },
   {
     phase: "07",
-    title: "Analytical Synthesis",
-    desc: "The system visualizes the results through dynamic charts and provides an AI-summarized conclusion of the discovery.",
+    title: "Results & Explanation",
+    desc: "The system visualizes outcomes through dynamic charts, generates an AI-written summary of what was discovered, and suggests follow-up experiments for deeper learning.",
     icon: BarChart3,
-    color: "emerald"
+    color: "emerald",
+    bgClass: "bg-emerald-500/10",
+    textClass: "text-emerald-500",
+    borderClass: "border-emerald-500/30",
+    glowClass: "shadow-emerald-500/20"
   }
 ];
 
 const AIPipeline: React.FC = () => {
     return (
-        <div className="py-20">
-            <div className="text-center mb-16 space-y-4">
-                <h2 className="text-3xl md:text-5xl font-display font-bold text-white text-glow">How the Lab Generation <br/>Pipeline Works</h2>
-                <p className="text-slate-400 max-w-2xl mx-auto font-light leading-relaxed italic">
-                    Seamlessly bridging the gap between a student's curiosity and a functional virtual simulation.
+        <div className="py-20 px-4">
+            {/* Header */}
+            <div className="text-center mb-20 space-y-4">
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-bold uppercase tracking-widest mb-4">
+                    <Cpu size={14} /> System Architecture
+                </div>
+                <h2 className="text-3xl md:text-5xl font-display font-bold text-white text-glow leading-tight">
+                    How the Lab Generation<br/>Pipeline Works
+                </h2>
+                <p className="text-slate-400 max-w-xl mx-auto font-light leading-relaxed">
+                    From a student's curiosity to a fully functional virtual simulation — in seven intelligent stages.
                 </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 px-4">
-                {PIPELINE_STEPS.map((step, index) => (
-                    <MotionDiv
-                        key={step.phase}
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                        viewport={{ once: true }}
-                        className="relative group"
-                    >
-                        {index < PIPELINE_STEPS.length - 1 && (
-                            <div className="hidden lg:block absolute top-10 -right-4 z-0 opacity-20 group-hover:opacity-100 transition-opacity">
-                                <ChevronRight className="text-white w-6 h-6" />
+            {/* Timeline Layout */}
+            <div className="max-w-4xl mx-auto relative">
+                {/* Central Vertical Line */}
+                <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-amber-500/50 via-indigo-500/50 to-emerald-500/50 md:-translate-x-px"></div>
+
+                {PIPELINE_STEPS.map((step, index) => {
+                    const isLeft = index % 2 === 0;
+                    return (
+                        <MotionDiv
+                            key={step.phase}
+                            initial={{ opacity: 0, x: isLeft ? -30 : 30 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.1, duration: 0.5 }}
+                            viewport={{ once: true, margin: "-50px" }}
+                            className={`relative flex items-start gap-6 mb-12 md:mb-16 ${
+                                isLeft ? 'md:flex-row' : 'md:flex-row-reverse'
+                            } flex-row`}
+                        >
+                            {/* Phase Number Dot */}
+                            <div className="absolute left-6 md:left-1/2 -translate-x-1/2 z-10">
+                                <div className={`w-12 h-12 rounded-full ${step.bgClass} border-2 ${step.borderClass} flex items-center justify-center shadow-lg ${step.glowClass} backdrop-blur-md`}>
+                                    <step.icon className={`${step.textClass} w-5 h-5`} />
+                                </div>
                             </div>
-                        )}
-                        
-                        <GlassCard color={step.color as any} className="h-full !p-8 border-white/5 hover:border-white/20 transition-all flex flex-col group overflow-hidden">
-                            <div className="absolute -top-4 -right-4 text-6xl font-display font-black text-white/5 group-hover:text-white/10 transition-colors">
-                                {step.phase}
+
+                            {/* Content Card */}
+                            <div className={`ml-20 md:ml-0 md:w-[calc(50%-40px)] ${isLeft ? 'md:pr-4 md:text-right' : 'md:pl-4 md:text-left'}`}>
+                                <div className={`glass-panel rounded-2xl p-6 border ${step.borderClass} hover:shadow-lg ${step.glowClass} transition-all duration-300 group`}>
+                                    <div className={`flex items-center gap-3 mb-3 ${isLeft ? 'md:flex-row-reverse' : ''}`}>
+                                        <span className={`text-xs font-mono font-bold ${step.textClass} opacity-60`}>PHASE {step.phase}</span>
+                                        <h3 className="text-lg font-bold text-white tracking-tight">{step.title}</h3>
+                                    </div>
+                                    <p className="text-sm text-slate-400 leading-relaxed">{step.desc}</p>
+                                </div>
                             </div>
-                            
-                            <div className={`p-4 rounded-2xl bg-${step.color}-500/10 mb-6 inline-flex`}>
-                                <step.icon className={`text-${step.color}-500 w-8 h-8`} />
-                            </div>
-                            
-                            <h3 className="text-xl font-bold text-white mb-3 tracking-tight">{step.title}</h3>
-                            <p className="text-sm text-slate-400 leading-relaxed font-light flex-1">
-                                {step.desc}
-                            </p>
-                        </GlassCard>
-                    </MotionDiv>
-                ))}
-                
-                {/* Final Connect Card */}
-                <MotionDiv
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    className="lg:col-span-1"
-                >
-                    <div className="h-full rounded-3xl bg-gradient-to-br from-indigo-600/20 to-emerald-600/20 border border-white/10 p-8 flex flex-col items-center justify-center text-center group hover:from-indigo-600/40 hover:to-emerald-600/40 transition-all cursor-pointer">
-                        <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                            <Zap className="text-white w-10 h-10 animate-pulse" />
-                        </div>
-                        <h3 className="text-xl font-bold text-white mb-2">Ready to Launch?</h3>
-                        <p className="text-xs text-slate-400 mb-6">Experience the AI-driven synthesis firsthand in our labs.</p>
-                        <button className="px-6 py-2 rounded-full border border-white/20 text-xs font-bold text-white hover:bg-white/10 transition-all">Explore Experiments</button>
+
+                            {/* Spacer for the other side */}
+                            <div className="hidden md:block md:w-[calc(50%-40px)]"></div>
+                        </MotionDiv>
+                    );
+                })}
+
+                {/* Final Node */}
+                <div className="relative flex items-center justify-center">
+                    <div className="absolute left-6 md:left-1/2 -translate-x-1/2 z-10">
+                        <MotionDiv 
+                            animate={{ scale: [1, 1.2, 1] }} 
+                            transition={{ repeat: Infinity, duration: 2 }}
+                            className="w-14 h-14 rounded-full bg-gradient-to-br from-indigo-600 to-emerald-600 flex items-center justify-center shadow-xl shadow-indigo-500/30"
+                        >
+                            <Zap className="text-white w-7 h-7" />
+                        </MotionDiv>
                     </div>
-                </MotionDiv>
+                    <div className="ml-20 md:ml-0 md:w-full md:text-center md:pt-2">
+                        <p className="text-lg font-bold text-white md:ml-20">Experiment Ready ✨</p>
+                        <p className="text-xs text-slate-500 md:ml-20">The student can now interact with a fully generated virtual lab.</p>
+                    </div>
+                </div>
             </div>
-            
-            {/* Connection Line Decoration */}
-            <div className="hidden lg:block w-full max-w-6xl mx-auto h-px bg-gradient-to-r from-transparent via-white/10 to-transparent mt-12"></div>
+
+            {/* Bottom Gradient Line */}
+            <div className="w-full max-w-4xl mx-auto h-px bg-gradient-to-r from-transparent via-white/10 to-transparent mt-16"></div>
         </div>
     );
 };
