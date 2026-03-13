@@ -44,8 +44,8 @@ const Footer: React.FC = () => {
           <div className="space-y-4">
              <Link to="/" className="flex items-center gap-2 group">
                 <div className="relative">
-                  <div className="absolute inset-0 bg-blue-500 blur-lg opacity-50 group-hover:opacity-80 transition-opacity"></div>
-                  <Atom className="w-8 h-8 text-blue-400 relative z-10" />
+                  <div className="absolute inset-0 bg-emerald-500 blur-lg opacity-30 group-hover:opacity-60 transition-opacity"></div>
+                  <Atom className="w-8 h-8 text-emerald-400 relative z-10" />
                 </div>
                 <div className="flex flex-col justify-center">
                     <AnimatePresence mode="wait">
@@ -55,70 +55,70 @@ const Footer: React.FC = () => {
                             animate={{ y: 0, opacity: 1 }}
                             exit={{ y: -5, opacity: 0 }}
                             transition={{ duration: 0.5 }}
-                            className="text-2xl font-display font-bold text-white tracking-tight leading-none whitespace-nowrap"
+                            className="text-2xl font-display font-bold text-white tracking-tight leading-none whitespace-nowrap text-glow"
                         >
-                            {TITLES[titleIndex].text.split(' ')[0]} <span className="text-blue-400">{TITLES[titleIndex].text.split(' ')[1]}</span>
+                            {TITLES[titleIndex].text.split(' ')[0]} <span className="text-emerald-400">{TITLES[titleIndex].text.split(' ')[1]}</span>
                         </MotionSpan>
                     </AnimatePresence>
                 </div>
             </Link>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-gray-400 text-sm leading-relaxed max-w-xs">
               Empowering the next generation of scientists with immersive virtual simulations and AI-driven mentorship.
             </p>
             <div className="flex gap-4 pt-2">
-              <a href="#" className="text-gray-400 hover:text-blue-400 transition-colors"><Twitter size={20} /></a>
+              <a href="#" className="text-gray-400 hover:text-emerald-400 transition-colors"><Twitter size={20} /></a>
               <a href="#" className="text-gray-400 hover:text-white transition-colors"><Github size={20} /></a>
-              <a href="#" className="text-gray-400 hover:text-blue-600 transition-colors"><Linkedin size={20} /></a>
+              <a href="#" className="text-gray-400 hover:text-indigo-400 transition-colors"><Linkedin size={20} /></a>
               <a href="#" className="text-gray-400 hover:text-pink-500 transition-colors"><Instagram size={20} /></a>
             </div>
           </div>
-
+ 
           {/* Quick Links */}
           <div>
-            <h3 className="text-white font-bold mb-6">Platform</h3>
+            <h3 className="text-white font-bold mb-6 tracking-wide">Platform</h3>
             <ul className="space-y-3 text-sm text-gray-400">
-              <li><Link to="/" className="hover:text-blue-400 transition-colors">Home</Link></li>
-              <li><Link to="/subjects" className="hover:text-blue-400 transition-colors">Virtual Labs</Link></li>
-              <li><Link to="/tutor" className="hover:text-blue-400 transition-colors">AI Tutor</Link></li>
-              <li><Link to="/student-dashboard" className="hover:text-blue-400 transition-colors">Student Dashboard</Link></li>
-              <li><Link to="/teacher-dashboard" className="hover:text-blue-400 transition-colors">Teacher Dashboard</Link></li>
+              <li><Link to="/" className="hover:text-emerald-400 transition-colors">Home</Link></li>
+              <li><Link to="/subjects" className="hover:text-emerald-400 transition-colors">Virtual Labs</Link></li>
+              <li><Link to="/tutor" className="hover:text-emerald-400 transition-colors">AI Tutor</Link></li>
+              <li><Link to="/student-dashboard" className="hover:text-emerald-400 transition-colors">Student Dashboard</Link></li>
+              <li><Link to="/teacher-dashboard" className="hover:text-emerald-400 transition-colors">Teacher Dashboard</Link></li>
             </ul>
           </div>
-
+ 
           {/* Support & Legal */}
           <div>
-            <h3 className="text-white font-bold mb-6">Support</h3>
+            <h3 className="text-white font-bold mb-6 tracking-wide">Support</h3>
             <ul className="space-y-3 text-sm text-gray-400">
-              <li><Link to="/contact" className="hover:text-blue-400 transition-colors">Contact Us</Link></li>
-              <li><Link to="/about" className="hover:text-blue-400 transition-colors">About Us</Link></li>
-              <li><a href="#" className="hover:text-blue-400 transition-colors">Privacy Policy</a></li>
-              <li><a href="#" className="hover:text-blue-400 transition-colors">Terms & Conditions</a></li>
-              <li><a href="#" className="hover:text-blue-400 transition-colors">Help Center</a></li>
+              <li><Link to="/contact" className="hover:text-emerald-400 transition-colors">Contact Us</Link></li>
+              <li><Link to="/about" className="hover:text-emerald-400 transition-colors">About Us</Link></li>
+              <li><a href="#" className="hover:text-emerald-400 transition-colors">Privacy Policy</a></li>
+              <li><a href="#" className="hover:text-emerald-400 transition-colors">Terms & Conditions</a></li>
+              <li><a href="#" className="hover:text-emerald-400 transition-colors">Help Center</a></li>
             </ul>
           </div>
-
+ 
           {/* Feedback Form */}
           <div>
-            <h3 className="text-white font-bold mb-6">Feedback</h3>
+            <h3 className="text-white font-bold mb-6 tracking-wide">Feedback</h3>
             <p className="text-xs text-gray-400 mb-4">Help us improve your experience.</p>
-            <form onSubmit={handleFeedback} className="space-y-3">
-              <div className="relative">
+            <form onSubmit={handleFeedback} className="space-y-4">
+              <div className="relative group">
                 <textarea 
                   value={feedback}
                   onChange={(e) => setFeedback(e.target.value)}
                   placeholder="Your suggestions..."
-                  className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-blue-500/50 resize-none h-24 placeholder-gray-600"
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-sm text-white focus:outline-none focus:border-emerald-500/50 focus:bg-white/10 transition-all resize-none h-28 placeholder-gray-600 shadow-inner"
                 />
                 <button 
                   type="submit"
-                  className={`absolute bottom-3 right-3 p-2 rounded-full transition-all shadow-lg ${
-                    sent ? 'bg-green-500 text-white' : 'bg-blue-600 text-white hover:bg-blue-500'
+                  className={`absolute bottom-3 right-3 p-2.5 rounded-xl transition-all shadow-xl hover:scale-110 active:scale-95 ${
+                    sent ? 'bg-green-500 text-white' : 'bg-emerald-600 text-white hover:bg-emerald-500'
                   }`}
                 >
-                  {sent ? <Heart size={16} fill="currentColor" /> : <Send size={16} />}
+                  {sent ? <Heart size={18} fill="currentColor" /> : <Send size={18} />}
                 </button>
               </div>
-              {sent && <p className="text-xs text-green-400 animate-pulse">Thank you for your feedback!</p>}
+              {sent && <motion.p initial={{opacity:0, y: 5}} animate={{opacity:1, y:0}} className="text-xs text-emerald-400 font-medium">Thank you for your feedback!</motion.p>}
             </form>
           </div>
         </div>

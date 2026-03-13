@@ -14,7 +14,7 @@ const SubjectView: React.FC = () => {
   }
 
   return (
-    <div className="pt-28 px-6 md:px-12 lg:px-20 min-h-screen bg-slate-50 dark:bg-[#0f172a] transition-colors duration-300">
+    <div className="pt-28 px-6 md:px-12 lg:px-20 min-h-screen bg-slate-50 dark:bg-[#020617] transition-colors duration-300">
         {/* Header */}
         <div className="mb-12 relative overflow-hidden glass-panel rounded-3xl p-8 md:p-12 border-none">
             <div 
@@ -26,7 +26,7 @@ const SubjectView: React.FC = () => {
                     <div className="p-3 rounded-xl bg-white/50 dark:bg-white/10 backdrop-blur-md border border-white/20 dark:border-white/5">
                         <subject.icon size={32} style={{ color: subject.hex }} />
                     </div>
-                    <h1 className="text-4xl md:text-5xl font-display font-bold text-slate-900 dark:text-white transition-colors">{subject.name} Lab</h1>
+                    <h1 className="text-4xl md:text-5xl font-display font-bold text-slate-900 dark:text-white transition-colors text-glow">{subject.name} Lab</h1>
                 </div>
                 <p className="text-xl text-slate-600 dark:text-gray-300 max-w-2xl transition-colors">{subject.description}</p>
             </div>

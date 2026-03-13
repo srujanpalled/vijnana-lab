@@ -113,7 +113,7 @@ const Home: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-bold leading-tight text-slate-900 dark:text-white drop-shadow-sm dark:drop-shadow-lg transition-colors min-h-[160px] md:min-h-[220px]">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-bold leading-tight text-slate-900 dark:text-white drop-shadow-sm dark:drop-shadow-lg transition-colors min-h-[160px] md:min-h-[220px] text-glow">
               <AnimatePresence mode="wait">
                 <MotionSpan
                     key={titleIndex}

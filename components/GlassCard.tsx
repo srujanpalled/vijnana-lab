@@ -39,8 +39,8 @@ const GlassCard: React.FC<GlassCardProps> = ({
   return (
     <MotionDiv
       className={`
-        glass-panel rounded-3xl p-6 transition-colors duration-300
-        ${hoverEffect ? `hover:shadow-xl ${glowClass} cursor-pointer` : ''}
+        glass-panel rounded-3xl p-6 transition-all duration-300
+        ${hoverEffect ? `hover:shadow-xl ${glowClass} cursor-pointer hover-lift` : ''}
         ${className}
       `}
       onClick={onClick}
