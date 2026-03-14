@@ -11,6 +11,7 @@ import {
 import ScientificPanel from './ScientificPanel';
 import OhmsLawLab from './labs/OhmsLawLab';
 import PendulumLab from './labs/PendulumLab';
+import TitrationLab3D from './labs/TitrationLab3D';
 
 interface SimulationStageProps {
   subjectId: string;
@@ -576,57 +577,9 @@ const SimulationStage: React.FC<SimulationStageProps> = ({ subjectId, labId, hex
         );
     }
 
-    // C1: TITRATION
+    // C1: TITRATION — Full 3D visual lab
     if (labId === 'c1') {
-        return (
-            <div className="flex h-full bg-slate-100 dark:bg-slate-900">
-                <div className="flex flex-col flex-1 overflow-hidden">
-                <div className="flex-1 flex items-center justify-center relative bg-gradient-to-br from-slate-200 to-white dark:from-slate-800 dark:to-black">
-                    <div className="relative h-[450px] flex flex-col items-center">
-                        <div className="w-8 h-64 border-x-2 border-b-2 border-slate-400 rounded-b-lg bg-white/20 relative overflow-hidden backdrop-blur-sm shadow-xl">
-                            <div className="absolute bottom-0 w-full bg-cyan-500/30 transition-all duration-100" style={{ height: `${100 - (titration.vol/50)*100}%` }}></div>
-                            <div className="absolute right-0 top-0 h-full w-2 border-l border-slate-500/30 flex flex-col justify-between py-1">
-                                {[...Array(6)].map((_, i) => <div key={i} className="w-full h-[1px] bg-slate-500"></div>)}
-                            </div>
-                        </div>
-                        <div onClick={() => setRunning(!running)} className="w-6 h-6 bg-slate-700 rounded-full cursor-pointer hover:scale-110 transition-transform mt-[-2px] relative z-20 border-2 border-white/20">
-                            <div className={`absolute top-1/2 left-1/2 w-8 h-1.5 bg-slate-800 -translate-x-1/2 -translate-y-1/2 transition-transform duration-300 ${running ? 'rotate-90' : ''}`}></div>
-                        </div>
-                        {running && (
-                            <MotionDiv 
-                                initial={{ y: 0, opacity: 1, scale: 1 }} 
-                                animate={{ y: 120, opacity: 0, scale: 0.5 }} 
-                                transition={{ repeat: Infinity, duration: 0.4, ease: "linear" }} 
-                                className="w-2 h-2 bg-cyan-400 rounded-full absolute top-[280px] z-10"
-                            />
-                        )}
-                        <div className="mt-8 relative">
-                            <div className="w-32 h-40 border-b-4 border-x-4 border-slate-300/50 rounded-b-[50px] bg-white/5 relative overflow-hidden flex items-end justify-center backdrop-blur-md shadow-2xl">
-                                <div className="w-full h-24 transition-colors duration-700" style={{ backgroundColor: titration.flaskColor, opacity: 0.8 }}></div>
-                                <div className="absolute top-4 left-4 w-4 h-20 bg-white/20 rotate-12 blur-md rounded-full"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="bg-white dark:bg-slate-950 p-6 z-40 border-t border-slate-200 dark:border-white/10 flex justify-between items-center">
-                    <div>
-                        <h3 className="text-lg font-bold text-cyan-600">Acid-Base Titration</h3>
-                        <p className="text-sm text-slate-500">Neutralize HCl with NaOH. Watch for pink endpoint.</p>
-                    </div>
-                    <div className="flex gap-6 items-center">
-                        <div className="text-right">
-                            <div className="text-xs text-slate-500 uppercase">Volume Added</div>
-                            <div className="text-2xl font-mono font-bold text-slate-800 dark:text-white">{titration.vol.toFixed(1)} mL</div>
-                        </div>
-                        <button onClick={() => setRunning(!running)} className={`px-6 py-3 rounded-xl font-bold text-white shadow-lg transition-transform active:scale-95 ${running ? 'bg-red-500' : 'bg-green-500'}`}>
-                            {running ? 'Stop' : 'Start Drip'}
-                        </button>
-                    </div>
-                </div>
-                </div>
-                <ScientificPanel labId="c1" hex={hex} sliderValue={titration.vol} />
-            </div>
-        );
+        return <TitrationLab3D hex={hex} />;
     }
 
     // Fallback for others to procedural
