@@ -1,11 +1,10 @@
-
-import React, { useEffect, useState, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import { 
     Play, Pause, RotateCcw, Check, 
     Beaker, MousePointer2, 
     FlaskConical, Calculator, RefreshCw,
-    Lightbulb, AlertTriangle, Gauge, ArrowRight, ArrowLeft, Cpu, Flame, Droplets, Ruler, Zap, Eye, Microscope, Binary,
+    Lightbulb, AlertTriangle, Gauge, ArrowRight, ArrowLeft, Cpu, Flame, Droplets, Ruler, Zap, Eye, Microscope, Binary, Power,
     Activity
 } from 'lucide-react';
 import ScientificPanel from './ScientificPanel';
@@ -15,6 +14,7 @@ import TitrationLab3D from './labs/TitrationLab3D';
 import VernierCalipersLab3D from './labs/VernierCalipersLab3D';
 import ConcaveMirrorLab3D from './labs/ConcaveMirrorLab3D';
 import ScrewGaugeLab3D from './labs/ScrewGaugeLab3D';
+import LogicGatesLab from './labs/LogicGatesLab';
 
 interface SimulationStageProps {
   subjectId: string;
@@ -260,67 +260,9 @@ const SimulationStage: React.FC<SimulationStageProps> = ({ subjectId, labId, hex
         return <ConcaveMirrorLab3D hex={hex} />;
     }
 
-    // CS1: LOGIC GATES
+    // CS1: LOGIC GATES — Professional Logic Lab
     if (labId === 'cs1') {
-        const calculateOutput = () => {
-            if (logic.type === 'AND') return logic.a && logic.b;
-            if (logic.type === 'OR') return logic.a || logic.b;
-            if (logic.type === 'NAND') return !(logic.a && logic.b);
-            if (logic.type === 'NOR') return !(logic.a || logic.b);
-            if (logic.type === 'XOR') return logic.a !== logic.b;
-            return false;
-        };
-        const output = calculateOutput();
-
-        return (
-            <div className="flex flex-col h-full bg-slate-100 dark:bg-slate-900">
-                <div className="flex-1 flex flex-col items-center justify-center relative bg-grid-pattern">
-                    <div className="bg-slate-800 p-8 rounded-3xl shadow-2xl border-4 border-slate-600 flex items-center gap-8">
-                        <div className="flex flex-col gap-8">
-                            <div className="flex items-center gap-3">
-                                <span className="text-white font-bold">A</span>
-                                <button onClick={() => setLogic({...logic, a: !logic.a})} 
-                                    className={`w-16 h-8 rounded-full transition-colors flex items-center px-1 ${logic.a ? 'bg-green-500 justify-end' : 'bg-red-500 justify-start'}`}>
-                                    <div className="w-6 h-6 bg-white rounded-full shadow"></div>
-                                </button>
-                                <span className="text-mono text-white">{logic.a ? '1' : '0'}</span>
-                            </div>
-                            <div className="flex items-center gap-3">
-                                <span className="text-white font-bold">B</span>
-                                <button onClick={() => setLogic({...logic, b: !logic.b})} 
-                                    className={`w-16 h-8 rounded-full transition-colors flex items-center px-1 ${logic.b ? 'bg-green-500 justify-end' : 'bg-red-500 justify-start'}`}>
-                                    <div className="w-6 h-6 bg-white rounded-full shadow"></div>
-                                </button>
-                                <span className="text-mono text-white">{logic.b ? '1' : '0'}</span>
-                            </div>
-                        </div>
-                        <div className="w-32 h-32 bg-slate-700 border border-slate-500 rounded-xl flex flex-col items-center justify-center relative">
-                            <Cpu size={48} className="text-purple-400 mb-2"/>
-                            <span className="text-white font-bold">{logic.type}</span>
-                            {/* Visual Wires */}
-                            <div className="absolute left-[-32px] top-8 w-8 h-1 bg-gray-400"></div>
-                            <div className="absolute left-[-32px] bottom-8 w-8 h-1 bg-gray-400"></div>
-                            <div className="absolute right-[-32px] top-1/2 w-8 h-1 bg-gray-400"></div>
-                        </div>
-                        <div className="flex flex-col items-center">
-                            <div className={`w-16 h-16 rounded-full shadow-lg mb-2 transition-all duration-300 ${output ? 'bg-yellow-400 shadow-yellow-400/50 scale-110' : 'bg-gray-900 border border-gray-700'}`}></div>
-                            <span className="text-white font-mono">{output ? '1 (ON)' : '0 (OFF)'}</span>
-                        </div>
-                    </div>
-                </div>
-                <div className="bg-white dark:bg-slate-950 p-6 z-40 border-t border-slate-200 dark:border-white/10 flex justify-center gap-4 flex-wrap">
-                    {['AND', 'OR', 'NAND', 'NOR', 'XOR'].map(type => (
-                        <button 
-                            key={type} 
-                            onClick={() => setLogic({...logic, type: type as any})}
-                            className={`px-4 py-2 rounded-lg font-bold transition-colors ${logic.type === type ? 'bg-purple-600 text-white' : 'bg-slate-200 dark:bg-slate-800 text-slate-500'}`}
-                        >
-                            {type}
-                        </button>
-                    ))}
-                </div>
-            </div>
-        );
+        return <LogicGatesLab hex={hex} />;
     }
 
     // C1: TITRATION — Full 3D visual lab

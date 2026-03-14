@@ -9,8 +9,8 @@
  *  - Multiple readings table & statistics
  *  - Particle spark on jaw contact
  */
-import React, { useState, useCallback, useEffect } from 'react';
-import { Plus, Trash2, ChevronLeft, ChevronRight, RotateCcw } from 'lucide-react';
+import React, { useState, useCallback } from 'react';
+import { Trash2, RotateCcw } from 'lucide-react';
 import ParticleEngine, { Particle, createSpark } from './ParticleEngine';
 import { screwGaugeReading, analyzeReadings } from '../../services/simulationEngine';
 
