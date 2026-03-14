@@ -9,6 +9,8 @@ import {
     Activity
 } from 'lucide-react';
 import ScientificPanel from './ScientificPanel';
+import OhmsLawLab from './labs/OhmsLawLab';
+import PendulumLab from './labs/PendulumLab';
 
 interface SimulationStageProps {
   subjectId: string;
@@ -327,44 +329,14 @@ const SimulationStage: React.FC<SimulationStageProps> = ({ subjectId, labId, hex
         );
     }
 
-    // P2: SIMPLE PENDULUM
+    // P2: SIMPLE PENDULUM — Full interactive lab
     if (labId === 'p2') {
-        const x = Math.sin(pendulum.angle) * 300;
-        const y = Math.cos(pendulum.angle) * 300;
+        return <PendulumLab hex={hex} />;
+    }
 
-        return (
-            <div className="flex h-full bg-slate-100 dark:bg-slate-900">
-                <div className="flex flex-col flex-1 overflow-hidden">
-                    <div className="flex-1 flex flex-col items-center justify-start pt-10 relative bg-grid-pattern overflow-hidden">
-                        <div className="w-64 h-4 bg-gray-600 rounded mb-[-2px] z-10 shadow-lg"></div>
-                        <svg className="absolute top-10 left-1/2 -ml-[150px] w-[300px] h-[400px] overflow-visible pointer-events-none" style={{ marginLeft: 0 }}>
-                            <line x1="150" y1="0" x2={150 + x} y2={y} stroke="gray" strokeWidth="2" />
-                        </svg>
-                        <div
-                            className="w-12 h-12 rounded-full bg-gradient-to-br from-slate-400 to-slate-600 border border-slate-700 shadow-xl absolute top-10"
-                            style={{ transform: `translate(${x}px, ${y}px) translateX(-50%)` }}
-                        ></div>
-                    </div>
-                    <div className="bg-white dark:bg-slate-950 p-6 z-40 border-t border-slate-200 dark:border-white/10 flex gap-8 items-center">
-                        <div className="flex-1">
-                            <label className="text-xs text-slate-500 font-bold uppercase">String Length (L)</label>
-                            <input type="range" min="0.5" max="2.0" step="0.1" value={pendulum.length} onChange={(e)=>setPendulum({...pendulum, length: parseFloat(e.target.value)})} className="w-full accent-blue-500"/>
-                            <div className="flex justify-between text-xs text-slate-400 mt-1">
-                                <span>0.5m</span><span>{pendulum.length}m</span><span>2.0m</span>
-                            </div>
-                        </div>
-                        <div className="text-center px-4">
-                            <div className="text-2xl font-mono font-bold text-slate-900 dark:text-white">{pendulum.period.toFixed(2)}s</div>
-                            <div className="text-xs text-slate-500 uppercase">Time Period (T)</div>
-                        </div>
-                        <button onClick={() => setRunning(!running)} className={`px-6 py-3 rounded-xl font-bold text-white shadow-lg transition-transform active:scale-95 ${running ? 'bg-red-500' : 'bg-green-500'}`}>
-                            {running ? 'Stop' : 'Oscillate'}
-                        </button>
-                    </div>
-                </div>
-                <ScientificPanel labId="p2" hex={hex} sliderValue={pendulum.length} />
-            </div>
-        );
+    // P4: OHM'S LAW — Full interactive lab
+    if (labId === 'p4') {
+        return <OhmsLawLab hex={hex} />;
     }
 
     // P3: SCREW GAUGE
