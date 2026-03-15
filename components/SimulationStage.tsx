@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useEffect, useState, useMemo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
     Play, Pause, RotateCcw, Check, 
     Beaker, MousePointer2, 
     FlaskConical, Calculator, RefreshCw,
     Lightbulb, AlertTriangle, Gauge, ArrowRight, ArrowLeft, Cpu, Flame, Droplets, Ruler, Zap, Eye, Microscope, Binary, Power,
-    Activity
+    Activity, Database
 } from 'lucide-react';
 import ScientificPanel from './ScientificPanel';
 import OhmsLawLab from './labs/OhmsLawLab';
@@ -280,7 +280,7 @@ const SimulationStage: React.FC<SimulationStageProps> = ({ subjectId, labId, hex
                   className="absolute bottom-6 right-6 p-3 rounded-full bg-blue-600 text-white shadow-2xl hover:scale-110 active:scale-95 transition-all z-50 group"
                   title="Open Scientific Workbench"
                 >
-                  <Database size={20} className={wbOpen ? 'rotate-180' : ''} transition-transform />
+                  <Database size={20} className={`${wbOpen ? 'rotate-180' : ''} transition-transform`} />
                   {history.length > 0 && !wbOpen && (
                     <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full text-[10px] flex items-center justify-center font-bold">
                       {history.length}

@@ -135,7 +135,7 @@ const ScrewGaugeBody3D: React.FC<{ displayedMm: number; zeroError: number }> = (
 };
 
 // ─── MAIN COMPONENT ───────────────────────────────────────────────────────────
-const ScrewGaugeLab3D: React.FC<{ hex: string }> = ({ hex }) => {
+const ScrewGaugeLab3D: React.FC<{ hex: string; onLog?: (data: any) => void }> = ({ hex, onLog }) => {
   const [diameter, setDiameter] = useState(2.25); // mm
   const [zeroError, setZeroError] = useState(0.0); // mm
   const [readings, setReadings] = useState<number[]>([]);
@@ -153,9 +153,19 @@ const ScrewGaugeLab3D: React.FC<{ hex: string }> = ({ hex }) => {
   const csr = Math.round((displayed_value - msr) / LC);
   
   const logReading = useCallback(() => {
-    setReadings(prev => [...prev, displayed_value - zeroError]);
+    const val = displayed_value - zeroError;
+    setReadings(prev => [...prev, val]);
     setParticles(prev => [...prev, ...Array.from({ length: 12 }, () => createSpark(80, 100, '#3b82f6'))]);
-  }, [displayed_value, zeroError]);
+    
+    if (onLog) {
+      onLog({
+        id: readings.length + 1,
+        thickness: parseFloat(val.toFixed(3)),
+        msr: msr,
+        csr: csr
+      });
+    }
+  }, [displayed_value, zeroError, onLog, readings.length, msr, csr]);
 
   const stats = readings.length >= 2 ? analyzeReadings(readings) : null;
 
