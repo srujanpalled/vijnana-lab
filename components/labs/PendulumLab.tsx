@@ -11,6 +11,7 @@
  *  - Environmental factors (altitude changes local g)
  */
 import React, { useState, useEffect, useCallback } from 'react';
+import { motion } from 'framer-motion';
 import { Play, Pause, RotateCcw, ChevronRight, ChevronLeft, Trash2 } from 'lucide-react';
 import InteractiveGraph from '../InteractiveGraph';
 import {
@@ -257,18 +258,23 @@ const PendulumLab: React.FC<{ hex: string }> = ({ hex }) => {
           {/* Sliders */}
           <div className="space-y-3">
             {[
-              { label: 'String Length (L)', key: 'L', min: 0.3, max: 2.0, step: 0.1, val: L, unit: 'm', color: 'indigo', onChange: (v:number) => setL(v) },
-              { label: 'Amplitude', key: 'A', min: 2, max: 10, step: 1, val: amplitude, unit: '°', color: 'yellow', onChange: (v:number) => setAmplitude(v) },
-              { label: 'Altitude (env)', key: 'alt', min: 0, max: 5000, step: 100, val: env.altitude_m, unit: 'm', color: 'teal', onChange: (v:number) => setEnv(e=>({...e, altitude_m: v})) },
+              { label: 'String Length (L)', key: 'L', min: 0.3, max: 2.0, step: 0.1, val: L, unit: 'm', color: 'bg-indigo-500', onChange: (v:number) => setL(v) },
+              { label: 'Amplitude', key: 'A', min: 2, max: 10, step: 1, val: amplitude, unit: '°', color: 'bg-yellow-500', onChange: (v:number) => setAmplitude(v) },
+              { label: 'Altitude (env)', key: 'alt', min: 0, max: 5000, step: 100, val: env.altitude_m, unit: 'm', color: 'bg-teal-500', onChange: (v:number) => setEnv(e=>({...e, altitude_m: v})) },
             ].map(s => (
               <div key={s.key}>
-                <div className="flex justify-between text-xs mb-1">
-                  <span className="text-slate-500 dark:text-gray-400 font-bold">{s.label}</span>
-                  <span className={`font-mono text-${s.color}-600 dark:text-${s.color}-400`}>{s.val} {s.unit}</span>
+                <div className="flex justify-between items-end mb-2">
+                  <span className="text-xs font-bold text-slate-300 uppercase tracking-widest">{s.label}</span>
+                  <div className="flex bg-black/40 px-2 py-0.5 rounded-md border border-white/10">
+                    <span className="font-mono text-[10px] text-white font-bold">{s.val}</span>
+                    <span className="text-[9px] text-slate-500 ml-1">{s.unit}</span>
+                  </div>
                 </div>
-                <input type="range" min={s.min} max={s.max} step={s.step} value={s.val}
-                  onChange={e => s.onChange(parseFloat(e.target.value))}
-                  className={`w-full h-2 rounded accent-${s.color}-500`} />
+                <div className="relative h-2 bg-[#0a0f1a] rounded-full border border-slate-200 dark:border-white/5 shadow-inner">
+                  <div className={`absolute left-0 top-0 bottom-0 rounded-full ${s.color}`} style={{ width: `${((s.val - s.min) / (s.max - s.min)) * 100}%` }} />
+                  <input type="range" min={s.min} max={s.max} step={s.step} value={s.val} onChange={e => s.onChange(parseFloat(e.target.value))} className="absolute inset-0 w-full opacity-0 cursor-ew-resize z-20" />
+                  <motion.div className="absolute w-5 h-5 bg-white rounded-full shadow-[0_2px_10px_rgba(0,0,0,0.5)] pointer-events-none z-10" style={{ top: -6, left: `calc(${((s.val - s.min) / (s.max - s.min)) * 100}% - 10px)` }} />
+                </div>
               </div>
             ))}
           </div>

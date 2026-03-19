@@ -22,6 +22,7 @@ const Profile: React.FC = () => {
     email: '',
     role: '',
     grade: '',
+    syllabus: '',
     institution: '',
     language: 'English',
     avatar: 'bg-blue-500',
@@ -43,6 +44,7 @@ const Profile: React.FC = () => {
                         email: data.email || currentUser.email || '',
                         role: data.role || 'Student',
                         grade: data.grade || '',
+                        syllabus: data.syllabus || '',
                         institution: data.institution || '',
                         language: data.language || 'English',
                         avatar: data.avatar || currentUser.photoURL || 'bg-blue-500',
@@ -55,6 +57,7 @@ const Profile: React.FC = () => {
                         email: currentUser.email || '',
                         role: 'Student',
                         grade: '',
+                        syllabus: '',
                         institution: '',
                         language: 'English',
                         avatar: currentUser.photoURL || 'bg-blue-500',
@@ -86,22 +89,25 @@ const Profile: React.FC = () => {
     return () => unsubscribe();
   }, [navigate]);
 
-  const handleSave = async () => {
+  const handleSave = () => {
     setIsSaving(true);
-    try {
-        await updateUserData(userData.uid, {
-            name: userData.name,
-            institution: userData.institution,
-            language: userData.language,
-            avatar: userData.avatar
-        });
-        setIsEditing(false);
-    } catch (error) {
+    // Optimistic UI: Immediately close editing state
+    setIsEditing(false);
+    
+    // Fire and forget the update to Firebase so the UI doesn't block
+    updateUserData(userData.uid, {
+        name: userData.name,
+        grade: userData.grade,
+        syllabus: userData.syllabus,
+        institution: userData.institution,
+        language: userData.language,
+        avatar: userData.avatar
+    }).catch(error => {
         console.error("Failed to update profile", error);
-        alert("Failed to save changes.");
-    } finally {
+        alert("Failed to save changes in the background.");
+    }).finally(() => {
         setIsSaving(false);
-    }
+    });
   };
 
   if (isLoading) {
@@ -240,15 +246,59 @@ const Profile: React.FC = () => {
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                {/* Grade (Read Only) */}
+                                {/* Grade / Standard */}
                                 <div className="space-y-2">
                                     <label className="flex items-center gap-2 text-sm font-medium text-gray-400">
-                                        <GraduationCap size={16} /> Grade / Class
+                                        <GraduationCap size={16} /> Grade / Standard
                                     </label>
-                                    <div className="p-3 bg-white/5 rounded-xl text-gray-400 border border-white/5 flex justify-between items-center cursor-not-allowed">
-                                        {userData.grade}
-                                        <span className="text-[10px] uppercase bg-white/5 px-2 py-0.5 rounded text-gray-500">Fixed</span>
-                                    </div>
+                                    {isEditing ? (
+                                        <div className="relative">
+                                            <select 
+                                                value={userData.grade}
+                                                onChange={(e) => setUserData({...userData, grade: e.target.value})}
+                                                className="w-full bg-black/20 border border-white/10 rounded-xl p-3 text-white focus:border-blue-500/50 focus:outline-none transition-all appearance-none cursor-pointer"
+                                            >
+                                                <option className="bg-slate-900" value="" disabled>Select Standard</option>
+                                                <option className="bg-slate-900" value="1st PUC / Class 11">11th / 1st PUC</option>
+                                                <option className="bg-slate-900" value="2nd PUC / Class 12">12th / 2nd PUC</option>
+                                            </select>
+                                            <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500">
+                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <div className="p-3 bg-white/5 rounded-xl text-gray-200 border border-transparent">
+                                            {userData.grade || 'Not Set'}
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Syllabus / Board */}
+                                <div className="space-y-2">
+                                    <label className="flex items-center gap-2 text-sm font-medium text-gray-400">
+                                        <BookOpen size={16} /> Syllabus / Board
+                                    </label>
+                                    {isEditing ? (
+                                        <div className="relative">
+                                            <select 
+                                                value={userData.syllabus}
+                                                onChange={(e) => setUserData({...userData, syllabus: e.target.value})}
+                                                className="w-full bg-black/20 border border-white/10 rounded-xl p-3 text-white focus:border-blue-500/50 focus:outline-none transition-all appearance-none cursor-pointer"
+                                            >
+                                                <option className="bg-slate-900" value="" disabled>Select Syllabus</option>
+                                                <option className="bg-slate-900" value="CBSE">CBSE (NCERT)</option>
+                                                <option className="bg-slate-900" value="Karnataka PUC">Karnataka PUC</option>
+                                                <option className="bg-slate-900" value="ICSE">ICSE / ISC</option>
+                                            </select>
+                                            <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500">
+                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <div className="p-3 bg-white/5 rounded-xl text-gray-200 border border-transparent">
+                                            {userData.syllabus || 'Not Set'}
+                                        </div>
+                                    )}
                                 </div>
 
                                 {/* Language Input */}

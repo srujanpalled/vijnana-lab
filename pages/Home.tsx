@@ -65,6 +65,7 @@ const Home: React.FC = () => {
         onClick={toggleTheme}
         className="fixed top-24 right-6 z-50 p-3 rounded-full bg-white/10 dark:bg-slate-800/50 border border-slate-200 dark:border-white/10 shadow-lg backdrop-blur-md text-slate-700 dark:text-yellow-300 hover:scale-110 transition-all"
         title="Toggle Theme"
+        aria-label={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
       >
           {isDark ? <Sun size={24} /> : <Moon size={24} className="text-slate-700" />}
       </button>
@@ -258,7 +259,10 @@ const Home: React.FC = () => {
                 <GlassCard color="amber" className="relative z-10 p-4 border-amber-500/30 overflow-hidden group">
                     <img 
                       src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&q=80&w=800" 
-                      alt="Brainstorming" 
+                      alt="Scientific research and brainstorming" 
+                      loading="lazy"
+                      width="800"
+                      height="300"
                       className="rounded-2xl w-full h-[300px] object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-700"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent"></div>

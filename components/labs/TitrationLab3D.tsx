@@ -13,6 +13,7 @@
  *  - Motion-blurred drop trail
  */
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { motion } from 'framer-motion';
 import { Play, Pause, RotateCcw, Droplets } from 'lucide-react';
 import ParticleEngine, { Particle, createDrop, createBubble, createSpark, createMolecule } from './ParticleEngine';
 import InteractiveGraph from '../InteractiveGraph';
@@ -476,22 +477,31 @@ const TitrationLab3D: React.FC<{ hex: string }> = ({ hex }) => {
 
           {/* Manual volume slider */}
           <div>
-            <div className="flex justify-between text-xs mb-1">
-              <span className="text-slate-400 font-bold">NaOH Volume</span>
-              <span className="font-mono text-cyan-400">{volAdded.toFixed(2)} mL</span>
+            <div className="flex justify-between items-end mb-2">
+              <span className="text-xs font-bold text-slate-300 uppercase tracking-widest">NaOH Volume</span>
+              <div className="flex bg-black/40 px-2 py-0.5 rounded-md border border-white/10">
+                <span className="font-mono text-[10px] text-white font-bold">{volAdded.toFixed(2)}</span>
+                <span className="text-[9px] text-cyan-400 ml-1">mL</span>
+              </div>
             </div>
-            <input type="range" min="0" max="30" step="0.1" value={volAdded}
-              onChange={e => {
-                const v = parseFloat(e.target.value);
-                setVolAdded(v);
-                setPhCurve(c => {
-                  const exists = c.find(p => Math.abs(p.x - v) < 0.15);
-                  if (exists) return c;
-                  return [...c, { x: v, y: computepH(v) }].sort((a,b)=>a.x-b.x);
-                });
-              }}
-              className="w-full h-2 rounded accent-purple-500" />
-            <div className="flex justify-between text-[9px] text-slate-600 mt-0.5">
+            
+            <div className="relative h-2 bg-[#0a0f1a] rounded-full border border-white/5 shadow-inner mb-2">
+              <div className="absolute left-0 top-0 bottom-0 rounded-full bg-purple-500" style={{ width: `${((volAdded - 0) / (30 - 0)) * 100}%` }} />
+              <input type="range" min="0" max="30" step="0.1" value={volAdded}
+                onChange={e => {
+                  const v = parseFloat(e.target.value);
+                  setVolAdded(v);
+                  setPhCurve(c => {
+                    const exists = c.find(p => Math.abs(p.x - v) < 0.15);
+                    if (exists) return c;
+                    return [...c, { x: v, y: computepH(v) }].sort((a,b)=>a.x-b.x);
+                  });
+                }}
+                className="absolute inset-0 w-full opacity-0 cursor-ew-resize z-20" />
+              <motion.div className="absolute w-5 h-5 bg-white rounded-full shadow-[0_2px_10px_rgba(0,0,0,0.5)] pointer-events-none z-10" style={{ top: -6, left: `calc(${((volAdded - 0) / (30 - 0)) * 100}% - 10px)` }} />
+            </div>
+            
+            <div className="flex justify-between text-[9px] text-slate-500 font-bold px-1">
               <span>0mL</span><span>EP≈{res.V_base_theoretical.toFixed(0)}mL</span><span>30mL</span>
             </div>
           </div>

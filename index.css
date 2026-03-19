@@ -1,6 +1,8 @@
-/* Global styles (minimal to satisfy /index.css reference)
-   Tailwind is loaded via CDN in index.html, so keep this lightweight. */
+@import "tailwindcss";
+@config "./tailwind.config.js";
 
+/* Global styles (minimal to satisfy /index.css reference)
+   Tailwind is loaded via vite, so keep this lightweight. */
 html, body, #root {
   margin: 0;
   padding: 0;

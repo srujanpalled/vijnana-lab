@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import { motion } from 'framer-motion';
 import { Plus, Trash2, ChevronLeft, ChevronRight, RotateCcw } from 'lucide-react';
 import ParticleEngine, { Particle, createSpark } from './ParticleEngine';
 import { vernierReading, sphereVolume, analyzeReadings } from '../../services/simulationEngine';
@@ -422,30 +423,40 @@ const VernierCalipersLab3D: React.FC<{ hex: string; onLog?: (data: any) => void 
           {/* Sliders */}
           <div className="space-y-4">
             <div>
-              <div className="flex justify-between text-xs mb-1">
-                <span className="text-slate-400 font-bold">Diameter (object)</span>
-                <span className="font-mono text-violet-400">{diameter.toFixed(1)} mm</span>
+              <div className="flex justify-between items-end mb-2">
+                <span className="text-xs font-bold text-slate-300 uppercase tracking-widest">Diameter (u)</span>
+                <div className="flex bg-black/40 px-2 py-0.5 rounded-md border border-white/10">
+                  <span className="font-mono text-[10px] text-white font-bold">{diameter.toFixed(1)}</span>
+                  <span className="text-[9px] text-slate-500 ml-1">mm</span>
+                </div>
               </div>
-              <input type="range" min="5" max="50" step="0.5" value={diameter}
-                onChange={e => setDiameter(parseFloat(e.target.value))}
-                className="w-full h-2 rounded accent-violet-500" />
-              <div className="flex justify-between text-[9px] text-slate-600 mt-0.5"><span>5mm</span><span>50mm</span></div>
+              <div className="relative h-2 bg-[#0a0f1a] rounded-full border border-white/5 shadow-inner">
+                <div className="absolute left-0 top-0 bottom-0 rounded-full bg-violet-500" style={{ width: `${((diameter - 5) / (50 - 5)) * 100}%` }} />
+                <input type="range" min="5" max="50" step="0.5" value={diameter} onChange={e => setDiameter(parseFloat(e.target.value))} className="absolute inset-0 w-full opacity-0 cursor-ew-resize z-20" />
+                <motion.div className="absolute w-5 h-5 bg-white rounded-full shadow-[0_2px_10px_rgba(0,0,0,0.5)] pointer-events-none z-10" style={{ top: -6, left: `calc(${((diameter - 5) / (50 - 5)) * 100}% - 10px)` }} />
+              </div>
+              <div className="flex justify-between text-[9px] text-slate-600 mt-1.5 px-1"><span>5mm</span><span>50mm</span></div>
             </div>
 
             <div>
-              <div className="flex justify-between text-xs mb-1">
-                <span className="text-slate-400 font-bold">Zero Error</span>
-                <span className={`font-mono text-xs font-bold ${zeroError>0?'text-red-400':zeroError<0?'text-blue-400':'text-green-400'}`}>
-                  {zeroError>=0?'+':''}{zeroError.toFixed(2)} mm
-                </span>
+              <div className="flex justify-between items-end mb-2">
+                <span className="text-xs font-bold text-slate-300 uppercase tracking-widest">Zero Error</span>
+                <div className="flex bg-black/40 px-2 py-0.5 rounded-md border border-white/10">
+                  <span className={`font-mono text-[10px] font-bold ${zeroError>0?'text-red-400':zeroError<0?'text-blue-400':'text-green-400'}`}>
+                    {zeroError>=0?'+':''}{zeroError.toFixed(2)}
+                  </span>
+                  <span className="text-[9px] text-slate-500 ml-1">mm</span>
+                </div>
               </div>
-              <input type="range" min="-0.5" max="0.5" step="0.05" value={zeroError}
-                onChange={e => setZeroError(parseFloat(e.target.value))}
-                className="w-full h-2 rounded accent-red-500" />
-              <div className="flex justify-between text-[9px] mt-0.5">
-                <span className="text-blue-400">−ve ZE</span>
-                <span className="text-green-400">No ZE</span>
-                <span className="text-red-400">+ve ZE</span>
+              <div className="relative h-2 bg-[#0a0f1a] rounded-full border border-white/5 shadow-inner">
+                <div className="absolute left-1/2 top-0 bottom-0 rounded-full bg-red-500" style={{ width: `${Math.abs(zeroError) / 0.5 * 50}%`, left: zeroError < 0 ? `calc(50% - ${Math.abs(zeroError) / 0.5 * 50}%)` : '50%' }} />
+                <input type="range" min="-0.5" max="0.5" step="0.05" value={zeroError} onChange={e => setZeroError(parseFloat(e.target.value))} className="absolute inset-0 w-full opacity-0 cursor-ew-resize z-20" />
+                <motion.div className="absolute w-5 h-5 bg-white rounded-full shadow-[0_2px_10px_rgba(0,0,0,0.5)] pointer-events-none z-10" style={{ top: -6, left: `calc(${((zeroError - -0.5) / (0.5 - -0.5)) * 100}% - 10px)` }} />
+              </div>
+              <div className="flex justify-between text-[9px] mt-1.5 px-1 font-bold">
+                <span className="text-blue-400/50">−ve ZE</span>
+                <span className="text-green-400/50">0</span>
+                <span className="text-red-400/50">+ve ZE</span>
               </div>
             </div>
           </div>

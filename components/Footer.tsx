@@ -66,10 +66,10 @@ const Footer: React.FC = () => {
               Empowering the next generation of scientists with immersive virtual simulations and AI-driven mentorship.
             </p>
             <div className="flex gap-4 pt-2">
-              <a href="#" className="text-gray-400 hover:text-emerald-400 transition-colors"><Twitter size={20} /></a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors"><Github size={20} /></a>
-              <a href="#" className="text-gray-400 hover:text-indigo-400 transition-colors"><Linkedin size={20} /></a>
-              <a href="#" className="text-gray-400 hover:text-pink-500 transition-colors"><Instagram size={20} /></a>
+              <a href="#" aria-label="Follow us on Twitter" rel="noopener noreferrer" className="text-gray-400 hover:text-emerald-400 transition-colors"><Twitter size={20} /></a>
+              <a href="#" aria-label="Visit our Github" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors"><Github size={20} /></a>
+              <a href="#" aria-label="Connect on LinkedIn" rel="noopener noreferrer" className="text-gray-400 hover:text-indigo-400 transition-colors"><Linkedin size={20} /></a>
+              <a href="#" aria-label="Follow us on Instagram" rel="noopener noreferrer" className="text-gray-400 hover:text-pink-500 transition-colors"><Instagram size={20} /></a>
             </div>
           </div>
  
@@ -107,10 +107,12 @@ const Footer: React.FC = () => {
                   value={feedback}
                   onChange={(e) => setFeedback(e.target.value)}
                   placeholder="Your suggestions..."
+                  aria-label="Send us your feedback"
                   className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-sm text-white focus:outline-none focus:border-emerald-500/50 focus:bg-white/10 transition-all resize-none h-28 placeholder-gray-600 shadow-inner"
                 />
                 <button 
                   type="submit"
+                  aria-label="Submit Feedback"
                   className={`absolute bottom-3 right-3 p-2.5 rounded-xl transition-all shadow-xl hover:scale-110 active:scale-95 ${
                     sent ? 'bg-green-500 text-white' : 'bg-emerald-600 text-white hover:bg-emerald-500'
                   }`}

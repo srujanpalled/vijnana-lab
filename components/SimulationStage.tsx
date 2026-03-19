@@ -13,9 +13,32 @@ import PendulumLab from './labs/PendulumLab';
 import TitrationLab3D from './labs/TitrationLab3D';
 import VernierCalipersLab3D from './labs/VernierCalipersLab3D';
 import ConcaveMirrorLab3D from './labs/ConcaveMirrorLab3D';
+import ConvexLensLab3D from './labs/ConvexLensLab3D';
+import DiodeLab from './labs/DiodeLab';
 import ScrewGaugeLab3D from './labs/ScrewGaugeLab3D';
 import LogicGatesLab from './labs/LogicGatesLab';
 import ScientificWorkbench from './ScientificWorkbench';
+// Biology labs
+import MitosisLab from './labs/MitosisLab';
+import StomataLab from './labs/StomataLab';
+import OsmosisLab from './labs/OsmosisLab';
+import BenedictsTestLab from './labs/BenedictsTestLab';
+import ChromatographyLab from './labs/ChromatographyLab';
+// Chemistry labs
+import SaltAnalysisLab from './labs/SaltAnalysisLab';
+import PHLabSimulation from './labs/PHLabSimulation';
+import FunctionalGroupsLab from './labs/FunctionalGroupsLab';
+import ThermochemistryLab from './labs/ThermochemistryLab';
+// Math labs
+import MathLab from './labs/MathLab';
+import UnitCircleLab from './labs/UnitCircleLab';
+// CS labs
+import BubbleSortLab from './labs/BubbleSortLab';
+import InsertionSortLab from './labs/InsertionSortLab';
+import StackLab from './labs/StackLab';
+import NumberSystemsLab from './labs/NumberSystemsLab';
+import QueueLab from './labs/QueueLab';
+import BinarySearchLab from './labs/BinarySearchLab';
 
 interface SimulationStageProps {
   subjectId: string;
@@ -265,8 +288,33 @@ const SimulationStage: React.FC<SimulationStageProps> = ({ subjectId, labId, hex
     else if (labId === 'p4') content = <OhmsLawLab hex={hex} onLog={logMeasurement} />;
     else if (labId === 'p3') content = <ScrewGaugeLab3D hex={hex} onLog={logMeasurement} />;
     else if (labId === 'p5') content = <ConcaveMirrorLab3D hex={hex} />;
+    else if (labId === 'p9') content = <ConvexLensLab3D hex={hex} />;
+    else if (labId === 'p10') content = <DiodeLab hex={hex} />;
     else if (labId === 'cs1') content = <LogicGatesLab hex={hex} />;
     else if (labId === 'c1') content = <TitrationLab3D hex={hex} />;
+    // Biology labs
+    else if (labId === 'b1') content = <MitosisLab hex={hex} />;
+    else if (labId === 'b2') content = <StomataLab hex={hex} />;
+    else if (labId === 'b3') content = <OsmosisLab hex={hex} />;
+    else if (labId === 'b4') content = <BenedictsTestLab hex={hex} />;
+    else if (labId === 'b5') content = <ChromatographyLab hex={hex} />;
+    // Chemistry labs
+    else if (labId === 'c2') content = <SaltAnalysisLab hex={hex} />;
+    else if (labId === 'c3') content = <PHLabSimulation hex={hex} />;
+    else if (labId === 'c4') content = <FunctionalGroupsLab hex={hex} />;
+    else if (labId === 'c5') content = <ThermochemistryLab hex={hex} />;
+    // Math labs
+    else if (['m1','m2','m4','m5','m6','m7','m8'].includes(labId)) content = <MathLab hex={hex} labId={labId} />;
+    else if (labId === 'm3') content = <UnitCircleLab hex={hex} />;
+    // CS labs
+    else if (labId === 'cs2') content = <BubbleSortLab hex={hex} />;
+    else if (labId === 'cs3') content = <InsertionSortLab hex={hex} />;
+    else if (labId === 'cs4') content = <StackLab hex={hex} />;
+    else if (labId === 'cs5') content = <NumberSystemsLab hex={hex} />;
+    else if (labId === 'cs7') content = <QueueLab hex={hex} />;
+    else if (labId === 'cs8') content = <BinarySearchLab hex={hex} />;
+    // c12 pH reuse
+    else if (labId === 'c12') content = <PHLabSimulation hex={hex} />;
     else if (scenario) content = <RichProceduralLab scenario={scenario} labId={labId} hex={hex} />;
 
     return (

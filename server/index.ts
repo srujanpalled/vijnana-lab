@@ -22,6 +22,16 @@ app.use(cors({
 }));
 app.use(express.json());
 
+// ─── Static Assets & Caching ─────────────────────────────────
+app.use(express.static('dist', {
+  maxAge: '1y',
+  setHeaders: (res, path) => {
+    if (path.endsWith('.html')) {
+      res.setHeader('Cache-Control', 'no-cache');
+    }
+  }
+}));
+
 // ─── API Routes ──────────────────────────────────────────────
 app.use('/api/users', userRoutes);
 app.use('/api/labs', labRoutes);

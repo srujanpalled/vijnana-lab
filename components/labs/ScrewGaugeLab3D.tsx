@@ -10,6 +10,7 @@
  *  - Particle spark on jaw contact
  */
 import React, { useState, useCallback } from 'react';
+import { motion } from 'framer-motion';
 import { Trash2, RotateCcw } from 'lucide-react';
 import ParticleEngine, { Particle, createSpark } from './ParticleEngine';
 import { screwGaugeReading, analyzeReadings } from '../../services/simulationEngine';
@@ -304,25 +305,35 @@ const ScrewGaugeLab3D: React.FC<{ hex: string; onLog?: (data: any) => void }> = 
         <div className="w-64 shrink-0 border-l border-white/10 bg-slate-900 p-4 flex flex-col gap-4 overflow-y-auto">
           <div className="space-y-4">
             <div>
-              <div className="flex justify-between text-xs mb-1">
-                <span className="text-slate-400 font-bold">Thimble Rotation</span>
-                <span className="font-mono text-blue-400">{diameter.toFixed(3)} mm</span>
+              <div className="flex justify-between items-end mb-2">
+                <span className="text-xs font-bold text-slate-300 uppercase tracking-widest">Thimble Rotation</span>
+                <div className="flex bg-black/40 px-2 py-0.5 rounded-md border border-white/10">
+                  <span className="font-mono text-[10px] text-white font-bold">{diameter.toFixed(3)}</span>
+                  <span className="text-[9px] text-slate-500 ml-1">mm</span>
+                </div>
               </div>
-              <input type="range" min="0" max="10" step="0.01" value={diameter}
-                onChange={e => setDiameter(parseFloat(e.target.value))}
-                className="w-full h-2 rounded accent-blue-500" />
+              <div className="relative h-2 bg-[#0a0f1a] rounded-full border border-white/5 shadow-inner">
+                <div className="absolute left-0 top-0 bottom-0 rounded-full bg-blue-500" style={{ width: `${((diameter - 0) / (10 - 0)) * 100}%` }} />
+                <input type="range" min="0" max="10" step="0.01" value={diameter} onChange={e => setDiameter(parseFloat(e.target.value))} className="absolute inset-0 w-full opacity-0 cursor-ew-resize z-20" />
+                <motion.div className="absolute w-5 h-5 bg-white rounded-full shadow-[0_2px_10px_rgba(0,0,0,0.5)] pointer-events-none z-10" style={{ top: -6, left: `calc(${((diameter - 0) / (10 - 0)) * 100}% - 10px)` }} />
+              </div>
             </div>
 
-            <div>
-              <div className="flex justify-between text-xs mb-1">
-                <span className="text-slate-400 font-bold">Zero Error</span>
-                <span className={`font-mono text-xs ${zeroError !== 0 ? 'text-red-400' : 'text-green-400'}`}>
-                  {zeroError.toFixed(2)} mm
-                </span>
+            <div className="pt-2">
+              <div className="flex justify-between items-end mb-2">
+                <span className="text-xs font-bold text-slate-300 uppercase tracking-widest">Zero Error</span>
+                <div className="flex bg-black/40 px-2 py-0.5 rounded-md border border-white/10">
+                  <span className={`font-mono text-[10px] font-bold ${zeroError !== 0 ? 'text-red-400' : 'text-green-400'}`}>
+                    {zeroError>=0?'+':''}{zeroError.toFixed(2)}
+                  </span>
+                  <span className="text-[9px] text-slate-500 ml-1">mm</span>
+                </div>
               </div>
-              <input type="range" min="-0.05" max="0.05" step="0.01" value={zeroError}
-                onChange={e => setZeroError(parseFloat(e.target.value))}
-                className="w-full h-2 rounded accent-red-500" />
+              <div className="relative h-2 bg-[#0a0f1a] rounded-full border border-white/5 shadow-inner">
+                <div className="absolute left-1/2 top-0 bottom-0 rounded-full bg-red-500" style={{ width: `${Math.abs(zeroError) / 0.05 * 50}%`, left: zeroError < 0 ? `calc(50% - ${Math.abs(zeroError) / 0.05 * 50}%)` : '50%' }} />
+                <input type="range" min="-0.05" max="0.05" step="0.01" value={zeroError} onChange={e => setZeroError(parseFloat(e.target.value))} className="absolute inset-0 w-full opacity-0 cursor-ew-resize z-20" />
+                <motion.div className="absolute w-5 h-5 bg-white rounded-full shadow-[0_2px_10px_rgba(0,0,0,0.5)] pointer-events-none z-10" style={{ top: -6, left: `calc(${((zeroError - -0.05) / (0.05 - -0.05)) * 100}% - 10px)` }} />
+              </div>
             </div>
 
             <button onClick={logReading}

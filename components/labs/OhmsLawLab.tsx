@@ -11,6 +11,7 @@
  *  - Error analysis panel
  */
 import React, { useRef, useState } from 'react';
+import { motion } from 'framer-motion';
 import { Play, Pause, RotateCcw, Plus, Trash2, ChevronRight, ChevronLeft, Zap, Thermometer, Activity } from 'lucide-react';
 import InteractiveGraph from '../InteractiveGraph';
 import { ohmsLawReading, DEFAULT_ENV, EnvironmentState, gaussianNoise } from '../../services/simulationEngine';
@@ -292,43 +293,58 @@ const OhmsLawLab: React.FC<{ hex: string; onLog?: (data: any) => void }> = ({ he
 
           {/* Sliders */}
           <div className="space-y-3">
-            <div>
-              <div className="flex justify-between text-xs mb-1">
-                <span className="text-slate-500 dark:text-gray-400 font-bold">Voltage (EMF)</span>
-                <span className="font-mono text-blue-600 dark:text-blue-400">{voltage.toFixed(1)} V</span>
+            <div className="mb-4">
+              <div className="flex justify-between items-end mb-2">
+                <span className="text-xs font-bold text-slate-300 uppercase tracking-widest">Voltage (EMF)</span>
+                <div className="flex bg-black/40 px-2 py-0.5 rounded-md border border-white/10">
+                  <span className="font-mono text-[10px] text-white font-bold">{voltage.toFixed(1)}</span>
+                  <span className="text-[9px] text-slate-500 ml-1">V</span>
+                </div>
               </div>
-              <input type="range" min="0.5" max="12" step="0.5" value={voltage}
-                onChange={e => setVoltage(parseFloat(e.target.value))}
-                className="w-full h-2 rounded accent-blue-500" />
-              <div className="flex justify-between text-[9px] text-slate-300 dark:text-gray-700 mt-0.5">
+              <div className="relative h-2 bg-[#0a0f1a] rounded-full border border-white/5 shadow-inner">
+                <div className="absolute left-0 top-0 bottom-0 rounded-full bg-blue-500" style={{ width: `${((voltage - 0.5) / (12 - 0.5)) * 100}%` }} />
+                <input type="range" min="0.5" max="12" step="0.5" value={voltage} onChange={e => setVoltage(parseFloat(e.target.value))} className="absolute inset-0 w-full opacity-0 cursor-ew-resize z-20" />
+                <motion.div className="absolute w-5 h-5 bg-white rounded-full shadow-[0_2px_10px_rgba(0,0,0,0.5)] pointer-events-none z-10" style={{ top: -6, left: `calc(${((voltage - 0.5) / (12 - 0.5)) * 100}% - 10px)` }} />
+              </div>
+              <div className="flex justify-between text-[9px] text-slate-500 mt-1.5 px-1 font-bold">
                 <span>0.5V</span><span>12V</span>
               </div>
             </div>
 
-            <div>
-              <div className="flex justify-between text-xs mb-1">
-                <span className="text-slate-500 dark:text-gray-400 font-bold">Resistance (R)</span>
-                <span className="font-mono text-amber-600 dark:text-amber-400">{resistance} Ω</span>
+            <div className="mb-4">
+              <div className="flex justify-between items-end mb-2">
+                <span className="text-xs font-bold text-slate-300 uppercase tracking-widest">Resistance (R)</span>
+                <div className="flex bg-black/40 px-2 py-0.5 rounded-md border border-white/10">
+                  <span className="font-mono text-[10px] text-white font-bold">{resistance}</span>
+                  <span className="text-[9px] text-slate-500 ml-1">Ω</span>
+                </div>
               </div>
-              <input type="range" min="1" max="100" step="1" value={resistance}
-                onChange={e => setResistance(parseInt(e.target.value))}
-                className="w-full h-2 rounded accent-amber-500" />
-              <div className="flex justify-between text-[9px] text-slate-300 dark:text-gray-700 mt-0.5">
+              <div className="relative h-2 bg-[#0a0f1a] rounded-full border border-white/5 shadow-inner">
+                <div className="absolute left-0 top-0 bottom-0 rounded-full bg-amber-500" style={{ width: `${((resistance - 1) / (100 - 1)) * 100}%` }} />
+                <input type="range" min="1" max="100" step="1" value={resistance} onChange={e => setResistance(parseInt(e.target.value))} className="absolute inset-0 w-full opacity-0 cursor-ew-resize z-20" />
+                <motion.div className="absolute w-5 h-5 bg-white rounded-full shadow-[0_2px_10px_rgba(0,0,0,0.5)] pointer-events-none z-10" style={{ top: -6, left: `calc(${((resistance - 1) / (100 - 1)) * 100}% - 10px)` }} />
+              </div>
+              <div className="flex justify-between text-[9px] text-slate-500 mt-1.5 px-1 font-bold">
                 <span>1Ω</span><span>100Ω</span>
               </div>
             </div>
 
             <div>
-              <div className="flex justify-between text-xs mb-1">
-                <span className="flex items-center gap-1 text-slate-500 dark:text-gray-400 font-bold"><Thermometer size={11} /> Temperature</span>
-                <span className="font-mono text-rose-500">{env.temperature_C}°C</span>
+              <div className="flex justify-between items-end mb-2">
+                <span className="flex items-center gap-1 text-xs font-bold text-rose-300 uppercase tracking-widest"><Thermometer size={12} /> Env Temp</span>
+                <div className="flex bg-rose-950/40 px-2 py-0.5 rounded-md border border-rose-500/20">
+                  <span className="font-mono text-[10px] text-rose-400 font-bold">{env.temperature_C}</span>
+                  <span className="text-[9px] text-rose-500/50 ml-1">°C</span>
+                </div>
               </div>
-              <input type="range" min="0" max="100" step="5" value={env.temperature_C}
-                onChange={e => setEnv(ev => ({ ...ev, temperature_C: parseInt(e.target.value) }))}
-                className="w-full h-2 rounded accent-rose-500" />
-              <div className="text-[9px] text-slate-400 mt-0.5">
-                R at T: <span className="font-mono font-bold">{R_at_T.toFixed(3)} {'\u03A9'}</span>
-                &nbsp;| {'\u03B1'} = 0.004 /&deg;C
+              <div className="relative h-2 bg-[#0a0f1a] rounded-full border border-white/5 shadow-inner">
+                <div className="absolute left-0 top-0 bottom-0 rounded-full bg-rose-500" style={{ width: `${((env.temperature_C - 0) / (100 - 0)) * 100}%` }} />
+                <input type="range" min="0" max="100" step="5" value={env.temperature_C} onChange={e => setEnv(ev => ({ ...ev, temperature_C: parseInt(e.target.value) }))} className="absolute inset-0 w-full opacity-0 cursor-ew-resize z-20" />
+                <motion.div className="absolute w-5 h-5 bg-white rounded-full shadow-[0_2px_10px_rgba(0,0,0,0.5)] pointer-events-none z-10" style={{ top: -6, left: `calc(${((env.temperature_C - 0) / (100 - 0)) * 100}% - 10px)` }} />
+              </div>
+              <div className="text-[9px] text-slate-500 mt-2 text-center bg-black/20 py-1 rounded-md border border-white/5 font-mono">
+                R(T): <span className="font-bold text-rose-200">{R_at_T.toFixed(3)} {'\u03A9'}</span>
+                &nbsp;|&nbsp; {'\u03B1'}=0.004
               </div>
             </div>
           </div>

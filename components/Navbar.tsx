@@ -110,6 +110,7 @@ const Navbar: React.FC = () => {
           <div className="flex items-center gap-3">
             <Link
               to="/profile"
+              aria-label="View Profile"
               className="group flex items-center gap-2 px-3 py-1.5 rounded-full hover:bg-black/5 dark:hover:bg-white/5 transition-all"
             >
               {user.photoURL ? (
@@ -130,6 +131,7 @@ const Navbar: React.FC = () => {
 
             <button
               onClick={handleLogout}
+              aria-label="Logout"
               className="px-4 py-2 rounded-full bg-black/5 dark:bg-white/5 hover:bg-red-500/10 text-sm font-bold transition-all flex items-center gap-2"
             >
               <LogOut size={16} />
@@ -146,8 +148,10 @@ const Navbar: React.FC = () => {
 
       {/* Mobile Toggle */}
       <button
-        className="md:hidden"
+        className="md:hidden p-2 -mr-2 text-slate-600 dark:text-gray-400"
         onClick={() => setIsOpen(!isOpen)}
+        aria-label={isOpen ? "Close menu" : "Open menu"}
+        aria-expanded={isOpen}
       >
         {isOpen ? <X size={28} /> : <Menu size={28} />}
       </button>

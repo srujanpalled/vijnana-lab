@@ -27,6 +27,8 @@ export const SUBJECTS: SubjectData[] = [
         difficulty: 'Easy', 
         duration: '20 min', 
         category: 'Measurement',
+        boards: ['CBSE', 'Karnataka PUC', 'ICSE'],
+        standards: ['1st PUC / Class 11'],
         content: {
           videoId: "t9Q_rX0r51E",
           aim: "To measure the diameter of a small spherical body using Vernier Calipers.",
@@ -297,6 +299,78 @@ export const SUBJECTS: SubjectData[] = [
               ]
           }
       }
+,
+      {
+          id: 'p6', title: 'Metre Bridge — Resistance', description: 'Determine resistance per unit length using Metre Bridge.', difficulty: 'Medium', duration: '35 min', category: 'Electricity',
+          boards: ['CBSE', 'Karnataka PUC'], standards: ['2nd PUC / Class 12'],
+          content: { aim: "To determine resistance using a Metre Bridge.", requirements: ["Metre Bridge", "Resistance Box", "Galvanometer", "Jockey"], theory: "Wheatstone Bridge principle: R/S = l/(100-l).", procedure: ["Connect wire.", "Find null point.", "Calculate R."], objectives: ["Verify Kirchhoff's laws."] }
+      },
+      {
+          id: 'p7', title: 'Galvanometer — Figure of Merit', description: 'Determine figure of merit of a galvanometer.', difficulty: 'Hard', duration: '40 min', category: 'Electricity',
+          boards: ['Karnataka PUC'], standards: ['2nd PUC / Class 12'],
+          content: { aim: "To determine the figure of merit of a galvanometer.", requirements: ["Galvanometer", "Battery", "Resistance Box"], theory: "k = E / [(R+G) * theta]", procedure: ["Connect galvanometer.", "Note deflections.", "Calculate k."], objectives: ["Understand sensitivity."] }
+      },
+      {
+          id: 'p8', title: 'Glass Prism — Refractive Index', description: 'Find refractive index using minimum deviation.', difficulty: 'Medium', duration: '30 min', category: 'Optics',
+          boards: ['CBSE', 'Karnataka PUC'], standards: ['2nd PUC / Class 12'],
+          content: { aim: "To find refractive index of glass prism.", requirements: ["Glass Prism", "Drawing Board", "Pins"], theory: "mu = sin[(A+Dm)/2] / sin(A/2)", procedure: ["Place prism.", "Find minimum deviation.", "Calculate mu."], objectives: ["Snell's Law."] }
+      },
+      {
+          id: 'p9', title: 'Convex Lens — Focal Length', description: 'Determine focal length using u-v method.', difficulty: 'Easy', duration: '25 min', category: 'Optics',
+          boards: ['CBSE', 'Karnataka PUC', 'ICSE'], standards: ['2nd PUC / Class 12'],
+          content: { aim: "To determine focal length of convex lens.", requirements: ["Convex Lens", "Optical Bench", "Screen"], theory: "1/v - 1/u = 1/f", procedure: ["Mount lens.", "Vary object distance.", "Find image.", "Plot graph."], objectives: ["Verify lens formula."] }
+      },
+      {
+          id: 'p10', title: 'Semiconductor Diode', description: 'Study I-V characteristics of p-n junction diode.', difficulty: 'Medium', duration: '30 min', category: 'Electronics',
+          boards: ['CBSE', 'Karnataka PUC'], standards: ['2nd PUC / Class 12'],
+          content: { aim: "To study I-V characteristics of a p-n junction diode.", requirements: ["Diode", "Voltmeter", "Ammeter", "Battery"], theory: "Forward bias: current after 0.7V. Reverse bias: leakage current.", procedure: ["Connect in forward bias.", "Vary voltage.", "Reverse connections.", "Plot I-V."], objectives: ["Semiconductor behavior."] }
+      },
+      {
+          id: 'p11', title: 'Sonometer — String Frequency', description: 'Verify laws of vibrating strings.', difficulty: 'Medium', duration: '35 min', category: 'Waves',
+          boards: ['CBSE', 'Karnataka PUC'], standards: ['1st PUC / Class 11'],
+          content: { aim: "To verify laws of vibrating strings.", requirements: ["Sonometer", "Tuning Forks", "Weights"], theory: "f = (1/2l)*sqrt(T/mu)", procedure: ["Set up sonometer.", "Find resonance.", "Vary tension."], objectives: ["Standing waves."] }
+      },
+      {
+          id: 'p12', title: 'Resonance Tube — Speed of Sound', description: 'Determine speed of sound in air.', difficulty: 'Medium', duration: '30 min', category: 'Waves',
+          boards: ['CBSE', 'Karnataka PUC'], standards: ['1st PUC / Class 11'],
+          content: { aim: "To determine speed of sound using resonance tube.", requirements: ["Resonance Tube", "Tuning Forks", "Water"], theory: "v = 2f(l2 - l1)", procedure: ["Fill tube with water.", "Find first resonance.", "Find second resonance.", "Calculate v."], objectives: ["Understand resonance."] }
+      }
+,
+      {
+          id: 'p6', title: 'Metre Bridge — Resistance', description: 'Determine resistance per unit length using Metre Bridge.', difficulty: 'Medium', duration: '35 min', category: 'Electricity',
+          boards: ['CBSE', 'Karnataka PUC'], standards: ['2nd PUC / Class 12'],
+          content: { aim: "To determine resistance using a Metre Bridge.", requirements: ["Metre Bridge", "Resistance Box", "Galvanometer", "Jockey"], theory: "Wheatstone Bridge principle: R/S = l/(100-l).", procedure: ["Connect wire.", "Find null point.", "Calculate R."], objectives: ["Verify Kirchhoff's laws."] }
+      },
+      {
+          id: 'p7', title: 'Galvanometer — Figure of Merit', description: 'Determine figure of merit of a galvanometer.', difficulty: 'Hard', duration: '40 min', category: 'Electricity',
+          boards: ['Karnataka PUC'], standards: ['2nd PUC / Class 12'],
+          content: { aim: "To determine the figure of merit of a galvanometer.", requirements: ["Galvanometer", "Battery", "Resistance Box"], theory: "k = E / [(R+G) * theta]", procedure: ["Connect galvanometer.", "Note deflections.", "Calculate k."], objectives: ["Understand sensitivity."] }
+      },
+      {
+          id: 'p8', title: 'Glass Prism — Refractive Index', description: 'Find refractive index using minimum deviation.', difficulty: 'Medium', duration: '30 min', category: 'Optics',
+          boards: ['CBSE', 'Karnataka PUC'], standards: ['2nd PUC / Class 12'],
+          content: { aim: "To find refractive index of glass prism.", requirements: ["Glass Prism", "Drawing Board", "Pins"], theory: "mu = sin[(A+Dm)/2] / sin(A/2)", procedure: ["Place prism.", "Find minimum deviation.", "Calculate mu."], objectives: ["Snell's Law."] }
+      },
+      {
+          id: 'p9', title: 'Convex Lens — Focal Length', description: 'Determine focal length using u-v method.', difficulty: 'Easy', duration: '25 min', category: 'Optics',
+          boards: ['CBSE', 'Karnataka PUC', 'ICSE'], standards: ['2nd PUC / Class 12'],
+          content: { aim: "To determine focal length of convex lens.", requirements: ["Convex Lens", "Optical Bench", "Screen"], theory: "1/v - 1/u = 1/f", procedure: ["Mount lens.", "Vary object distance.", "Find image.", "Plot graph."], objectives: ["Verify lens formula."] }
+      },
+      {
+          id: 'p10', title: 'Semiconductor Diode', description: 'Study I-V characteristics of p-n junction diode.', difficulty: 'Medium', duration: '30 min', category: 'Electronics',
+          boards: ['CBSE', 'Karnataka PUC'], standards: ['2nd PUC / Class 12'],
+          content: { aim: "To study I-V characteristics of a p-n junction diode.", requirements: ["Diode", "Voltmeter", "Ammeter", "Battery"], theory: "Forward bias: current after 0.7V. Reverse bias: leakage current.", procedure: ["Connect in forward bias.", "Vary voltage.", "Reverse connections.", "Plot I-V."], objectives: ["Semiconductor behavior."] }
+      },
+      {
+          id: 'p11', title: 'Sonometer — String Frequency', description: 'Verify laws of vibrating strings.', difficulty: 'Medium', duration: '35 min', category: 'Waves',
+          boards: ['CBSE', 'Karnataka PUC'], standards: ['1st PUC / Class 11'],
+          content: { aim: "To verify laws of vibrating strings.", requirements: ["Sonometer", "Tuning Forks", "Weights"], theory: "f = (1/2l)*sqrt(T/mu)", procedure: ["Set up sonometer.", "Find resonance.", "Vary tension."], objectives: ["Standing waves."] }
+      },
+      {
+          id: 'p12', title: 'Resonance Tube — Speed of Sound', description: 'Determine speed of sound in air.', difficulty: 'Medium', duration: '30 min', category: 'Waves',
+          boards: ['CBSE', 'Karnataka PUC'], standards: ['1st PUC / Class 11'],
+          content: { aim: "To determine speed of sound using resonance tube.", requirements: ["Resonance Tube", "Tuning Forks", "Water"], theory: "v = 2f(l2 - l1)", procedure: ["Fill tube with water.", "Find first resonance.", "Find second resonance.", "Calculate v."], objectives: ["Understand resonance."] }
+      }
     ]
   },
   {
@@ -559,6 +633,42 @@ export const SUBJECTS: SubjectData[] = [
               ]
           }
       }
+,
+      {
+          id: 'c6', title: 'KMnO4 Titration (Redox)', description: 'Standardize KMnO4 against ferrous ammonium sulphate.', difficulty: 'Hard', duration: '40 min', category: 'Volumetric Analysis',
+          boards: ['CBSE', 'Karnataka PUC'], standards: ['2nd PUC / Class 12'],
+          content: { aim: "To determine concentration of KMnO4 by titrating against FAS.", requirements: ["Burette", "Pipette", "KMnO4", "FAS", "H2SO4"], theory: "KMnO4 acts as self-indicator. Endpoint: persistent pink.", procedure: ["Prepare FAS.", "Fill burette with KMnO4.", "Titrate until pink.", "Calculate molarity."], objectives: ["Understand redox titration."] }
+      },
+      {
+          id: 'c7', title: 'Qualitative Analysis — Cations', description: 'Identify cations using systematic group analysis.', difficulty: 'Hard', duration: '45 min', category: 'Qualitative Analysis',
+          boards: ['CBSE', 'Karnataka PUC', 'ICSE'], standards: ['2nd PUC / Class 12'],
+          content: { aim: "To identify the cation present in a given salt.", requirements: ["Test Tubes", "Reagents", "Bunsen Burner"], theory: "Cations identified by dissolving salt and adding group reagents systematically.", procedure: ["Dissolve salt.", "Perform preliminary tests.", "Add group reagents.", "Confirm with specific tests."], objectives: ["Master wet chemistry."] }
+      },
+      {
+          id: 'c8', title: 'Qualitative Analysis — Anions', description: 'Detect anions using dry and wet tests.', difficulty: 'Medium', duration: '35 min', category: 'Qualitative Analysis',
+          boards: ['CBSE', 'Karnataka PUC'], standards: ['2nd PUC / Class 12'],
+          content: { aim: "To identify the anion present in a given salt.", requirements: ["Test Tubes", "Dilute H2SO4", "BaCl2", "AgNO3"], theory: "CO3 gives CO2 effervescence, SO4 gives white ppt with BaCl2, Cl gives white curdy ppt with AgNO3.", procedure: ["Perform dry heating.", "Add dilute acid.", "Test with specific reagents.", "Confirm anion."], objectives: ["Identify common anions."] }
+      },
+      {
+          id: 'c9', title: 'Rate of Reaction', description: 'Study how temperature affects reaction rate.', difficulty: 'Medium', duration: '35 min', category: 'Kinetics',
+          boards: ['Karnataka PUC'], standards: ['2nd PUC / Class 12'],
+          content: { aim: "To study effect of temperature on rate of reaction.", requirements: ["Na2S2O3", "HCl", "Beakers", "Thermometer", "Stopwatch"], theory: "Rate doubles for every 10C rise. Arrhenius equation: k = Ae^(-Ea/RT).", procedure: ["Mix reagents at room temp.", "Time until mark disappears.", "Repeat at higher temperatures.", "Plot rate vs temp."], objectives: ["Understand activation energy."] }
+      },
+      {
+          id: 'c10', title: 'Enthalpy of Neutralization', description: 'Measure heat released in acid-base neutralization.', difficulty: 'Medium', duration: '30 min', category: 'Thermodynamics',
+          boards: ['CBSE', 'Karnataka PUC'], standards: ['2nd PUC / Class 12'],
+          content: { aim: "To determine enthalpy of neutralization.", requirements: ["Calorimeter", "HCl", "NaOH", "Thermometer"], theory: "For strong acid + strong base: DeltaH = -57.1 kJ/mol. Q = m*c*DeltaT.", procedure: ["Measure initial temps.", "Mix acid and base.", "Record final temp.", "Calculate enthalpy."], objectives: ["Understand thermochemistry."] }
+      },
+      {
+          id: 'c11', title: 'Preparation of Potash Alum', description: 'Prepare potash alum crystals from aluminium.', difficulty: 'Medium', duration: '45 min', category: 'Preparations',
+          boards: ['Karnataka PUC'], standards: ['2nd PUC / Class 12'],
+          content: { aim: "To prepare potash alum from scrap aluminium.", requirements: ["Aluminium", "KOH", "H2SO4", "Beaker"], theory: "Al dissolves in KOH, then reacts with H2SO4 to form potash alum crystals.", procedure: ["Dissolve Al in KOH.", "Filter and add H2SO4.", "Heat and concentrate.", "Cool to crystallize.", "Filter and dry."], objectives: ["Understand crystallization."] }
+      },
+      {
+          id: 'c12', title: 'pH of Various Solutions', description: 'Determine pH of household substances.', difficulty: 'Easy', duration: '20 min', category: 'Acids & Bases',
+          boards: ['CBSE', 'Karnataka PUC', 'ICSE'], standards: ['1st PUC / Class 11'],
+          content: { aim: "To determine pH of various solutions using pH paper.", requirements: ["pH Paper", "Solutions", "Color Chart"], theory: "pH = -log[H+]. Acids: pH < 7, Neutral: pH = 7, Bases: pH > 7.", procedure: ["Dip pH paper in solution.", "Compare color with chart.", "Record pH.", "Classify as acid/base/neutral."], objectives: ["Classify solutions."] }
+      }
     ]
   },
   {
@@ -794,6 +904,42 @@ export const SUBJECTS: SubjectData[] = [
               ]
           }
       }
+,
+      {
+          id: 'b6', title: 'Pollen Germination', description: 'Study pollen tube growth on stigma.', difficulty: 'Medium', duration: '30 min', category: 'Reproduction',
+          boards: ['CBSE', 'Karnataka PUC'], standards: ['2nd PUC / Class 12'],
+          content: { aim: "To study pollen germination on a slide.", requirements: ["Pollen grains", "Sugar solution", "Slides", "Microscope"], theory: "Pollen grains germinate on sugar solution. Tube carries male gametes to ovule.", procedure: ["Prepare 10% sugar solution.", "Dust pollen on slide.", "Add solution.", "Observe after 30 min.", "Count germinated pollen."], objectives: ["Understand plant reproduction."] }
+      },
+      {
+          id: 'b7', title: 'DNA Isolation', description: 'Extract DNA from plant material.', difficulty: 'Medium', duration: '40 min', category: 'Genetics',
+          boards: ['CBSE'], standards: ['2nd PUC / Class 12'],
+          content: { aim: "To isolate DNA from plant material.", requirements: ["Spinach/Peas", "Detergent", "Salt", "Ethanol"], theory: "Detergent lyses membranes, salt precipitates proteins, ethanol precipitates DNA.", procedure: ["Blend plant with salt water.", "Add detergent and filter.", "Layer cold ethanol.", "Spool DNA threads."], objectives: ["Understand DNA extraction."] }
+      },
+      {
+          id: 'b8', title: 'Mendelian Inheritance', description: 'Simulate inheritance ratios using beads.', difficulty: 'Easy', duration: '25 min', category: 'Genetics',
+          boards: ['CBSE', 'Karnataka PUC'], standards: ['2nd PUC / Class 12'],
+          content: { aim: "To study Mendelian inheritance using bead simulation.", requirements: ["Colored Beads", "Bags", "Data Sheet"], theory: "Mendel's laws: Dominance, Segregation, Independent Assortment. F2 ratio 3:1.", procedure: ["Assign colors to alleles.", "Draw bead pairs.", "Record phenotype ratios.", "Compare with expected."], objectives: ["Verify Mendel's laws."] }
+      },
+      {
+          id: 'b9', title: 'Pedigree Chart Analysis', description: 'Analyze inheritance patterns.', difficulty: 'Medium', duration: '25 min', category: 'Genetics',
+          boards: ['CBSE', 'Karnataka PUC'], standards: ['2nd PUC / Class 12'],
+          content: { aim: "To study and analyze pedigree charts.", requirements: ["Pedigree Charts", "Colored Pens"], theory: "Pedigree charts trace inheritance. Squares=male, circles=female, filled=affected.", procedure: ["Study pedigree.", "Identify affected individuals.", "Determine pattern.", "Predict genotypes."], objectives: ["Interpret genetic inheritance."] }
+      },
+      {
+          id: 'b10', title: 'Plant Population Density', description: 'Study density using quadrat method.', difficulty: 'Easy', duration: '30 min', category: 'Ecology',
+          boards: ['CBSE'], standards: ['2nd PUC / Class 12'],
+          content: { aim: "To study plant population density by quadrat method.", requirements: ["Quadrat", "Measuring Tape", "Data Sheet"], theory: "Throw frame randomly, count individuals. Density = count / area.", procedure: ["Select area.", "Throw quadrat 5 times.", "Count plants.", "Calculate density."], objectives: ["Understand ecological sampling."] }
+      },
+      {
+          id: 'b11', title: 'Plasmolysis', description: 'Observe plasmolysis in Rhoeo epidermal cells.', difficulty: 'Easy', duration: '20 min', category: 'Cell Biology',
+          boards: ['CBSE', 'Karnataka PUC'], standards: ['1st PUC / Class 11'],
+          content: { aim: "To study plasmolysis in epidermal peel.", requirements: ["Rhoeo leaves", "Sucrose solution", "Microscope"], theory: "In hypertonic solution, water leaves cell, membrane shrinks from wall = plasmolysis.", procedure: ["Peel epidermis.", "Mount in water.", "Replace with sucrose.", "Observe plasmolysis.", "Add water for deplasmolysis."], objectives: ["Understand osmotic behavior."] }
+      },
+      {
+          id: 'b12', title: 'Urine Analysis', description: 'Test for sugar and albumin in urine.', difficulty: 'Easy', duration: '20 min', category: 'Physiology',
+          boards: ['CBSE'], standards: ['1st PUC / Class 11'],
+          content: { aim: "To test for sugar and albumin in urine.", requirements: ["Urine sample", "Benedicts reagent", "Nitric acid"], theory: "Sugar: Benedicts test (green/orange). Albumin: HNO3 (white ppt).", procedure: ["Add Benedicts reagent and heat.", "Observe color.", "For albumin: heat with HNO3.", "Note precipitate."], objectives: ["Clinical biochemistry."] }
+      }
     ]
   },
   {
@@ -879,6 +1025,31 @@ export const SUBJECTS: SubjectData[] = [
                     { id: 5, question: "Show that the points A(1, 2, 3), B(2, 3, 4) and C(7, 0, 1) are collinear using vectors.", marks: 4 }
                 ]
             }
+        },
+        {
+            id: 'm6', title: 'Inverse Trig Functions', description: 'Explore domains and graphs of sin⁻¹, cos⁻¹, tan⁻¹.', difficulty: 'Medium', duration: '25 min', category: 'Trigonometry',
+            boards: ['CBSE', 'Karnataka PUC'], standards: ['2nd PUC / Class 12'],
+            content: { aim: "To study inverse trigonometric functions and their principal values.", requirements: ["Graph paper", "Calculator"], theory: "sin⁻¹x has domain [-1,1] and range [-π/2, π/2]. cos⁻¹x: domain [-1,1], range [0, π]. tan⁻¹x: domain ℝ, range (-π/2, π/2).", procedure: ["Plot y = sin⁻¹x for x ∈ [-1,1].", "Plot y = cos⁻¹x.", "Plot y = tan⁻¹x.", "Find principal values for given inputs."], objectives: ["Understand inverse functions."] }
+        },
+        {
+            id: 'm7', title: 'Maxima & Minima', description: 'Find local maxima and minima of functions using derivatives.', difficulty: 'Medium', duration: '25 min', category: 'Calculus',
+            boards: ['CBSE', 'Karnataka PUC'], standards: ['2nd PUC / Class 12'],
+            content: { aim: "To visualize maxima, minima and inflection points of functions.", requirements: ["Graph paper", "Calculator"], theory: "Critical points occur where f'(x) = 0. Second derivative test: f''(x) > 0 → minimum, f''(x) < 0 → maximum.", procedure: ["Choose function f(x).", "Find f'(x) = 0.", "Apply second derivative test.", "Plot function with critical points marked."], objectives: ["Apply differential calculus."] }
+        },
+        {
+            id: 'm8', title: 'Area Under Curve', description: 'Calculate area enclosed using definite integration.', difficulty: 'Hard', duration: '30 min', category: 'Calculus',
+            boards: ['Karnataka PUC'], standards: ['2nd PUC / Class 12'],
+            content: { aim: "To calculate the area under a curve using definite integration.", requirements: ["Graph paper", "Calculator"], theory: "Area = ∫[a to b] f(x)dx. For area between two curves: ∫[a to b] [f(x) - g(x)]dx.", procedure: ["Plot the function.", "Identify limits of integration.", "Calculate the definite integral.", "Verify using geometric formulas where possible."], objectives: ["Apply integral calculus."] }
+        },
+        {
+            id: 'm9', title: 'Probability Distribution', description: 'Simulate and visualize probability distributions.', difficulty: 'Easy', duration: '20 min', category: 'Statistics',
+            boards: ['CBSE', 'Karnataka PUC', 'ICSE'], standards: ['1st PUC / Class 11'],
+            content: { aim: "To understand probability distributions through dice/coin experiments.", requirements: ["Dice", "Coins", "Tally Sheet"], theory: "Probability P(E) = favorable outcomes / total outcomes. For two dice: sample space = 36.", procedure: ["Roll dice 50 times.", "Record outcomes.", "Calculate experimental probability.", "Compare with theoretical probability.", "Plot distribution."], objectives: ["Understand random variables."] }
+        },
+        {
+            id: 'm10', title: 'Matrix Operations', description: 'Perform addition, multiplication, inverse, and determinant.', difficulty: 'Medium', duration: '25 min', category: 'Algebra',
+            boards: ['CBSE', 'Karnataka PUC', 'ICSE'], standards: ['2nd PUC / Class 12'],
+            content: { aim: "To perform matrix operations and understand their properties.", requirements: ["Calculator", "Paper"], theory: "Matrix multiplication: (AB)ij = Σ aik × bkj. Determinant: |A| = ad - bc (2×2). Inverse: A⁻¹ = adj(A)/|A|.", procedure: ["Define two matrices A and B.", "Compute A+B, A×B.", "Find determinant of A.", "Compute inverse A⁻¹.", "Verify A × A⁻¹ = I."], objectives: ["Apply linear algebra."] }
         }
     ]
   },
@@ -966,6 +1137,21 @@ export const SUBJECTS: SubjectData[] = [
                     { id: 5, question: "Explain how negative numbers are represented in computer systems.", marks: 4 }
                 ]
             }
+        },
+        {
+            id: 'cs6', title: 'Linked List Operations', description: 'Insert, delete, and traverse a singly linked list.', difficulty: 'Medium', duration: '30 min', category: 'Data Structures',
+            boards: ['CBSE', 'Karnataka PUC'], standards: ['2nd PUC / Class 12'],
+            content: { aim: "To implement and visualize linked list operations.", requirements: ["Computer"], theory: "A linked list stores data in nodes. Each node has data and a pointer to the next node. Operations: insert (head/tail/middle), delete, search, traverse.", procedure: ["Create an empty linked list.", "Insert elements at different positions.", "Delete elements.", "Traverse and display."], objectives: ["Understand dynamic memory."] }
+        },
+        {
+            id: 'cs7', title: 'Queue Operations', description: 'Enqueue, Dequeue, and visualize FIFO behavior.', difficulty: 'Easy', duration: '20 min', category: 'Data Structures',
+            boards: ['CBSE', 'Karnataka PUC'], standards: ['2nd PUC / Class 12'],
+            content: { aim: "To understand the Queue (FIFO) data structure.", requirements: ["Computer"], theory: "Queue follows First In First Out (FIFO). Operations: Enqueue (rear), Dequeue (front), Peek, isEmpty.", procedure: ["Initialize empty queue.", "Enqueue elements.", "Dequeue elements.", "Observe FIFO order."], objectives: ["Understand FIFO principle."] }
+        },
+        {
+            id: 'cs8', title: 'Binary Search', description: 'Search a sorted array efficiently using divide and conquer.', difficulty: 'Easy', duration: '20 min', category: 'Algorithms',
+            boards: ['CBSE', 'Karnataka PUC', 'ICSE'], standards: ['1st PUC / Class 11'],
+            content: { aim: "To implement and visualize Binary Search algorithm.", requirements: ["Computer"], theory: "Binary Search works on sorted arrays. Compare target with middle element: if smaller go left, if larger go right. Time complexity: O(log n).", procedure: ["Create sorted array.", "Set low=0 and high=n-1.", "Find mid = (low+high)/2.", "Compare and narrow search range.", "Repeat until found or low > high."], objectives: ["Understand logarithmic search."] }
         }
     ]
   }

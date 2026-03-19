@@ -47,6 +47,9 @@ export interface LabContent {
   videoId?: string;
 }
 
+export type Board = 'CBSE' | 'Karnataka PUC' | 'ICSE';
+export type Standard = '1st PUC / Class 11' | '2nd PUC / Class 12';
+
 export interface LabExperiment {
   id: string;
   title: string;
@@ -55,6 +58,8 @@ export interface LabExperiment {
   duration: string;
   category: string; 
   content?: LabContent;
+  boards?: Board[];
+  standards?: Standard[];
 }
 
 export interface SubjectData {

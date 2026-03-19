@@ -23,6 +23,7 @@ import StudentDashboard from './pages/StudentDashboard';
 import TeacherDashboard from './pages/TeacherDashboard';
 import Profile from './pages/Profile';
 import BrainstormHub from './pages/BrainstormHub';
+import SyllabusSelector from './pages/SyllabusSelector';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -49,13 +50,14 @@ const AppContent: React.FC = () => {
       <main className="flex-1 flex flex-col">
         <Routes>
           {/* ENTRY */}
-          <Route path="/" element={<Navigate to="/login" replace />} />
+          <Route path="/" element={<Navigate to="/home" replace />} />
 
           {/* AUTH */}
           <Route path="/login" element={<Login />} />
 
           {/* MAIN APP */}
           <Route path="/home" element={<Home />} />
+          <Route path="/syllabus" element={<SyllabusSelector />} />
           <Route path="/subjects" element={<Subjects />} />
           <Route path="/subjects/:subjectId" element={<SubjectView />} />
           <Route path="/subjects/:subjectId/:labId" element={<LabView />} />
@@ -84,7 +86,7 @@ const AppContent: React.FC = () => {
           <Route path="/profile" element={<Profile />} />
 
           {/* FALLBACK */}
-          <Route path="*" element={<Navigate to="/login" replace />} />
+          <Route path="*" element={<Navigate to="/home" replace />} />
         </Routes>
       </main>
 
