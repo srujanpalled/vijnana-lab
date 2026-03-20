@@ -9,7 +9,8 @@ import {
 import { 
   getFirestore, 
   doc, 
-  updateDoc
+  updateDoc,
+  setDoc
 } from 'firebase/firestore';
 
 // Configuration
@@ -44,7 +45,7 @@ googleProvider.addScope('email');
 const updateUserData = async (uid: string, data: any) => {
     try {
         const userRef = doc(db, "users", uid);
-        await updateDoc(userRef, data);
+        await setDoc(userRef, data, { merge: true });
 
         // Sync with Auth Profile if name or avatar is changed
         if (auth.currentUser && (data.name || data.avatar)) {
