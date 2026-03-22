@@ -1,0 +1,13 @@
+﻿constants.ts(2995,91): error TS1005: ',' expected.
+constants.ts(2995,92): error TS1005: ',' expected.
+constants.ts(2997,33): error TS1005: ',' expected.
+constants.ts(2997,37): error TS1005: ',' expected.
+constants.ts(2997,63): error TS1005: ',' expected.
+constants.ts(2997,68): error TS1005: ',' expected.
+constants.ts(2997,96): error TS1005: ',' expected.
+constants.ts(2997,100): error TS1005: ',' expected.
+constants.ts(2998,35): error TS1005: ',' expected.
+constants.ts(2998,41): error TS1005: ',' expected.
+constants.ts(3016,37): error TS1005: ',' expected.
+constants.ts(3016,44): error TS1005: ',' expected.
+constants.ts(3016,232): error TS1005: ':' expected.

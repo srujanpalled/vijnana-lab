@@ -3,59 +3,37 @@ import React from 'react';
 import { useParams, Link, Navigate, useNavigate } from 'react-router-dom';
 import { SUBJECTS } from '../constants';
 import GlassCard from '../components/GlassCard';
-import { Clock, Play, BookOpen, Loader2 } from 'lucide-react';
+import { Clock, Play, BookOpen, Loader2, UserCog } from 'lucide-react';
 import type { Board, Standard } from '../types';
 import { useAuth } from '../services/AuthContext';
-import { db, doc, getDoc } from '../services/firebase';
 
 const SubjectView: React.FC = () => {
   const { subjectId } = useParams<{ subjectId: string }>();
   const navigate = useNavigate();
-  const { user: authUser, loading: authLoading } = useAuth();
-  const [profileData, setProfileData] = React.useState<{board: Board | null, standard: Standard | null}>({
-    board: null,
-    standard: null
-  });
-  const [loading, setLoading] = React.useState(true);
+  const { user: authUser, loading: authLoading, profileData } = useAuth();
+  
+  const [selectedBoard, setSelectedBoard] = React.useState<Board | null>(null);
+  const [selectedStandard, setSelectedStandard] = React.useState<Standard | null>(null);
+  const [initialized, setInitialized] = React.useState(false);
 
   const subject = SUBJECTS.find(s => s.id === subjectId);
 
+  // Initialize filters from context profile data — no Firestore call needed
   React.useEffect(() => {
-    const fetchSyllabus = async () => {
-      if (!authLoading) {
-        if (authUser) {
-          try {
-            const docRef = doc(db, "users", authUser.uid);
-            const docSnap = await getDoc(docRef);
-            if (docSnap.exists()) {
-              const data = docSnap.data();
-              setProfileData({
-                board: data.syllabus as Board || null,
-                standard: data.grade as Standard || null
-              });
-            }
-          } catch (error) {
-            console.error("Error fetching syllabus from profile:", error);
-          }
-        }
-        
-        // Fallback or override with localStorage if profile is empty
-        setProfileData(prev => ({
-          board: prev.board || (localStorage.getItem('vl_board') as Board | null),
-          standard: prev.standard || (localStorage.getItem('vl_standard') as Standard | null)
-        }));
-        setLoading(false);
-      }
-    };
-
-    fetchSyllabus();
-  }, [authUser, authLoading]);
+    if (!authLoading && !initialized) {
+      const board = (profileData?.syllabus as Board) || (localStorage.getItem('vl_board') as Board | null);
+      const standard = (profileData?.grade as Standard) || (localStorage.getItem('vl_standard') as Standard | null);
+      setSelectedBoard(board);
+      setSelectedStandard(standard);
+      setInitialized(true);
+    }
+  }, [authLoading, profileData, initialized]);
 
   if (!subject) {
     return <Navigate to="/subjects" replace />;
   }
 
-  if (loading) {
+  if (authLoading) {
     return (
       <div className="min-h-screen pt-20 flex items-center justify-center">
           <Loader2 className="animate-spin text-blue-500" size={40} />
@@ -63,45 +41,105 @@ const SubjectView: React.FC = () => {
     );
   }
 
-  const { board, standard } = profileData;
+  // If profile not set, prompt user
+  const profileBoard = (profileData?.syllabus as Board) || null;
+  const profileStandard = (profileData?.grade as Standard) || null;
+  const profileIncomplete = !profileBoard || !profileStandard;
 
-  // Filter labs by selected syllabus (if set)
+  // Filter labs strictly by selected board AND standard
   const filteredLabs = subject.labs.filter(lab => {
-    // If lab has no boards/standards tags, show it always (legacy labs)
+    if (profileIncomplete) return true; // show all if profile not set (fallback)
     if (!lab.boards && !lab.standards) return true;
-    if (!board || !standard) return true; // no filter set, show all
-    const boardMatch = !lab.boards || lab.boards.includes(board);
-    const stdMatch = !lab.standards || lab.standards.includes(standard);
+    
+    const boardMatch = !selectedBoard || !lab.boards || lab.boards.includes(selectedBoard);
+    const stdMatch = !selectedStandard || !lab.standards || lab.standards.includes(selectedStandard);
     return boardMatch && stdMatch;
   });
 
+  const boardsList: Board[] = ['CBSE', 'Karnataka PUC', 'ICSE'];
+  const standardsList: Standard[] = ['1st PUC / Class 11', '2nd PUC / Class 12'];
+
   return (
     <div className="pt-28 px-6 md:px-12 lg:px-20 min-h-screen bg-slate-50 dark:bg-[#020617] transition-colors duration-300">
-        {/* Syllabus chip */}
-        {board && standard && (
-          <div className="mb-4 flex items-center gap-3 flex-wrap">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10">
-              <BookOpen size={14} className="text-blue-400" />
-              <span className="text-sm font-bold text-gray-300">{board} · {standard}</span>
+
+        {/* Profile Not Set Banner */}
+        {profileIncomplete && (
+          <div className="mb-6 p-5 rounded-2xl bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2.5 rounded-xl bg-amber-500/20">
+                <UserCog size={22} className="text-amber-400" />
+              </div>
+              <div>
+                <p className="text-sm font-bold text-amber-300">Profile not configured</p>
+                <p className="text-xs text-amber-400/70">Set your Syllabus & Grade in your Profile to see only your relevant experiments.</p>
+              </div>
             </div>
             <button
-              onClick={() => navigate('/syllabus')}
-              className="text-xs font-bold text-blue-400 hover:text-blue-300 transition-colors uppercase tracking-wider"
+              onClick={() => navigate('/profile')}
+              className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-black text-sm font-bold transition-colors shadow-lg shadow-amber-500/20 shrink-0"
             >
-              Change Syllabus ↗
+              Go to Profile →
             </button>
-            <span className="text-xs text-gray-500">{filteredLabs.length} labs</span>
           </div>
         )}
-        {!board && (
-          <div className="mb-4">
-            <button
-              onClick={() => navigate('/syllabus')}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600/20 border border-blue-500/30 text-blue-400 text-sm font-bold hover:bg-blue-600/30 transition-all"
-            >
-              <BookOpen size={14} /> Select Your Syllabus to filter labs
-            </button>
+
+        {/* Filters Section */}
+        {!profileIncomplete && (
+        <div className="mb-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div className="flex flex-col gap-3 w-full">
+            {/* Board Tabs */}
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-xs font-bold text-slate-500 dark:text-gray-400 uppercase tracking-wider mr-2">Board:</span>
+              {boardsList.map(b => (
+                <button
+                  key={b}
+                  onClick={() => setSelectedBoard(b)}
+                  className={`px-4 py-1.5 rounded-full text-sm font-semibold transition-all ${
+                    selectedBoard === b 
+                    ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/30' 
+                    : 'bg-white/5 text-gray-500 hover:text-gray-300 border border-white/5 hover:bg-white/10'
+                  }`}
+                >
+                  {b}
+                </button>
+              ))}
+            </div>
+            
+            {/* Standard Tabs */}
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-xs font-bold text-slate-500 dark:text-gray-400 uppercase tracking-wider mr-2">Grade:</span>
+              {standardsList.map(s => (
+                <button
+                  key={s}
+                  onClick={() => setSelectedStandard(s)}
+                  className={`px-4 py-1.5 rounded-full text-sm font-semibold transition-all ${
+                    selectedStandard === s 
+                    ? 'bg-purple-600 text-white shadow-lg shadow-purple-500/30' 
+                    : 'bg-white/5 text-gray-500 hover:text-gray-300 border border-white/5 hover:bg-white/10'
+                  }`}
+                >
+                  {s.includes('1st') ? 'Class 11' : 'Class 12'}
+                </button>
+              ))}
+            </div>
           </div>
+          <div className="flex flex-col items-end shrink-0">
+             <span className="text-sm font-bold text-gray-400 px-4 py-2 bg-white/5 rounded-xl border border-white/10">
+               {filteredLabs.length} Labs Available
+             </span>
+             {profileBoard && profileStandard && (selectedBoard !== profileBoard || selectedStandard !== profileStandard) && (
+               <button
+                 onClick={() => {
+                   setSelectedBoard(profileBoard);
+                   setSelectedStandard(profileStandard);
+                 }}
+                 className="mt-2 text-xs font-bold text-blue-400 hover:text-blue-300 transition-colors"
+               >
+                 Reset to Profile ↺
+               </button>
+             )}
+          </div>
+        </div>
         )}
 
         {/* Header */}
@@ -123,7 +161,14 @@ const SubjectView: React.FC = () => {
 
         {/* Labs Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-20">
-            {filteredLabs.map((lab) => (
+            {filteredLabs.length === 0 ? (
+              <div className="col-span-full text-center py-16">
+                <BookOpen size={48} className="mx-auto text-gray-600 mb-4" />
+                <p className="text-lg font-bold text-gray-400">No experiments found</p>
+                <p className="text-sm text-gray-500 mt-1">Try switching the Board or Grade filter above.</p>
+              </div>
+            ) : (
+            filteredLabs.map((lab) => (
                 <GlassCard key={lab.id} className="flex flex-col h-full group" color={subject.color}>
                     <div className="flex justify-between items-start mb-4">
                         <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-gray-500 border border-slate-300 dark:border-gray-700 px-2 py-1 rounded">
@@ -164,7 +209,8 @@ const SubjectView: React.FC = () => {
                     </div>
                     <Link to={`/subjects/${subject.id}/${lab.id}`} className="absolute inset-0" />
                 </GlassCard>
-            ))}
+            ))
+            )}
         </div>
     </div>
   );
