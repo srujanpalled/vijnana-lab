@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { User, Mail, Building, BookOpen, Globe, Save, Edit2, Loader2, Check, X, Shield, GraduationCap } from 'lucide-react';
 import GlassCard from '../components/GlassCard';
-import { auth, db, doc, getDoc, updateUserData, onAuthStateChanged } from '../services/firebase';
+import { updateUserData } from '../services/firebase';
+import { useAuth } from '../services/AuthContext';
 
 const AVATARS = [
   'bg-blue-500', 'bg-purple-500', 'bg-green-500', 'bg-red-500', 
@@ -13,7 +14,7 @@ const AVATARS = [
 
 const Profile: React.FC = () => {
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(true);
+  const { user: authUser, loading: authLoading, profileData, refreshProfile } = useAuth();
   const [isSaving, setIsSaving] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   
@@ -29,72 +30,32 @@ const Profile: React.FC = () => {
     uid: ''
   });
 
+  // Populate from context — no separate Firestore call needed
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-        if (currentUser) {
-            try {
-                // Try to fetch detailed profile from Firestore
-                const docRef = doc(db, "users", currentUser.uid);
-                const docSnap = await getDoc(docRef);
-                
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    setUserData({
-                        name: data.name || currentUser.displayName || 'Student',
-                        email: data.email || currentUser.email || '',
-                        role: data.role || 'Student',
-                        grade: data.grade || '',
-                        syllabus: data.syllabus || '',
-                        institution: data.institution || '',
-                        language: data.language || 'English',
-                        avatar: data.avatar || currentUser.photoURL || 'bg-blue-500',
-                        uid: currentUser.uid
-                    });
-                } else {
-                    // Fallback: Use basic auth data if Firestore doc doesn't exist yet
-                    setUserData({
-                        name: currentUser.displayName || 'Student',
-                        email: currentUser.email || '',
-                        role: 'Student',
-                        grade: '',
-                        syllabus: '',
-                        institution: '',
-                        language: 'English',
-                        avatar: currentUser.photoURL || 'bg-blue-500',
-                        uid: currentUser.uid
-                    });
-                }
-            } catch (error) {
-                console.error("Error fetching profile:", error);
-                // Even if fetch fails, show what we have from Auth to avoid logout feel
-                setUserData(prev => ({
-                    ...prev,
-                    name: currentUser.displayName || 'Student',
-                    email: currentUser.email || '',
-                    uid: currentUser.uid
-                }));
-            } finally {
-                setIsLoading(false);
-            }
-        } else {
-            // Not logged in
-            // Delay slightly to avoid flash if auth is initializing
-            const timer = setTimeout(() => {
-                 navigate('/login');
-            }, 100);
-            return () => clearTimeout(timer);
-        }
-    });
+    if (!authLoading) {
+      if (!authUser) {
+        const timer = setTimeout(() => navigate('/login'), 100);
+        return () => clearTimeout(timer);
+      }
 
-    return () => unsubscribe();
-  }, [navigate]);
+      setUserData({
+        name: profileData?.name || authUser.displayName || 'Student',
+        email: profileData?.email || authUser.email || '',
+        role: profileData?.role || 'Student',
+        grade: profileData?.grade || '',
+        syllabus: profileData?.syllabus || '',
+        institution: profileData?.institution || '',
+        language: profileData?.language || 'English',
+        avatar: profileData?.avatar || authUser.photoURL || 'bg-blue-500',
+        uid: authUser.uid
+      });
+    }
+  }, [authUser, authLoading, profileData, navigate]);
 
   const handleSave = () => {
     setIsSaving(true);
-    // Optimistic UI: Immediately close editing state
     setIsEditing(false);
     
-    // Fire and forget the update to Firebase so the UI doesn't block
     updateUserData(userData.uid, {
         name: userData.name,
         grade: userData.grade,
@@ -102,6 +63,9 @@ const Profile: React.FC = () => {
         institution: userData.institution,
         language: userData.language,
         avatar: userData.avatar
+    }).then(() => {
+        // Refresh the context so other pages see updated data instantly
+        refreshProfile();
     }).catch(error => {
         console.error("Failed to update profile", error);
         alert("Failed to save changes in the background.");
@@ -110,7 +74,7 @@ const Profile: React.FC = () => {
     });
   };
 
-  if (isLoading) {
+  if (authLoading) {
       return (
           <div className="min-h-screen pt-20 flex items-center justify-center">
               <Loader2 className="animate-spin text-blue-500" size={40} />
