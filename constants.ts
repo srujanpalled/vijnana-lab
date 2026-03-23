@@ -170,7 +170,7 @@ export const SUBJECTS: SubjectData[] = [
             videoId: "H7zX7dJ3_1Q",
             aim: "To measure the diameter of a given wire using a screw gauge.",
             requirements: ["Screw Gauge", "Wire", "Half-meter scale"],
-            theory: "The Screw Gauge (or Micrometer) works on the principle of converting small linear displacements into large rotational displacements of a screw...",
+            theory: "The Screw Gauge (or Micrometer) works on the principle of converting small linear displacements of a screw into large rotational displacements on the circular scale.\n\n**Construction:** It consists of a U-shaped frame, a fixed anvil, a movable spindle connected to a thimble, and a ratchet mechanism. The main scale (pitch scale) on the sleeve reads in millimeters, while the circular scale on the thimble has 50 or 100 divisions.\n\n**Pitch:** The distance moved by the spindle per complete rotation of the thimble. Usually 0.5 mm or 1 mm.\n\n**Least Count:** LC = Pitch / Number of circular scale divisions. For a pitch of 0.5 mm and 50 divisions: LC = 0.01 mm.\n\n**Zero Error:** When the anvil and spindle are in contact, if the zero of the circular scale does not coincide with the datum line, a zero error exists. It can be positive (zero below datum) or negative (zero above datum).\n\n**Reading:** Total reading = MSR + (CSR × LC) ± zero error correction.\n\n**Applications:** Measuring diameter of thin wires, thickness of metal sheets, diameter of small spheres.",
             procedure: [
               "Find the value of one main scale division and the total number of divisions on the circular scale to calculate the least count.",
               "Bring the flat faces of the screw and the stud in contact using the ratchet, and determine the zero error.",
@@ -229,7 +229,7 @@ export const SUBJECTS: SubjectData[] = [
               videoId: "TsPLr_fKq28",
               aim: "To verify Ohm's Law and determine the resistance of a given wire.",
               requirements: ["Battery", "Voltmeter", "Ammeter", "Rheostat", "Resistor"],
-              theory: "Ohm's Law...",
+              theory: "Ohm's Law, formulated by Georg Simon Ohm in 1827, states that the current (I) flowing through a conductor is directly proportional to the potential difference (V) applied across its ends, provided the temperature and other physical conditions remain constant.\n\n**Mathematical Statement:**\nV = IR or I = V/R\nwhere R is the resistance of the conductor measured in Ohms (Ω).\n\n**Resistance and Resistivity:**\nResistance depends on the material, length (l), and cross-sectional area (A) of the conductor:\nR = ρl/A\nwhere ρ (rho) is the resistivity of the material.\n\n**V-I Characteristics:**\nFor an Ohmic conductor (metals at constant temperature), the graph of V vs I is a straight line passing through the origin. The slope of this line gives the resistance R. Conductors that do not obey Ohm's Law (e.g., diodes, electrolytes) are called Non-Ohmic conductors.\n\n**Factors Affecting Resistance:**\n1. Length: R ∝ l\n2. Cross-sectional area: R ∝ 1/A\n3. Material: Different materials have different resistivities.\n4. Temperature: For metals, resistance increases with temperature.",
               procedure: [
               "Draw the circuit diagram and connect the apparatus as per the diagram.",
               "Keep the key open and the rheostat at its maximum resistance position to draw minimum current.",
@@ -289,7 +289,7 @@ export const SUBJECTS: SubjectData[] = [
               videoId: "lK6-2gYy2_c",
               aim: "To find the focal length of a concave mirror by determining image distance (v) for various object distances (u).",
               requirements: ["Concave Mirror", "Optical Bench", "Needles/Candle"],
-              theory: "A concave mirror...",
+              theory: "A concave mirror is a spherical mirror whose reflecting surface is curved inward (toward the center of the sphere). It converges parallel rays of light to a point called the principal focus.\n\n**Key Terms:**\n- **Pole (P):** The geometric center of the mirror surface.\n- **Center of Curvature (C):** The center of the sphere of which the mirror is a part.\n- **Radius of Curvature (R):** The radius of this sphere.\n- **Principal Focus (F):** The point where paraxial rays parallel to the principal axis converge after reflection. f = R/2.\n\n**Mirror Formula:**\n1/v + 1/u = 1/f\nwhere u = object distance, v = image distance, f = focal length. All distances are measured from the pole using the New Cartesian Sign Convention.\n\n**Sign Convention (New Cartesian):**\n- All distances are measured from the pole.\n- Distances in the direction of incident light are positive; against it are negative.\n- Heights above the principal axis are positive; below are negative.\n\n**Image Formation:**\nDepending on the object position relative to F, C, and P, the image can be real/virtual, inverted/erect, and magnified/diminished/same size.\n\n**u-v Method:**\nBy measuring u and v for various object positions and applying the mirror formula, f can be determined experimentally.",
               procedure: [
               "Find the rough focal length of the concave mirror by focusing a distant object on a screen or wall.",
               "Mount the concave mirror on a specified mirror holder and place it on the optical bench.",
@@ -340,7 +340,7 @@ export const SUBJECTS: SubjectData[] = [
       {
           id: 'p6',
     boards: ['CBSE', 'Karnataka PUC', 'ICSE'],
-    standards: ['2nd PUC / Class 12'], title: 'Metre Bridge — Resistance', description: 'Determine resistance per unit length using Metre Bridge.', difficulty: 'Medium', duration: '35 min', category: 'Electricity',          content: { aim: "To determine resistance using a Metre Bridge.", requirements: ["Metre Bridge", "Resistance Box", "Galvanometer", "Jockey"], theory: "Wheatstone Bridge principle: R/S = l/(100-l).", procedure: [
+    standards: ['2nd PUC / Class 12'], title: 'Metre Bridge — Resistance', description: 'Determine resistance per unit length using Metre Bridge.', difficulty: 'Medium', duration: '35 min', category: 'Electricity',          content: { aim: "To determine resistance using a Metre Bridge.", requirements: ["Metre Bridge", "Resistance Box", "Galvanometer", "Jockey"], theory: "The Metre Bridge (also called a slide wire bridge) is a practical form of the Wheatstone Bridge used to measure an unknown resistance.\n\n**Wheatstone Bridge Principle:**\nA Wheatstone Bridge consists of four resistances P, Q, R, and S arranged in a diamond shape. A galvanometer is connected between the junctions of P-Q and R-S. At balance (null point), no current flows through the galvanometer, and:\nP/Q = R/S\n\n**Metre Bridge Working:**\nIn a metre bridge, a 1-meter long uniform resistance wire replaces two of the four resistances. An unknown resistance S is placed in one gap and a known resistance R from a resistance box in the other gap. A jockey is slid along the wire to find the null point at distance l from one end.\n\nAt balance: R/S = l/(100 - l)\nTherefore: S = R(100 - l)/l\n\n**Key Points:**\n- The wire must be uniform in cross-section.\n- The balancing length should be near the middle (between 30cm and 70cm) for accurate results.\n- End corrections may need to be applied for the resistance of thick copper strips at the ends.", procedure: [
               "Draw a circuit diagram and connect the apparatus strictly as shown.",
               "Connect the unknown resistance wire in the right gap and the resistance box in the left gap of the metre bridge.",
               "Introduce a known resistance (R) from the resistance box.",
@@ -354,7 +354,7 @@ export const SUBJECTS: SubjectData[] = [
       {
           id: 'p7',
     boards: ['CBSE', 'Karnataka PUC', 'ICSE'],
-    standards: ['2nd PUC / Class 12'], title: 'Galvanometer — Figure of Merit', description: 'Determine figure of merit of a galvanometer.', difficulty: 'Hard', duration: '40 min', category: 'Electricity',          content: { aim: "To determine the figure of merit of a galvanometer.", requirements: ["Galvanometer", "Battery", "Resistance Box"], theory: "k = E / [(R+G) * theta]", procedure: [
+    standards: ['2nd PUC / Class 12'], title: 'Galvanometer — Figure of Merit', description: 'Determine figure of merit of a galvanometer.', difficulty: 'Hard', duration: '40 min', category: 'Electricity',          content: { aim: "To determine the figure of merit of a galvanometer.", requirements: ["Galvanometer", "Battery", "Resistance Box"], theory: "The figure of merit of a galvanometer is defined as the current required to produce a unit deflection in the galvanometer. It is a measure of the sensitivity of the instrument.\n\n**Formula:**\nk = E / [(R + G) × θ]\nwhere k = figure of merit (A/div), E = EMF of the battery, R = resistance from the resistance box, G = galvanometer resistance, θ = deflection in divisions.\n\n**Galvanometer Resistance (G):**\nG is determined by the half-deflection method. First, a deflection θ is obtained with resistance R alone. Then a shunt S is connected across the galvanometer and adjusted to get deflection θ/2. At this point, G ≈ S.\n\n**Sensitivity:**\nA galvanometer with a smaller figure of merit is more sensitive, meaning it produces a larger deflection per unit current. Current sensitivity = 1/k = θ/Ig.\n\n**Applications:**\nThe figure of merit is essential for converting a galvanometer into an ammeter (by adding a shunt) or a voltmeter (by adding a high series resistance).", procedure: [
               "Connect the battery, a high resistance box (R), and the galvanometer in series with a one-way key.",
               "Connect a low resistance box (S) in parallel with the galvanometer to act as a shunt, along with another key.",
               "Close the main key and introduce a high resistance to obtain a full-scale deflection (theta) in the galvanometer.",
@@ -368,7 +368,7 @@ export const SUBJECTS: SubjectData[] = [
       {
           id: 'p8',
     boards: ['CBSE', 'Karnataka PUC', 'ICSE'],
-    standards: ['2nd PUC / Class 12'], title: 'Glass Prism — Refractive Index', description: 'Find refractive index using minimum deviation.', difficulty: 'Medium', duration: '30 min', category: 'Optics',          content: { aim: "To find refractive index of glass prism.", requirements: ["Glass Prism", "Drawing Board", "Pins"], theory: "mu = sin[(A+Dm)/2] / sin(A/2)", procedure: [
+    standards: ['2nd PUC / Class 12'], title: 'Glass Prism — Refractive Index', description: 'Find refractive index using minimum deviation.', difficulty: 'Medium', duration: '30 min', category: 'Optics',          content: { aim: "To find refractive index of glass prism.", requirements: ["Glass Prism", "Drawing Board", "Pins"], theory: "When a ray of light passes through a glass prism, it undergoes refraction at both surfaces. The angle between the incident ray and the emergent ray is called the angle of deviation (δ).\n\n**Prism Geometry:**\nA prism has two refracting surfaces inclined at an angle A (the angle of the prism). At the first surface, the ray bends toward the normal; at the second, it bends away from the normal.\n\n**Minimum Deviation (Dm):**\nAs the angle of incidence increases, the angle of deviation first decreases, reaches a minimum value (Dm), and then increases. At minimum deviation, the refracted ray inside the prism is parallel to the base, and the angle of incidence equals the angle of emergence (i = e).\n\n**Refractive Index Formula:**\nAt minimum deviation:\nμ = sin[(A + Dm)/2] / sin(A/2)\nwhere μ is the refractive index of the prism material.\n\n**i-δ Graph:**\nA plot of i vs δ gives a U-shaped curve with the minimum at Dm. This graph is used experimentally to find Dm and hence μ.\n\n**Snell's Law:** At each refracting surface: n₁ sin i = n₂ sin r.", procedure: [
               "Fix a white sheet of paper on a drawing board using drawing pins.",
               "Place the glass prism on the paper and trace its triangular outline.",
               "Remove the prism and draw a normal to one refracting face. Draw an incident ray making an angle of incidence (e.g., 30 degrees).",
@@ -383,7 +383,7 @@ export const SUBJECTS: SubjectData[] = [
       {
           id: 'p9',
     boards: ['CBSE', 'Karnataka PUC', 'ICSE'],
-    standards: ['2nd PUC / Class 12'], title: 'Convex Lens — Focal Length', description: 'Determine focal length using u-v method.', difficulty: 'Easy', duration: '25 min', category: 'Optics',          content: { aim: "To determine focal length of convex lens.", requirements: ["Convex Lens", "Optical Bench", "Screen"], theory: "1/v - 1/u = 1/f", procedure: [
+    standards: ['2nd PUC / Class 12'], title: 'Convex Lens — Focal Length', description: 'Determine focal length using u-v method.', difficulty: 'Easy', duration: '25 min', category: 'Optics',          content: { aim: "To determine focal length of convex lens.", requirements: ["Convex Lens", "Optical Bench", "Screen"], theory: "A convex lens is a transparent optical element that converges parallel rays of light to a point called the principal focus. It is thicker at the center than at the edges.\n\n**Lens Formula:**\n1/v - 1/u = 1/f\nwhere u = object distance, v = image distance, f = focal length. The New Cartesian sign convention is used.\n\n**Sign Convention:**\n- All distances are measured from the optical center of the lens.\n- Distances measured in the direction of incident light are positive.\n- The focal length of a convex lens is positive.\n\n**Image Formation:**\nDepending on the object position, a convex lens forms real/virtual, inverted/erect, and magnified/diminished images. When the object is beyond 2F, the image is between F and 2F (diminished); at 2F, same size; between F and 2F, magnified; at F, image at infinity.\n\n**u-v Method:**\nBy measuring u and v for different object positions and using the lens formula, the focal length can be calculated. A graph of 1/v vs 1/u gives a straight line with intercepts equal to 1/f.\n\n**Power of a Lens:** P = 1/f (in meters), measured in Diopters (D).", procedure: [
               "Find the rough focal length of the convex lens by catching the image of a distant tree or window on a screen.",
               "Mount the convex lens in a lens holder equipped on the optical bench.",
               "Place the object pin (O) in front of the lens at a distance slightly greater than the rough focal length.",
@@ -411,7 +411,7 @@ export const SUBJECTS: SubjectData[] = [
       {
           id: 'p11',
     boards: ['CBSE', 'Karnataka PUC', 'ICSE'],
-    standards: ['1st PUC / Class 11'], title: 'Sonometer — String Frequency', description: 'Verify laws of vibrating strings.', difficulty: 'Medium', duration: '35 min', category: 'Waves',          content: { aim: "To verify laws of vibrating strings.", requirements: ["Sonometer", "Tuning Forks", "Weights"], theory: "f = (1/2l)*sqrt(T/mu)", procedure: [
+    standards: ['1st PUC / Class 11'], title: 'Sonometer — String Frequency', description: 'Verify laws of vibrating strings.', difficulty: 'Medium', duration: '35 min', category: 'Waves',          content: { aim: "To verify laws of vibrating strings.", requirements: ["Sonometer", "Tuning Forks", "Weights"], theory: "A sonometer consists of a hollow wooden box with a stretched metallic wire fixed at one end and passing over movable bridges. Weights can be attached to provide tension.\n\n**Principle:**\nWhen a string vibrates in its fundamental mode, the frequency of vibration is given by:\nf = (1/2L) × √(T/μ)\nwhere L = vibrating length, T = tension in the wire, μ = linear mass density (mass per unit length) of the wire.\n\n**Laws of Vibrating Strings:**\n1. **Law of Length:** f ∝ 1/L (for constant T and μ). So f × L = constant.\n2. **Law of Tension:** f ∝ √T (for constant L and μ).\n3. **Law of Mass:** f ∝ 1/√μ (for constant L and T).\n\n**Resonance:**\nWhen the natural frequency of the wire matches the frequency of an external source (tuning fork), the wire vibrates with maximum amplitude — this is resonance. A paper rider placed on the wire is thrown off at resonance.\n\n**Experimental Verification:**\nBy keeping tension constant and varying the vibrating length to achieve resonance with tuning forks of known frequencies, the law of length (f × L = constant) can be verified.", procedure: [
               "Place the sonometer on the table and stretch the wire over the two movable bridges, passing it over the pulley.",
               "Suspend a known mass (e.g., 1kg or 2kg) from the free end to provide tension (T).",
               "Strike a tuning fork of known frequency and place its stem gently on the sonometer box.",
@@ -425,7 +425,7 @@ export const SUBJECTS: SubjectData[] = [
       {
           id: 'p12',
     boards: ['CBSE', 'Karnataka PUC', 'ICSE'],
-    standards: ['1st PUC / Class 11'], title: 'Resonance Tube — Speed of Sound', description: 'Determine speed of sound in air.', difficulty: 'Medium', duration: '30 min', category: 'Waves',          content: { aim: "To determine speed of sound using resonance tube.", requirements: ["Resonance Tube", "Tuning Forks", "Water"], theory: "v = 2f(l2 - l1)", procedure: [
+    standards: ['1st PUC / Class 11'], title: 'Resonance Tube — Speed of Sound', description: 'Determine speed of sound in air.', difficulty: 'Medium', duration: '30 min', category: 'Waves',          content: { aim: "To determine speed of sound using resonance tube.", requirements: ["Resonance Tube", "Tuning Forks", "Water"], theory: "A resonance tube is a closed pipe apparatus used to determine the speed of sound in air by utilizing the principle of resonance with a tuning fork of known frequency.\n\n**Principle:**\nWhen a vibrating tuning fork is held near the open end of a tube closed at the other end (by water), standing waves are formed. Resonance occurs when the length of the air column is such that an antinode forms at the open end and a node at the closed end.\n\n**Resonance Conditions:**\n- First resonance: L₁ ≈ λ/4\n- Second resonance: L₂ ≈ 3λ/4\n\n**Speed of Sound Calculation:**\nL₂ - L₁ = λ/2, therefore λ = 2(L₂ - L₁)\nSpeed of sound: v = fλ = 2f(L₂ - L₁)\n\n**End Correction:**\nThe antinode forms slightly outside the open end. e = 0.3d (where d is the internal diameter).\ne = (L₂ - 3L₁)/2\n\n**Factors Affecting Speed of Sound:**\nSpeed increases with temperature: v ∝ √T (absolute temperature). At 0°C, the speed of sound in air is approximately 332 m/s.", procedure: [
               "Set up the resonance tube apparatus and adjust it so it stands vertically.",
               "Fill the tube completely with water using the attached reservoir.",
               "Strike a tuning fork of known frequency (e.g., 512 Hz) against a rubber pad and hold it horizontally just above the open end of the tube.",
@@ -440,7 +440,7 @@ export const SUBJECTS: SubjectData[] = [
       {
           id: 'p6',
     boards: ['CBSE', 'Karnataka PUC', 'ICSE'],
-    standards: ['2nd PUC / Class 12'], title: 'Metre Bridge — Resistance', description: 'Determine resistance per unit length using Metre Bridge.', difficulty: 'Medium', duration: '35 min', category: 'Electricity',          content: { aim: "To determine resistance using a Metre Bridge.", requirements: ["Metre Bridge", "Resistance Box", "Galvanometer", "Jockey"], theory: "Wheatstone Bridge principle: R/S = l/(100-l).", procedure: [
+    standards: ['2nd PUC / Class 12'], title: 'Metre Bridge — Resistance', description: 'Determine resistance per unit length using Metre Bridge.', difficulty: 'Medium', duration: '35 min', category: 'Electricity',          content: { aim: "To determine resistance using a Metre Bridge.", requirements: ["Metre Bridge", "Resistance Box", "Galvanometer", "Jockey"], theory: "The Metre Bridge (also called a slide wire bridge) is a practical form of the Wheatstone Bridge used to measure an unknown resistance.\n\n**Wheatstone Bridge Principle:**\nA Wheatstone Bridge consists of four resistances P, Q, R, and S arranged in a diamond shape. A galvanometer is connected between the junctions of P-Q and R-S. At balance (null point), no current flows through the galvanometer, and:\nP/Q = R/S\n\n**Metre Bridge Working:**\nIn a metre bridge, a 1-meter long uniform resistance wire replaces two of the four resistances. An unknown resistance S is placed in one gap and a known resistance R from a resistance box in the other gap. A jockey is slid along the wire to find the null point at distance l from one end.\n\nAt balance: R/S = l/(100 - l)\nTherefore: S = R(100 - l)/l\n\n**Key Points:**\n- The wire must be uniform in cross-section.\n- The balancing length should be near the middle (between 30cm and 70cm) for accurate results.\n- End corrections may need to be applied for the resistance of thick copper strips at the ends.", procedure: [
               "Draw a circuit diagram and connect the apparatus strictly as shown.",
               "Connect the unknown resistance wire in the right gap and the resistance box in the left gap of the metre bridge.",
               "Introduce a known resistance (R) from the resistance box.",
@@ -454,7 +454,7 @@ export const SUBJECTS: SubjectData[] = [
       {
           id: 'p7',
     boards: ['CBSE', 'Karnataka PUC', 'ICSE'],
-    standards: ['2nd PUC / Class 12'], title: 'Galvanometer — Figure of Merit', description: 'Determine figure of merit of a galvanometer.', difficulty: 'Hard', duration: '40 min', category: 'Electricity',          content: { aim: "To determine the figure of merit of a galvanometer.", requirements: ["Galvanometer", "Battery", "Resistance Box"], theory: "k = E / [(R+G) * theta]", procedure: [
+    standards: ['2nd PUC / Class 12'], title: 'Galvanometer — Figure of Merit', description: 'Determine figure of merit of a galvanometer.', difficulty: 'Hard', duration: '40 min', category: 'Electricity',          content: { aim: "To determine the figure of merit of a galvanometer.", requirements: ["Galvanometer", "Battery", "Resistance Box"], theory: "The figure of merit of a galvanometer is defined as the current required to produce a unit deflection in the galvanometer. It is a measure of the sensitivity of the instrument.\n\n**Formula:**\nk = E / [(R + G) × θ]\nwhere k = figure of merit (A/div), E = EMF of the battery, R = resistance from the resistance box, G = galvanometer resistance, θ = deflection in divisions.\n\n**Galvanometer Resistance (G):**\nG is determined by the half-deflection method. First, a deflection θ is obtained with resistance R alone. Then a shunt S is connected across the galvanometer and adjusted to get deflection θ/2. At this point, G ≈ S.\n\n**Sensitivity:**\nA galvanometer with a smaller figure of merit is more sensitive, meaning it produces a larger deflection per unit current. Current sensitivity = 1/k = θ/Ig.\n\n**Applications:**\nThe figure of merit is essential for converting a galvanometer into an ammeter (by adding a shunt) or a voltmeter (by adding a high series resistance).", procedure: [
               "Connect the battery, a high resistance box (R), and the galvanometer in series with a one-way key.",
               "Connect a low resistance box (S) in parallel with the galvanometer to act as a shunt, along with another key.",
               "Close the main key and introduce a high resistance to obtain a full-scale deflection (theta) in the galvanometer.",
@@ -468,7 +468,7 @@ export const SUBJECTS: SubjectData[] = [
       {
           id: 'p8',
     boards: ['CBSE', 'Karnataka PUC', 'ICSE'],
-    standards: ['2nd PUC / Class 12'], title: 'Glass Prism — Refractive Index', description: 'Find refractive index using minimum deviation.', difficulty: 'Medium', duration: '30 min', category: 'Optics',          content: { aim: "To find refractive index of glass prism.", requirements: ["Glass Prism", "Drawing Board", "Pins"], theory: "mu = sin[(A+Dm)/2] / sin(A/2)", procedure: [
+    standards: ['2nd PUC / Class 12'], title: 'Glass Prism — Refractive Index', description: 'Find refractive index using minimum deviation.', difficulty: 'Medium', duration: '30 min', category: 'Optics',          content: { aim: "To find refractive index of glass prism.", requirements: ["Glass Prism", "Drawing Board", "Pins"], theory: "When a ray of light passes through a glass prism, it undergoes refraction at both surfaces. The angle between the incident ray and the emergent ray is called the angle of deviation (δ).\n\n**Prism Geometry:**\nA prism has two refracting surfaces inclined at an angle A (the angle of the prism). At the first surface, the ray bends toward the normal; at the second, it bends away from the normal.\n\n**Minimum Deviation (Dm):**\nAs the angle of incidence increases, the angle of deviation first decreases, reaches a minimum value (Dm), and then increases. At minimum deviation, the refracted ray inside the prism is parallel to the base, and the angle of incidence equals the angle of emergence (i = e).\n\n**Refractive Index Formula:**\nAt minimum deviation:\nμ = sin[(A + Dm)/2] / sin(A/2)\nwhere μ is the refractive index of the prism material.\n\n**i-δ Graph:**\nA plot of i vs δ gives a U-shaped curve with the minimum at Dm. This graph is used experimentally to find Dm and hence μ.\n\n**Snell's Law:** At each refracting surface: n₁ sin i = n₂ sin r.", procedure: [
               "Fix a white sheet of paper on a drawing board using drawing pins.",
               "Place the glass prism on the paper and trace its triangular outline.",
               "Remove the prism and draw a normal to one refracting face. Draw an incident ray making an angle of incidence (e.g., 30 degrees).",
@@ -483,7 +483,7 @@ export const SUBJECTS: SubjectData[] = [
       {
           id: 'p9',
     boards: ['CBSE', 'Karnataka PUC', 'ICSE'],
-    standards: ['2nd PUC / Class 12'], title: 'Convex Lens — Focal Length', description: 'Determine focal length using u-v method.', difficulty: 'Easy', duration: '25 min', category: 'Optics',          content: { aim: "To determine focal length of convex lens.", requirements: ["Convex Lens", "Optical Bench", "Screen"], theory: "1/v - 1/u = 1/f", procedure: [
+    standards: ['2nd PUC / Class 12'], title: 'Convex Lens — Focal Length', description: 'Determine focal length using u-v method.', difficulty: 'Easy', duration: '25 min', category: 'Optics',          content: { aim: "To determine focal length of convex lens.", requirements: ["Convex Lens", "Optical Bench", "Screen"], theory: "A convex lens is a transparent optical element that converges parallel rays of light to a point called the principal focus. It is thicker at the center than at the edges.\n\n**Lens Formula:**\n1/v - 1/u = 1/f\nwhere u = object distance, v = image distance, f = focal length. The New Cartesian sign convention is used.\n\n**Sign Convention:**\n- All distances are measured from the optical center of the lens.\n- Distances measured in the direction of incident light are positive.\n- The focal length of a convex lens is positive.\n\n**Image Formation:**\nDepending on the object position, a convex lens forms real/virtual, inverted/erect, and magnified/diminished images. When the object is beyond 2F, the image is between F and 2F (diminished); at 2F, same size; between F and 2F, magnified; at F, image at infinity.\n\n**u-v Method:**\nBy measuring u and v for different object positions and using the lens formula, the focal length can be calculated. A graph of 1/v vs 1/u gives a straight line with intercepts equal to 1/f.\n\n**Power of a Lens:** P = 1/f (in meters), measured in Diopters (D).", procedure: [
               "Find the rough focal length of the convex lens by catching the image of a distant tree or window on a screen.",
               "Mount the convex lens in a lens holder equipped on the optical bench.",
               "Place the object pin (O) in front of the lens at a distance slightly greater than the rough focal length.",
@@ -511,7 +511,7 @@ export const SUBJECTS: SubjectData[] = [
       {
           id: 'p11',
     boards: ['CBSE', 'Karnataka PUC', 'ICSE'],
-    standards: ['1st PUC / Class 11'], title: 'Sonometer — String Frequency', description: 'Verify laws of vibrating strings.', difficulty: 'Medium', duration: '35 min', category: 'Waves',          content: { aim: "To verify laws of vibrating strings.", requirements: ["Sonometer", "Tuning Forks", "Weights"], theory: "f = (1/2l)*sqrt(T/mu)", procedure: [
+    standards: ['1st PUC / Class 11'], title: 'Sonometer — String Frequency', description: 'Verify laws of vibrating strings.', difficulty: 'Medium', duration: '35 min', category: 'Waves',          content: { aim: "To verify laws of vibrating strings.", requirements: ["Sonometer", "Tuning Forks", "Weights"], theory: "A sonometer consists of a hollow wooden box with a stretched metallic wire fixed at one end and passing over movable bridges. Weights can be attached to provide tension.\n\n**Principle:**\nWhen a string vibrates in its fundamental mode, the frequency of vibration is given by:\nf = (1/2L) × √(T/μ)\nwhere L = vibrating length, T = tension in the wire, μ = linear mass density (mass per unit length) of the wire.\n\n**Laws of Vibrating Strings:**\n1. **Law of Length:** f ∝ 1/L (for constant T and μ). So f × L = constant.\n2. **Law of Tension:** f ∝ √T (for constant L and μ).\n3. **Law of Mass:** f ∝ 1/√μ (for constant L and T).\n\n**Resonance:**\nWhen the natural frequency of the wire matches the frequency of an external source (tuning fork), the wire vibrates with maximum amplitude — this is resonance. A paper rider placed on the wire is thrown off at resonance.\n\n**Experimental Verification:**\nBy keeping tension constant and varying the vibrating length to achieve resonance with tuning forks of known frequencies, the law of length (f × L = constant) can be verified.", procedure: [
               "Place the sonometer on the table and stretch the wire over the two movable bridges, passing it over the pulley.",
               "Suspend a known mass (e.g., 1kg or 2kg) from the free end to provide tension (T).",
               "Strike a tuning fork of known frequency and place its stem gently on the sonometer box.",
@@ -525,7 +525,7 @@ export const SUBJECTS: SubjectData[] = [
       {
           id: 'p12',
     boards: ['CBSE', 'Karnataka PUC', 'ICSE'],
-    standards: ['1st PUC / Class 11'], title: 'Resonance Tube — Speed of Sound', description: 'Determine speed of sound in air.', difficulty: 'Medium', duration: '30 min', category: 'Waves',          content: { aim: "To determine speed of sound using resonance tube.", requirements: ["Resonance Tube", "Tuning Forks", "Water"], theory: "v = 2f(l2 - l1)", procedure: [
+    standards: ['1st PUC / Class 11'], title: 'Resonance Tube — Speed of Sound', description: 'Determine speed of sound in air.', difficulty: 'Medium', duration: '30 min', category: 'Waves',          content: { aim: "To determine speed of sound using resonance tube.", requirements: ["Resonance Tube", "Tuning Forks", "Water"], theory: "A resonance tube is a closed pipe apparatus used to determine the speed of sound in air by utilizing the principle of resonance with a tuning fork of known frequency.\n\n**Principle:**\nWhen a vibrating tuning fork is held near the open end of a tube closed at the other end (by water), standing waves are formed. Resonance occurs when the length of the air column is such that an antinode forms at the open end and a node at the closed end.\n\n**Resonance Conditions:**\n- First resonance: L₁ ≈ λ/4\n- Second resonance: L₂ ≈ 3λ/4\n\n**Speed of Sound Calculation:**\nL₂ - L₁ = λ/2, therefore λ = 2(L₂ - L₁)\nSpeed of sound: v = fλ = 2f(L₂ - L₁)\n\n**End Correction:**\nThe antinode forms slightly outside the open end. e = 0.3d (where d is the internal diameter).\ne = (L₂ - 3L₁)/2\n\n**Factors Affecting Speed of Sound:**\nSpeed increases with temperature: v ∝ √T (absolute temperature). At 0°C, the speed of sound in air is approximately 332 m/s.", procedure: [
               "Set up the resonance tube apparatus and adjust it so it stands vertically.",
               "Fill the tube completely with water using the attached reservoir.",
               "Strike a tuning fork of known frequency (e.g., 512 Hz) against a rubber pad and hold it horizontally just above the open end of the tube.",
@@ -1458,7 +1458,7 @@ export const SUBJECTS: SubjectData[] = [
               videoId: "7z9_kK0a6E0",
               aim: "To identify the basic radical (cation) in the given salt.",
               requirements: ["Test tubes", "Reagents (NaOH, NH4OH, etc)", "Salt sample"],
-              theory: "Systematic Qualitative Analysis...",
+              theory: "Systematic Qualitative Analysis is a methodical approach to identify the cation (basic radical) and anion (acid radical) present in a given inorganic salt sample.\n\n**Preliminary Tests:**\n- **Color:** Copper salts are blue/green, iron(III) salts are yellow/brown, cobalt salts are pink.\n- **Smell:** Ammonium salts release NH₃; acetates release vinegar smell on heating with H₂SO₄.\n- **Flame Test:** Na⁺ = golden yellow, K⁺ = violet, Ca²⁺ = brick red, Ba²⁺ = apple green, Cu²⁺ = green/blue.\n\n**Anion Analysis:**\n- Group 1 (Dilute H₂SO₄): CO₃²⁻, S²⁻, SO₃²⁻, NO₂⁻ — identified by evolved gases.\n- Group 2 (Conc. H₂SO₄): Cl⁻, Br⁻, I⁻, NO₃⁻, C₂O₄²⁻\n- Group 3 (Special reagents): SO₄²⁻, PO₄³⁻\n\n**Cation Analysis (Group Separation):**\n- Group 0: NH₄⁺\n- Group 1 (dil. HCl): Pb²⁺, Ag⁺\n- Group 2 (H₂S in acidic medium): Cu²⁺, Pb²⁺\n- Group 3 (NH₄OH + NH₄Cl): Fe³⁺, Al³⁺, Cr³⁺\n- Group 4 (H₂S in alkaline medium): Zn²⁺, Mn²⁺, Ni²⁺, Co²⁺\n- Group 5 ((NH₄)₂CO₃): Ca²⁺, Ba²⁺, Sr²⁺\n- Group 6: Mg²⁺, Na⁺, K⁺",
               procedure: [
               "Perform preliminary tests on the given salt: note its color, smell, and solubility in water.",
               "Perform the dry heating test and flame test to get hints of the cation.",
@@ -1518,7 +1518,7 @@ export const SUBJECTS: SubjectData[] = [
               videoId: "ckPHbHlG9MQ",
               aim: "To determine the pH of vegetable/fruit juices using pH paper.",
               requirements: ["pH Paper", "Standard pH scale", "Juice samples"],
-              theory: "The pH scale...",
+              theory: "The pH scale is a logarithmic scale used to express the hydrogen ion concentration [H⁺] of a solution.\n\npH = -log₁₀[H⁺] (introduced by Sørensen in 1909).\n\n**pH Scale Range:**\n- pH 0 to 7: Acidic\n- pH 7: Neutral (pure water at 25°C, [H⁺] = 10⁻⁷ M)\n- pH 7 to 14: Basic/Alkaline\n\n**Ionic Product of Water:** Kw = [H⁺][OH⁻] = 10⁻¹⁴ at 25°C. Therefore pH + pOH = 14.\n\n**Measurement Methods:**\n1. pH Paper/Universal Indicator: color comparison with standard chart.\n2. Digital pH Meter: precise values using a glass electrode.\n\n**Indicators:**\n- Litmus: Red in acid, blue in base.\n- Phenolphthalein: Colorless in acid, pink in base (pH 8.2-10).\n- Methyl Orange: Red in acid, yellow in base (pH 3.1-4.4).\n\n**Buffer Solutions:** Solutions that resist changes in pH on addition of small amounts of acid or base. E.g., CH₃COOH/CH₃COONa (acidic buffer).",
               procedure: [
               "Take 10 mL of the given unknown solution in a clean test tube or beaker.",
               "Dip a clean piece of Universal Indicator paper or pH paper into the solution using a glass rod.",
@@ -1576,7 +1576,7 @@ export const SUBJECTS: SubjectData[] = [
               videoId: "5Jb2u9ihC44",
               aim: "To identify the functional group (Aldehyde) in the given organic compound.",
               requirements: ["Schiff's Reagent", "Fehling's Solution", "Test tubes"],
-              theory: "Functional groups...",
+              theory: "Functional groups are specific groups of atoms within molecules that determine the characteristics and chemical reactivity of those molecules.\n\n**Common Functional Groups and Their Tests:**\n1. **Carboxylic Group (-COOH):** Brisk effervescence with NaHCO₃ (CO₂ evolved).\n2. **Alcoholic Group (-OH):** Reacts with sodium metal to evolve H₂. Ceric Ammonium Nitrate test gives red color.\n3. **Phenolic Group (-OH aromatic):** Violet/green/blue color with neutral FeCl₃.\n4. **Aldehyde Group (-CHO):** Tollen's Test (silver mirror), Fehling's Test (red Cu₂O precipitate), Schiff's Test (pink color), 2,4-DNP Test (yellow/orange precipitate).\n5. **Ketone Group (>C=O):** Does NOT give Tollen's or Fehling's test. Gives 2,4-DNP test and Sodium Nitroprusside test.\n6. **Amino Group (-NH₂):** Carbylamine test gives foul-smelling isocyanide. Azo dye test gives orange/red dye.",
               procedure: [
               "Take a small quantity of the given organic compound in a clean test tube.",
               "For Carboxylic group: Add a pinch of sodium bicarbonate. Brisk effervescence (CO2) indicates presence of -COOH.",
@@ -1634,7 +1634,7 @@ export const SUBJECTS: SubjectData[] = [
               videoId: "rdkUe_O20Ts",
               aim: "To determine the enthalpy of neutralization of strong acid and strong base.",
               requirements: ["Calorimeter", "Thermometer", "HCl", "NaOH"],
-              theory: "Enthalpy...",
+              theory: "Enthalpy (H) is the total heat content of a system at constant pressure. The change in enthalpy (ΔH) during a chemical reaction determines whether it is exothermic or endothermic.\n\n**Exothermic Reactions (ΔH < 0):** Release heat. Products have lower energy than reactants. Examples: dissolution of NaOH in water, neutralization of strong acid and strong base (ΔH = -57.1 kJ/mol).\n\n**Endothermic Reactions (ΔH > 0):** Absorb heat. Products have higher energy. Examples: dissolution of NH₄Cl or KNO₃ in water.\n\n**Calorimetry:** q = m × c × ΔT, where m = mass, c = specific heat capacity, ΔT = change in temperature.\n\n**Hess's Law:** The total enthalpy change of a reaction is independent of the pathway taken, provided initial and final states are the same.",
               procedure: [
               "Measure exactly 50 mL of dilute Hydrochloric Acid (HCl) into a clean, dry polystyrene calorimeter or insulated beaker.",
               "Measure the initial temperature of the acid using a thermometer and record it after it stabilizes.",
@@ -2422,7 +2422,7 @@ export const SUBJECTS: SubjectData[] = [
             videoId: "L0k-enzoeOM",
             aim: "To study mitosis in onion root tip cells.",
             requirements: ["Microscope", "Slide", "Onion root"],
-            theory: "Mitosis...",
+            theory: "Mitosis is a type of cell division in which a single cell divides to produce two genetically identical daughter cells. It occurs in somatic cells and is essential for growth, repair, and asexual reproduction.\n\n**Stages:**\n1. **Prophase:** Chromatin condenses into chromosomes. Nuclear membrane begins to disintegrate. Spindle apparatus starts forming.\n2. **Metaphase:** Chromosomes align at the equatorial plate. Spindle fibers attach to centromeres.\n3. **Anaphase:** Centromeres split, sister chromatids pulled to opposite poles.\n4. **Telophase:** Chromosomes reach poles, uncoil, nuclear membranes reform, nucleoli reappear.\n\n**Cytokinesis:** In plant cells, a cell plate forms at the center. In animal cells, a cleavage furrow pinches the cell.\n\n**Why Onion Root Tip?** The meristematic zone has actively dividing cells, ideal for observing all stages.\n\n**Significance:** Maintains chromosome number, ensures genetic uniformity, responsible for growth and tissue repair.",
             procedure: [
               "Place an onion bulb in a beaker of water so that only its base touches the water. Let roots grow for 3-4 days.",
               "Cut 2-3 cm of the newly grown white root tips and transfer them to a watch glass containing Carnoy\'s fluid (fixative) for 24 hours.",
@@ -2482,7 +2482,7 @@ export const SUBJECTS: SubjectData[] = [
               videoId: "IlmgFYmbAUg",
               aim: "To study the distribution of stomata on the upper and lower surfaces of a leaf.",
               requirements: ["Leaf", "Forceps", "Safranin", "Glycerin", "Microscope"],
-              theory: "Stomata...",
+              theory: "Stomata are tiny pores on the epidermis of leaves bordered by specialized guard cells that regulate their opening and closing.\n\n**Structure:** Each stoma consists of two kidney-shaped (dicots) or dumbbell-shaped (monocots) guard cells surrounding a pore. Guard cells have unevenly thickened inner walls.\n\n**Function:** Gas exchange (CO₂ in, O₂ out) and transpiration (water vapor exit).\n\n**Mechanism:** When guard cells absorb water (become turgid), the stoma opens. When they lose water (become flaccid), it closes. Regulated by K⁺ ion concentration and light.\n\n**Distribution:**\n- Dorsiventral leaves (dicots): More stomata on lower surface.\n- Isobilateral leaves (monocots): Equal on both surfaces.\n- Floating leaves: Stomata only on upper surface.",
               procedure: [
               "Take a fresh leaf of a dicot plant (e.g., Tradescantia or Petunia).",
               "Fold the leaf and gently tear it to peel off a thin, transparent layer of the lower epidermis.",
@@ -2542,7 +2542,7 @@ export const SUBJECTS: SubjectData[] = [
               videoId: "eZsUv-9qYEQ",
               aim: "To demonstrate osmosis using a potato osmometer.",
               requirements: ["Large Potato", "Sugar solution", "Pin", "Beaker", "Water"],
-              theory: "Osmosis...",
+              theory: "Osmosis is the spontaneous movement of solvent molecules from a region of lower solute concentration to higher solute concentration through a semipermeable membrane.\n\n**Types of Solutions:**\n1. **Hypertonic:** Water moves out of cell → plasmolysis/crenation.\n2. **Hypotonic:** Water moves into cell → turgidity/lysis.\n3. **Isotonic:** No net water movement.\n\n**Osmotic Pressure:** π = iCRT (Van't Hoff equation).\n\n**Potato Osmometer:** A potato cavity filled with sugar solution, placed in water — water enters by osmosis, level rises.\n\n**Significance:** Water absorption by roots, cell-to-cell water movement, turgidity maintenance, stomatal regulation.",
               procedure: [
               "Take a large, fresh potato tuber and peel off its outer skin.",
               "Cut one end flat so it can stand upright, and scoop out a deep cavity from the other end to make a potato osmoscope.",
@@ -2602,7 +2602,7 @@ export const SUBJECTS: SubjectData[] = [
               videoId: "M_wZ9XQ7v_I",
               aim: "To detect the presence of sugar (glucose) in a given urine sample.",
               requirements: ["Urine sample", "Benedict's Reagent", "Test tube", "Bunsen Burner"],
-              theory: "Diabetes mellitus...",
+              theory: "Diabetes mellitus is a metabolic disorder with chronic hyperglycemia due to defective insulin secretion or action.\n\n**Normal:** Insulin from β-cells of pancreas facilitates glucose uptake. Kidneys reabsorb glucose below the renal threshold (≈180 mg/dL).\n\n**In Diabetes:** Blood glucose exceeds renal threshold → glycosuria (glucose in urine).\n\n**Benedict's Test:** CuSO₄ in the reagent is reduced by glucose:\n- Blue (negative) → Green (trace, 0.1-0.5%) → Yellow/orange (moderate, 0.5-1.5%) → Brick-red (high, >2%).\n\n**Principle:** Glucose (a reducing sugar) reduces Cu²⁺ (blue) to Cu₂O (colored precipitate). Color and quantity indicate glucose concentration.\n\n**Modern diagnosis:** Fasting blood glucose (normal: 70-110 mg/dL) or HbA1c tests.",
               procedure: [
               "Take 2 mL of Benedict\'s reagent in a clean test tube.",
               "Heat the reagent gently over a spirit lamp to ensure it does not change color (remains blue).",
@@ -2650,7 +2650,7 @@ export const SUBJECTS: SubjectData[] = [
               videoId: "SnbXpZ_k6c0",
               aim: "To separate plant pigments using paper chromatography.",
               requirements: ["Spinach leaves", "Acetone", "Chromatography paper", "Jar"],
-              theory: "Chromatography...",
+              theory: "Paper chromatography separates mixture components based on their differential migration over filter paper.\n\n**Principle:** Stationary phase = water trapped in cellulose fibers. Mobile phase = solvent moving by capillary action. Components separate based on their partition coefficients.\n\n**Rf Value:** Rf = Distance traveled by solute / Distance traveled by solvent front. Characteristic for each substance under specific conditions.\n\n**Plant Pigment Separation:** Chlorophyll a (blue-green, ≈0.45), Chlorophyll b (yellow-green, ≈0.35), Xanthophyll (yellow, ≈0.28), Carotenoids (orange-yellow, ≈0.95).\n\n**Solvent System:** Petroleum ether and acetone (9:1).\n\n**Types:** Ascending, Descending, and Circular chromatography.",
               procedure: [
               "Take a rectangular strip of Whatman filter paper (about 20 cm x 5 cm).",
               "Draw a horizontal pencil line about 2 cm from one end of the strip.",
@@ -3283,7 +3283,7 @@ export const SUBJECTS: SubjectData[] = [
     standards: ['1st PUC / Class 11'], title: 'Graphing Functions', description: 'Plot and analyze functions.', difficulty: 'Easy', duration: '20 min', category: 'Calculus',
             content: { 
                 videoId: "S66-267_2Ck",
-                aim: "To plot functions.", requirements: ["Graph paper"], theory: "f(x)=x^2 is a parabola.", procedure: [
+                aim: "To plot functions.", requirements: ["Graph paper"], theory: "A function is a relation between a set of inputs (domain) and a set of outputs (range) where each input maps to exactly one output.\n\n**Types of Functions:**\n1. Linear: f(x) = mx + c — straight line.\n2. Quadratic: f(x) = ax² + bx + c — parabola. Vertex at x = -b/2a.\n3. Modulus: f(x) = |x| — V-shaped.\n4. Signum: f(x) = 1 (x>0), 0 (x=0), -1 (x<0).\n5. Greatest Integer: f(x) = [x] — step function.\n\n**Transformations:**\n- Vertical shift: f(x) + k shifts up by k.\n- Horizontal shift: f(x-h) shifts right by h.\n- Reflection: -f(x) about x-axis; f(-x) about y-axis.\n- Scaling: af(x) vertically; f(bx) horizontally.\n\n**Key Features:** Domain, Range, Intercepts, Symmetry, Maxima/Minima, Asymptotes.", procedure: [
               "Open the graphing simulation interface.",
               "Select the type of mathematical function (e.g., linear, quadratic, trigonometric) from the dropdown menu.",
               "Input the variables and coefficients for the chosen function in the input fields provided.",
@@ -3308,7 +3308,7 @@ export const SUBJECTS: SubjectData[] = [
     standards: ['2nd PUC / Class 12'], title: 'Definite Integral', description: 'Area under curve.', difficulty: 'Medium', duration: '30 min', category: 'Calculus',
             content: { 
                 videoId: "rfG8ce4nNh0",
-                aim: "Find area.", requirements: ["Graph"], theory: "Integration is summation.", procedure: [
+                aim: "Find area.", requirements: ["Graph"], theory: "The definite integral ∫ₐᵇ f(x)dx represents the net signed area between the curve y = f(x) and the x-axis from x = a to x = b.\n\n**Fundamental Theorem of Calculus:** If F(x) is the antiderivative of f(x), then ∫ₐᵇ f(x)dx = F(b) - F(a).\n\n**Properties:**\n1. ∫ₐᵇ f(x)dx = -∫ᵇₐ f(x)dx\n2. ∫ₐᵃ f(x)dx = 0\n3. ∫ₐᵇ f(x)dx = ∫ₐᶜ f(x)dx + ∫ᶜᵇ f(x)dx\n4. ∫₀ₐ f(x)dx = ∫₀ₐ f(a-x)dx\n\n**Geometric Interpretation:** Area under curve above x-axis is positive, below is negative.\n\n**Applications:** Area between curves, volume of revolution, work done.", procedure: [
               "Enter the mathematical function for which the area under the curve is to be determined.",
               "Set the lower integration limit (a) and the upper integration limit (b) in the designated input fields.",
               "Choose the method of numerical approximation (e.g., Riemann Sums, Trapezoidal rule).",
@@ -3332,7 +3332,7 @@ export const SUBJECTS: SubjectData[] = [
     standards: ['1st PUC / Class 11'], title: 'Unit Circle', description: 'Trigonometric ratios.', difficulty: 'Easy', duration: '20 min', category: 'Trigonometry',
             content: { 
                 videoId: "35-aVBDK5Yk",
-                aim: "Study sin/cos.", requirements: ["Circle"], theory: "x^2+y^2=1", procedure: [
+                aim: "Study sin/cos.", requirements: ["Circle"], theory: "The unit circle is a circle of radius 1 centered at the origin. Any point P on it at angle θ has coordinates (cos θ, sin θ).\n\n**Equation:** x² + y² = 1.\n\n**Trig Functions:** cos θ = x-coordinate, sin θ = y-coordinate, tan θ = y/x.\n\n**Quadrant Signs (ASTC — All Students Take Coffee):**\nI: All positive, II: Only sin, III: Only tan, IV: Only cos.\n\n**Radian Measure:** 1 radian = angle subtended by arc = radius. π radians = 180°.\n\n**Key Values:**\n0°: sin=0, cos=1 | 30°: sin=1/2, cos=√3/2 | 45°: sin=1/√2, cos=1/√2 | 60°: sin=√3/2, cos=1/2 | 90°: sin=1, cos=0.\n\n**Pythagorean Identity:** sin²θ + cos²θ = 1 (from x² + y² = 1).", procedure: [
               "Open the interactive Unit Circle simulator.",
               "Drag the point along the circumference of the circle having a radius of 1 unit.",
               "Observe the formation of the right-angled triangle with the radius acting as the hypotenuse.",
@@ -3356,7 +3356,7 @@ export const SUBJECTS: SubjectData[] = [
     standards: ['1st PUC / Class 11'], title: 'Conic Sections', description: 'Parabola, Ellipse, Hyperbola.', difficulty: 'Hard', duration: '40 min', category: 'Geometry',
             content: { 
                 videoId: "HO2zAU3Eppo",
-                aim: "Construct conics.", requirements: ["Focus", "Directrix"], theory: "Locus of points.", procedure: [
+                aim: "Construct conics.", requirements: ["Focus", "Directrix"], theory: "Conic sections are curves obtained by intersecting a right circular cone with a plane at different angles.\n\n**Circle:** (x-h)² + (y-k)² = r². Standard: x² + y² = r².\n\n**Parabola:** y² = 4ax (opens right). Focus at (a,0), directrix x = -a. Eccentricity e = 1.\n\n**Ellipse:** x²/a² + y²/b² = 1 (a>b). Foci at (±c,0) where c² = a²-b². 0 < e < 1.\n\n**Hyperbola:** x²/a² - y²/b² = 1. Foci at (±c,0) where c² = a²+b². e > 1. Asymptotes: y = ±(b/a)x.\n\n**General equation:** ax² + 2hxy + by² + 2gx + 2fy + c = 0 represents different conics based on the discriminant.", procedure: [
               "Select the specific conic section to explore: Circle, Ellipse, Parabola, or Hyperbola.",
               "Adjust the sliders for the standard equation parameters (e.g., a, b, h, k).",
               "Observe how the cutting plane intersects the 3D double cone to form the 2D curve.",
@@ -3380,7 +3380,7 @@ export const SUBJECTS: SubjectData[] = [
     standards: ['2nd PUC / Class 12'], title: 'Vectors', description: 'Cross and Dot products.', difficulty: 'Medium', duration: '30 min', category: 'Algebra',
             content: { 
                 videoId: "ml4NSzCQobk",
-                aim: "Vector operations.", requirements: ["3D space"], theory: "A.B = |A||B|cos0", procedure: [
+                aim: "Vector operations.", requirements: ["3D space"], theory: "A vector is a quantity with both magnitude and direction. Represented as ā = aₓî + aᵧĵ + a_zk̂.\n\n**Magnitude:** |ā| = √(aₓ² + aᵧ² + a_z²). Unit vector: â = ā/|ā|.\n\n**Dot Product:** ā·b̄ = |ā||b̄|cosθ = aₓbₓ + aᵧbᵧ + a_zb_z. If ā·b̄ = 0, vectors are perpendicular. Application: Work W = F̄·d̄.\n\n**Cross Product:** |ā×b̄| = |ā||b̄|sinθ. Gives area of parallelogram. Anti-commutative. Application: Torque τ̄ = r̄×F̄.\n\n**Direction Cosines:** cosα = aₓ/|ā|, cosβ = aᵧ/|ā|, cosγ = a_z/|ā|. cos²α + cos²β + cos²γ = 1.", procedure: [
               "Set up the 2D or 3D coordinate plane in the vector simulation.",
               "Input the components (x, y, z) for Vector A and Vector B to define their magnitude and direction.",
               "Select a vector operation: Addition, Subtraction, Dot Product, or Cross Product.",
@@ -3856,7 +3856,7 @@ export const SUBJECTS: SubjectData[] = [
     standards: ['1st PUC / Class 11'], title: 'Logic Gates', description: 'AND, OR, NOT, XOR gates.', difficulty: 'Easy', duration: '20 min', category: 'Digital Logic',
             content: { 
                 videoId: "gI-qXk7XojA",
-                aim: "Verify truth tables.", requirements: ["Gates"], theory: "Boolean algebra.", procedure: [
+                aim: "Verify truth tables.", requirements: ["Gates"], theory: "Boolean algebra deals with variables having two values: true (1) and false (0). It is the mathematical foundation for digital logic circuits.\n\n**Basic Gates:**\n1. AND: Y = A·B (output 1 only when all inputs are 1).\n2. OR: Y = A+B (output 1 when any input is 1).\n3. NOT: Y = A' (complement).\n4. NAND: Y = (A·B)' — Universal gate.\n5. NOR: Y = (A+B)' — Universal gate.\n6. XOR: Y = A⊕B (output 1 when inputs differ).\n7. XNOR: Y = (A⊕B)' (output 1 when inputs same).\n\n**Boolean Laws:** Commutative, Associative, Distributive.\n**De Morgan's Theorems:** (A+B)' = A'·B'; (A·B)' = A'+B'.\n\n**Universal Gates:** NAND and NOR can implement any Boolean function.", procedure: [
               "Open the digital circuit simulator canvas.",
               "Drag and drop basic input pins (switches representing 0 or 1).",
               "Select and place the desired logic gate component (AND, OR, NOT, NAND, NOR, XOR, XNOR) onto the canvas.",
@@ -3882,7 +3882,7 @@ export const SUBJECTS: SubjectData[] = [
     standards: ['1st PUC / Class 11'], title: 'Bubble Sort', description: 'Sorting algorithm visualization.', difficulty: 'Medium', duration: '30 min', category: 'Algorithms',
             content: { 
                 videoId: "nmhjrI-aW5o",
-                aim: "Visualize sorting.", requirements: ["Array"], theory: "O(n^2) complexity.", procedure: [
+                aim: "Visualize sorting.", requirements: ["Array"], theory: "Bubble Sort is a comparison-based sorting algorithm that repeatedly steps through the list, compares adjacent elements, and swaps them if in wrong order.\n\n**Algorithm:** Compare adjacent pairs, swap if needed. Each pass moves the largest unsorted element to its correct position.\n\n**Time Complexity:** Best O(n), Average O(n²), Worst O(n²).\n**Space Complexity:** O(1) — in-place.\n\n**Properties:** Stable (equal elements maintain order), Adaptive (O(n) for nearly sorted with flag optimization), In-place.\n\n**Passes Required:** Max (n-1) passes for n elements. Pass i makes (n-i) comparisons.\n\n**Limitations:** Inefficient for large datasets compared to O(n log n) algorithms.", procedure: [
               "Define an unsorted array of numbers in the visual array input.",
               "Start the simulation. The algorithm points to the first two adjacent elements (index 0 and 1).",
               "It compares them. If the first element is larger than the second (for ascending sort), they are swapped.",
@@ -3907,7 +3907,7 @@ export const SUBJECTS: SubjectData[] = [
     standards: ['1st PUC / Class 11'], title: 'Insertion Sort', description: 'Sorting algorithm.', difficulty: 'Medium', duration: '30 min', category: 'Algorithms',
             content: { 
                 videoId: "OGzPmgsI-pQ",
-                aim: "Visualize insertion sort.", requirements: ["Array"], theory: "O(n^2).", procedure: [
+                aim: "Visualize insertion sort.", requirements: ["Array"], theory: "Insertion Sort is an adaptive, comparison-based sorting algorithm that builds the final sorted array one element at a time. It works like sorting playing cards in hand.\n\n**Algorithm:**\n1. Consider first element as sorted.\n2. Pick next element (key).\n3. Compare with sorted portion from right to left.\n4. Shift elements greater than key one position right.\n5. Insert key at correct position.\n6. Repeat for all elements.\n\n**Time Complexity:** Best O(n) (already sorted), Average O(n²), Worst O(n²) (reverse sorted).\n**Space Complexity:** O(1) — in-place.\n\n**Properties:** Stable, Adaptive (better on nearly sorted data), Online (can sort as it receives), In-place.\n\n**When to Use:** Best for small datasets or nearly sorted data. Used as base case in hybrid algorithms like Timsort.", procedure: [
               "Initialize an unsorted numerical array in the simulator.",
               "The outer loop begins at the second element (index 1), assuming the first element (index 0) is already a sorted sub-array.",
               "The algorithm stores the current element in a temporary key variable.",
@@ -3932,7 +3932,7 @@ export const SUBJECTS: SubjectData[] = [
     standards: ['2nd PUC / Class 12'], title: 'Stack Operations', description: 'Push and Pop visualization.', difficulty: 'Easy', duration: '20 min', category: 'Data Structures',
             content: { 
                 videoId: "I5lq6sCuABE",
-                aim: "LIFO principle.", requirements: ["Stack"], theory: "Last In First Out.", procedure: [
+                aim: "LIFO principle.", requirements: ["Stack"], theory: "A Stack is a linear data structure following Last In, First Out (LIFO) principle.\n\n**Operations:**\n1. Push: Add to top. O(1).\n2. Pop: Remove from top. O(1).\n3. Peek/Top: View top element. O(1).\n4. isEmpty/isFull: Check status.\n\n**Overflow/Underflow:** Pushing onto full stack = overflow. Popping from empty = underflow.\n\n**Implementation:** Using arrays (fixed size) or linked lists (dynamic).\n\n**Applications:**\n- Expression evaluation: infix to postfix conversion.\n- Function call management (call stack).\n- Undo/Redo operations.\n- Backtracking: browser back button, maze solving, DFS.\n- Balanced parentheses checking.", procedure: [
               "Initialize a Stack data structure and define its capacity maximum limit.",
               "To perform a PUSH operation, input a value and click Push.",
               "Observe the standard stack pointer (TOP) incrementing and the item placed at the top of the stack visually.",
@@ -3956,7 +3956,7 @@ export const SUBJECTS: SubjectData[] = [
     standards: ['1st PUC / Class 11'], title: 'Number Systems', description: 'Binary to Decimal conversion.', difficulty: 'Easy', duration: '15 min', category: 'Basics',
             content: { 
                 videoId: "LpuPe81bc2w",
-                aim: "Convert bases.", requirements: ["Number"], theory: "Base 2 vs Base 10.", procedure: [
+                aim: "Convert bases.", requirements: ["Number"], theory: "Number systems are mathematical notations for representing numbers using digits or symbols.\n\n**Types:**\n1. Binary (Base 2): digits 0,1. Fundamental to computers.\n2. Octal (Base 8): digits 0-7. Each octal digit = 3 binary digits.\n3. Decimal (Base 10): digits 0-9. Standard system.\n4. Hexadecimal (Base 16): digits 0-9, A-F. Each hex digit = 4 binary digits.\n\n**Conversions:**\n- Decimal to Binary: Repeated division by 2.\n- Binary to Decimal: Positional multiplication and summation.\n- Binary ↔ Octal: Group in 3s.\n- Binary ↔ Hex: Group in 4s.\n\n**Complements:**\n- 1's Complement: Flip all bits.\n- 2's Complement: 1's complement + 1. Used for negative numbers.\n\n**Applications:** Binary (processors), Octal (Unix permissions), Hex (memory addresses, HTML colors).", procedure: [
               "Input a numerical value into the primary base field (e.g., Base 10 / Decimal).",
               "Select the target conversion base (e.g., Base 2 / Binary, Base 8 / Octal, Base 16 / Hexadecimal).",
               "Observe the step-by-step division process by the target base, noting the quotients and remainders at each explicit step.",
