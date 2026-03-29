@@ -1,8 +1,0 @@
-
-import { Zap, FlaskConical, Dna, Calculator, Monitor } from 'lucide-react';
-import { SubjectData, SubjectType, NavItem } from './types';
-
-export const NAV_ITEMS: NavItem[] = [
-  { label: 'Home', path: '/home' },
-  { label: 'Subjects', path: '/subjects' },
-  { label: 'AI Tutor', path: '/tuto

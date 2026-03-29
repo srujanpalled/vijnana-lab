@@ -1,5 +1,0 @@
-=== Vijnana Lab Coverage Analysis ===
-Total Experiments Found: 129
-Experiments with < 10 Viva Questions: 94 out of 129 (72.87%)
-Experiments with < 10 Quiz Questions: 94 out of 129 (72.87%)
-Experiments with < 6 Applications: 97 out of 129 (75.19%)
