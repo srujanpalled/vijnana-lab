@@ -1,6 +1,9 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { RotateCcw } from 'lucide-react';
 import DraggableSlider from './DraggableSlider';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { OrbitControls, Box, Environment, ContactShadows, Cone, Plane, Sphere, Grid } from '@react-three/drei';
+import * as THREE from 'three';
 
 
 // Combines math labs m1 (Graphing), m2 (Integration), m4 (Conics), m5 (Vectors) into one universal math lab
@@ -264,131 +267,132 @@ const IntegrationLab: React.FC<{ hex: string }> = ({ hex }) => {
   );
 };
 
-// ====== CONICS LAB (m4) ======
+// ====== CONICS LAB 3D (m4) ======
+const Conics3DScene: React.FC<{ type: string }> = ({ type }) => {
+  const planeRef = useRef<THREE.Mesh>(null);
+  
+  useFrame((state, delta) => {
+    if (planeRef.current) {
+      let targetRotX = 0;
+      let targetRotZ = 0;
+      let targetPosY = 0;
+
+      // The Cone has an angle. Let's assume height 6, radius 3 -> angle is atan(3/6) ~ 26 deg
+      // Parabola: parallel to a generator -> angle ~ 26.5 deg (approx 0.46 rad)
+      if (type === 'parabola') {
+        targetRotX = 0.463; // atan(1/2) parallel to side
+        targetPosY = 1.5;
+      } else if (type === 'hyperbola') {
+        targetRotX = Math.PI / 2; // Vertical slice
+        targetPosY = 0;
+      } else {
+        // Ellipse
+        targetRotX = 0.2; // Slight tilt
+        targetPosY = 2; // Cut upper cone completely
+      }
+
+      planeRef.current.rotation.x = THREE.MathUtils.lerp(planeRef.current.rotation.x, targetRotX, delta * 5);
+      planeRef.current.rotation.z = THREE.MathUtils.lerp(planeRef.current.rotation.z, targetRotZ, delta * 5);
+      planeRef.current.position.y = THREE.MathUtils.lerp(planeRef.current.position.y, targetPosY, delta * 5);
+    }
+  });
+
+  return (
+    <group position={[0, 0, 0]}>
+      {/* Upper Nappe */}
+      <Cone args={[3, 6, 64]} position={[0, 3.01, 0]} rotation={[0, 0, 0]}>
+        <meshPhysicalMaterial color="#8b5cf6" transmission={0.9} opacity={1} transparent roughness={0.1} side={THREE.DoubleSide} />
+      </Cone>
+      {/* Lower Nappe */}
+      <Cone args={[3, 6, 64]} position={[0, -3.01, 0]} rotation={[Math.PI, 0, 0]}>
+        <meshPhysicalMaterial color="#8b5cf6" transmission={0.9} opacity={1} transparent roughness={0.1} side={THREE.DoubleSide} />
+      </Cone>
+
+      {/* Intersecting Plane */}
+      <Plane ref={planeRef} args={[8, 8, 32, 32]}>
+        <meshPhysicalMaterial color="#3b82f6" emissive="#1d4ed8" emissiveIntensity={0.5} transparent opacity={0.6} side={THREE.DoubleSide} depthWrite={false} />
+      </Plane>
+    </group>
+  );
+};
+
 const ConicsLab: React.FC<{ hex: string }> = ({ hex }) => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const animRef = useRef<number>(0);
   const [type, setType] = useState<'parabola'|'ellipse'|'hyperbola'>('parabola');
-  const [a, setA] = useState(3);
-  const [b, setB] = useState(2);
   const [step, setStep] = useState(0);
 
   const STEPS = [
-    { title: 'Conic Sections', instruction: 'Conic sections are curves formed by the intersection of a plane with a cone: Circle, Parabola, Ellipse, Hyperbola. Switch between types!' },
-    { title: 'Ellipse', instruction: 'Ellipse: x²/a² + y²/b² = 1. Two foci inside. Sum of distances from any point to foci is constant. When a=b, it\'s a circle!' },
-    { title: 'Parabola & Hyperbola', instruction: 'Parabola: y = x²/4a (focus at (0,a)). Hyperbola: x²/a² - y²/b² = 1. Two separate curves with two foci.' },
+    { title: 'Conic Sections in 3D', instruction: 'Conic sections are formed by intersecting a flat plane with a double-nappe right circular cone. Rotate the 3D scene to explore!' },
+    { title: 'Ellipse & Circle', instruction: 'An ellipse is formed when the plane cuts entirely through one cone at a slight angle. If the plane is perfectly horizontal, it forms a Circle.' },
+    { title: 'Parabola', instruction: 'A parabola forms when the cutting plane is exactly parallel to the slanted side (generator) of the cone, cutting only one nappe.' },
+    { title: 'Hyperbola', instruction: 'A hyperbola forms when the vertical plane intersects BOTH cones (nappes), creating two separate distinct curves.' },
   ];
 
-  const draw = useCallback(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-    const w = canvas.width, h = canvas.height;
-    ctx.clearRect(0, 0, w, h);
-    ctx.fillStyle = '#0f172a';
-    ctx.fillRect(0, 0, w, h);
-
-    const cx = w / 2, cy = h / 2, scale = 35;
-    // Grid
-    ctx.strokeStyle = 'rgba(255,255,255,0.05)'; ctx.lineWidth = 1;
-    for (let gx = -8; gx <= 8; gx++) { const sx = cx + gx * scale; ctx.beginPath(); ctx.moveTo(sx, 0); ctx.lineTo(sx, h); ctx.stroke(); }
-    for (let gy = -6; gy <= 6; gy++) { const sy = cy + gy * scale; ctx.beginPath(); ctx.moveTo(0, sy); ctx.lineTo(w, sy); ctx.stroke(); }
-    // Axes
-    ctx.strokeStyle = 'rgba(148,163,184,0.5)'; ctx.lineWidth = 1.5;
-    ctx.beginPath(); ctx.moveTo(0, cy); ctx.lineTo(w, cy); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(cx, 0); ctx.lineTo(cx, h); ctx.stroke();
-
-    const toX = (x: number) => cx + x * scale;
-    const toY = (y: number) => cy - y * scale;
-
-    ctx.strokeStyle = '#a78bfa'; ctx.lineWidth = 2.5;
-    ctx.beginPath();
-
-    if (type === 'ellipse') {
-      ctx.ellipse(cx, cy, a * scale, b * scale, 0, 0, Math.PI * 2);
-      ctx.stroke();
-      // Foci
-      const c = Math.sqrt(Math.max(0, a*a - b*b));
-      [-c, c].forEach(fx => {
-        ctx.beginPath(); ctx.arc(toX(fx), cy, 5, 0, Math.PI * 2);
-        ctx.fillStyle = '#f59e0b'; ctx.fill();
-      });
-      ctx.fillStyle = '#f59e0b'; ctx.font = '10px'; ctx.textAlign = 'center';
-      ctx.fillText('F₁', toX(-c), cy + 18); ctx.fillText('F₂', toX(c), cy + 18);
-      ctx.fillStyle = '#a78bfa'; ctx.font = 'bold 11px'; ctx.textAlign = 'center';
-      ctx.fillText(`x²/${a}² + y²/${b}² = 1`, cx, 18);
-    } else if (type === 'parabola') {
-      let first = true;
-      for (let xi = -8; xi <= 8; xi += 0.05) {
-        const yi = (xi * xi) / (4 * b);
-        const px = toX(xi), py = toY(yi);
-        if (py < 0 || py > h) { first = true; continue; }
-        if (first) { ctx.moveTo(px, py); first = false; }
-        else ctx.lineTo(px, py);
-      }
-      ctx.stroke();
-      // Focus
-      ctx.beginPath(); ctx.arc(cx, toY(b), 5, 0, Math.PI*2); ctx.fillStyle = '#f59e0b'; ctx.fill();
-      // Directrix
-      ctx.beginPath(); ctx.moveTo(0, toY(-b)); ctx.lineTo(w, toY(-b));
-      ctx.strokeStyle = 'rgba(251,146,60,0.5)'; ctx.lineWidth = 1.5; ctx.setLineDash([5,4]); ctx.stroke(); ctx.setLineDash([]);
-      ctx.fillStyle = '#a78bfa'; ctx.font = 'bold 11px'; ctx.textAlign = 'center';
-      ctx.fillText(`y = x²/${4*b} (Focus at (0,${b}))`, cx, 18);
-    } else {
-      // Hyperbola
-      for (let sign of [1, -1]) {
-        let first = true;
-        for (let yi = -6; yi <= 6; yi += 0.05) {
-          const x2 = a*a * (1 + yi*yi / (b*b));
-          const xi = sign * Math.sqrt(x2);
-          const px = toX(xi), py = toY(yi);
-          if (px < 0 || px > w) { first = true; continue; }
-          if (first) { ctx.moveTo(px, py); first = false; }
-          else ctx.lineTo(px, py);
-        }
-      }
-      ctx.stroke();
-      const c = Math.sqrt(a*a + b*b);
-      [-c, c].forEach(fx => { ctx.beginPath(); ctx.arc(toX(fx), cy, 5, 0, Math.PI*2); ctx.fillStyle = '#f59e0b'; ctx.fill(); });
-      ctx.fillStyle = '#a78bfa'; ctx.font = 'bold 11px'; ctx.textAlign = 'center';
-      ctx.fillText(`x²/${a}² - y²/${b}² = 1`, cx, 18);
-    }
-
-    animRef.current = requestAnimationFrame(draw);
-  }, [type, a, b]);
-
-  useEffect(() => { animRef.current = requestAnimationFrame(draw); return () => cancelAnimationFrame(animRef.current); }, [draw]);
-
   return (
-    <div className="flex flex-col md:flex-row h-full w-full bg-slate-950">
-      <div className="flex-1 flex items-center justify-center p-3">
-        <canvas ref={canvasRef} width={400} height={340} className="rounded-2xl border border-white/10 shadow-2xl w-full max-w-[450px]" />
-      </div>
-      <div className="w-full md:w-72 bg-slate-900 border-l border-white/5 flex flex-col">
-        <div className="p-4 border-b border-white/5">
-          <p className="text-xs font-bold uppercase tracking-widest text-violet-400 mb-1">Math Lab — Conics</p>
-          <h2 className="text-lg font-bold text-white">{STEPS[Math.min(step, STEPS.length-1)].title}</h2>
+    <div className="flex flex-col md:flex-row h-full w-full bg-[#030712]">
+      {/* 3D Viewport */}
+      <div className="flex-1 relative">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,#1e1b4b,#0f172a)] z-0" />
+        <div className="absolute inset-0 z-10">
+          <Canvas shadows camera={{ position: [8, 5, 8], fov: 45 }}>
+            <color attach="background" args={['#0f172a']} />
+            <ambientLight intensity={0.5} />
+            <directionalLight position={[10, 10, 5]} intensity={1} castShadow />
+            <pointLight position={[-10, -10, -10]} intensity={2} color="#a855f7" />
+            <Environment preset="city" />
+            
+            <group position={[0, 0, 0]}>
+              <Grid infiniteGrid fadeDistance={20} sectionColor="#475569" cellColor="#1e293b" />
+              <Conics3DScene type={type} />
+            </group>
+
+            <OrbitControls minPolarAngle={0} maxPolarAngle={Math.PI / 2 + 0.1} minDistance={5} maxDistance={25} autoRotate autoRotateSpeed={1} />
+          </Canvas>
+          <div className="absolute top-4 left-4 text-xs text-white/50 font-bold uppercase tracking-widest bg-black/40 px-3 py-1 rounded-full backdrop-blur-md z-20">
+            Drag to Rotate • Scroll to Zoom
+          </div>
         </div>
-        <div className="flex-1 p-4 space-y-4 overflow-y-auto">
-          <div className="bg-violet-500/10 border border-violet-500/30 p-3 rounded-xl">
-            <p className="text-violet-200 text-xs">{STEPS[Math.min(step, STEPS.length-1)].instruction}</p>
+      </div>
+
+      <div className="w-full md:w-80 bg-slate-900 border-l border-white/5 flex flex-col z-20 shrink-0 shadow-[-20px_0_50px_rgba(0,0,0,0.5)]">
+        <div className="p-5 border-b border-white/5 bg-slate-950">
+          <p className="text-xs font-bold uppercase tracking-widest text-violet-400 mb-1">Math Lab — Conics</p>
+          <h2 className="text-xl font-bold text-white">{STEPS[Math.min(step, STEPS.length-1)].title}</h2>
+        </div>
+        <div className="flex-1 p-5 space-y-5 overflow-y-auto">
+          <div className="bg-violet-500/10 border border-violet-500/30 p-4 rounded-xl shadow-inner">
+            <p className="text-violet-200 text-sm leading-relaxed">{STEPS[Math.min(step, STEPS.length-1)].instruction}</p>
           </div>
-          <div className="grid grid-cols-3 gap-2">
-            {(['parabola', 'ellipse', 'hyperbola'] as const).map(t => (
-              <button key={t} onClick={() => { setType(t); if (step < 2) setStep(step + 1); }}
-                className="py-2 rounded-xl text-xs font-bold capitalize transition-all"
-                style={{ backgroundColor: type === t ? '#8b5cf6' + '40' : 'rgba(255,255,255,0.05)', color: type === t ? 'white' : '#9ca3af', border: `1px solid ${type === t ? '#8b5cf6' : 'rgba(255,255,255,0.1)'}` }}>
-                {t}
-              </button>
-            ))}
-          </div>
-          <div className="space-y-2">
-            <DraggableSlider label="a" min={1} max={6} value={a} onChange={setA} color="#8b5cf6" />
-            <DraggableSlider label="b" min={1} max={5} value={b} onChange={setB} color="#8b5cf6" />
+          
+          <div className="space-y-3">
+            <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Select Intersecting Plane</p>
+            <div className="flex flex-col gap-2">
+              {(['parabola', 'ellipse', 'hyperbola'] as const).map((t, idx) => (
+                <button key={t} onClick={() => { setType(t); setStep(idx + 1); }}
+                  className={`p-3 rounded-xl text-sm font-bold capitalize transition-all border text-left flex justify-between items-center ${type === t ? 'border-violet-500 bg-violet-600/20 text-white shadow-[0_0_15px_rgba(139,92,246,0.2)]' : 'border-white/10 text-slate-400 hover:bg-white/5'}`}>
+                  {t}
+                  <span className={`w-2 h-2 rounded-full ${type === t ? 'bg-violet-400 animate-pulse' : 'bg-transparent'}`} />
+                </button>
+              ))}
+            </div>
           </div>
 
-          <div className="flex gap-1">{STEPS.map((_, idx) => <div key={idx} className="flex-1 h-1.5 rounded-full cursor-pointer" style={{ backgroundColor: idx <= step ? '#8b5cf6' : 'rgba(255,255,255,0.1)' }} onClick={() => setStep(idx)} />)}</div>
+          <div className="bg-black/40 border border-white/5 p-4 rounded-xl">
+            <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mb-3">Geometric Equations</p>
+            <div className="space-y-2 font-mono text-xs text-slate-300">
+              {type === 'ellipse' && <p>x²/a² + y²/b² = 1</p>}
+              {type === 'parabola' && <p>y = ax² + bx + c</p>}
+              {type === 'hyperbola' && <p>x²/a² - y²/b² = 1</p>}
+            </div>
+          </div>
+
+          <div className="pt-2">
+            <p className="text-[10px] text-slate-500 font-bold uppercase mb-2 flex justify-between">
+              <span>Progress</span> <span>{step+1}/{STEPS.length}</span>
+            </p>
+            <div className="flex gap-1">
+              {STEPS.map((_, idx) => <div key={idx} className="flex-1 h-1.5 rounded-full cursor-pointer" style={{ backgroundColor: idx <= step ? '#8b5cf6' : 'rgba(255,255,255,0.1)' }} onClick={() => setStep(idx)} />)}
+            </div>
+          </div>
         </div>
       </div>
     </div>
