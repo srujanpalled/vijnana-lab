@@ -221,7 +221,7 @@ const AIFloatingTutor: React.FC = () => {
             exit={{ scale: 0, opacity: 0 }}
             transition={{ type: 'spring', stiffness: 260, damping: 20 }}
             onClick={() => setIsOpen(true)}
-            className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-gradient-to-tr from-purple-600 to-blue-500 text-white shadow-lg shadow-purple-600/40 flex items-center justify-center hover:shadow-purple-500/60 hover:scale-105 active:scale-95 transition-all cursor-pointer group"
+            className="fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full bg-gradient-to-tr from-purple-600 to-blue-500 text-white shadow-lg shadow-purple-600/40 flex items-center justify-center hover:shadow-purple-500/60 hover:scale-105 active:scale-95 transition-all cursor-pointer group"
             aria-label="Open AI Tutor"
             id="ai-tutor-fab"
           >
@@ -248,7 +248,7 @@ const AIFloatingTutor: React.FC = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 40, scale: 0.92 }}
             transition={{ type: 'spring', stiffness: 300, damping: 28 }}
-            className={`fixed bottom-6 right-6 z-50 ${panelWidth} ${panelHeight} flex flex-col rounded-2xl overflow-hidden shadow-2xl shadow-black/40 border border-white/10 backdrop-blur-xl bg-slate-950/95`}
+            className={`fixed bottom-6 right-6 z-40 ${panelWidth} ${panelHeight} flex flex-col rounded-2xl overflow-hidden shadow-2xl shadow-black/40 border border-white/10 backdrop-blur-xl bg-slate-950/95`}
             id="ai-tutor-panel"
           >
             {/* ── Header ── */}

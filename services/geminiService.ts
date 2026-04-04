@@ -54,13 +54,36 @@ The student is not currently viewing any specific experiment. Help them with any
 export const createChatSession = (labContext?: string): Chat => {
   const ai = new GoogleGenAI({ apiKey: getGeminiApiKey() });
   return ai.chats.create({
-    model: 'gemini-2.0-flash',
+    model: 'gemini-2.5-flash',
     config: {
       systemInstruction: buildSystemInstruction(labContext),
     },
   });
 };
 
-export const sendMessageToGemini = async (chat: Chat, message: string) => {
-  return await chat.sendMessageStream({ message });
+/**
+ * Helper: sleep for `ms` milliseconds.
+ */
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+/**
+ * Send a message to Gemini with automatic retry on 429 (rate-limit) errors.
+ * Retries up to 3 times with exponential backoff (3s → 6s → 12s).
+ */
+export const sendMessageToGemini = async (chat: Chat, message: string, maxRetries = 3) => {
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    try {
+      return await chat.sendMessageStream({ message });
+    } catch (error: any) {
+      const isRateLimit = error?.message?.includes('429') || error?.message?.includes('Quota');
+      if (isRateLimit && attempt < maxRetries) {
+        const delay = 3000 * Math.pow(2, attempt); // 3s, 6s, 12s
+        console.warn(`Rate limited (429). Retrying in ${delay / 1000}s... (attempt ${attempt + 1}/${maxRetries})`);
+        await sleep(delay);
+        continue;
+      }
+      throw error; // Not a rate limit error, or retries exhausted — propagate
+    }
+  }
+  throw new Error('Max retries exceeded for Gemini API.');
 };

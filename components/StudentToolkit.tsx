@@ -1091,7 +1091,7 @@ const StudentToolkit: React.FC = () => {
       {/* Modal / Overlay for Tool */}
       <AnimatePresence>
         {activeTool && (
-          <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950 backdrop-blur-md">
+          <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-xl">
             <MotionDiv
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}

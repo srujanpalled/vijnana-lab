@@ -16,6 +16,7 @@ const AITutor: React.FC = () => {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
   
   // Store chat session ref so it persists across renders
   const chatSessionRef = useRef<Chat | null>(null);
@@ -29,7 +30,9 @@ const AITutor: React.FC = () => {
   }, []);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+    }
   };
 
   useEffect(() => {
@@ -97,8 +100,8 @@ const AITutor: React.FC = () => {
   };
 
   return (
-    <div className="pt-24 px-4 md:px-12 lg:px-32 min-h-screen flex flex-col pb-8">
-      <div className="flex-1 glass-panel rounded-3xl overflow-hidden flex flex-col shadow-2xl border border-purple-500/20">
+    <div className="pt-24 px-4 md:px-12 lg:px-32 h-screen flex flex-col pb-8">
+      <div className="flex-1 glass-panel rounded-3xl overflow-hidden flex flex-col shadow-2xl border border-purple-500/20 min-h-0">
         
         {/* Header */}
         <div className="bg-purple-900/20 p-6 border-b border-white/10 flex items-center gap-4 backdrop-blur-xl">
@@ -114,7 +117,7 @@ const AITutor: React.FC = () => {
         </div>
 
         {/* Messages Area */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-black/20 scrollbar-thin">
+        <div ref={messagesContainerRef} className="flex-1 overflow-y-auto p-6 space-y-6 bg-black/20 scrollbar-thin min-h-0">
           {messages.map((msg) => (
             <div
               key={msg.id}
