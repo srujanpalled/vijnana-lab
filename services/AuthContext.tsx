@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
+import React, { createContext, useContext, useEffect, useState, useCallback, useRef } from 'react';
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { auth, db } from './firebase';
 import { doc, getDoc } from 'firebase/firestore';
@@ -22,6 +22,45 @@ type AuthContextType = {
   refreshProfile: () => Promise<void>;
 };
 
+const PROFILE_CACHE_KEY = 'vl_profile_cache';
+const ROLE_CACHE_KEY = 'vl_role_cache';
+
+// Instantly read cached profile so loading can start as false
+const getCachedProfile = (): ProfileData | null => {
+  try {
+    const raw = localStorage.getItem(PROFILE_CACHE_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+};
+
+const getCachedRole = (): string | null => {
+  try {
+    return localStorage.getItem(ROLE_CACHE_KEY);
+  } catch {
+    return null;
+  }
+};
+
+const cacheProfile = (profile: ProfileData) => {
+  try {
+    localStorage.setItem(PROFILE_CACHE_KEY, JSON.stringify(profile));
+    localStorage.setItem(ROLE_CACHE_KEY, profile.role);
+  } catch {
+    // localStorage full or unavailable — silently ignore
+  }
+};
+
+const clearProfileCache = () => {
+  try {
+    localStorage.removeItem(PROFILE_CACHE_KEY);
+    localStorage.removeItem(ROLE_CACHE_KEY);
+  } catch {
+    // ignore
+  }
+};
+
 const AuthContext = createContext<AuthContextType>({
   user: null,
   role: null,
@@ -31,10 +70,16 @@ const AuthContext = createContext<AuthContextType>({
 });
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  // Hydrate immediately from cache — no spinner needed if cache exists
+  const cachedProfile = useRef(getCachedProfile());
+  const cachedRole = useRef(getCachedRole());
+  const hasCachedData = cachedProfile.current !== null;
+
   const [user, setUser] = useState<User | null>(null);
-  const [role, setRole] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [profileData, setProfileData] = useState<ProfileData | null>(null);
+  const [role, setRole] = useState<string | null>(cachedRole.current);
+  // Start with loading=false if we have cached data, so no spinner shows
+  const [loading, setLoading] = useState(!hasCachedData);
+  const [profileData, setProfileData] = useState<ProfileData | null>(cachedProfile.current);
 
   const fetchProfile = useCallback(async (uid: string) => {
     try {
@@ -53,14 +98,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         };
         setRole(profile.role);
         setProfileData(profile);
+        // Persist to cache for next page load
+        cacheProfile(profile);
       } else {
         setRole('Student');
         setProfileData(null);
+        clearProfileCache();
       }
     } catch (error) {
       console.error("Auth context error:", error);
-      setRole('Student');
-      setProfileData(null);
+      // On network error, keep cached data if available — don't wipe it
+      if (!cachedProfile.current) {
+        setRole('Student');
+        setProfileData(null);
+      }
     }
   }, []);
 
@@ -75,16 +126,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       try {
         if (currentUser) {
           setUser(currentUser);
+          // Background fetch — UI already rendered from cache
           await fetchProfile(currentUser.uid);
         } else {
           setUser(null);
           setRole(null);
           setProfileData(null);
+          clearProfileCache();
         }
       } catch (error) {
         console.error("Auth context error:", error);
         setUser(currentUser);
-        setRole('Student');
+        if (!cachedRole.current) setRole('Student');
       } finally {
         setLoading(false);
       }

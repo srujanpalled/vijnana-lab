@@ -59,6 +59,20 @@ const Profile: React.FC = () => {
     // Immediately update local storage so app reacts synchronously
     if (userData.syllabus) localStorage.setItem('vl_board', userData.syllabus);
     if (userData.grade) localStorage.setItem('vl_standard', userData.grade);
+    // Also update the profile cache for instant hydration on next page load
+    try {
+      localStorage.setItem('vl_profile_cache', JSON.stringify({
+        name: userData.name,
+        email: userData.email,
+        role: userData.role,
+        grade: userData.grade,
+        syllabus: userData.syllabus,
+        institution: userData.institution,
+        language: userData.language,
+        avatar: userData.avatar,
+      }));
+      localStorage.setItem('vl_role_cache', userData.role);
+    } catch { /* ignore */ }
 
     updateUserData(userData.uid, {
         name: userData.name,
