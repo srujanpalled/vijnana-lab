@@ -4,7 +4,7 @@ import { useParams, Link, Navigate } from 'react-router-dom';
 import { SUBJECTS } from '../constants';
 import {
     ChevronRight, AlertTriangle, BookOpen, Activity, Eye, Play,
-    Save, Volume2, Languages, FileText, HelpCircle, CheckCircle, GraduationCap, Globe, ClipboardList, Upload, ArrowLeft
+    Save, Volume2, Languages, FileText, HelpCircle, CheckCircle, GraduationCap, Globe, ClipboardList, Upload, ArrowLeft, Youtube
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import SimulationStage from '../components/SimulationStage';
@@ -14,7 +14,7 @@ const MotionDiv = motion.div as any;
 
 const LabView: React.FC = () => {
     const { subjectId, labId } = useParams<{ subjectId: string; labId: string }>();
-    const [activeTab, setActiveTab] = useState<'aim' | 'theory' | 'procedure' | 'simulation' | 'observation' | 'viva' | 'quiz' | 'applications' | 'assignment'>('aim');
+    const [activeTab, setActiveTab] = useState<'aim' | 'theory' | 'procedure' | 'video' | 'simulation' | 'observation' | 'viva' | 'quiz' | 'applications' | 'assignment'>('aim');
     const [lang, setLang] = useState<'en' | 'hi' | 'kn'>('en');
     const [teacherMode, setTeacherMode] = useState(false);
     const [quizAnswers, setQuizAnswers] = useState<Record<number, number>>({});
@@ -34,13 +34,20 @@ const LabView: React.FC = () => {
         { id: 'aim', label: { en: 'Aim & Eq', hi: 'उद्देश्य', kn: 'ಗುರಿ' }, icon: GraduationCap },
         { id: 'theory', label: { en: 'Theory', hi: 'सिद्धांत', kn: 'ಸಿದ್ಧಾಂತ' }, icon: BookOpen },
         { id: 'procedure', label: { en: 'Procedure', hi: 'प्रक्रिया', kn: 'ವಿಧಾನ' }, icon: Activity },
+    ];
+
+    if (lab.content?.videoId) {
+        tabs.push({ id: 'video', label: { en: 'Video Lecture', hi: 'वीडियो लेक्चर', kn: 'ವೀಡಿಯೊ ಉಪನ್ಯಾಸ' }, icon: Youtube });
+    }
+
+    tabs.push(
         { id: 'simulation', label: { en: 'Simulation', hi: 'सिमुलेशन', kn: 'ಸಿಮ್ಯುಲೇಶನ್' }, icon: Play },
         { id: 'observation', label: { en: 'Observation', hi: 'अवलोकन', kn: 'ವೀಕ್ಷಣೆ' }, icon: Eye },
         { id: 'applications', label: { en: 'Real World', hi: 'वास्तविक दुनिया', kn: 'ನೈಜ ಜಗತ್ತು' }, icon: Globe },
         { id: 'viva', label: { en: 'Viva Voce', hi: 'मौखिक', kn: 'ಮೌಖಿಕ' }, icon: HelpCircle },
         { id: 'quiz', label: { en: 'Quiz', hi: 'प्रश्नोत्तरी', kn: 'ರಸಪ್ರಶ್ನೆ' }, icon: CheckCircle },
-        { id: 'assignment', label: { en: 'Assignment', hi: 'असाइनमेंट', kn: 'ನಿಯೋಜನೆ' }, icon: ClipboardList },
-    ];
+        { id: 'assignment', label: { en: 'Assignment', hi: 'असाइनमेंट', kn: 'ನಿಯೋಜನೆ' }, icon: ClipboardList }
+    );
 
     const speakText = (text: string) => {
         if ('speechSynthesis' in globalThis) {
@@ -255,6 +262,37 @@ const LabView: React.FC = () => {
                                                     <p className="text-slate-700 dark:text-gray-200 text-lg leading-relaxed">{step}</p>
                                                 </div>
                                             ))}
+                                        </div>
+                                        <div className="mt-12 flex justify-center">
+                                            <button
+                                                onClick={() => setActiveTab(lab.content?.videoId ? 'video' : 'simulation')}
+                                                className="px-8 py-4 rounded-full bg-slate-900 dark:bg-white/10 hover:bg-slate-800 dark:hover:bg-white/20 text-white font-medium flex items-center gap-2 transition-colors"
+                                            >
+                                                Next: {lab.content?.videoId ? 'Video Lecture' : 'Start Simulation'} <Play size={16} fill="currentColor" />
+                                            </button>
+                                        </div>
+                                    </div>
+                                </MotionDiv>
+                            )}
+
+                            {/* VIDEO LECTURE */}
+                            {activeTab === 'video' && lab.content?.videoId && (
+                                <MotionDiv
+                                    key="video"
+                                    initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
+                                    className="absolute inset-0 overflow-y-auto p-6 md:p-10 custom-scrollbar"
+                                >
+                                    <div className="max-w-4xl mx-auto pb-12">
+                                        <h2 className="text-3xl font-display font-bold mb-8" style={{ color: subject.hex }}>Video Lecture</h2>
+                                        <div className="aspect-video w-full rounded-2xl overflow-hidden shadow-2xl border border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-white/5">
+                                            <iframe 
+                                                className="w-full h-full"
+                                                src={`https://www.youtube.com/embed/${lab.content.videoId}`} 
+                                                title="YouTube video player" 
+                                                frameBorder="0" 
+                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                                allowFullScreen
+                                            ></iframe>
                                         </div>
                                         <div className="mt-12 flex justify-center">
                                             <button

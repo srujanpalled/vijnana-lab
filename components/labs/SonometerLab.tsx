@@ -18,6 +18,7 @@ const VibratingString = ({ length, freq }: { length: number; freq: number }) => 
     return pts;
   }, []);
 
+  const geo = useMemo(() => new THREE.BufferGeometry().setFromPoints(points), [points]);
   const mat = useMemo(() => new THREE.LineBasicMaterial({ color: '#fbbf24', transparent: true, opacity: 0.8 }), []);
   const lineObj = useMemo(() => new THREE.Line(geo, mat), [geo, mat]);
 

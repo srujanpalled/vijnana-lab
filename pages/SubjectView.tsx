@@ -3,7 +3,7 @@ import React from 'react';
 import { useParams, Link, Navigate, useNavigate } from 'react-router-dom';
 import { SUBJECTS } from '../constants';
 import GlassCard from '../components/GlassCard';
-import { Clock, Play, BookOpen, Loader2, UserCog } from 'lucide-react';
+import { Clock, Play, BookOpen, Loader2, UserCog, Lock } from 'lucide-react';
 import type { Board, Standard } from '../types';
 import { useAuth } from '../services/AuthContext';
 
@@ -18,12 +18,9 @@ const SubjectView: React.FC = () => {
   const subject = SUBJECTS.find(s => s.id === subjectId);
 
   // Normalize old grade strings to canonical Standard type
-  // This handles existing users who signed up with "11th Grade (PUC I)" etc.
   const normalizeStandard = (raw: string | null | undefined): Standard | null => {
     if (!raw) return null;
-    // Already canonical
     if (raw === '1st PUC / Class 11' || raw === '2nd PUC / Class 12') return raw;
-    // Map old signup strings
     const lower = raw.toLowerCase();
     if (lower.includes('11') || lower.includes('1st puc')) return '1st PUC / Class 11';
     if (lower.includes('12') || lower.includes('2nd puc')) return '2nd PUC / Class 12';
@@ -33,7 +30,6 @@ const SubjectView: React.FC = () => {
   const normalizeBoard = (raw: string | null | undefined): Board | null => {
     if (!raw) return null;
     if (raw === 'CBSE' || raw === 'Karnataka PUC' || raw === 'ICSE') return raw;
-    // Fuzzy match for existing data
     const lower = raw.toLowerCase();
     if (lower.includes('cbse')) return 'CBSE';
     if (lower.includes('karnataka') || lower.includes('puc')) return 'Karnataka PUC';
@@ -63,20 +59,31 @@ const SubjectView: React.FC = () => {
     );
   }
 
-  // If profile not set, prompt user (fallback to localStorage for instant sync)
+  // If profile not set, prompt user
   const profileBoard = normalizeBoard(profileData?.syllabus || localStorage.getItem('vl_board'));
   const profileStandard = normalizeStandard(profileData?.grade || localStorage.getItem('vl_standard'));
   const profileIncomplete = !profileBoard || !profileStandard;
 
-  // Filter labs strictly by selected board AND standard
-  const filteredLabs = subject.labs.filter(lab => {
-    if (profileIncomplete) return true; // show all if profile not set (fallback)
-    if (!lab.boards && !lab.standards) return true;
-    
+  // Map ALL labs with an isDisabled flag instead of filtering them out
+  const mappedLabs = subject.labs.map(lab => {
+    if (profileIncomplete) {
+      return { ...lab, isDisabled: false };
+    }
+    if (!lab.boards && !lab.standards) {
+      return { ...lab, isDisabled: false };
+    }
     const boardMatch = !selectedBoard || !lab.boards || lab.boards.includes(selectedBoard);
     const stdMatch = !selectedStandard || !lab.standards || lab.standards.includes(selectedStandard);
-    return boardMatch && stdMatch;
+    return { ...lab, isDisabled: !(boardMatch && stdMatch) };
   });
+
+  // Sort: enabled labs first, disabled labs after
+  const sortedLabs = [...mappedLabs].sort((a, b) => {
+    if (a.isDisabled === b.isDisabled) return 0;
+    return a.isDisabled ? 1 : -1;
+  });
+
+  const enabledCount = sortedLabs.filter(l => !l.isDisabled).length;
 
   const boardsList: Board[] = ['CBSE', 'Karnataka PUC', 'ICSE'];
   const standardsList: Standard[] = ['1st PUC / Class 11', '2nd PUC / Class 12'];
@@ -147,7 +154,7 @@ const SubjectView: React.FC = () => {
           </div>
           <div className="flex flex-col items-end shrink-0">
              <span className="text-sm font-bold text-gray-400 px-4 py-2 bg-white/5 rounded-xl border border-white/10">
-               {filteredLabs.length} Labs Available
+               {enabledCount} of {sortedLabs.length} Labs Unlocked
              </span>
              {profileBoard && profileStandard && (selectedBoard !== profileBoard || selectedStandard !== profileStandard) && (
                <button
@@ -183,31 +190,42 @@ const SubjectView: React.FC = () => {
 
         {/* Labs Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-20">
-            {filteredLabs.length === 0 ? (
-              <div className="col-span-full text-center py-16">
-                <BookOpen size={48} className="mx-auto text-gray-600 mb-4" />
-                <p className="text-lg font-bold text-gray-400">No experiments found</p>
-                <p className="text-sm text-gray-500 mt-1">Try switching the Board or Grade filter above.</p>
-              </div>
-            ) : (
-            filteredLabs.map((lab) => (
-                <GlassCard key={lab.id} className="flex flex-col h-full group" color={subject.color}>
+            {sortedLabs.map((lab) => {
+              const disabled = lab.isDisabled;
+
+              return (
+                <div
+                  key={lab.id}
+                  className={`relative transition-all duration-300 ${disabled ? 'opacity-50 grayscale pointer-events-none select-none' : ''}`}
+                >
+                  <GlassCard
+                    className={`flex flex-col h-full ${disabled ? '' : 'group'}`}
+                    color={disabled ? 'gray' : subject.color}
+                  >
                     <div className="flex justify-between items-start mb-4">
                         <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-gray-500 border border-slate-300 dark:border-gray-700 px-2 py-1 rounded">
                             {lab.category}
                         </span>
-                        <div 
-                            className="w-10 h-10 rounded-full flex items-center justify-center transition-colors"
-                            style={{ backgroundColor: `${subject.hex}20` }}
-                        >
-                            <Play size={16} style={{ color: subject.hex, fill: subject.hex }} />
-                        </div>
+                        {disabled ? (
+                          <div className="w-10 h-10 rounded-full flex items-center justify-center bg-gray-500/20">
+                            <Lock size={16} className="text-gray-500" />
+                          </div>
+                        ) : (
+                          <div 
+                              className="w-10 h-10 rounded-full flex items-center justify-center transition-colors"
+                              style={{ backgroundColor: `${subject.hex}20` }}
+                          >
+                              <Play size={16} style={{ color: subject.hex, fill: subject.hex }} />
+                          </div>
+                        )}
                     </div>
                     
-                    <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2 transition-colors">
+                    <h3 className={`text-xl font-bold mb-2 transition-colors ${disabled ? 'text-gray-500 dark:text-gray-600' : 'text-slate-900 dark:text-white'}`}>
                         {lab.title}
                     </h3>
-                    <p className="text-sm text-slate-600 dark:text-gray-400 mb-2 flex-1">{lab.description}</p>
+                    <p className={`text-sm mb-2 flex-1 ${disabled ? 'text-gray-400 dark:text-gray-600' : 'text-slate-600 dark:text-gray-400'}`}>
+                        {lab.description}
+                    </p>
                     
                     {/* Board/Standard tags */}
                     {lab.boards && (
@@ -223,19 +241,33 @@ const SubjectView: React.FC = () => {
                       </div>
                     )}
 
+                    {/* Disabled Banner */}
+                    {disabled && (
+                      <div className="flex items-center gap-2 mb-3 px-3 py-2 rounded-lg bg-gray-500/10 border border-gray-500/20">
+                        <Lock size={12} className="text-gray-500 shrink-0" />
+                        <span className="text-[11px] font-semibold text-gray-500">Not in your current Syllabus</span>
+                      </div>
+                    )}
+
                     <div className="flex items-center justify-between text-xs text-slate-500 dark:text-gray-500 border-t border-slate-200 dark:border-white/5 pt-4">
                         <div className="flex items-center gap-1">
                             <Clock size={14} />
                             <span>{lab.duration}</span>
                         </div>
                     </div>
-                    <Link to={`/subjects/${subject.id}/${lab.id}`} className="absolute inset-0" />
-                </GlassCard>
-            ))
-            )}
+
+                    {/* Only render the clickable link for enabled labs */}
+                    {!disabled && (
+                      <Link to={`/subjects/${subject.id}/${lab.id}`} className="absolute inset-0" />
+                    )}
+                  </GlassCard>
+                </div>
+              );
+            })}
         </div>
     </div>
   );
 };
 
 export default SubjectView;
+
