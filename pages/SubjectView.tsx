@@ -14,20 +14,42 @@ const SubjectView: React.FC = () => {
   
   const [selectedBoard, setSelectedBoard] = React.useState<Board | null>(null);
   const [selectedStandard, setSelectedStandard] = React.useState<Standard | null>(null);
-  const [initialized, setInitialized] = React.useState(false);
 
   const subject = SUBJECTS.find(s => s.id === subjectId);
 
-  // Initialize filters from context profile data — no Firestore call needed
+  // Normalize old grade strings to canonical Standard type
+  // This handles existing users who signed up with "11th Grade (PUC I)" etc.
+  const normalizeStandard = (raw: string | null | undefined): Standard | null => {
+    if (!raw) return null;
+    // Already canonical
+    if (raw === '1st PUC / Class 11' || raw === '2nd PUC / Class 12') return raw;
+    // Map old signup strings
+    const lower = raw.toLowerCase();
+    if (lower.includes('11') || lower.includes('1st puc')) return '1st PUC / Class 11';
+    if (lower.includes('12') || lower.includes('2nd puc')) return '2nd PUC / Class 12';
+    return null;
+  };
+
+  const normalizeBoard = (raw: string | null | undefined): Board | null => {
+    if (!raw) return null;
+    if (raw === 'CBSE' || raw === 'Karnataka PUC' || raw === 'ICSE') return raw;
+    // Fuzzy match for existing data
+    const lower = raw.toLowerCase();
+    if (lower.includes('cbse')) return 'CBSE';
+    if (lower.includes('karnataka') || lower.includes('puc')) return 'Karnataka PUC';
+    if (lower.includes('icse') || lower.includes('isc')) return 'ICSE';
+    return null;
+  };
+
+  // Keep filters reactive — always sync when profileData changes
   React.useEffect(() => {
-    if (!authLoading && !initialized) {
-      const board = (profileData?.syllabus as Board) || (localStorage.getItem('vl_board') as Board | null);
-      const standard = (profileData?.grade as Standard) || (localStorage.getItem('vl_standard') as Standard | null);
-      setSelectedBoard(board);
-      setSelectedStandard(standard);
-      setInitialized(true);
+    if (!authLoading) {
+      const rawBoard = profileData?.syllabus || localStorage.getItem('vl_board');
+      const rawStandard = profileData?.grade || localStorage.getItem('vl_standard');
+      setSelectedBoard(normalizeBoard(rawBoard));
+      setSelectedStandard(normalizeStandard(rawStandard));
     }
-  }, [authLoading, profileData, initialized]);
+  }, [authLoading, profileData]);
 
   if (!subject) {
     return <Navigate to="/subjects" replace />;
@@ -42,8 +64,8 @@ const SubjectView: React.FC = () => {
   }
 
   // If profile not set, prompt user (fallback to localStorage for instant sync)
-  const profileBoard = (profileData?.syllabus as Board) || (localStorage.getItem('vl_board') as Board | null);
-  const profileStandard = (profileData?.grade as Standard) || (localStorage.getItem('vl_standard') as Standard | null);
+  const profileBoard = normalizeBoard(profileData?.syllabus || localStorage.getItem('vl_board'));
+  const profileStandard = normalizeStandard(profileData?.grade || localStorage.getItem('vl_standard'));
   const profileIncomplete = !profileBoard || !profileStandard;
 
   // Filter labs strictly by selected board AND standard

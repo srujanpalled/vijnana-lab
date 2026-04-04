@@ -24,6 +24,7 @@ const Login: React.FC = () => {
 
     const [profileData, setProfileData] = useState({
         grade: '',
+        syllabus: '',
         institution: '',
         role: 'Student' as 'Student' | 'Teacher',
         language: 'English',
@@ -87,8 +88,9 @@ const Login: React.FC = () => {
                     name: user.displayName || 'User',
                     email: user.email,
                     role: 'Student',
-                    grade: 'Not Specified',
-                    institution: 'Not Specified',
+                    grade: '',
+                    syllabus: '',
+                    institution: '',
                     language: 'English',
                     avatar: user.photoURL || 'bg-blue-500',
                     progress: { physics: 0, chemistry: 0, biology: 0, math: 0, cs: 0 },
@@ -241,11 +243,27 @@ const Login: React.FC = () => {
                                         required
                                     >
                                         <option className="bg-slate-900 text-gray-500" value="" disabled>Select Grade / Class</option>
-                                        <option className="bg-slate-900 text-white" value="8th Grade">8th Grade</option>
-                                        <option className="bg-slate-900 text-white" value="9th Grade">9th Grade</option>
-                                        <option className="bg-slate-900 text-white" value="10th Grade">10th Grade</option>
-                                        <option className="bg-slate-900 text-white" value="11th Grade (PUC I)">11th Grade (PUC I)</option>
-                                        <option className="bg-slate-900 text-white" value="12th Grade (PUC II)">12th Grade (PUC II)</option>
+                                        <option className="bg-slate-900 text-white" value="1st PUC / Class 11">11th / 1st PUC</option>
+                                        <option className="bg-slate-900 text-white" value="2nd PUC / Class 12">12th / 2nd PUC</option>
+                                    </select>
+                                    <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500">
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6" /></svg>
+                                    </div>
+                                </div>
+
+                                {/* Board / Syllabus */}
+                                <div className="relative group">
+                                    <BookOpen className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-blue-400 transition-colors" size={18} />
+                                    <select
+                                        className="w-full bg-black/20 border border-white/10 rounded-xl py-3.5 pl-12 pr-10 text-white focus:outline-none focus:border-blue-500/50 focus:bg-white/5 transition-all appearance-none cursor-pointer"
+                                        value={profileData.syllabus}
+                                        onChange={e => setProfileData({ ...profileData, syllabus: e.target.value })}
+                                        required
+                                    >
+                                        <option className="bg-slate-900 text-gray-500" value="" disabled>Select Board / Syllabus</option>
+                                        <option className="bg-slate-900 text-white" value="CBSE">CBSE</option>
+                                        <option className="bg-slate-900 text-white" value="Karnataka PUC">Karnataka PUC</option>
+                                        <option className="bg-slate-900 text-white" value="ICSE">ICSE</option>
                                     </select>
                                     <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500">
                                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6" /></svg>
