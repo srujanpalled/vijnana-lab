@@ -56,6 +56,10 @@ const Profile: React.FC = () => {
     setIsSaving(true);
     setIsEditing(false);
     
+    // Immediately update local storage so app reacts synchronously
+    if (userData.syllabus) localStorage.setItem('vl_board', userData.syllabus);
+    if (userData.grade) localStorage.setItem('vl_standard', userData.grade);
+
     updateUserData(userData.uid, {
         name: userData.name,
         grade: userData.grade,

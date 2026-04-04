@@ -41,9 +41,9 @@ const SubjectView: React.FC = () => {
     );
   }
 
-  // If profile not set, prompt user
-  const profileBoard = (profileData?.syllabus as Board) || null;
-  const profileStandard = (profileData?.grade as Standard) || null;
+  // If profile not set, prompt user (fallback to localStorage for instant sync)
+  const profileBoard = (profileData?.syllabus as Board) || (localStorage.getItem('vl_board') as Board | null);
+  const profileStandard = (profileData?.grade as Standard) || (localStorage.getItem('vl_standard') as Standard | null);
   const profileIncomplete = !profileBoard || !profileStandard;
 
   // Filter labs strictly by selected board AND standard
