@@ -208,7 +208,7 @@ const About: React.FC = () => {
                 </div>
 
                 {/* Item 4: Offline Mode (Right Side) */}
-                <div className="relative flex items-center justify-between mb-12 flex-col md:flex-row">
+                <div className="relative flex items-center justify-between mb-16 flex-col md:flex-row">
                     <div className="order-3 md:order-1 md:w-[45%] w-full hidden md:block"></div>
                     
                     <div className="order-1 md:order-2 absolute left-4 md:left-1/2 transform -translate-x-1/2 w-8 h-8 rounded-full bg-amber-500 border-4 border-slate-900 z-10 shadow-[0_0_15px_rgba(245,158,11,0.5)]"></div>
@@ -225,6 +225,26 @@ const About: React.FC = () => {
                             <p className="text-gray-400 text-sm">PWA capability with local caching allowing complete lab access in remote areas without active internet connection.</p>
                         </GlassCard>
                     </div>
+                </div>
+
+                {/* Item 5: Business Plan / Brand Integration (Left Side) */}
+                <div className="relative flex items-center justify-between mb-12 flex-col md:flex-row">
+                    <div className="order-2 md:order-1 md:w-[45%] w-full pl-12 md:pl-0 md:pr-12 md:text-right">
+                        <GlassCard className="p-6 relative group hover:bg-white/5 transition-colors" color="emerald">
+                            <div className="absolute top-1/2 -right-3 w-6 h-6 bg-emerald-900/50 rotate-45 transform -translate-y-1/2 border-r border-t border-emerald-500/30 hidden md:block backdrop-blur-xl"></div>
+                            <div className="flex items-center md:justify-end gap-4 mb-3">
+                                <h3 className="text-xl font-bold text-white">B2B Monetization & Ads</h3>
+                                <div className="p-2 rounded-lg bg-emerald-500/20 text-emerald-400 shrink-0">
+                                    <Rocket size={20} />
+                                </div>
+                            </div>
+                            <p className="text-gray-400 text-sm">A strategic, non-intrusive revenue model. We will implement high-quality 3D product placement where educational sponsors can feature their brand logo and name directly on laboratory equipment. This provides targeted visibility for advertisers while ensuring the core product remains 100% free for students.</p>
+                        </GlassCard>
+                    </div>
+                    
+                    <div className="order-1 md:order-2 absolute left-4 md:left-1/2 transform -translate-x-1/2 w-8 h-8 rounded-full bg-emerald-500 border-4 border-slate-900 z-10 shadow-[0_0_15px_rgba(16,185,129,0.5)]"></div>
+
+                    <div className="order-3 md:w-[45%] w-full hidden md:block"></div>
                 </div>
 
             </div>
