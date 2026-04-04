@@ -68,14 +68,26 @@ const AITutor: React.FC = () => {
           }
       }
 
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      console.error("Gemini API Error:", error);
+      let errorMessage = "I'm having trouble connecting to the neural network right now. Please check your internet connection.";
+      
+      if (error && error.message) {
+        if (error.message.includes("429") || error.message.includes("Quota")) {
+           errorMessage = "⚠️ Google API Rate Limit Exceeded (429). You are sending messages too fast for the free tier. Please wait 1 minute and try again.";
+        } else if (error.message.includes("400") || error.message.includes("API key not valid")) {
+           errorMessage = "⚠️ Invalid API Key. Please make sure you have the correct key in your `.env` file and that you've restarted the development server.";
+        } else {
+           errorMessage = `⚠️ API Error: ${error.message}`;
+        }
+      }
+
       setMessages((prev) => [
         ...prev,
         {
           id: Date.now().toString(),
           role: 'model',
-          text: "I'm having trouble connecting to the neural network right now. Please check your internet connection.",
+          text: errorMessage,
           timestamp: Date.now(),
         },
       ]);

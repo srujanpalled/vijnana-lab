@@ -10,6 +10,7 @@ import {
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
+import AIFloatingTutor from './components/AIFloatingTutor';
 
 import Login from './pages/Login';
 import Home from './pages/Home';
@@ -91,6 +92,9 @@ const AppContent: React.FC = () => {
       </main>
 
       {(!isLabView && !isLoginView) && <Footer />}
+
+      {/* Global Floating AI Tutor — available on every page */}
+      <AIFloatingTutor />
     </div>
   );
 };
