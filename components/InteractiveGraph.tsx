@@ -37,11 +37,17 @@ function linReg(pts: GraphPoint[]): { slope: number; intercept: number; r2: numb
   const sy = pts.reduce((a, p) => a + p.y, 0);
   const sxy = pts.reduce((a, p) => a + p.x * p.y, 0);
   const sx2 = pts.reduce((a, p) => a + p.x * p.x, 0);
-  const slope = (n * sxy - sx * sy) / (n * sx2 - sx * sx);
+  
+  const den = n * sx2 - sx * sx;
+  const slope = Math.abs(den) < 1e-10 ? 0 : (n * sxy - sx * sy) / den;
   const intercept = (sy - slope * sx) / n;
+  
   const ym = sy / n;
   const ss_tot = pts.reduce((a, p) => a + (p.y - ym) ** 2, 0);
-  const ss_res = pts.reduce((a, p) => a + (p.y - (slope * p.x + intercept)) ** 2, 0);
+  let ss_res = 0;
+  if (Math.abs(den) >= 1e-10) {
+    ss_res = pts.reduce((a, p) => a + (p.y - (slope * p.x + intercept)) ** 2, 0);
+  }
   const r2 = ss_tot === 0 ? 1 : 1 - ss_res / ss_tot;
   return { slope, intercept, r2 };
 }
@@ -112,8 +118,8 @@ const InteractiveGraph: React.FC<InteractiveGraphProps> = ({
       </div>
 
       {/* SVG */}
-      <div className="overflow-auto">
-        <svg ref={svgRef} width={W * zoom} height={H * zoom} viewBox={`0 0 ${W} ${H}`} className="block">
+      <div className="overflow-auto w-full">
+        <svg ref={svgRef} xmlns="http://www.w3.org/2000/svg" width={W * zoom} height={H * zoom} viewBox={`0 0 ${W} ${H}`} className="block mx-auto">
           {/* Grid */}
           {showGrid && (
             <g opacity="0.15">

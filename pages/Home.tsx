@@ -240,42 +240,6 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* Brainstorm Hub / Promo */}
-      <section className="px-6 md:px-12 lg:px-20 py-16 mb-12 z-10 relative">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-            <div className="order-2 lg:order-1">
-                <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-6 text-glow">Turn Curiosity into <br/><span className="text-amber-500">Structured Research.</span></h2>
-                <p className="text-lg text-slate-400 mb-8 leading-relaxed">Our new **Project Architect** helps you plan complex experiments, generate hypotheses, and blueprint apparatus setups in seconds. Perfect for science fairs and advanced research projects.</p>
-                <Link to="/brainstorm">
-                    <MotionDiv whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                        <button className="px-8 py-4 bg-amber-600 text-white font-bold rounded-2xl hover:bg-amber-500 transition-all shadow-lg shadow-amber-600/20 flex items-center gap-2">
-                            Go to Brainstorm Hub <Sparkles size={20} />
-                        </button>
-                    </MotionDiv>
-                </Link>
-            </div>
-            <div className="order-1 lg:order-2 relative">
-                <div className="absolute inset-0 bg-amber-500/20 blur-[100px] rounded-full"></div>
-                <GlassCard color="amber" className="relative z-10 p-4 border-amber-500/30 overflow-hidden group">
-                    <img 
-                      src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&q=80&w=800" 
-                      alt="Scientific research and brainstorming" 
-                      loading="lazy"
-                      width="800"
-                      height="300"
-                      className="rounded-2xl w-full h-[300px] object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-700"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent"></div>
-                    <div className="absolute bottom-6 left-6 right-6">
-                        <div className="flex items-center gap-3 text-white font-bold text-xl mb-1">
-                            <Lightbulb className="text-amber-500" /> AI Project Blueprinting
-                        </div>
-                        <p className="text-slate-300 text-sm">Empowering students to architect their own experiments.</p>
-                    </div>
-                </GlassCard>
-            </div>
-        </div>
-      </section>
 
       {/* Features / Promo (Original) */}
       <section className="px-6 md:px-12 lg:px-20 py-16 mb-12 z-10 relative">

@@ -22,7 +22,6 @@ import Contact from './pages/Contact';
 import StudentDashboard from './pages/StudentDashboard';
 import TeacherDashboard from './pages/TeacherDashboard';
 import Profile from './pages/Profile';
-import BrainstormHub from './pages/BrainstormHub';
 import SyllabusSelector from './pages/SyllabusSelector';
 
 const ScrollToTop = () => {
@@ -62,7 +61,6 @@ const AppContent: React.FC = () => {
           <Route path="/subjects/:subjectId" element={<SubjectView />} />
           <Route path="/subjects/:subjectId/:labId" element={<LabView />} />
           <Route path="/tutor" element={<AITutor />} />
-          <Route path="/brainstorm" element={<BrainstormHub />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route
