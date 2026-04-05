@@ -90,10 +90,10 @@ print("Data appended!")`,
     <div className="flex flex-col md:flex-row h-full w-full bg-slate-950">
       <div className="flex-1 flex flex-col p-4 gap-4 overflow-auto">
         {/* Code display */}
-        <div className="bg-slate-900 rounded-2xl border border-white/10 overflow-hidden flex-1">
-          <div className="flex items-center gap-2 px-4 py-2.5 bg-slate-800 border-b border-white/5">
+        <div className="bg-slate-900 rounded-2xl border border-black/10 dark:border-white/10 overflow-hidden flex-1">
+          <div className="flex items-center gap-2 px-4 py-2.5 bg-slate-800 border-b border-black/5 dark:border-white/5">
             <div className="flex gap-1.5"> <div className="w-2.5 h-2.5 rounded-full bg-red-500" /> <div className="w-2.5 h-2.5 rounded-full bg-yellow-500" /> <div className="w-2.5 h-2.5 rounded-full bg-green-500" /> </div>
-            <span className="text-slate-400 text-xs ml-2 font-mono">file_handling.py</span>
+            <span className="text-slate-600 dark:text-slate-400 text-xs ml-2 font-mono">file_handling.py</span>
           </div>
           <pre className="p-4 text-xs font-mono leading-relaxed overflow-auto">
             {pythonCode[mode].split('\n').map((line, i) => {
@@ -110,7 +110,7 @@ print("Data appended!")`,
         </div>
 
         {/* Terminal output */}
-        <div className="bg-black rounded-2xl border border-white/10 p-4 min-h-[100px] font-mono text-xs">
+        <div className="bg-black rounded-2xl border border-black/10 dark:border-white/10 p-4 min-h-[100px] font-mono text-xs">
           <div className="flex items-center gap-2 mb-3">
             <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
             <span className="text-green-400 text-[10px] uppercase font-bold">Terminal Output</span>
@@ -124,11 +124,11 @@ print("Data appended!")`,
         </div>
       </div>
 
-      <div className="w-full md:w-72 bg-slate-900 border-l border-white/5 flex flex-col">
-        <div className="p-4 border-b border-white/5">
+      <div className="w-full md:w-72 bg-slate-900 border-l border-black/5 dark:border-white/5 flex flex-col">
+        <div className="p-4 border-b border-black/5 dark:border-white/5">
           <p className="text-xs font-bold uppercase tracking-widest text-green-400 mb-1">CS Lab — cs9</p>
-          <h2 className="text-xl font-bold text-white">File Handling</h2>
-          <p className="text-xs text-slate-400 mt-1">Python file operations — read, write, append</p>
+          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-900 dark:text-white">File Handling</h2>
+          <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">Python file operations — read, write, append</p>
         </div>
         <div className="flex-1 p-4 space-y-4 overflow-y-auto">
           <div className="grid grid-cols-3 gap-1.5">
@@ -142,22 +142,22 @@ print("Data appended!")`,
           </div>
 
           <div className="space-y-1">
-            <p className="text-[10px] text-slate-400 uppercase font-bold">Filename</p>
+            <p className="text-[10px] text-slate-600 dark:text-slate-400 uppercase font-bold">Filename</p>
             <input value={filename} onChange={e => setFilename(e.target.value)}
-              className="w-full bg-slate-950 border border-white/15 rounded-xl px-3 py-2 text-sm font-mono text-white focus:outline-none focus:border-green-500" />
+              className="w-full bg-slate-950 border border-white/15 rounded-xl px-3 py-2 text-sm font-mono text-slate-900 dark:text-white focus:outline-none focus:border-green-500" />
           </div>
 
           {(mode === 'write' || mode === 'append') && (
             <div className="space-y-1">
-              <p className="text-[10px] text-slate-400 uppercase font-bold">{mode === 'write' ? 'Content to Write' : 'Content to Append'}</p>
+              <p className="text-[10px] text-slate-600 dark:text-slate-400 uppercase font-bold">{mode === 'write' ? 'Content to Write' : 'Content to Append'}</p>
               <textarea value={inputText} onChange={e => setInputText(e.target.value)} rows={3}
-                className="w-full bg-slate-950 border border-white/15 rounded-xl px-3 py-2 text-xs font-mono text-white focus:outline-none focus:border-green-500 resize-none" />
+                className="w-full bg-slate-950 border border-white/15 rounded-xl px-3 py-2 text-xs font-mono text-slate-900 dark:text-white focus:outline-none focus:border-green-500 resize-none" />
             </div>
           )}
 
           {/* Existing files */}
           <div className="space-y-1.5">
-            <p className="text-[10px] text-slate-400 uppercase font-bold">Virtual Filesystem</p>
+            <p className="text-[10px] text-slate-600 dark:text-slate-400 uppercase font-bold">Virtual Filesystem</p>
             {Object.entries(files).map(([fn, lines]) => (
               <button key={fn} onClick={() => setFilename(fn)}
                 className={`w-full p-2.5 rounded-xl text-xs text-left border transition-all ${filename === fn ? 'border-green-500/50 bg-green-500/10' : 'border-white/10 hover:border-white/30'}`}>
@@ -173,12 +173,12 @@ print("Data appended!")`,
           </div>
 
           <button onClick={simulate} disabled={running}
-            className="w-full py-3 rounded-xl font-bold text-white flex items-center justify-center gap-2 disabled:opacity-50"
+            className="w-full py-3 rounded-xl font-bold text-slate-900 dark:text-slate-900 dark:text-white flex items-center justify-center gap-2 disabled:opacity-50"
             style={{ backgroundColor: hex }}>
             <Play size={14} /> {running ? 'Running...' : 'Run Code'}
           </button>
 
-          <div className="bg-slate-950 border border-white/10 rounded-xl p-3 text-[9px] text-slate-400 space-y-0.5">
+          <div className="bg-slate-950 border border-black/10 dark:border-white/10 rounded-xl p-3 text-[9px] text-slate-400 space-y-0.5">
             <p><span className="text-blue-400 font-mono">'r'</span> — Read only. Error if not found.</p>
             <p><span className="text-blue-400 font-mono">'w'</span> — Write. Creates or truncates.</p>
             <p><span className="text-blue-400 font-mono">'a'</span> — Append. Creates if not found.</p>

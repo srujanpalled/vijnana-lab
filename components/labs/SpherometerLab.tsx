@@ -181,7 +181,7 @@ const SpherometerLab: React.FC<Props> = ({ hex }) => {
 
   return (
     <div className="flex flex-col md:flex-row h-full w-full bg-slate-950">
-      <div className="flex-1 relative rounded-2xl overflow-hidden m-4 border border-white/10 shadow-2xl">
+      <div className="flex-1 relative rounded-2xl overflow-hidden m-4 border border-black/10 dark:border-white/10 shadow-2xl">
         <Canvas camera={{ position: [0, 4, 6], fov: 50 }}>
           <Environment preset="studio" />
           <ambientLight intensity={0.7} />
@@ -194,16 +194,16 @@ const SpherometerLab: React.FC<Props> = ({ hex }) => {
           <OrbitControls enablePan={true} enableZoom={true} target={[0, 1.5, 0]} maxPolarAngle={Math.PI/2 - 0.05} />
         </Canvas>
 
-        <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md border border-white/10 rounded-xl px-4 py-3 shadow-xl max-w-xs">
+        <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md border border-black/10 dark:border-white/10 rounded-xl px-4 py-3 shadow-xl max-w-xs">
           <p className="text-[10px] font-bold uppercase tracking-widest text-violet-400 mb-1">Physics Lab — p13</p>
-          <p className="text-white font-bold text-sm">3D Spherometer</p>
-          <p className="text-xs text-slate-400 mt-1">Directly simulates precision screw mechanics on a curved plano-convex lens.</p>
+          <p className="text-slate-900 dark:text-slate-900 dark:text-white font-bold text-sm">3D Spherometer</p>
+          <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">Directly simulates precision screw mechanics on a curved plano-convex lens.</p>
         </div>
       </div>
 
-      <div className="w-full md:w-72 bg-slate-900 border-l border-white/5 flex flex-col z-10">
-        <div className="p-5 border-b border-white/5">
-           <h2 className="text-lg font-black text-white">Controls</h2>
+      <div className="w-full md:w-72 bg-slate-900 border-l border-black/5 dark:border-white/5 flex flex-col z-10">
+        <div className="p-5 border-b border-black/5 dark:border-white/5">
+           <h2 className="text-lg font-black text-slate-900 dark:text-slate-900 dark:text-white">Controls</h2>
         </div>
         <div className="flex-1 p-5 space-y-4 overflow-y-auto">
           <div className="bg-violet-500/10 border border-violet-500/30 p-3 rounded-xl shadow-inner">
@@ -223,15 +223,15 @@ const SpherometerLab: React.FC<Props> = ({ hex }) => {
               { label: 'Sagitta (h)', val: `${h.toFixed(4)} mm`, color: '#10b981' },
               { label: 'Radius (R)', val: `${R > 9999 ? '∞' : R.toFixed(2)} mm`, color: '#a78bfa' },
             ].map(m => (
-              <div key={m.label} className="bg-slate-950/50 border border-white/5 rounded-xl p-2.5 text-center shadow-sm">
+              <div key={m.label} className="bg-slate-950/50 border border-black/5 dark:border-white/5 rounded-xl p-2.5 text-center shadow-sm">
                 <div className="text-[9px] text-slate-500 uppercase font-bold tracking-wider mb-1">{m.label}</div>
-                <div className="font-mono font-bold text-sm bg-black/20 rounded py-0.5" style={{ color: m.color }}>{m.val}</div>
+                <div className="font-mono font-bold text-sm bg-transparent dark:bg-black/20 rounded py-0.5" style={{ color: m.color }}>{m.val}</div>
               </div>
             ))}
           </div>
 
-          <div className="bg-slate-950 p-4 rounded-xl border border-white/5 shadow-inner text-xs space-y-1.5 mt-2">
-            <p className="text-slate-400 font-bold text-[10px] uppercase tracking-widest mb-1 border-b border-white/5 pb-1">Mathematical Relation</p>
+          <div className="bg-slate-950 p-4 rounded-xl border border-black/5 dark:border-white/5 shadow-inner text-xs space-y-1.5 mt-2">
+            <p className="text-slate-600 dark:text-slate-400 font-bold text-[10px] uppercase tracking-widest mb-1 border-b border-black/5 dark:border-white/5 pb-1">Mathematical Relation</p>
             <p className="font-mono text-violet-400 pt-1">R = (l² / 6h) + (h / 2)</p>
             <p className="font-mono text-violet-300">h = div × LC</p>
             <p className="font-mono text-slate-500 text-[9px] mt-1">l = 35 mm (distance between legs)</p>
@@ -239,24 +239,24 @@ const SpherometerLab: React.FC<Props> = ({ hex }) => {
 
           <div className="flex gap-2 pt-2">
             <button onClick={() => setReadings(prev => [...prev, { pitch, divisions, h, R }])}
-              className="flex-1 py-3 rounded-xl text-sm font-bold text-white transition-all active:scale-95 shadow-lg shadow-violet-600/20"
+              className="flex-1 py-3 rounded-xl text-sm font-bold text-slate-900 dark:text-slate-900 dark:text-white transition-all active:scale-95 shadow-lg shadow-violet-600/20"
               style={{ backgroundColor: hex }}>
               Log Reading
             </button>
             <button onClick={() => setReadings([])}
-              className="px-4 py-3 rounded-xl bg-slate-800 text-red-400 hover:bg-red-900/30 hover:text-red-300 transition-colors">
+              className="px-4 py-3 rounded-xl bg-slate-800 text-red-400 hover:bg-red-900/30 hover:text-red-600 dark:text-red-300 transition-colors">
               <RotateCcw size={16} />
             </button>
           </div>
 
           {readings.length > 0 && (
-            <div className="overflow-x-auto text-[10px] bg-slate-950 rounded-xl border border-white/5 mt-2">
+            <div className="overflow-x-auto text-[10px] bg-slate-950 rounded-xl border border-black/5 dark:border-white/5 mt-2">
               <table className="w-full border-collapse">
-                <thead><tr className="bg-slate-900/80 border-b border-white/10">
-                  {['#', 'div', 'h(mm)', 'R(mm)', ''].map(h => <th key={h} className="px-3 py-2 text-slate-400 text-left font-semibold">{h}</th>)}
+                <thead><tr className="bg-slate-900/80 border-b border-black/10 dark:border-white/10">
+                  {['#', 'div', 'h(mm)', 'R(mm)', ''].map(h => <th key={h} className="px-3 py-2 text-slate-600 dark:text-slate-400 text-left font-semibold">{h}</th>)}
                 </tr></thead>
                 <tbody>{readings.map((r, i) => (
-                  <tr key={i} className="border-b border-white/5 last:border-b-0 hover:bg-white/5 transition-colors">
+                  <tr key={i} className="border-b border-black/5 dark:border-white/5 last:border-b-0 hover:bg-black/5 dark:bg-white/5 transition-colors">
                     <td className="px-3 py-2 text-slate-500">{i + 1}</td>
                     <td className="px-3 py-2 font-mono text-yellow-500">{r.divisions}</td>
                     <td className="px-3 py-2 font-mono text-green-400">{r.h.toFixed(4)}</td>
@@ -270,7 +270,7 @@ const SpherometerLab: React.FC<Props> = ({ hex }) => {
                 ))}</tbody>
               </table>
               {readings.filter(r => r.R < 9999).length > 1 && (
-                <div className="p-2 border-t border-white/10 bg-black/40">
+                <div className="p-2 border-t border-black/10 dark:border-white/10 bg-black/40">
                    <p className="text-center font-mono text-xs text-violet-400 font-bold">
                      Mean R = {(readings.filter(r => r.R < 9999).reduce((a, b) => a + b.R, 0) / readings.filter(r => r.R < 9999).length).toFixed(2)} mm
                    </p>

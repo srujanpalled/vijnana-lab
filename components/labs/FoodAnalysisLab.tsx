@@ -179,7 +179,7 @@ const FoodAnalysisLab: React.FC<Props> = ({ hex }) => {
 
   return (
     <div className="flex flex-col md:flex-row h-full w-full bg-slate-950">
-      <div className="flex-1 relative rounded-2xl overflow-hidden m-4 border border-white/10 shadow-2xl">
+      <div className="flex-1 relative rounded-2xl overflow-hidden m-4 border border-black/10 dark:border-white/10 shadow-2xl">
         <Canvas camera={{ position: [0, 2, 6], fov: 50 }}>
           <Environment preset="apartment" />
           <ambientLight intensity={0.6} />
@@ -197,10 +197,10 @@ const FoodAnalysisLab: React.FC<Props> = ({ hex }) => {
           <OrbitControls enablePan={true} enableZoom={true} target={[0, 0, 0]} maxPolarAngle={Math.PI/2 - 0.05}/>
         </Canvas>
 
-        <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md border border-white/10 rounded-xl px-4 py-3 shadow-xl max-w-xs">
+        <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md border border-black/10 dark:border-white/10 rounded-xl px-4 py-3 shadow-xl max-w-xs">
           <p className="text-[10px] font-bold uppercase tracking-widest text-amber-400 mb-1">Chemistry Lab — c13</p>
-          <p className="text-white font-bold text-sm">3D Food Chemical Analysis</p>
-          <p className="text-xs text-slate-400 mt-1">Select a food sample and drip specific reagents to observe chemical color changes indicative of macro-nutrients.</p>
+          <p className="text-slate-900 dark:text-slate-900 dark:text-white font-bold text-sm">3D Food Chemical Analysis</p>
+          <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">Select a food sample and drip specific reagents to observe chemical color changes indicative of macro-nutrients.</p>
         </div>
 
         {/* Floating results UI for active test */}
@@ -209,19 +209,19 @@ const FoodAnalysisLab: React.FC<Props> = ({ hex }) => {
              <p className={`font-bold text-sm ${selectedSample.tests[selectedTest].positive ? 'text-green-400' : 'text-red-400'}`}>
                 {selectedSample.tests[selectedTest].reagent} Test: {selectedSample.tests[selectedTest].positive ? 'Positive' : 'Negative'}
              </p>
-             <p className="text-white text-xs mt-1 text-center">{selectedSample.tests[selectedTest].result}</p>
+             <p className="text-slate-900 dark:text-slate-900 dark:text-white text-xs mt-1 text-center">{selectedSample.tests[selectedTest].result}</p>
           </div>
         )}
       </div>
 
-      <div className="w-full md:w-80 bg-slate-900 border-l border-white/5 flex flex-col z-10">
-        <div className="p-5 border-b border-white/5">
-           <h2 className="text-lg font-black text-white">Analysis Controls</h2>
+      <div className="w-full md:w-80 bg-slate-900 border-l border-black/5 dark:border-white/5 flex flex-col z-10">
+        <div className="p-5 border-b border-black/5 dark:border-white/5">
+           <h2 className="text-lg font-black text-slate-900 dark:text-slate-900 dark:text-white">Analysis Controls</h2>
         </div>
         <div className="flex-1 p-5 space-y-5 overflow-y-auto">
           
           <div>
-            <p className="text-[10px] text-slate-400 uppercase font-bold tracking-widest mb-2">1. Select Food Sample</p>
+            <p className="text-[10px] text-slate-600 dark:text-slate-400 uppercase font-bold tracking-widest mb-2">1. Select Food Sample</p>
             <div className="grid grid-cols-2 gap-2">
               {FOOD_SAMPLES.map(s => (
                 <button key={s.id} onClick={() => { setSelectedSample(s); setSelectedTest(null); setTestedIndices([]); setProgress(0); }}
@@ -233,7 +233,7 @@ const FoodAnalysisLab: React.FC<Props> = ({ hex }) => {
           </div>
 
           <div>
-            <p className="text-[10px] text-slate-400 uppercase font-bold tracking-widest mb-2 border-t border-white/5 pt-4">2. Administer Reagent Tests</p>
+            <p className="text-[10px] text-slate-600 dark:text-slate-400 uppercase font-bold tracking-widest mb-2 border-t border-black/5 dark:border-white/5 pt-4">2. Administer Reagent Tests</p>
             <div className="space-y-2">
               {selectedSample.tests.map((test, i) => {
                 const isTesting = selectedTest === i && progress < 1;
@@ -250,7 +250,7 @@ const FoodAnalysisLab: React.FC<Props> = ({ hex }) => {
                       <span className={`font-bold text-sm ${isTesting ? 'text-blue-300' : 'text-white'}`}>{test.reagent} Reagent</span>
                       {isDone && <span className={`text-xs font-bold px-2 py-1 rounded bg-black/40 ${test.positive ? 'text-green-400' : 'text-red-400'}`}>{test.positive ? '✓ Pos' : '✗ Neg'}</span>}
                       {isTesting && <span className="text-xs font-bold text-blue-400 animate-pulse">Testing...</span>}
-                      {!isDone && !isTesting && <span className="text-[10px] text-slate-500 bg-white/10 px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">Run Test →</span>}
+                      {!isDone && !isTesting && <span className="text-[10px] text-slate-500 bg-black/10 dark:bg-white/10 px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">Run Test →</span>}
                     </div>
                   </button>
                 )

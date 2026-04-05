@@ -142,34 +142,34 @@ const UnitCircleLab: React.FC<UnitCircleLabProps> = ({ hex }) => {
   return (
     <div className="flex flex-col md:flex-row h-full w-full bg-slate-950">
       <div className="flex-1 flex items-center justify-center p-4 flex-col gap-3">
-        <canvas ref={canvasRef} width={370} height={340} className="rounded-2xl border border-white/10 shadow-2xl cursor-crosshair"
+        <canvas ref={canvasRef} width={370} height={340} className="rounded-2xl border border-black/10 dark:border-white/10 shadow-2xl cursor-crosshair"
           onMouseDown={handleMouseDown} onMouseMove={handleMouseMove} onMouseUp={handleMouseUp} onMouseLeave={handleMouseUp} />
         <div className="flex gap-3 flex-wrap justify-center">
           <button onClick={() => setAutoRotate(!autoRotate)} className={`px-4 py-2 rounded-xl text-sm font-bold text-white transition-all ${autoRotate ? 'bg-red-600 hover:bg-red-500' : 'bg-blue-600 hover:bg-blue-500'}`}>
             {autoRotate ? '⏸ Stop' : '▶ Rotate'}
           </button>
           {[0, 30, 45, 60, 90, 180, 270].map(d => (
-            <button key={d} onClick={() => setAngle(d * Math.PI / 180)} className="px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-bold">
+            <button key={d} onClick={() => setAngle(d * Math.PI / 180)} className="px-3 py-1.5 bg-black/10 dark:bg-white/10 hover:bg-black/20 dark:bg-white/20 text-slate-900 dark:text-white rounded-xl text-xs font-bold">
               {d}°
             </button>
           ))}
         </div>
       </div>
-      <div className="w-full md:w-72 bg-slate-900 border-l border-white/5 flex flex-col">
-        <div className="p-5 border-b border-white/5">
+      <div className="w-full md:w-72 bg-slate-900 border-l border-black/5 dark:border-white/5 flex flex-col">
+        <div className="p-5 border-b border-black/5 dark:border-white/5">
           <p className="text-xs font-bold uppercase tracking-widest text-orange-400 mb-1">Math Lab — Unit Circle</p>
-          <h2 className="text-xl font-bold text-white">{STEPS[Math.min(step, STEPS.length-1)].title}</h2>
+          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-900 dark:text-white">{STEPS[Math.min(step, STEPS.length-1)].title}</h2>
         </div>
         <div className="flex-1 p-5 space-y-4 overflow-y-auto">
           <div className="bg-orange-500/10 border border-orange-500/30 p-4 rounded-xl">
             <p className="text-orange-200 text-sm">{STEPS[Math.min(step, STEPS.length-1)].instruction}</p>
           </div>
-          <div className="bg-white/5 p-4 rounded-xl border border-white/10 space-y-2 font-mono text-sm">
-            <div className="flex justify-between"><span className="text-gray-400">θ</span><span className="text-yellow-300">{deg.toFixed(1)}° ({angle.toFixed(3)} rad)</span></div>
-            <div className="flex justify-between"><span className="text-green-400">sin θ</span><span className="text-white">{sinVal.toFixed(4)}</span></div>
-            <div className="flex justify-between"><span style={{ color: '#f97316' }}>cos θ</span><span className="text-white">{cosVal.toFixed(4)}</span></div>
-            <div className="flex justify-between"><span className="text-purple-400">tan θ</span><span className="text-white">{Math.abs(tanVal) > 999 ? '∞' : tanVal.toFixed(4)}</span></div>
-            <div className="flex justify-between border-t border-white/10 pt-2"><span className="text-gray-400">sin²+cos²</span><span className="text-green-400 font-bold">{(sinVal**2 + cosVal**2).toFixed(6)}</span></div>
+          <div className="bg-black/5 dark:bg-white/5 p-4 rounded-xl border border-black/10 dark:border-white/10 space-y-2 font-mono text-sm">
+            <div className="flex justify-between"><span className="text-gray-600 dark:text-gray-400">θ</span><span className="text-yellow-300">{deg.toFixed(1)}° ({angle.toFixed(3)} rad)</span></div>
+            <div className="flex justify-between"><span className="text-green-400">sin θ</span><span className="text-slate-900 dark:text-slate-900 dark:text-white">{sinVal.toFixed(4)}</span></div>
+            <div className="flex justify-between"><span style={{ color: '#f97316' }}>cos θ</span><span className="text-slate-900 dark:text-slate-900 dark:text-white">{cosVal.toFixed(4)}</span></div>
+            <div className="flex justify-between"><span className="text-purple-400">tan θ</span><span className="text-slate-900 dark:text-slate-900 dark:text-white">{Math.abs(tanVal) > 999 ? '∞' : tanVal.toFixed(4)}</span></div>
+            <div className="flex justify-between border-t border-black/10 dark:border-white/10 pt-2"><span className="text-gray-600 dark:text-gray-400">sin²+cos²</span><span className="text-green-400 font-bold">{(sinVal**2 + cosVal**2).toFixed(6)}</span></div>
           </div>
           {step < STEPS.length - 1 ? (
             <button onClick={() => setStep(s => Math.min(s + 1, STEPS.length - 1))} className="w-full py-3 rounded-xl font-bold text-white bg-orange-700 hover:bg-orange-600 transition-all active:scale-95">
@@ -179,7 +179,7 @@ const UnitCircleLab: React.FC<UnitCircleLabProps> = ({ hex }) => {
             <button onClick={() => setCompleted(true)} className="w-full py-3 rounded-xl font-bold text-white bg-green-700 hover:bg-green-600 transition-all active:scale-95">✅ Complete</button>
           )}
           {completed && <div className="text-center"><CheckCircle size={28} className="mx-auto text-green-400 mb-1" /><p className="text-green-400 font-bold text-sm">Unit Circle Mastered!</p></div>}
-          <button onClick={reset} className="w-full py-2 rounded-xl text-gray-500 hover:bg-white/5 text-sm flex items-center justify-center gap-1"><RotateCcw size={12} /> Reset</button>
+          <button onClick={reset} className="w-full py-2 rounded-xl text-gray-500 hover:bg-black/5 dark:bg-white/5 text-sm flex items-center justify-center gap-1"><RotateCcw size={12} /> Reset</button>
           <div className="flex gap-1">
             {STEPS.map((_, idx) => <div key={idx} className="flex-1 h-1.5 rounded-full" style={{ backgroundColor: idx <= step ? '#f97316' : 'rgba(255,255,255,0.1)' }} />)}
           </div>

@@ -148,7 +148,7 @@ const RateOfReactionLab: React.FC<Props> = ({ hex }) => {
 
   return (
     <div className="flex flex-col md:flex-row h-full w-full bg-slate-950">
-      <div className="flex-1 relative rounded-2xl overflow-hidden m-4 border border-white/10 shadow-2xl">
+      <div className="flex-1 relative rounded-2xl overflow-hidden m-4 border border-black/10 dark:border-white/10 shadow-2xl">
         <Canvas camera={{ position: [0, 4, 6], fov: 60 }}>
           <Environment preset="apartment" />
           <ambientLight intensity={0.6} />
@@ -165,21 +165,21 @@ const RateOfReactionLab: React.FC<Props> = ({ hex }) => {
         {completed && (
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black/60 backdrop-blur-md rounded-2xl p-6 border border-yellow-500/50 flex flex-col items-center">
              <div className="text-4xl mb-2 text-yellow-300">🎯</div>
-             <p className="font-bold text-white text-lg">Cross Obscured!</p>
+             <p className="font-bold text-slate-900 dark:text-slate-900 dark:text-white text-lg">Cross Obscured!</p>
              <p className="text-yellow-300 text-sm">Reaction Time: {elapsed.toFixed(1)}s</p>
           </div>
         )}
 
-        <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md border border-white/10 rounded-xl px-4 py-3 shadow-xl max-w-xs">
+        <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md border border-black/10 dark:border-white/10 rounded-xl px-4 py-3 shadow-xl max-w-xs">
           <p className="text-[10px] font-bold uppercase tracking-widest text-yellow-400 mb-1">Chemistry Lab — c9</p>
-          <p className="text-white font-bold text-sm">3D Rate of Reaction</p>
-          <p className="text-xs text-slate-400 mt-1">Orbit the camera directly above the flask. Wait until the yellow sulfur cloud hides the black cross entirely.</p>
+          <p className="text-slate-900 dark:text-slate-900 dark:text-white font-bold text-sm">3D Rate of Reaction</p>
+          <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">Orbit the camera directly above the flask. Wait until the yellow sulfur cloud hides the black cross entirely.</p>
         </div>
       </div>
 
-      <div className="w-full md:w-72 bg-slate-900 border-l border-white/5 flex flex-col z-10">
-        <div className="p-5 border-b border-white/5">
-           <h2 className="text-lg font-black text-white">Controls</h2>
+      <div className="w-full md:w-72 bg-slate-900 border-l border-black/5 dark:border-white/5 flex flex-col z-10">
+        <div className="p-5 border-b border-black/5 dark:border-white/5">
+           <h2 className="text-lg font-black text-slate-900 dark:text-slate-900 dark:text-white">Controls</h2>
         </div>
         <div className="flex-1 p-5 space-y-4 overflow-y-auto">
           <div className={`p-3 rounded-xl border shadow-inner transition-colors duration-500 ${completed ? 'bg-green-500/10 border-green-500/30' : 'bg-yellow-500/10 border-yellow-500/30'}`}>
@@ -198,16 +198,16 @@ const RateOfReactionLab: React.FC<Props> = ({ hex }) => {
               { label: 'Expected t', val: `${timeUntilCloud.toFixed(1)}s`, color: '#60a5fa' },
               { label: 'Elapsed', val: `${elapsed.toFixed(1)}s`, color: completed ? '#10b981' : '#f87171' },
             ].map(m => (
-              <div key={m.label} className="bg-slate-950/50 border border-white/5 rounded-xl p-2.5 text-center shadow-sm">
+              <div key={m.label} className="bg-slate-950/50 border border-black/5 dark:border-white/5 rounded-xl p-2.5 text-center shadow-sm">
                 <div className="text-[9px] text-slate-500 uppercase font-bold tracking-wider mb-1">{m.label}</div>
-                <div className="font-mono font-bold text-sm bg-black/20 rounded py-0.5" style={{ color: m.color }}>{m.val}</div>
+                <div className="font-mono font-bold text-sm bg-transparent dark:bg-black/20 rounded py-0.5" style={{ color: m.color }}>{m.val}</div>
               </div>
             ))}
           </div>
 
-          <div className="bg-slate-950 p-4 rounded-xl border border-white/5 shadow-inner text-xs space-y-1.5 mt-2">
-            <p className="text-slate-400 font-bold text-[10px] uppercase tracking-widest mb-1 border-b border-white/5 pb-1">Arrhenius Equation</p>
-            <p className="font-mono text-yellow-400 pt-1">k = A e^<span className="text-[10px] text-slate-400">(-Ea/RT)</span></p>
+          <div className="bg-slate-950 p-4 rounded-xl border border-black/5 dark:border-white/5 shadow-inner text-xs space-y-1.5 mt-2">
+            <p className="text-slate-600 dark:text-slate-400 font-bold text-[10px] uppercase tracking-widest mb-1 border-b border-black/5 dark:border-white/5 pb-1">Arrhenius Equation</p>
+            <p className="font-mono text-yellow-400 pt-1">k = A e^<span className="text-[10px] text-slate-600 dark:text-slate-400">(-Ea/RT)</span></p>
             <p className="font-mono text-yellow-300">Rate = k[Na₂S₂O₃]</p>
             <p className="font-mono text-slate-500 text-[9px] mt-1">t ∝ 1/Rate</p>
           </div>
@@ -225,20 +225,20 @@ const RateOfReactionLab: React.FC<Props> = ({ hex }) => {
 
           {completed && (
             <button onClick={logReading}
-              className="w-full py-3 rounded-xl text-xs font-bold text-white transition-all active:scale-95 shadow-md"
+              className="w-full py-3 rounded-xl text-xs font-bold text-slate-900 dark:text-slate-900 dark:text-white transition-all active:scale-95 shadow-md"
               style={{ backgroundColor: hex }}>
               + Log Reading
             </button>
           )}
 
           {readings.length > 0 && (
-            <div className="overflow-x-auto text-[10px] bg-slate-950 rounded-xl border border-white/5 mt-2">
+            <div className="overflow-x-auto text-[10px] bg-slate-950 rounded-xl border border-black/5 dark:border-white/5 mt-2">
               <table className="w-full border-collapse">
-                <thead><tr className="bg-slate-900/80 border-b border-white/10">
-                  {['#', '[C] M', 'T °C', 't(s)', ''].map(h => <th key={h} className="px-3 py-2 text-slate-400 text-left font-semibold">{h}</th>)}
+                <thead><tr className="bg-slate-900/80 border-b border-black/10 dark:border-white/10">
+                  {['#', '[C] M', 'T °C', 't(s)', ''].map(h => <th key={h} className="px-3 py-2 text-slate-600 dark:text-slate-400 text-left font-semibold">{h}</th>)}
                 </tr></thead>
                 <tbody>{readings.map((r, i) => (
-                  <tr key={i} className="border-b border-white/5 last:border-b-0 hover:bg-white/5 transition-colors">
+                  <tr key={i} className="border-b border-black/5 dark:border-white/5 last:border-b-0 hover:bg-black/5 dark:bg-white/5 transition-colors">
                     <td className="px-3 py-2 text-slate-500">{i + 1}</td>
                     <td className="px-3 py-2 font-mono text-yellow-500">{r.conc.toFixed(2)}</td>
                     <td className="px-3 py-2 font-mono text-red-400">{r.temp}</td>

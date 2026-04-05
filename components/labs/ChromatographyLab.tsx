@@ -157,7 +157,7 @@ const ChromatographyLab: React.FC<Props> = ({ hex }) => {
 
   return (
     <div className="flex flex-col md:flex-row h-full w-full bg-slate-950">
-      <div className="flex-1 relative rounded-2xl overflow-hidden m-4 border border-white/10 shadow-2xl">
+      <div className="flex-1 relative rounded-2xl overflow-hidden m-4 border border-black/10 dark:border-white/10 shadow-2xl">
         <Canvas camera={{ position: [0, -0.5, 6], fov: 60 }}>
           <Environment preset="apartment" />
           <ambientLight intensity={0.8} />
@@ -170,16 +170,16 @@ const ChromatographyLab: React.FC<Props> = ({ hex }) => {
           <OrbitControls enablePan={true} enableZoom={true} target={[0, -0.5, 0]} />
         </Canvas>
 
-        <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md border border-white/10 rounded-xl px-4 py-3 shadow-xl max-w-xs transition-colors">
+        <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md border border-black/10 dark:border-white/10 rounded-xl px-4 py-3 shadow-xl max-w-xs transition-colors">
           <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-400 mb-1">Biology Lab — b08</p>
-          <p className="text-white font-bold text-sm">3D Paper Chromatography</p>
-          <p className="text-xs text-slate-400 mt-1">Separate photosynthetic pigments via capillary action.</p>
+          <p className="text-slate-900 dark:text-slate-900 dark:text-white font-bold text-sm">3D Paper Chromatography</p>
+          <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">Separate photosynthetic pigments via capillary action.</p>
         </div>
       </div>
 
-      <div className="w-full md:w-80 bg-slate-900 border-l border-white/5 flex flex-col z-10">
-        <div className="p-5 border-b border-white/5">
-           <h2 className="text-lg font-black text-white">Chromatography</h2>
+      <div className="w-full md:w-80 bg-slate-900 border-l border-black/5 dark:border-white/5 flex flex-col z-10">
+        <div className="p-5 border-b border-black/5 dark:border-white/5">
+           <h2 className="text-lg font-black text-slate-900 dark:text-slate-900 dark:text-white">Chromatography</h2>
            <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-400 mt-1">Procedure Phase {step + 1}</p>
         </div>
         <div className="flex-1 p-5 space-y-5 overflow-y-auto">
@@ -187,8 +187,8 @@ const ChromatographyLab: React.FC<Props> = ({ hex }) => {
           {completed ? (
             <div className="text-center py-4 animate-in fade-in zoom-in duration-500">
               <CheckCircle size={56} className="mx-auto mb-4 text-emerald-400 drop-shadow-[0_0_15px_rgba(52,211,153,0.5)]" />
-              <h3 className="text-xl font-bold text-white mb-2">Resolution Complete! 🌈</h3>
-              <p className="text-slate-400 text-xs mb-6 px-4">All 4 pigments extracted from the spinach leaf have been successfully separated by weight and solubility.</p>
+              <h3 className="text-xl font-bold text-slate-900 dark:text-slate-900 dark:text-white mb-2">Resolution Complete! 🌈</h3>
+              <p className="text-slate-600 dark:text-slate-400 text-xs mb-6 px-4">All 4 pigments extracted from the spinach leaf have been successfully separated by weight and solubility.</p>
               <button onClick={reset} className="w-full py-3 rounded-xl bg-slate-800 text-white font-bold hover:bg-slate-700 transition-all flex items-center justify-center gap-2 shadow-md hover:text-red-400 hover:bg-red-900/20">
                 <RotateCcw size={16} /> Reset Lab
               </button>
@@ -201,10 +201,10 @@ const ChromatographyLab: React.FC<Props> = ({ hex }) => {
               </div>
 
               {running && (
-                <div className="bg-slate-950 border border-white/10 rounded-xl p-4 shadow-inner">
+                <div className="bg-slate-950 border border-black/10 dark:border-white/10 rounded-xl p-4 shadow-inner">
                   <div className="flex justify-between items-center mb-2">
                     <p className="text-blue-400 text-[10px] font-bold uppercase tracking-widest animate-pulse">🧪 Capillary Elution Active</p>
-                    <span className="text-xs font-mono font-bold text-blue-300">{Math.round(progress * 100)}%</span>
+                    <span className="text-xs font-mono font-bold text-blue-600 dark:text-blue-300">{Math.round(progress * 100)}%</span>
                   </div>
                   <div className="h-2.5 bg-slate-800 rounded-full overflow-hidden">
                     <div className="h-full rounded-full bg-gradient-to-r from-blue-600 to-cyan-400" style={{ width: `${progress * 100}%` }} />
@@ -215,18 +215,18 @@ const ChromatographyLab: React.FC<Props> = ({ hex }) => {
 
               {step >= 4 && (
                 <div className="space-y-2">
-                  <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest border-b border-white/5 pb-1 mb-2">Pigment Analysis (Rf)</p>
+                  <p className="text-[10px] text-slate-600 dark:text-slate-400 font-bold uppercase tracking-widest border-b border-black/5 dark:border-white/5 pb-1 mb-2">Pigment Analysis (Rf)</p>
                   {PIGMENTS.map((p, i) => (
                     <button key={p.name} onClick={() => setSelectedPigment(i === selectedPigment ? null : i)}
                       className={`w-full flex items-center gap-3 p-3 rounded-xl transition-all border ${selectedPigment === i ? 'bg-white/10' : 'bg-slate-950 hover:bg-slate-800'}`}
                       style={{ borderColor: selectedPigment === i ? p.color : 'rgba(255,255,255,0.05)' }}>
                       <div className="w-5 h-5 rounded-full flex-shrink-0 shadow-inner" style={{ backgroundColor: p.color }} />
                       <div className="text-left flex-1">
-                        <div className="flex justify-between items-center text-white font-bold text-xs">
+                        <div className="flex justify-between items-center text-slate-900 dark:text-slate-900 dark:text-white font-bold text-xs">
                           {p.name}
                           <span className="font-mono">{p.rf}</span>
                         </div>
-                        {selectedPigment === i && <p className="text-[10px] text-slate-300 mt-1.5 leading-tight">{p.description}</p>}
+                        {selectedPigment === i && <p className="text-[10px] text-slate-700 dark:text-slate-700 dark:text-slate-300 mt-1.5 leading-tight">{p.description}</p>}
                       </div>
                     </button>
                   ))}

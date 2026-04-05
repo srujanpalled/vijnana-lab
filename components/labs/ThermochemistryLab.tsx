@@ -22,11 +22,13 @@ const HeatParticles = ({ active }: { active: boolean }) => {
   useFrame(({ clock }) => {
     if (tRef.current && active) {
        tRef.current.children.forEach((p: any, i: number) => {
-          const phase = (clock.elapsedTime * 0.5 + i * 0.1) % 1;
-          p.position.y = -0.5 + phase * 2;
-          p.position.x = Math.cos(clock.elapsedTime * 2 + i) * 0.4;
-           p.position.z = Math.sin(clock.elapsedTime * 2 + i) * 0.4;
-          p.material.opacity = Math.max(0, 1 - phase * 1.5);
+          const phase = (clock.elapsedTime * 0.8 + i * 0.1) % 1;
+          p.position.y = -0.5 + phase * 2.5;
+          // Swirling convection
+           p.position.x = Math.cos(clock.elapsedTime * 3 + i) * (0.8 - phase * 0.5);
+           p.position.z = Math.sin(clock.elapsedTime * 3 + i) * (0.8 - phase * 0.5);
+          p.scale.setScalar(Math.max(0, 1 - phase));
+          p.material.opacity = Math.max(0, (1 - phase) * 0.8);
        });
     }
   });
@@ -34,11 +36,11 @@ const HeatParticles = ({ active }: { active: boolean }) => {
   if (!active) return null;
 
   return (
-    <group ref={tRef} position={[0, 0, 0]}>
-       {Array.from({length: 15}).map((_, i) => (
+    <group ref={tRef} position={[0, -0.5, 0]}>
+       {Array.from({length: 30}).map((_, i) => (
          <mesh key={i}>
-            <sphereGeometry args={[0.04]} />
-            <meshBasicMaterial color="#ef4444" transparent opacity={0} />
+            <sphereGeometry args={[0.06, 8, 8]} />
+            <meshBasicMaterial color={i % 2 === 0 ? "#ff5500" : "#ffaa00"} transparent opacity={0} blending={THREE.AdditiveBlending} />
          </mesh>
        ))}
     </group>
@@ -46,13 +48,40 @@ const HeatParticles = ({ active }: { active: boolean }) => {
 };
 
 const CalorimeterScene = ({ step, mixed, mixAnim, currentTemp, tMax, t1, t2 }: any) => {
-  const pourRef = useRef<THREE.Group>(null);
-  const cup2Ref = useRef<THREE.Mesh>(null);
+  const cup2Ref = useRef<THREE.Group>(null);
+  
+  const curve = React.useMemo(() => {
+     return new THREE.QuadraticBezierCurve3(
+        new THREE.Vector3(1, 1.25, 0),
+        new THREE.Vector3(0.5, 1.35, 0),
+        new THREE.Vector3(0, -0.5, 0)
+     );
+  }, []);
   
   useFrame(() => {
     if (cup2Ref.current) {
-       cup2Ref.current.position.set(2, 0.5 + (mixed ? (1-mixAnim)*1.5 : 0), 0);
-       cup2Ref.current.rotation.z = mixed ? (mixAnim < 0.2 ? (-mixAnim/0.2)*Math.PI/3 : (mixAnim > 0.8 ? -(1-mixAnim)/0.2 * Math.PI/3 : -Math.PI/3)) : 0;
+       let px = 1.7, py = 1.0;
+       let rotZ = 0;
+
+       if (mixed) {
+           if (mixAnim <= 0.2) {
+               const p = mixAnim / 0.2;
+               px = THREE.MathUtils.lerp(1.7, 1.0, p);
+               py = THREE.MathUtils.lerp(1.0, 1.25, p);
+               rotZ = THREE.MathUtils.lerp(0, Math.PI / 3, p);
+           } else if (mixAnim >= 0.8) {
+               const p = (mixAnim - 0.8) / 0.2;
+               px = THREE.MathUtils.lerp(1.0, 1.7, p);
+               py = THREE.MathUtils.lerp(1.25, 1.0, p);
+               rotZ = THREE.MathUtils.lerp(Math.PI / 3, 0, p);
+           } else {
+               px = 1.0;
+               py = 1.25;
+               rotZ = Math.PI / 3;
+           }
+       }
+       cup2Ref.current.position.set(px, py, 0);
+       cup2Ref.current.rotation.z = rotZ;
     }
   });
 
@@ -105,27 +134,34 @@ const CalorimeterScene = ({ step, mixed, mixAnim, currentTemp, tMax, t1, t2 }: a
 
        {/* Second Beaker (NaOH) */}
        {step >= 2 && (
-         <mesh ref={cup2Ref}>
-            {/* Beaker Glass */}
-            <cylinderGeometry args={[0.8, 0.8, 1.5, 32, 1, true]} />
-            {glassMat}
-            <mesh position={[0, -0.75, 0]}><cylinderGeometry args={[0.8, 0.8, 0.1, 32]} />{glassMat}</mesh>
-            
-            {/* NaOH Liquid inside beaker */}
-            {(!mixed || mixAnim < 0.8) && (
-               <mesh position={[0, -0.75 + (0.5 * (1-mixAnim)), 0]}>
-                 <cylinderGeometry args={[0.75, 0.75, 1 * (1-mixAnim), 32]} />
-                 <meshPhysicalMaterial transmission={0.8} color="#d8b4fe" roughness={0.1} transparent opacity={0.6} />
-               </mesh>
-            )}
-         </mesh>
+         <group ref={cup2Ref}>
+           <group position={[0.8, -0.75, 0]}>
+             {/* Beaker Glass */}
+             <mesh>
+               <cylinderGeometry args={[0.8, 0.8, 1.5, 32, 1, true]} />
+               {glassMat}
+             </mesh>
+             <mesh position={[0, -0.75, 0]}>
+               <cylinderGeometry args={[0.8, 0.8, 0.1, 32]} />
+               {glassMat}
+             </mesh>
+             
+             {/* NaOH Liquid inside beaker */}
+             {(!mixed || mixAnim < 0.8) && (
+                <mesh position={[0, -0.75 + (0.5 * (1-mixAnim)), 0]}>
+                  <cylinderGeometry args={[0.75, 0.75, 1 * (1-mixAnim), 32]} />
+                  <meshPhysicalMaterial transmission={0.8} color="#d8b4fe" roughness={0.1} transparent opacity={0.6} />
+                </mesh>
+             )}
+           </group>
+         </group>
        )}
 
-       {/* Pouring Stream */}
-       {mixed && mixAnim > 0.1 && mixAnim < 0.9 && (
-          <mesh position={[1, 1, 0]} rotation={[0, 0, Math.PI/4]}>
-             <cylinderGeometry args={[0.08, 0.05, 2.5]} />
-             <meshPhysicalMaterial transmission={0.8} color="#d8b4fe" roughness={0.1} />
+       {/* Pouring Stream (Bezier) */}
+       {mixed && mixAnim > 0.15 && mixAnim < 0.85 && (
+          <mesh>
+             <tubeGeometry args={[curve, 20, 0.05, 8, false]} />
+             <meshPhysicalMaterial transmission={0.9} color="#d8b4fe" roughness={0.0} ior={1.33} />
           </mesh>
        )}
 
@@ -184,7 +220,7 @@ const ThermochemistryLab: React.FC<Props> = ({ hex }) => {
 
   return (
     <div className="flex flex-col md:flex-row h-full w-full bg-slate-950">
-      <div className="flex-1 relative rounded-2xl overflow-hidden m-4 border border-white/10 shadow-2xl">
+      <div className="flex-1 relative rounded-2xl overflow-hidden m-4 border border-black/10 dark:border-white/10 shadow-2xl">
         <Canvas camera={{ position: [0, 1, 6], fov: 60 }}>
           <Environment preset="apartment" />
           <ambientLight intensity={0.6} />
@@ -197,16 +233,16 @@ const ThermochemistryLab: React.FC<Props> = ({ hex }) => {
           <OrbitControls enablePan={true} enableZoom={true} target={[0, 0, 0]} />
         </Canvas>
 
-        <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md border border-white/10 rounded-xl px-4 py-3 shadow-xl max-w-xs transition-colors">
+        <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md border border-black/10 dark:border-white/10 rounded-xl px-4 py-3 shadow-xl max-w-xs transition-colors">
           <p className="text-[10px] font-bold uppercase tracking-widest text-red-500 mb-1">Chemistry Lab — c08</p>
-          <p className="text-white font-bold text-sm">3D Thermochemistry</p>
-          <p className="text-xs text-slate-400 mt-1">Determine the enthalpy of neutralization for HCl and NaOH.</p>
+          <p className="text-slate-900 dark:text-slate-900 dark:text-white font-bold text-sm">3D Thermochemistry</p>
+          <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">Determine the enthalpy of neutralization for HCl and NaOH.</p>
         </div>
       </div>
 
-      <div className="w-full md:w-80 bg-slate-900 border-l border-white/5 flex flex-col z-10">
-        <div className="p-5 border-b border-white/5">
-           <h2 className="text-lg font-black text-white">Calorimetry</h2>
+      <div className="w-full md:w-80 bg-slate-900 border-l border-black/5 dark:border-white/5 flex flex-col z-10">
+        <div className="p-5 border-b border-black/5 dark:border-white/5">
+           <h2 className="text-lg font-black text-slate-900 dark:text-slate-900 dark:text-white">Calorimetry</h2>
            <p className="text-[10px] font-bold uppercase tracking-widest text-red-400 mt-1">Step {step + 1} of {STEPS.length}</p>
         </div>
         <div className="flex-1 p-5 space-y-5 overflow-y-auto">
@@ -214,15 +250,15 @@ const ThermochemistryLab: React.FC<Props> = ({ hex }) => {
           {completed ? (
             <div className="text-center py-4 animate-in fade-in zoom-in duration-500">
               <CheckCircle size={56} className="mx-auto mb-4 text-green-400 drop-shadow-[0_0_15px_rgba(74,222,128,0.5)]" />
-              <h3 className="text-xl font-bold text-white mb-2">ΔH Calculated! 🔥</h3>
+              <h3 className="text-xl font-bold text-slate-900 dark:text-slate-900 dark:text-white mb-2">ΔH Calculated! 🔥</h3>
               
-              <div className="bg-slate-950 border border-white/10 p-4 rounded-xl text-left space-y-2.5 mb-6 shadow-inner text-xs">
-                <div className="flex justify-between border-b border-white/5 pb-1"><span className="text-slate-400">T₁ (HCl)</span><span className="text-white font-mono">{t1.toFixed(1)} °C</span></div>
-                <div className="flex justify-between border-b border-white/5 pb-1"><span className="text-slate-400">T₂ (NaOH)</span><span className="text-white font-mono">{t2.toFixed(1)} °C</span></div>
-                <div className="flex justify-between border-b border-white/5 pb-1"><span className="text-slate-400 font-bold text-red-300">Tₘₐₓ</span><span className="text-red-400 font-mono font-bold">{currentTemp.toFixed(1)} °C</span></div>
-                <div className="flex justify-between border-b border-white/5 pb-1"><span className="text-slate-400">ΔT (Rise)</span><span className="text-orange-400 font-mono">+{deltaT.toFixed(1)} °C</span></div>
-                <div className="flex justify-between border-b border-white/5 pb-1"><span className="text-slate-400">Heat evolving (Q)</span><span className="text-yellow-400 font-mono">{Q} kJ</span></div>
-                <div className="flex justify-between pt-1"><span className="text-slate-300 font-bold uppercase">Enthalpy ΔH</span><span className="text-red-400 font-mono font-bold drop-shadow-[0_0_5px_rgba(248,113,113,0.5)]">{deltaH} kJ/mol</span></div>
+              <div className="bg-slate-950 border border-black/10 dark:border-white/10 p-4 rounded-xl text-left space-y-2.5 mb-6 shadow-inner text-xs">
+                <div className="flex justify-between border-b border-black/5 dark:border-white/5 pb-1"><span className="text-slate-600 dark:text-slate-400">T₁ (HCl)</span><span className="text-slate-900 dark:text-slate-900 dark:text-white font-mono">{t1.toFixed(1)} °C</span></div>
+                <div className="flex justify-between border-b border-black/5 dark:border-white/5 pb-1"><span className="text-slate-600 dark:text-slate-400">T₂ (NaOH)</span><span className="text-slate-900 dark:text-slate-900 dark:text-white font-mono">{t2.toFixed(1)} °C</span></div>
+                <div className="flex justify-between border-b border-black/5 dark:border-white/5 pb-1"><span className="text-slate-600 dark:text-slate-400 font-bold text-red-600 dark:text-red-300">Tₘₐₓ</span><span className="text-red-400 font-mono font-bold">{currentTemp.toFixed(1)} °C</span></div>
+                <div className="flex justify-between border-b border-black/5 dark:border-white/5 pb-1"><span className="text-slate-600 dark:text-slate-400">ΔT (Rise)</span><span className="text-orange-400 font-mono">+{deltaT.toFixed(1)} °C</span></div>
+                <div className="flex justify-between border-b border-black/5 dark:border-white/5 pb-1"><span className="text-slate-600 dark:text-slate-400">Heat evolving (Q)</span><span className="text-yellow-400 font-mono">{Q} kJ</span></div>
+                <div className="flex justify-between pt-1"><span className="text-slate-700 dark:text-slate-700 dark:text-slate-300 font-bold uppercase">Enthalpy ΔH</span><span className="text-red-400 font-mono font-bold drop-shadow-[0_0_5px_rgba(248,113,113,0.5)]">{deltaH} kJ/mol</span></div>
                 <p className="text-[9px] text-slate-500 text-center uppercase tracking-widest pt-2">Standard ΔH = −57.1 kJ/mol</p>
               </div>
 
@@ -233,12 +269,12 @@ const ThermochemistryLab: React.FC<Props> = ({ hex }) => {
           ) : (
             <>
               <div className="bg-red-500/10 border border-red-500/30 p-4 rounded-xl shadow-inner transition-colors duration-500">
-                <p className="text-red-300 text-sm font-bold mb-1">{current.title}</p>
+                <p className="text-red-600 dark:text-red-300 text-sm font-bold mb-1">{current.title}</p>
                 <p className="text-red-200/80 text-xs leading-relaxed">{current.instruction}</p>
               </div>
 
               {step >= 1 && step < 4 && (
-                <div className="bg-black/20 p-4 rounded-xl border border-white/10 space-y-4">
+                <div className="bg-transparent dark:bg-black/20 p-4 rounded-xl border border-black/10 dark:border-white/10 space-y-4">
                   <div className={step === 1 ? 'opacity-100' : 'opacity-40 pointer-events-none'}>
                     <DraggableSlider label="Initial Temp HCl (T₁)" min={20} max={30} value={t1} onChange={(v:any)=>{if(step===1)setT1(v)}} color="#60a5fa" unit="°C" step={0.5} />
                   </div>
@@ -256,8 +292,8 @@ const ThermochemistryLab: React.FC<Props> = ({ hex }) => {
                     <Thermometer className="text-red-400" size={24} />
                   </div>
                   <div>
-                    <p className="text-red-300 font-mono font-bold text-lg">Tₘₐₓ = {currentTemp.toFixed(1)}°C</p>
-                    <p className="text-[10px] text-slate-400 uppercase tracking-widest mt-1 font-bold">Exothermic Reaction</p>
+                    <p className="text-red-600 dark:text-red-300 font-mono font-bold text-lg">Tₘₐₓ = {currentTemp.toFixed(1)}°C</p>
+                    <p className="text-[10px] text-slate-600 dark:text-slate-400 uppercase tracking-widest mt-1 font-bold">Exothermic Reaction</p>
                   </div>
                 </div>
               )}

@@ -72,7 +72,7 @@ const ZenerCircuitScene = ({ voltage, Vz, isBreaking, current }: any) => {
       </Html>
       {isBreaking && (
           <Html position={[2.5, 0.5, 0]} center>
-              <div className="bg-red-900/80 text-red-300 font-bold px-2 py-0.5 rounded text-[10px] animate-pulse">BREAKDOWN I = {(Math.abs(current)*1000).toFixed(0)}mA</div>
+              <div className="bg-red-900/80 text-red-600 dark:text-red-300 font-bold px-2 py-0.5 rounded text-[10px] animate-pulse">BREAKDOWN I = {(Math.abs(current)*1000).toFixed(0)}mA</div>
           </Html>
       )}
       
@@ -135,16 +135,16 @@ const ZenerDiodeLab: React.FC<Props> = ({ hex }) => {
       : "";
 
   return (
-    <div className="flex flex-col md:flex-row h-full w-full bg-[#050505] overflow-hidden text-slate-200 select-none">
+    <div className="flex flex-col md:flex-row h-full w-full bg-[#050505] overflow-hidden text-slate-800 dark:text-slate-200 select-none">
       
-      <div className="flex-1 flex flex-col relative rounded-2xl overflow-hidden m-4 border border-white/10 shadow-2xl">
+      <div className="flex-1 flex flex-col relative rounded-2xl overflow-hidden m-4 border border-black/10 dark:border-white/10 shadow-2xl">
         <div className="absolute inset-x-0 top-0 p-4 bg-gradient-to-b from-black/80 to-transparent z-10 flex justify-between">
             <div>
-                <h2 className="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+                <h2 className="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-900 dark:text-white flex items-center gap-2">
                     <span className="p-1.5 rounded-lg bg-red-500/20 text-red-400"><Activity size={18} /></span>
                     Zener Breakdown 3D
                 </h2>
-                <p className="text-[11px] font-medium text-slate-400 uppercase tracking-widest mt-1">Voltage Regulation Circuit</p>
+                <p className="text-[11px] font-medium text-slate-600 dark:text-slate-400 uppercase tracking-widest mt-1">Voltage Regulation Circuit</p>
             </div>
         </div>
 
@@ -161,8 +161,8 @@ const ZenerDiodeLab: React.FC<Props> = ({ hex }) => {
         </Canvas>
 
         {/* 2D HUD Graph Overlay */}
-        <div className="absolute bottom-4 left-4 w-80 h-56 bg-black/80 border border-white/10 rounded-xl backdrop-blur-xl p-4 shadow-2xl flex flex-col">
-            <h3 className="text-[9px] text-slate-500 uppercase font-bold tracking-widest mb-2 border-b border-white/10 pb-1">Zener I-V Curve (Reverse Bias)</h3>
+        <div className="absolute bottom-4 left-4 w-80 h-56 bg-black/80 border border-black/10 dark:border-white/10 rounded-xl backdrop-blur-xl p-4 shadow-2xl flex flex-col">
+            <h3 className="text-[9px] text-slate-500 uppercase font-bold tracking-widest mb-2 border-b border-black/10 dark:border-white/10 pb-1">Zener I-V Curve (Reverse Bias)</h3>
             <div className="flex-1 relative overflow-hidden">
                 <svg width="100%" height="100%" viewBox="0 -10 380 200" className="absolute inset-0">
                     <defs>
@@ -199,14 +199,14 @@ const ZenerDiodeLab: React.FC<Props> = ({ hex }) => {
 
       </div>
 
-      <div className="w-full md:w-80 shrink-0 bg-[#0a0a0a] border-l border-white/10 flex flex-col z-20">
+      <div className="w-full md:w-80 shrink-0 bg-[#0a0a0a] border-l border-black/10 dark:border-white/10 flex flex-col z-20">
         <div className="p-6 flex-1 overflow-y-auto space-y-6">
           
           <div>
-            <h3 className="text-sm font-semibold text-slate-200 flex items-center gap-2 mb-4"><Power size={14} className="text-amber-400" /> Voltage Source</h3>
-            <div className="bg-[#111] rounded-2xl p-5 border border-white/10 shadow-inner">
+            <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-800 dark:text-slate-200 flex items-center gap-2 mb-4"><Power size={14} className="text-amber-400" /> Voltage Source</h3>
+            <div className="bg-[#111] rounded-2xl p-5 border border-black/10 dark:border-white/10 shadow-inner">
               <div className="text-center mb-5">
-                <div className="font-mono text-3xl font-light text-white">{voltage.toFixed(1)}<span className="text-sm text-slate-500 ml-1">V</span></div>
+                <div className="font-mono text-3xl font-light text-slate-900 dark:text-slate-900 dark:text-white">{voltage.toFixed(1)}<span className="text-sm text-slate-500 ml-1">V</span></div>
                 <div className="text-[9px] uppercase tracking-widest text-slate-500 mt-1">Reverse Voltage</div>
               </div>
               <DraggableSlider label="" min={0} max={12} step={0.1} value={voltage} onChange={setVoltage} color={isBreaking ? '#ef4444' : '#3b82f6'} formatValue={() => ''} />
@@ -214,19 +214,19 @@ const ZenerDiodeLab: React.FC<Props> = ({ hex }) => {
           </div>
 
           <div className="grid grid-cols-2 gap-2">
-             <div className="bg-slate-900/50 border border-white/5 rounded-xl p-3 text-center">
-                <div className="text-[9px] text-slate-400 uppercase font-bold tracking-wider mb-1">State</div>
+             <div className="bg-slate-900/50 border border-black/5 dark:border-white/5 rounded-xl p-3 text-center">
+                <div className="text-[9px] text-slate-600 dark:text-slate-400 uppercase font-bold tracking-wider mb-1">State</div>
                 <div className={`font-bold text-xs ${isBreaking ? 'text-red-400' : 'text-blue-400'}`}>{isBreaking ? 'BREAKDOWN' : 'Leakage'}</div>
              </div>
-             <div className="bg-slate-900/50 border border-white/5 rounded-xl p-3 text-center">
-                <div className="text-[9px] text-slate-400 uppercase font-bold tracking-wider mb-1">Current</div>
-                <div className="font-mono font-bold text-xs text-white">{(Math.abs(I)*1000).toFixed(2)} mA</div>
+             <div className="bg-slate-900/50 border border-black/5 dark:border-white/5 rounded-xl p-3 text-center">
+                <div className="text-[9px] text-slate-600 dark:text-slate-400 uppercase font-bold tracking-wider mb-1">Current</div>
+                <div className="font-mono font-bold text-xs text-slate-900 dark:text-slate-900 dark:text-white">{(Math.abs(I)*1000).toFixed(2)} mA</div>
              </div>
           </div>
 
           <div className="p-4 rounded-xl border border-red-500/20 bg-red-500/5">
               <h4 className="text-[10px] font-bold uppercase text-red-400 flex items-center gap-1.5 mb-2"><Zap size={10} /> Avalanche Effect</h4>
-              <p className="text-[11px] text-slate-400 leading-relaxed">
+              <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
                 When Reverse Voltage exceeds the Zener Voltage (Vz), intense electric fields tear electrons from covalent bonds. Current skyrockets, but voltage remains tightly regulated at Vz.
               </p>
           </div>

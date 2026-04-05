@@ -161,20 +161,20 @@ export default function DiodeLab({ hex }: DiodeLabProps) {
   const pathStr = getGraphPoints().length > 1 ? `M ${mode==='forward'?'0,300':'400,100'} L ${getGraphPoints().join(' L ')}` : '';
 
   return (
-    <div className="flex flex-col md:flex-row h-full w-full bg-[#050505] overflow-hidden text-slate-200 select-none">
+    <div className="flex flex-col md:flex-row h-full w-full bg-[#050505] overflow-hidden text-slate-800 dark:text-slate-200 select-none">
       
       {/* LEFT AREA: 3D Visualization */}
-      <div className="flex-1 flex flex-col relative rounded-2xl overflow-hidden m-4 border border-white/10 shadow-2xl">
+      <div className="flex-1 flex flex-col relative rounded-2xl overflow-hidden m-4 border border-black/10 dark:border-white/10 shadow-2xl">
         <div className="absolute inset-x-0 top-0 p-4 bg-gradient-to-b from-black/80 to-transparent z-10 flex justify-between items-start">
             <div>
-                <h2 className="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+                <h2 className="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-900 dark:text-white flex items-center gap-2">
                     <span className="p-1.5 rounded-lg bg-orange-500/20 text-orange-400"><Activity size={18} /></span>
                     P-N Junction 3D
                 </h2>
-                <p className="text-[11px] font-medium text-slate-400 uppercase tracking-widest mt-1">Microscopic Semiconductor View</p>
+                <p className="text-[11px] font-medium text-slate-600 dark:text-slate-400 uppercase tracking-widest mt-1">Microscopic Semiconductor View</p>
             </div>
             {/* Mode Switcher */}
-            <div className="flex bg-black/60 p-1 rounded-xl border border-white/10 backdrop-blur-md shadow-inner">
+            <div className="flex bg-black/60 p-1 rounded-xl border border-black/10 dark:border-white/10 backdrop-blur-md shadow-inner">
                 <button onClick={() => setMode('forward')} className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${mode === 'forward' ? 'bg-blue-600 shadow-md shadow-blue-500/50 text-white' : 'text-slate-400 hover:text-white'}`}>Forward Bias</button>
                 <button onClick={() => setMode('reverse')} className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${mode === 'reverse' ? 'bg-orange-600 shadow-md shadow-orange-500/50 text-white' : 'text-slate-400 hover:text-white'}`}>Reverse Bias</button>
             </div>
@@ -193,8 +193,8 @@ export default function DiodeLab({ hex }: DiodeLabProps) {
         </Canvas>
 
         {/* 2D HUD Graph Overlay at Bottom Left */}
-        <div className="absolute bottom-4 left-4 w-64 h-48 bg-black/80 border border-white/10 rounded-xl backdrop-blur-xl p-3 shadow-2xl flex flex-col">
-            <h3 className="text-[9px] text-slate-500 uppercase font-bold tracking-widest mb-2 border-b border-white/10 pb-1">Live V-I Graph</h3>
+        <div className="absolute bottom-4 left-4 w-64 h-48 bg-black/80 border border-black/10 dark:border-white/10 rounded-xl backdrop-blur-xl p-3 shadow-2xl flex flex-col">
+            <h3 className="text-[9px] text-slate-500 uppercase font-bold tracking-widest mb-2 border-b border-black/10 dark:border-white/10 pb-1">Live V-I Graph</h3>
             <div className="flex-1 relative">
                 <svg width="100%" height="100%" viewBox="0 0 450 350" className="absolute inset-0">
                     <line x1="0" y1="300" x2="450" y2="300" stroke="#334155" strokeWidth="2" />
@@ -218,14 +218,14 @@ export default function DiodeLab({ hex }: DiodeLabProps) {
       </div>
 
       {/* RIGHT CONTROL PANEL */}
-      <div className="w-full md:w-80 shrink-0 bg-[#0a0a0a] border-l border-white/10 flex flex-col z-20">
+      <div className="w-full md:w-80 shrink-0 bg-[#0a0a0a] border-l border-black/10 dark:border-white/10 flex flex-col z-20">
         <div className="p-6 flex-1 overflow-y-auto space-y-6">
           
           <div>
-            <h3 className="text-sm font-semibold text-slate-200 flex items-center gap-2 mb-4"><Power size={14} className="text-amber-400" /> DC Power Supply</h3>
-            <div className="bg-[#111] rounded-2xl p-5 border border-white/10 shadow-inner">
+            <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-800 dark:text-slate-200 flex items-center gap-2 mb-4"><Power size={14} className="text-amber-400" /> DC Power Supply</h3>
+            <div className="bg-[#111] rounded-2xl p-5 border border-black/10 dark:border-white/10 shadow-inner">
               <div className="text-center mb-5">
-                <div className="font-mono text-3xl font-light text-white">{voltage.toFixed(2)}<span className="text-sm text-slate-500 ml-1">V</span></div>
+                <div className="font-mono text-3xl font-light text-slate-900 dark:text-slate-900 dark:text-white">{voltage.toFixed(2)}<span className="text-sm text-slate-500 ml-1">V</span></div>
                 <div className="text-[9px] uppercase tracking-widest text-slate-500 mt-1">Output Volts</div>
               </div>
 
@@ -245,7 +245,7 @@ export default function DiodeLab({ hex }: DiodeLabProps) {
           <div className="grid grid-cols-2 gap-2">
             <div className="bg-blue-900/20 border border-blue-500/20 rounded-xl p-3 text-center">
                 <div className="text-[9px] text-blue-400/70 uppercase font-bold tracking-wider mb-1">Volts Passed</div>
-                <div className="font-mono font-bold text-sm text-blue-300">{V_disp.toFixed(2)}V</div>
+                <div className="font-mono font-bold text-sm text-blue-600 dark:text-blue-300">{V_disp.toFixed(2)}V</div>
             </div>
             <div className="bg-orange-900/20 border border-orange-500/20 rounded-xl p-3 text-center">
                 <div className="text-[9px] text-orange-400/70 uppercase font-bold tracking-wider mb-1">Current Output</div>
@@ -253,29 +253,29 @@ export default function DiodeLab({ hex }: DiodeLabProps) {
             </div>
           </div>
 
-          <button onClick={handleLog} className="w-full py-3 rounded-xl text-sm font-bold text-white shadow-lg shadow-blue-500/20 active:scale-95 transition-all" style={{ background: 'linear-gradient(135deg, #2563eb, #3b82f6)' }}>
+          <button onClick={handleLog} className="w-full py-3 rounded-xl text-sm font-bold text-slate-900 dark:text-slate-900 dark:text-white shadow-lg shadow-blue-500/20 active:scale-95 transition-all" style={{ background: 'linear-gradient(135deg, #2563eb, #3b82f6)' }}>
             Log Data Point
           </button>
 
           <div>
             <div className="flex justify-between items-center mb-2">
               <h3 className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Observation Table</h3>
-              <button onClick={() => setReadings([])} className="text-red-400 hover:text-red-300"><RotateCcw size={12} /></button>
+              <button onClick={() => setReadings([])} className="text-red-400 hover:text-red-600 dark:text-red-300"><RotateCcw size={12} /></button>
             </div>
-            <div className="bg-[#111] rounded-xl border border-white/5 overflow-hidden">
+            <div className="bg-[#111] rounded-xl border border-black/5 dark:border-white/5 overflow-hidden">
               <table className="w-full text-xs text-left">
-                <thead className="bg-white/5 border-b border-white/10">
+                <thead className="bg-black/5 dark:bg-white/5 border-b border-black/10 dark:border-white/10">
                   <tr>
-                    <th className="px-3 py-2 text-slate-400 font-medium">V (V)</th>
-                    <th className="px-3 py-2 text-slate-400 font-medium">I ({mode==='forward'?'mA':'μA'})</th>
+                    <th className="px-3 py-2 text-slate-600 dark:text-slate-400 font-medium">V (V)</th>
+                    <th className="px-3 py-2 text-slate-600 dark:text-slate-400 font-medium">I ({mode==='forward'?'mA':'μA'})</th>
                     <th></th>
                   </tr>
                 </thead>
                 <tbody>
                   {readings.length === 0 && <tr><td colSpan={3} className="px-3 py-4 text-center text-slate-600 text-[10px]">No readings taken</td></tr>}
                   {readings.map((r, i) => (
-                    <tr key={i} className="border-b border-white/5 hover:bg-white/5 last:border-0">
-                      <td className="px-3 py-2 font-mono text-slate-300">{r.v.toFixed(2)}</td>
+                    <tr key={i} className="border-b border-black/5 dark:border-white/5 hover:bg-black/5 dark:bg-white/5 last:border-0">
+                      <td className="px-3 py-2 font-mono text-slate-700 dark:text-slate-700 dark:text-slate-300">{r.v.toFixed(2)}</td>
                       <td className="px-3 py-2 font-mono" style={{ color: mode==='forward'?'#60a5fa':'#fb923c' }}>{Math.abs(r.i).toFixed(3)}</td>
                       <td className="px-2 py-2 text-right"><button onClick={() => setReadings(p => p.filter((_, j) => j !== i))} className="text-red-500 hover:text-red-400"><Trash2 size={12}/></button></td>
                     </tr>

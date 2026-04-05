@@ -154,7 +154,7 @@ const OsmosisLab: React.FC<Props> = ({ hex }) => {
 
   return (
     <div className="flex flex-col md:flex-row h-full w-full bg-slate-950">
-      <div className="flex-1 relative rounded-2xl overflow-hidden m-4 border border-white/10 shadow-2xl">
+      <div className="flex-1 relative rounded-2xl overflow-hidden m-4 border border-black/10 dark:border-white/10 shadow-2xl">
         <Canvas camera={{ position: [0, 2, 6], fov: 60 }}>
           <Environment preset="apartment" />
           <ambientLight intensity={0.6} />
@@ -166,16 +166,16 @@ const OsmosisLab: React.FC<Props> = ({ hex }) => {
           <OrbitControls enablePan={true} enableZoom={true} target={[0, -0.2, 0]} maxPolarAngle={Math.PI/2 - 0.1}/>
         </Canvas>
 
-        <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md border border-white/10 rounded-xl px-4 py-3 shadow-xl max-w-xs">
+        <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md border border-black/10 dark:border-white/10 rounded-xl px-4 py-3 shadow-xl max-w-xs">
           <p className="text-[10px] font-bold uppercase tracking-widest text-blue-400 mb-1">Biology Lab — b10</p>
-          <p className="text-white font-bold text-sm">3D Potato Osmoscope</p>
-          <p className="text-xs text-slate-400 mt-1">Study endosmosis using a living semi-permeable membrane.</p>
+          <p className="text-slate-900 dark:text-slate-900 dark:text-white font-bold text-sm">3D Potato Osmoscope</p>
+          <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">Study endosmosis using a living semi-permeable membrane.</p>
         </div>
       </div>
 
-      <div className="w-full md:w-80 bg-slate-900 border-l border-white/5 flex flex-col z-10">
-        <div className="p-5 border-b border-white/5">
-           <h2 className="text-lg font-black text-white">Procedure</h2>
+      <div className="w-full md:w-80 bg-slate-900 border-l border-black/5 dark:border-white/5 flex flex-col z-10">
+        <div className="p-5 border-b border-black/5 dark:border-white/5">
+           <h2 className="text-lg font-black text-slate-900 dark:text-slate-900 dark:text-white">Procedure</h2>
            <p className="text-xs font-bold uppercase tracking-widest text-blue-400 mt-1">Step {step + 1} of {STEPS.length}</p>
         </div>
         <div className="flex-1 p-5 space-y-5 overflow-y-auto">
@@ -183,8 +183,8 @@ const OsmosisLab: React.FC<Props> = ({ hex }) => {
           {completed ? (
             <div className="text-center py-6">
               <CheckCircle size={56} className="mx-auto mb-4 text-green-400 drop-shadow-[0_0_15px_rgba(74,222,128,0.5)]" />
-              <h3 className="text-xl font-bold text-white mb-2">Osmosis Verified! 💧</h3>
-              <p className="text-slate-400 text-sm mb-6">Water moved from the hypotonic beaker into the hypertonic sugar cavity through the potato membrane, causing the level to rise by {Math.round(waterLevel*100)}mm.</p>
+              <h3 className="text-xl font-bold text-slate-900 dark:text-slate-900 dark:text-white mb-2">Osmosis Verified! 💧</h3>
+              <p className="text-slate-600 dark:text-slate-400 text-sm mb-6">Water moved from the hypotonic beaker into the hypertonic sugar cavity through the potato membrane, causing the level to rise by {Math.round(waterLevel*100)}mm.</p>
               <button onClick={reset} className="w-full py-3 rounded-xl bg-slate-800 text-white font-bold hover:bg-slate-700 transition-all flex items-center justify-center gap-2 shadow-md">
                 <RotateCcw size={16} /> Reset Experiment
               </button>
@@ -192,27 +192,27 @@ const OsmosisLab: React.FC<Props> = ({ hex }) => {
           ) : (
             <>
               <div className="bg-blue-500/10 border border-blue-500/30 p-4 rounded-xl shadow-inner">
-                <p className="text-blue-300 text-xs font-bold mb-1">{current.title}</p>
+                <p className="text-blue-600 dark:text-blue-300 text-xs font-bold mb-1">{current.title}</p>
                 <p className="text-blue-200/80 text-xs leading-relaxed">{current.instruction}</p>
               </div>
 
               {step >= 1 && step < 3 && (
-                <div className="bg-black/20 p-4 rounded-xl border border-white/10">
+                <div className="bg-transparent dark:bg-black/20 p-4 rounded-xl border border-black/10 dark:border-white/10">
                   <DraggableSlider label="Sugar Solution Conc." min={20} max={100} value={sugarConc} onChange={(v:any)=>{if(step<3)setSugarConc(v)}} color="#a78bfa" unit="%" />
                   <p className="text-[10px] text-slate-500 mt-2 leading-tight">Higher concentration creates a steeper osmotic gradient.</p>
                 </div>
               )}
 
               {step >= 3 && (
-                <div className="bg-slate-950 p-4 rounded-xl border border-white/10 shadow-inner">
-                  <p className="text-xs text-slate-400 uppercase font-bold mb-2 tracking-widest border-b border-white/5 pb-1">Cavity Water Rise</p>
-                  <div className="w-full bg-slate-800 rounded-full h-4 overflow-hidden border border-white/5 relative">
+                <div className="bg-slate-950 p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-inner">
+                  <p className="text-xs text-slate-600 dark:text-slate-400 uppercase font-bold mb-2 tracking-widest border-b border-black/5 dark:border-white/5 pb-1">Cavity Water Rise</p>
+                  <div className="w-full bg-slate-800 rounded-full h-4 overflow-hidden border border-black/5 dark:border-white/5 relative">
                     <div className="h-full bg-blue-500 transition-none" style={{ width: `${(waterLevel / 0.8) * 100}%` }} />
                     <div className="absolute inset-0 flex items-center justify-end px-2">
-                       <span className="text-[10px] font-bold text-white mix-blend-difference">{Math.round(waterLevel*100)} mm</span>
+                       <span className="text-[10px] font-bold text-slate-900 dark:text-slate-900 dark:text-white mix-blend-difference">{Math.round(waterLevel*100)} mm</span>
                     </div>
                   </div>
-                  <p className="text-blue-300 text-[10px] mt-2 font-mono">Status: {waterLevel >= 0.8 * (sugarConc/100) ? 'Equilibrium Reached' : 'Endosmosis active...'}</p>
+                  <p className="text-blue-600 dark:text-blue-300 text-[10px] mt-2 font-mono">Status: {waterLevel >= 0.8 * (sugarConc/100) ? 'Equilibrium Reached' : 'Endosmosis active...'}</p>
                 </div>
               )}
 

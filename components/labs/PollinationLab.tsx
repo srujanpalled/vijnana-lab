@@ -225,17 +225,17 @@ const PollinationLab: React.FC<Props> = ({ hex }) => {
   const [pollinating, setPollinating] = useState(false);
 
   return (
-    <div className="flex flex-col md:flex-row h-full w-full bg-[#050505] overflow-hidden text-slate-200 select-none">
+    <div className="flex flex-col md:flex-row h-full w-full bg-[#050505] overflow-hidden text-slate-800 dark:text-slate-200 select-none">
       
       {/* 3D Visualization */}
-      <div className="flex-1 flex flex-col relative rounded-2xl overflow-hidden m-4 border border-white/10 shadow-[0_0_50px_rgba(236,72,153,0.05)] bg-[#0c4a6e]">
+      <div className="flex-1 flex flex-col relative rounded-2xl overflow-hidden m-4 border border-black/10 dark:border-white/10 shadow-[0_0_50px_rgba(236,72,153,0.05)] bg-[#0c4a6e]">
         <div className="absolute inset-x-0 top-0 p-4 bg-gradient-to-b from-black/80 to-transparent z-10 flex justify-between items-start pointer-events-none">
             <div>
-                <h2 className="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+                <h2 className="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-900 dark:text-white flex items-center gap-2">
                     <span className="p-1.5 rounded-lg bg-pink-500/20 text-pink-400"><Bug size={18} /></span>
                     Floral Pollination Modes
                 </h2>
-                <p className="text-[11px] font-medium text-slate-300 uppercase tracking-widest mt-1">Ecological Adaptations in Angiosperms</p>
+                <p className="text-[11px] font-medium text-slate-700 dark:text-slate-700 dark:text-slate-300 uppercase tracking-widest mt-1">Ecological Adaptations in Angiosperms</p>
             </div>
             {/* Active Mode */}
             <div className={`backdrop-blur-md px-3 py-1.5 rounded-xl border text-[10px] font-bold uppercase tracking-widest shadow-inner transition-colors ${pollinating ? 'bg-pink-500/20 border-pink-500/40 text-pink-400 animate-pulse' : 'bg-black/40 border-white/10 text-slate-200'}`}>
@@ -250,18 +250,18 @@ const PollinationLab: React.FC<Props> = ({ hex }) => {
         </Canvas>
 
         {/* Dynamic Wind Particles / Atmosphere Overlays */}
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-black/60 backdrop-blur-xl p-3 px-6 rounded-full border border-white/10 flex items-center gap-4 shadow-2xl pointer-events-none">
-            {mode === 'insect' && <><Bug size={14} className="text-yellow-400"/> <span className="text-[10px] uppercase font-bold text-slate-200">Entomophily (Biotic)</span></>}
-            {mode === 'wind' && <><Wind size={14} className="text-blue-400"/> <span className="text-[10px] uppercase font-bold text-slate-200">Anemophily (Abiotic)</span></>}
-            {mode === 'self' && <><Droplet size={14} className="text-green-400"/> <span className="text-[10px] uppercase font-bold text-slate-200">Autogamy (Selfing)</span></>}
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-black/60 backdrop-blur-xl p-3 px-6 rounded-full border border-black/10 dark:border-white/10 flex items-center gap-4 shadow-2xl pointer-events-none">
+            {mode === 'insect' && <><Bug size={14} className="text-yellow-400"/> <span className="text-[10px] uppercase font-bold text-slate-800 dark:text-slate-800 dark:text-slate-200">Entomophily (Biotic)</span></>}
+            {mode === 'wind' && <><Wind size={14} className="text-blue-400"/> <span className="text-[10px] uppercase font-bold text-slate-800 dark:text-slate-800 dark:text-slate-200">Anemophily (Abiotic)</span></>}
+            {mode === 'self' && <><Droplet size={14} className="text-green-400"/> <span className="text-[10px] uppercase font-bold text-slate-800 dark:text-slate-800 dark:text-slate-200">Autogamy (Selfing)</span></>}
         </div>
       </div>
 
       {/* Control Panel */}
-      <div className="w-full md:w-[320px] shrink-0 bg-[#0a0a0a] border-l border-white/10 flex flex-col z-20 shadow-[-10px_0_30px_rgba(0,0,0,0.5)]">
-        <div className="p-6 border-b border-white/5">
+      <div className="w-full md:w-[320px] shrink-0 bg-[#0a0a0a] border-l border-black/10 dark:border-white/10 flex flex-col z-20 shadow-[-10px_0_30px_rgba(0,0,0,0.5)]">
+        <div className="p-6 border-b border-black/5 dark:border-white/5">
           <p className="text-xs font-bold uppercase tracking-widest text-pink-500 mb-2 border-b border-pink-500/20 inline-block pb-1">Biology Lab — b15</p>
-          <h2 className="text-xl font-bold text-white tracking-tight">Pollination Adaptations</h2>
+          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-900 dark:text-white tracking-tight">Pollination Adaptations</h2>
         </div>
         
         <div className="flex-1 p-6 space-y-6 overflow-y-auto custom-scrollbar">
@@ -288,17 +288,17 @@ const PollinationLab: React.FC<Props> = ({ hex }) => {
              ))}
           </div>
 
-          <div className="bg-[#111] p-4 rounded-xl border border-white/5 shadow-inner">
-             <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3 border-b border-white/10 pb-1">Visible Adaptations</p>
+          <div className="bg-[#111] p-4 rounded-xl border border-black/5 dark:border-white/5 shadow-inner">
+             <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3 border-b border-black/10 dark:border-white/10 pb-1">Visible Adaptations</p>
              <div className="space-y-2 text-xs">
                  {mode === 'insect' && [['Petals','Vibrant colors to attract bees'],['Anthers','Stiff, producing sticky pollen'],['Reward','Nectar produced at base']].map(([k,v]) => (
-                     <div key={k} className="flex flex-col"><span className="text-pink-400 font-bold">{k}</span><span className="text-slate-400">{v}</span></div>
+                     <div key={k} className="flex flex-col"><span className="text-pink-400 font-bold">{k}</span><span className="text-slate-600 dark:text-slate-400">{v}</span></div>
                  ))}
                  {mode === 'wind' && [['Petals','Reduced or absent (saves energy)'],['Anthers','Hanging outside flower to catch wind'],['Pollen','Millions of smooth lightweight grains']].map(([k,v]) => (
-                     <div key={k} className="flex flex-col"><span className="text-blue-400 font-bold">{k}</span><span className="text-slate-400">{v}</span></div>
+                     <div key={k} className="flex flex-col"><span className="text-blue-400 font-bold">{k}</span><span className="text-slate-600 dark:text-slate-400">{v}</span></div>
                  ))}
                  {mode === 'self' && [['Petals','Tightly wrapped around organs'],['Proximity','Anther and stigma are adjacent'],['Timeline','Simultaneous maturation']].map(([k,v]) => (
-                     <div key={k} className="flex flex-col"><span className="text-green-400 font-bold">{k}</span><span className="text-slate-400">{v}</span></div>
+                     <div key={k} className="flex flex-col"><span className="text-green-400 font-bold">{k}</span><span className="text-slate-600 dark:text-slate-400">{v}</span></div>
                  ))}
              </div>
           </div>

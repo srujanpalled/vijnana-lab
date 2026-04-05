@@ -52,6 +52,7 @@ import PrismLab from './labs/PrismLab';
 import HookesLawLab from './labs/HookesLawLab';
 // New Chemistry labs
 import KMnO4TitrationLab from './labs/KMnO4TitrationLab';
+
 import CationAnalysisLab from './labs/CationAnalysisLab';
 import AnionAnalysisLab from './labs/AnionAnalysisLab';
 import RateOfReactionLab from './labs/RateOfReactionLab';
@@ -162,7 +163,7 @@ const RichProceduralLab = ({
                          {warnings.map((w, i) => (
                              <div key={i} className="bg-red-500/20 border border-red-500/50 p-2 rounded-lg flex items-center gap-2 animate-pulse">
                                  <AlertTriangle size={14} className="text-red-600 dark:text-red-400"/>
-                                 <span className="text-xs text-red-800 dark:text-red-200">{w}</span>
+                                 <span className="text-xs text-red-800 dark:text-red-600 dark:text-red-200">{w}</span>
                              </div>
                          ))}
                      </div>
@@ -185,8 +186,8 @@ const RichProceduralLab = ({
                             <div className="absolute inset-0 flex items-center justify-center">
                                 <div className="absolute inset-0 bg-white/60 dark:bg-black/60 backdrop-blur-sm"></div>
                                 <div className="relative z-10 flex flex-col items-center">
-                                    <RefreshCw className="animate-spin text-slate-800 dark:text-white mb-2" size={32} />
-                                    <span className="text-xs font-bold text-slate-800 dark:text-white tracking-wider uppercase">{feedbackMsg}</span>
+                                    <RefreshCw className="animate-spin text-slate-800 dark:text-slate-900 dark:text-slate-900 dark:text-white mb-2" size={32} />
+                                    <span className="text-xs font-bold text-slate-800 dark:text-slate-900 dark:text-slate-900 dark:text-white tracking-wider uppercase">{feedbackMsg}</span>
                                 </div>
                             </div>
                         )}
@@ -204,11 +205,11 @@ const RichProceduralLab = ({
                     </div>
                     
                     {fact && (
-                        <MotionDiv initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} className="mt-8 max-w-md bg-white/60 dark:bg-white/5 p-4 rounded-xl border border-slate-200 dark:border-white/5 flex gap-3 items-start shadow-sm">
+                        <MotionDiv initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} className="mt-8 max-w-md bg-white/60 dark:bg-black/5 dark:bg-white/5 p-4 rounded-xl border border-slate-200 dark:border-black/5 dark:border-white/5 flex gap-3 items-start shadow-sm">
                             <Lightbulb size={20} className="text-yellow-500 dark:text-yellow-400 shrink-0 mt-1" />
                             <div>
                                 <h4 className="text-xs font-bold text-yellow-600 dark:text-yellow-400 uppercase mb-1">Did You Know?</h4>
-                                <p className="text-xs text-slate-600 dark:text-gray-400 leading-relaxed">{fact}</p>
+                                <p className="text-xs text-slate-600 dark:text-gray-600 dark:text-gray-400 leading-relaxed">{fact}</p>
                             </div>
                         </MotionDiv>
                     )}
@@ -216,10 +217,10 @@ const RichProceduralLab = ({
             </div>
 
             {/* Controls Panel */}
-            <div className="w-full md:w-96 bg-white dark:bg-slate-950 border-l border-slate-200 dark:border-white/10 flex flex-col transition-colors">
-                <div className="p-6 border-b border-slate-200 dark:border-white/10">
-                    <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-1">{title}</h2>
-                    <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-gray-400">
+            <div className="w-full md:w-96 bg-white dark:bg-slate-950 border-l border-slate-200 dark:border-black/10 dark:border-white/10 flex flex-col transition-colors">
+                <div className="p-6 border-b border-slate-200 dark:border-black/10 dark:border-white/10">
+                    <h2 className="text-xl font-bold text-slate-900 dark:text-slate-900 dark:text-slate-900 dark:text-white mb-1">{title}</h2>
+                    <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-gray-600 dark:text-gray-400">
                         <span 
                             className="px-2 py-0.5 rounded border"
                             style={{ backgroundColor: `${color}15`, color: color, borderColor: `${color}30` }}
@@ -236,23 +237,23 @@ const RichProceduralLab = ({
                             <div className="w-12 h-12 bg-green-100 dark:bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
                                 <Check className="text-green-600 dark:text-green-400" />
                             </div>
-                            <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">Lab Completed!</h3>
-                            <p className="text-sm text-slate-600 dark:text-gray-400 mb-6">{result_summary}</p>
+                            <h3 className="text-lg font-bold text-slate-900 dark:text-slate-900 dark:text-slate-900 dark:text-white mb-2">Lab Completed!</h3>
+                            <p className="text-sm text-slate-600 dark:text-gray-600 dark:text-gray-400 mb-6">{result_summary}</p>
                             <button onClick={() => setCurrentStep(0)} className="text-sm text-green-600 dark:text-green-400 hover:underline flex items-center justify-center gap-1">
                                 <RotateCcw size={14}/> Restart Experiment
                             </button>
                         </div>
                     ) : (
                         <div className="space-y-6">
-                            <div className="bg-slate-50 dark:bg-white/5 rounded-xl p-5 border border-slate-200 dark:border-white/10">
-                                <h3 className="text-sm font-bold text-slate-500 dark:text-gray-400 uppercase mb-3">Instruction</h3>
-                                <p className="text-lg text-slate-800 dark:text-white font-medium leading-snug">{simulation_steps[currentStep].instruction}</p>
+                            <div className="bg-slate-50 dark:bg-black/5 dark:bg-white/5 rounded-xl p-5 border border-slate-200 dark:border-black/10 dark:border-white/10">
+                                <h3 className="text-sm font-bold text-slate-500 dark:text-gray-600 dark:text-gray-400 uppercase mb-3">Instruction</h3>
+                                <p className="text-lg text-slate-800 dark:text-slate-900 dark:text-slate-900 dark:text-white font-medium leading-snug">{simulation_steps[currentStep].instruction}</p>
                             </div>
                             
                             <button 
                                 onClick={handleAction}
                                 disabled={animating}
-                                className="w-full py-4 rounded-xl font-bold text-white shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed group active:scale-[0.98]"
+                                className="w-full py-4 rounded-xl font-bold text-slate-900 dark:text-slate-900 dark:text-white shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed group active:scale-[0.98]"
                                 style={{backgroundColor: color, boxShadow: `0 10px 20px -10px ${color}60` }}
                             >
                                 {animating ? <RefreshCw className="animate-spin" /> : <MousePointer2 className="group-hover:-translate-y-1 transition-transform" />}
@@ -296,7 +297,7 @@ const LAB_SCENARIOS: Record<string, UniversalScenario> = {
     'cs2': { title: "Bubble Sort", color: "#a855f7", simulation_steps: [{step: 1, instruction: "Initialize array [5, 1, 4, 2].", user_action: "Start", icon: <Cpu size={64}/>, output_change: "Array Loaded"}, {step: 2, instruction: "Compare 5 & 1. Swap.", user_action: "Swap", icon: <RefreshCw size={64}/>, output_change: "1, 5, 4, 2"}, {step: 3, instruction: "Compare 5 & 4. Swap.", user_action: "Swap", icon: <RefreshCw size={64}/>, output_change: "1, 4, 5, 2"}, {step: 4, instruction: "Compare 5 & 2. Swap.", user_action: "Swap", icon: <RefreshCw size={64}/>, output_change: "1, 4, 2, 5 (Sorted End)"}], result_summary: "Largest element bubbled to end." },
     'cs3': { title: "Insertion Sort", color: "#a855f7", simulation_steps: [{step: 1, instruction: "Array [5, 2, 9, 1]. Pick 2.", user_action: "Pick", icon: <MousePointer2 size={64}/>, output_change: "2 picked"}, {step: 2, instruction: "Insert 2 before 5.", user_action: "Insert", icon: <ArrowLeft size={64}/>, output_change: "2, 5, 9, 1"}, {step: 3, instruction: "Pick 9. Place remains same.", user_action: "Check", icon: <Check size={64}/>, output_change: "2, 5, 9, 1"}, {step: 4, instruction: "Pick 1. Insert at start.", user_action: "Insert", icon: <ArrowLeft size={64}/>, output_change: "1, 2, 5, 9"}], result_summary: "Array sorted by building sorted list." },
     'cs4': { title: "Stack Operations", color: "#a855f7", simulation_steps: [{step: 1, instruction: "Push 'A' onto stack.", user_action: "Push", icon: <ArrowRight size={64} className="-rotate-90"/>, output_change: "Stack: [A]"}, {step: 2, instruction: "Push 'B' onto stack.", user_action: "Push", icon: <ArrowRight size={64} className="-rotate-90"/>, output_change: "Stack: [A, B]"}, {step: 3, instruction: "Pop element.", user_action: "Pop", icon: <ArrowRight size={64} className="rotate-90"/>, output_change: "Returned: B"}, {step: 4, instruction: "Peek top.", user_action: "Peek", icon: <Eye size={64}/>, output_change: "Top: A"}], result_summary: "LIFO Principle demonstrated." },
-    'cs5': { title: "Number Systems", color: "#94a3b8", simulation_steps: [ { step: 1, instruction: "Choose binary number 1010.", user_action: "Input", icon: <Binary size={64} className="text-slate-400"/>, output_change: "Input: 1010" }, { step: 2, instruction: "Identify positions: 8, 4, 2, 1.", user_action: "Parse", icon: <Gauge size={64} className="text-slate-400"/>, output_change: "Weights identified" }, { step: 3, instruction: "Sum weights of '1' bits: 8 + 2.", user_action: "Add", icon: <Calculator size={64} className="text-slate-400"/>, output_change: "Sum = 10" }, { step: 4, instruction: "Result is 10.", user_action: "Finish", icon: <Check size={64} className="text-slate-400"/>, output_change: "Conversion Done" } ], result_summary: "Binary 1010 equals Decimal 10.", fact: "Binary is base-2." }
+    'cs5': { title: "Number Systems", color: "#94a3b8", simulation_steps: [ { step: 1, instruction: "Choose binary number 1010.", user_action: "Input", icon: <Binary size={64} className="text-slate-600 dark:text-slate-400"/>, output_change: "Input: 1010" }, { step: 2, instruction: "Identify positions: 8, 4, 2, 1.", user_action: "Parse", icon: <Gauge size={64} className="text-slate-600 dark:text-slate-400"/>, output_change: "Weights identified" }, { step: 3, instruction: "Sum weights of '1' bits: 8 + 2.", user_action: "Add", icon: <Calculator size={64} className="text-slate-600 dark:text-slate-400"/>, output_change: "Sum = 10" }, { step: 4, instruction: "Result is 10.", user_action: "Finish", icon: <Check size={64} className="text-slate-600 dark:text-slate-400"/>, output_change: "Conversion Done" } ], result_summary: "Binary 1010 equals Decimal 10.", fact: "Binary is base-2." }
 };
 
 // --- MAIN STAGE ---
@@ -336,7 +337,7 @@ const SimulationStage: React.FC<SimulationStageProps> = ({ subjectId, labId, hex
     else if (labId === 'b9') content = <DNALab hex={hex} />;
     else if (labId === 'c16') content = <AtomicStructureLab hex={hex} />;
     else if (labId === 'c17') content = <CrystalStructureLab hex={hex} />;
-    else if (labId === 'c6') content = <TitrationLab3DNew hex={hex} />;
+    else if (labId === 'c6') content = <KMnO4TitrationLab hex={hex} />;
     // Physics labs
     else if (labId === 'p1') content = <VernierCalipersLab3D hex={hex} onLog={logMeasurement} />;
     else if (labId === 'p3') content = <ScrewGaugeLab3D hex={hex} onLog={logMeasurement} />;

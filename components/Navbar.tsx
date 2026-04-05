@@ -60,7 +60,7 @@ const Navbar: React.FC = () => {
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: -10, opacity: 0 }}
               transition={{ duration: 0.5 }}
-              className="text-xl md:text-2xl font-display font-bold text-slate-900 dark:text-white tracking-tight leading-none"
+              className="text-xl md:text-2xl font-display font-bold text-slate-900 dark:text-slate-900 dark:text-slate-900 dark:text-white tracking-tight leading-none"
             >
               {TITLES[titleIndex].text.split(' ')[0]}{" "}
               <span className="text-emerald-600 dark:text-emerald-400">
@@ -111,7 +111,7 @@ const Navbar: React.FC = () => {
             <Link
               to="/profile"
               aria-label="View Profile"
-              className="group flex items-center gap-2 px-3 py-1.5 rounded-full hover:bg-black/5 dark:hover:bg-white/5 transition-all"
+              className="group flex items-center gap-2 px-3 py-1.5 rounded-full hover:bg-black/5 dark:hover:bg-black/5 dark:bg-white/5 transition-all"
             >
               {user.photoURL ? (
                 <img
@@ -124,7 +124,7 @@ const Navbar: React.FC = () => {
                   {user.displayName?.charAt(0) || <User size={14} />}
                 </div>
               )}
-              <span className="text-sm text-slate-600 dark:text-gray-400 hidden lg:inline">
+              <span className="text-sm text-slate-600 dark:text-gray-600 dark:text-gray-400 hidden lg:inline">
                 {user.displayName?.split(' ')[0] || 'Profile'}
               </span>
             </Link>
@@ -132,7 +132,7 @@ const Navbar: React.FC = () => {
             <button
               onClick={handleLogout}
               aria-label="Logout"
-              className="px-4 py-2 rounded-full bg-black/5 dark:bg-white/5 hover:bg-red-500/10 text-sm font-bold transition-all flex items-center gap-2"
+              className="px-4 py-2 rounded-full bg-black/5 dark:bg-black/5 dark:bg-white/5 hover:bg-red-500/10 text-sm font-bold transition-all flex items-center gap-2"
             >
               <LogOut size={16} />
             </button>
@@ -148,7 +148,7 @@ const Navbar: React.FC = () => {
 
       {/* Mobile Toggle */}
       <button
-        className="md:hidden p-2 -mr-2 text-slate-600 dark:text-gray-400"
+        className="md:hidden p-2 -mr-2 text-slate-600 dark:text-gray-600 dark:text-gray-400"
         onClick={() => setIsOpen(!isOpen)}
         aria-label={isOpen ? "Close menu" : "Open menu"}
         aria-expanded={isOpen}

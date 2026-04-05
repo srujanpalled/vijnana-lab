@@ -1,7 +1,9 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Environment, ContactShadows, Html, Text } from '@react-three/drei';
+import { OrbitControls, Environment, Html } from '@react-three/drei';
 import * as THREE from 'three';
+import { LabProtocolEngine } from './shared/LabProtocolEngine';
+import { CompoundMicroscope, GlassSlide, Coverslip, Dropper, MicroscopeHUD } from './shared/props/MicroscopySet';
 
 interface Props { hex: string; }
 
@@ -17,16 +19,28 @@ const STAGES = [
   { name: 'Telophase II', color: '#4ade80', desc: '4 haploid daughter cells formed (gametes). Each has half the genetic material.', chrom: 'telophase2' },
 ];
 
+const PREP_STEPS = [
+  { id: 'harvest', name: 'Harvest Anthers', action: 'Extract Flower Bud', desc: 'Select an onion floral bud and extract the yellow anthers where pollen mother cells undergo meiosis.' },
+  { id: 'stain', name: 'Stain & Smear', action: 'Apply Acetocarmine Stain', desc: 'Place anthers on a slide. Add a drop of Acetocarmine stain to color the condensing chromosomes.' },
+  { id: 'squash', name: 'Coverslip & Squash', action: 'Apply Coverslip', desc: 'Place a coverslip and apply gentle, even pressure to squash the anthers into a thin monolayer of cells.' },
+  { id: 'mount', name: 'Mount on Stage', action: 'Mount Slide', desc: 'Place the prepared slide on the microscope stage and adjust the objective lens to begin observation.' }
+];
+
+/* ────────────────────────────────────────────────────────────────────────────
+   3D MATERIALS & PRIMITIVES
+   ──────────────────────────────────────────────────────────────────────────── */
 const cellMat = <meshPhysicalMaterial transmission={0.95} roughness={0.2} color="#0f172a" ior={1.3} transparent opacity={0.6} depthWrite={false} />;
 
-const ChromosomeX = ({ position, color, size = 1, rotation = [0,0,0] }: any) => (
+interface ChromoProps { position: [number, number, number]; color: string; size?: number; rotation?: [number, number, number] }
+
+const ChromosomeX = ({ position, color, size = 1, rotation = [0,0,0] }: ChromoProps) => (
   <group position={position} rotation={rotation} scale={size}>
      <mesh rotation={[0,0,0.3]}><cylinderGeometry args={[0.08, 0.08, 1.2, 16]} /><meshStandardMaterial color={color}/></mesh>
      <mesh rotation={[0,0,-0.3]}><cylinderGeometry args={[0.08, 0.08, 1.2, 16]} /><meshStandardMaterial color={color}/></mesh>
      <mesh><sphereGeometry args={[0.12]} /><meshStandardMaterial color="#fbbf24"/></mesh>
   </group>
 );
-const ChromatidI = ({ position, color, size = 1, rotation = [0,0,0] }: any) => (
+const ChromatidI = ({ position, color, size = 1, rotation = [0,0,0] }: ChromoProps) => (
   <group position={position} rotation={rotation} scale={size}>
      <mesh><cylinderGeometry args={[0.08, 0.08, 1.2, 16]} /><meshStandardMaterial color={color}/></mesh>
      <mesh><sphereGeometry args={[0.12]} /><meshStandardMaterial color="#fbbf24"/></mesh>
@@ -50,7 +64,91 @@ const Chromatin = () => {
    )
 }
 
+/* ────────────────────────────────────────────────────────────────────────────
+   MEIOSIS PREPARATION SCENE (Phase 1)
+   ──────────────────────────────────────────────────────────────────────────── */
+const PreparationScene = ({ prepStep }: { prepStep: number }) => {
+  const [animProgress, setAnimProgress] = useState(0);
 
+  React.useEffect(() => {
+    setAnimProgress(0);
+  }, [prepStep]);
+
+  useFrame((_, dt) => {
+    setAnimProgress(p => Math.min(1, p + dt * 1.5));
+  });
+
+  return (
+    <group position={[0, -1, 0]}>
+      {/* Premium Desk */}
+      <mesh position={[0, -0.5, 0]} receiveShadow>
+        <boxGeometry args={[10, 1, 6]} />
+        <meshStandardMaterial color="#0f172a" roughness={0.8} metalness={0.1} />
+      </mesh>
+      
+      <CompoundMicroscope position={[-2.5, 0, -1]} rotation={[0, 0.5, 0]} isMounted={prepStep === 3 && animProgress > 0.5} />
+
+      {/* Bench Surface Elements */}
+      {(prepStep < 3 || (prepStep === 3 && animProgress < 0.5)) && (
+          <group position={[0, 0, 0.5]}>
+            <GlassSlide position={[0, 0.02, 0]} rotation={[0,0,0]} />
+            
+            {/* Anther / Sample */}
+            <group position={[0, 0.05, 0]}>
+               {/* Show anther material shrinking as squashed */}
+               {prepStep >= 1 && (
+                  <mesh castShadow scale={[1, prepStep >= 2 ? Math.max(0.04, 1 - animProgress) : 1, 1]}>
+                    <sphereGeometry args={[0.1, 16, 16]} />
+                    <meshStandardMaterial color={prepStep >= 1 ? (animProgress > 0.5 ? '#9f1239' : '#fef08a') : '#fef08a'} roughness={0.6} /> 
+                  </mesh>
+               )}
+            </group>
+
+            {/* Dropper adding Acetocarmine Stain */}
+            {prepStep === 1 && animProgress < 0.8 && (
+                <Dropper position={[0, 1, 0]} liquidColor="#9f1239" animProgress={animProgress} />
+            )}
+
+            {/* Coverslip & Squash */}
+            {prepStep >= 2 && <Coverslip position={[0, Math.max(0.1, 0.5 - animProgress*0.4), 0]} />}
+          </group>
+      )}
+
+      {/* Onion Floral Bud for Step 0 */}
+      {prepStep === 0 && (
+         <group position={[1.8, 0.35, 0.5]}>
+            {/* Green Pedicel/Stem */}
+            <mesh position={[0, -0.4, 0]}><cylinderGeometry args={[0.04, 0.06, 0.5, 16]} /><meshStandardMaterial color="#22c55e" roughness={0.8}/></mesh>
+            {/* Bud Base (Receptacle) */}
+            <mesh position={[0, -0.1, 0]}><sphereGeometry args={[0.2, 16, 16]} /><meshStandardMaterial color="#4ade80" roughness={0.6}/></mesh>
+            {/* Petals (Tepals) */}
+            {Array.from({length: 6}).map((_, i) => (
+               <mesh key={i} position={[
+                   Math.cos(i * Math.PI/3) * 0.1, 
+                   0.1, 
+                   Math.sin(i * Math.PI/3) * 0.1
+                 ]} rotation={[Math.PI/6, i * Math.PI/3, 0]}>
+                   <capsuleGeometry args={[0.1, 0.4, 16, 16]} />
+                   <meshStandardMaterial color="#f8fafc" transparent opacity={0.8} />
+               </mesh>
+            ))}
+            {/* Tweezers extracting an anther */}
+            <group position={[-0.3 + animProgress*0.3, 0.5 - animProgress*0.2, 0.1]} rotation={[0, 0, -Math.PI/4]}>
+               <mesh position={[0, 0.4, 0.02]} rotation={[0,0,-0.05]}><boxGeometry args={[0.05, 0.8, 0.1]}/><meshStandardMaterial color="#94a3b8" metalness={0.8}/></mesh>
+               <mesh position={[0, 0.4, -0.02]} rotation={[0,0,0.05]}><boxGeometry args={[0.05, 0.8, 0.1]}/><meshStandardMaterial color="#94a3b8" metalness={0.8}/></mesh>
+               {/* Extracted Anther in tweezers */}
+               {animProgress > 0.5 && <mesh position={[0,-0.05,0]}><sphereGeometry args={[0.06]}/><meshStandardMaterial color="#fef08a"/></mesh>}
+            </group>
+         </group>
+      )}
+    </group>
+  );
+};
+
+
+/* ────────────────────────────────────────────────────────────────────────────
+   MEIOSIS OBSERVATION SCENE (Phase 2)
+   ──────────────────────────────────────────────────────────────────────────── */
 const MeiosisScene = ({ stage }: { stage: number }) => {
   const tRef = useRef<THREE.Group>(null);
 
@@ -105,7 +203,6 @@ const MeiosisScene = ({ stage }: { stage: number }) => {
             <mesh><sphereGeometry args={[1.4, 32, 32]} scale={[1, 1.4, 1]} />{cellMat}</mesh>
             <ChromosomeX position={[0, 0.8, 0]} color="#3b82f6" />
             <ChromosomeX position={[0, 0.6, 0.3]} color="#f87171" size={0.7}/>
-            
             <ChromosomeX position={[0, -0.8, 0]} color="#f87171" />
             <ChromosomeX position={[0, -0.6, 0.3]} color="#3b82f6" size={0.7} />
          </group>
@@ -116,7 +213,6 @@ const MeiosisScene = ({ stage }: { stage: number }) => {
          <group>
             <mesh position={[0, 1, 0]}><sphereGeometry args={[1.2, 32, 32]} />{cellMat}</mesh>
             <mesh position={[0, -1, 0]}><sphereGeometry args={[1.2, 32, 32]} />{cellMat}</mesh>
-            
             <ChromosomeX position={[0, 1.2, 0]} color="#3b82f6" />
             <ChromosomeX position={[0, 0.8, 0]} color="#f87171" size={0.7}/>
             <ChromosomeX position={[0, -0.8, 0]} color="#f87171" />
@@ -129,10 +225,8 @@ const MeiosisScene = ({ stage }: { stage: number }) => {
          <group>
             <mesh position={[0, 1.2, 0]}><sphereGeometry args={[1.1, 32, 32]} />{cellMat}</mesh>
             <mesh position={[0, -1.2, 0]}><sphereGeometry args={[1.1, 32, 32]} />{cellMat}</mesh>
-            
             <ChromosomeX position={[0, 1.2, 0]} color="#3b82f6" />
             <ChromosomeX position={[0, 1.4, 0.2]} color="#f87171" size={0.7}/>
-            
             <ChromosomeX position={[0, -1.2, 0]} color="#f87171" />
             <ChromosomeX position={[0, -1.4, 0.2]} color="#3b82f6" size={0.7} />
          </group>
@@ -143,11 +237,9 @@ const MeiosisScene = ({ stage }: { stage: number }) => {
          <group>
             <mesh position={[0, 1.2, 0]}><sphereGeometry args={[1.1, 32, 32]} />{cellMat}</mesh>
             <mesh position={[0, -1.2, 0]}><sphereGeometry args={[1.1, 32, 32]} />{cellMat}</mesh>
-            
             {/* Cell 1 Plate */}
             <ChromosomeX position={[0, 1.2, 0.2]} color="#3b82f6" rotation={[0,Math.PI/2,0]} />
             <ChromosomeX position={[0, 1.2, -0.2]} color="#f87171" size={0.7} rotation={[0,Math.PI/2,0]}/>
-            
             {/* Cell 2 Plate */}
             <ChromosomeX position={[0, -1.2, 0.2]} color="#f87171" rotation={[0,Math.PI/2,0]}/>
             <ChromosomeX position={[0, -1.2, -0.2]} color="#3b82f6" size={0.7} rotation={[0,Math.PI/2,0]} />
@@ -159,13 +251,11 @@ const MeiosisScene = ({ stage }: { stage: number }) => {
          <group>
             <mesh position={[0, 1.2, 0]}><sphereGeometry args={[1, 32, 32]} scale={[1.4, 1, 1]} />{cellMat}</mesh>
             <mesh position={[0, -1.2, 0]}><sphereGeometry args={[1, 32, 32]} scale={[1.4, 1, 1]} />{cellMat}</mesh>
-            
             {/* Cell 1 separating */}
             <ChromatidI position={[-0.4, 1.2, 0.1]} color="#3b82f6" rotation={[0,0,Math.PI/2]} />
             <ChromatidI position={[0.4, 1.2, 0.1]} color="#3b82f6" rotation={[0,0,Math.PI/2]} />
             <ChromatidI position={[-0.4, 1.2, -0.2]} color="#f87171" size={0.7} rotation={[0,0,Math.PI/2]} />
             <ChromatidI position={[0.4, 1.2, -0.2]} color="#f87171" size={0.7} rotation={[0,0,Math.PI/2]} />
-
             {/* Cell 2 separating */}
             <ChromatidI position={[-0.4, -1.2, 0.1]} color="#f87171" rotation={[0,0,Math.PI/2]} />
             <ChromatidI position={[0.4, -1.2, 0.1]} color="#f87171" rotation={[0,0,Math.PI/2]} />
@@ -205,77 +295,136 @@ const MeiosisScene = ({ stage }: { stage: number }) => {
   );
 }
 
-
+/* ────────────────────────────────────────────────────────────────────────────
+   MAIN COMPONENT
+   ──────────────────────────────────────────────────────────────────────────── */
 const MeiosisLab: React.FC<Props> = ({ hex }) => {
   const [stage, setStage] = useState(0);
 
   return (
-    <div className="flex flex-col md:flex-row h-full w-full bg-slate-950">
-      <div className="flex-1 relative rounded-2xl overflow-hidden m-4 border border-white/10 shadow-2xl">
-        <Canvas camera={{ position: [0, 0, 6], fov: 65 }}>
+    <LabProtocolEngine
+      labId="b14"
+      labTitle="3D Meiosis Cell Division"
+      labSubtitle="Orbit around the cells to observe homologous chromosome interactions."
+      hexColor={hex}
+      prepSteps={PREP_STEPS}
+      renderSetupScene={(step) => (
+        <Canvas camera={{ position: [0, 2, 6], fov: 55 }} dpr={[1, 2]}>
           <Environment preset="apartment" />
-          <ambientLight intensity={0.6} />
-          <pointLight position={[5, 10, 5]} intensity={1.5} color={STAGES[stage].color} />
-          <pointLight position={[-5, -10, -5]} intensity={0.8} />
-          
-          <MeiosisScene stage={stage} />
-          
-          <OrbitControls enablePan={true} enableZoom={true} target={[0, 0, 0]} />
+          <ambientLight intensity={0.5} />
+          <pointLight position={[5, 10, 5]} intensity={1.2} />
+          <pointLight position={[-5, 5, 5]} intensity={0.5} color="#e0f2fe" />
+          <PreparationScene prepStep={step} />
+          <OrbitControls enablePan enableZoom minDistance={3} maxDistance={14} target={[0, -0.5, 0]} />
         </Canvas>
+      )}
+      renderObservationScene={() => (
+        <>
+          <Canvas camera={{ position: [0, 0, 6], fov: 65 }}>
+            <Environment preset="apartment" />
+            <ambientLight intensity={0.6} />
+            <pointLight position={[5, 10, 5]} intensity={1.5} color={STAGES[stage].color} />
+            <pointLight position={[-5, -10, -5]} intensity={0.8} />
+            <MeiosisScene stage={stage} />
+            <OrbitControls enablePan={true} enableZoom={true} target={[0, 0, 0]} />
+          </Canvas>
+          <MicroscopeHUD />
+        </>
+      )}
+      renderObservationSidebar={(finishObservation) => (
+        <div className="flex flex-col h-full max-h-full">
+           <div className="flex-1 overflow-y-auto pr-2">
+               <div className="p-4 rounded-xl border shadow-inner transition-all duration-300" style={{ backgroundColor: STAGES[stage].color + '15', borderColor: STAGES[stage].color + '40' }}>
+                 <p className="font-bold text-sm mb-1" style={{ color: STAGES[stage].color }}>{STAGES[stage].name}</p>
+                 <p className="text-slate-700 dark:text-slate-700 dark:text-slate-300 text-xs leading-relaxed">{STAGES[stage].desc}</p>
+               </div>
 
-        <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md border border-white/10 rounded-xl px-4 py-3 shadow-xl max-w-xs">
-          <p className="text-[10px] font-bold uppercase tracking-widest text-pink-400 mb-1">Biology Lab — b14</p>
-          <p className="text-white font-bold text-sm">3D Meiosis Cell Division</p>
-          <p className="text-xs text-slate-400 mt-1">Orbit around the cells to observe homologous chromosome interactions.</p>
-        </div>
-      </div>
+               <div>
+                  <p className="text-[10px] text-slate-600 dark:text-slate-400 uppercase font-bold tracking-widest mb-2 border-t border-black/5 dark:border-white/5 pt-4">Select Phase</p>
+                  <div className="grid grid-cols-2 gap-1.5">
+                    {STAGES.map((s, i) => (
+                      <button key={s.name} onClick={() => setStage(i)}
+                        className={`py-2 rounded-lg text-xs font-bold transition-all border ${stage === i ? 'text-white border-current' : 'border-white/10 text-slate-400 bg-slate-950 hover:border-white/30'}`}
+                        style={stage === i ? { backgroundColor: s.color + '30', borderColor: s.color, color: '#fff', boxShadow: `0 0 10px ${s.color}20` } : {}}>
+                        {s.name}
+                      </button>
+                    ))}
+                  </div>
+               </div>
 
-      <div className="w-full md:w-80 bg-slate-900 border-l border-white/5 flex flex-col z-10">
-        <div className="p-5 border-b border-white/5">
-           <h2 className="text-lg font-black text-white">Stages of Meiosis</h2>
-        </div>
-        <div className="flex-1 p-5 space-y-5 overflow-y-auto">
-          
-          <div className="p-4 rounded-xl border shadow-inner transition-all duration-300" style={{ backgroundColor: STAGES[stage].color + '15', borderColor: STAGES[stage].color + '40' }}>
-            <p className="font-bold text-sm mb-1" style={{ color: STAGES[stage].color }}>{STAGES[stage].name}</p>
-            <p className="text-slate-300 text-xs leading-relaxed">{STAGES[stage].desc}</p>
-          </div>
+               <div className="bg-slate-950 p-4 rounded-xl border border-black/10 dark:border-white/10 text-xs space-y-2 mt-4 shadow-inner">
+                 <p className="text-slate-600 dark:text-slate-400 font-bold text-[10px] uppercase tracking-widest border-b border-black/5 dark:border-white/5 pb-1">Cellular Physics Summary</p>
+                 {[['Divisions','2 Divs (Meiosis I/II)'],['Input','1 Diploid Cell (2n)'],['Output','4 Haploid Gametes (n)'],['Crossing Over','Prophase I']].map(([k,v]) => (
+                   <div key={k} className="flex justify-between items-center bg-transparent dark:bg-black/20 p-1.5 rounded"><span className="text-slate-500 font-bold">{k}</span><span className="text-slate-700 dark:text-slate-700 dark:text-slate-300 font-mono text-[10px]">{v}</span></div>
+                 ))}
+               </div>
+           </div>
 
-          <div>
-             <p className="text-[10px] text-slate-400 uppercase font-bold tracking-widest mb-2 border-t border-white/5 pt-4">Select Phase</p>
-             <div className="grid grid-cols-2 gap-1.5">
-               {STAGES.map((s, i) => (
-                 <button key={s.name} onClick={() => setStage(i)}
-                   className={`py-2 rounded-lg text-xs font-bold transition-all border ${stage === i ? 'text-white border-current' : 'border-white/10 text-slate-400 bg-slate-950 hover:border-white/30'}`}
-                   style={stage === i ? { backgroundColor: s.color + '30', borderColor: s.color, color: '#fff', boxShadow: `0 0 10px ${s.color}20` } : {}}>
-                   {s.name}
+           <div className="flex-none pt-4 mt-2 border-t border-black/5 dark:border-white/5 space-y-3">
+               <div className="flex gap-2">
+                 <button onClick={() => setStage(Math.max(0, stage - 1))} disabled={stage === 0}
+                   className="flex-1 py-3 rounded-xl bg-slate-800 text-white text-xs font-bold disabled:opacity-30 hover:bg-slate-700 transition-colors shadow-md">
+                   ← Prev
                  </button>
-               ))}
-             </div>
-          </div>
-
-          <div className="flex gap-2 pt-2">
-            <button onClick={() => setStage(Math.max(0, stage - 1))} disabled={stage === 0}
-              className="flex-1 py-3 rounded-xl bg-slate-800 text-white text-xs font-bold disabled:opacity-30 hover:bg-slate-700 transition-colors shadow-md">
-              ← Previous
-            </button>
-            <button onClick={() => setStage(Math.min(STAGES.length - 1, stage + 1))} disabled={stage === STAGES.length - 1}
-              className="flex-1 py-3 rounded-xl text-white text-xs font-bold disabled:opacity-30 transition-all shadow-lg active:scale-95"
-              style={{ backgroundColor: STAGES[stage].color, boxShadow: `0 4px 14px ${STAGES[stage].color}40` }}>
-              Next Phase →
-            </button>
-          </div>
-
-          <div className="bg-slate-950 p-4 rounded-xl border border-white/10 text-xs space-y-2 mt-4 shadow-inner">
-            <p className="text-slate-400 font-bold text-[10px] uppercase tracking-widest border-b border-white/5 pb-1">Cellular Physics Summary</p>
-            {[['Divisions','2 Divs (Meiosis I/II)'],['Input','1 Diploid Cell (2n)'],['Output','4 Haploid Gametes (n)'],['Crossing Over','Prophase I']].map(([k,v]) => (
-              <div key={k} className="flex justify-between items-center bg-black/20 p-1.5 rounded"><span className="text-slate-500 font-bold">{k}</span><span className="text-slate-300 font-mono text-[10px]">{v}</span></div>
-            ))}
-          </div>
-
+                 <button onClick={() => setStage(Math.min(STAGES.length - 1, stage + 1))} disabled={stage === STAGES.length - 1}
+                   className="flex-1 py-3 rounded-xl text-slate-900 dark:text-slate-900 dark:text-white text-xs font-bold disabled:opacity-30 transition-all shadow-lg active:scale-95"
+                   style={{ backgroundColor: STAGES[stage].color, boxShadow: `0 4px 14px ${STAGES[stage].color}40` }}>
+                   Next →
+                 </button>
+               </div>
+                
+               {stage === STAGES.length - 1 && (
+                   <button 
+                       onClick={finishObservation} 
+                       className="w-full py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-500 text-white font-black text-sm uppercase tracking-widest shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:scale-105 active:scale-95 transition-all">
+                       View Complete Analysis
+                   </button>
+               )}
+           </div>
         </div>
-      </div>
-    </div>
+      )}
+      renderAnalysisSidebar={() => (
+          <div className="flex flex-col h-full space-y-4 animate-fade-in overflow-y-auto pr-2">
+              <div className="bg-[#1e293b] rounded-xl p-5 border border-black/10 dark:border-white/10">
+                  <h3 className="text-sm font-black text-slate-900 dark:text-slate-900 dark:text-white uppercase tracking-wider mb-4 border-b border-black/10 dark:border-white/10 pb-2">Observation & Inference</h3>
+                  
+                  <div className="space-y-4">
+                      <div>
+                          <p className="text-[10px] text-blue-400 font-bold uppercase tracking-widest mb-1 flex items-center gap-2"><span className="text-sm">🧬</span> Meiosis I: Reductional Division</p>
+                          <p className="text-xs text-slate-700 dark:text-slate-700 dark:text-slate-300 leading-relaxed"><strong className="text-slate-900 dark:text-slate-900 dark:text-white">Observation:</strong> Homologous chromosomes (one from each parent) pair up to form bivalents. They then separate into two different cells during Anaphase I.</p>
+                          <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mt-1"><strong className="text-slate-900 dark:text-slate-900 dark:text-white">Inference:</strong> This is a reductional division. The chromosome number is officially halved from diploid (2n) to haploid (n) because whole chromosomes are separated, rather than just sister chromatids.</p>
+                      </div>
+
+                      <div>
+                          <p className="text-[10px] text-fuchsia-400 font-bold uppercase tracking-widest mb-1 flex items-center gap-2"><span className="text-sm">🔄</span> Crossing Over (Prophase I)</p>
+                          <p className="text-xs text-slate-700 dark:text-slate-700 dark:text-slate-300 leading-relaxed"><strong className="text-slate-900 dark:text-slate-900 dark:text-white">Observation:</strong> Non-sister chromatids of homologous chromosomes physically overlap at chiasmata.</p>
+                          <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mt-1"><strong className="text-slate-900 dark:text-slate-900 dark:text-white">Inference:</strong> Genetic recombination occurs as DNA segments are exchanged. This is the primary driver of genetic diversity in sexually reproducing offspring.</p>
+                      </div>
+
+                      <div>
+                          <p className="text-[10px] text-emerald-400 font-bold uppercase tracking-widest mb-1 flex items-center gap-2"><span className="text-sm">✂️</span> Meiosis II: Equational Division</p>
+                          <p className="text-xs text-slate-700 dark:text-slate-700 dark:text-slate-300 leading-relaxed"><strong className="text-slate-900 dark:text-slate-900 dark:text-white">Observation:</strong> The two haploid cells divide again. This time, centromeres split and sister chromatids are pulled apart.</p>
+                          <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mt-1"><strong className="text-slate-900 dark:text-slate-900 dark:text-white">Inference:</strong> This mimics mitosis. It is an equational division because the ploidy level remains haploid (n), it merely separates the replicated DNA copies into four distinct gametic cells.</p>
+                      </div>
+                  </div>
+              </div>
+
+              <div className="mt-auto bg-slate-900 rounded-xl p-4 border border-slate-700">
+                  <p className="text-[11px] text-amber-500/80 italic">"The entire cellular dance of meiosis guarantees genetic diversity across generations while maintaining a stable chromosome count upon fertilization."</p>
+              </div>
+          </div>
+      )}
+      observationHUD={
+        <div style={{
+          position: 'absolute', top: 16, right: 16, zIndex: 20,
+          background: STAGES[stage].color + '25', border: `1px solid ${STAGES[stage].color}50`,
+          borderRadius: 12, padding: '8px 16px', backdropFilter: 'blur(10px)',
+          display: 'flex', alignItems: 'center', gap: 8, transition: 'all 0.5s ease'
+        }}>
+          <span style={{ color: STAGES[stage].color, fontWeight: 800, fontSize: 12 }}>{STAGES[stage].name}</span>
+        </div>
+      }
+    />
   );
 };
 

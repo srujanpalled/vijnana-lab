@@ -168,31 +168,31 @@ const LinkedListLab: React.FC<Props> = ({ hex }) => {
   return (
     <div className="flex flex-col md:flex-row h-full w-full bg-slate-950">
       <div className="flex-1 flex items-center justify-center p-4 overflow-auto">
-        <canvas ref={canvasRef} width={520} height={340} className="rounded-2xl border border-white/10 shadow-2xl" style={{ maxWidth: '100%' }} />
+        <canvas ref={canvasRef} width={520} height={340} className="rounded-2xl border border-black/10 dark:border-white/10 shadow-2xl" style={{ maxWidth: '100%' }} />
       </div>
 
-      <div className="w-full md:w-72 bg-slate-900 border-l border-white/5 flex flex-col">
-        <div className="p-4 border-b border-white/5">
+      <div className="w-full md:w-72 bg-slate-900 border-l border-black/5 dark:border-white/5 flex flex-col">
+        <div className="p-4 border-b border-black/5 dark:border-white/5">
           <p className="text-xs font-bold uppercase tracking-widest text-blue-400 mb-1">CS Lab — cs6</p>
-          <h2 className="text-xl font-bold text-white">Linked List</h2>
-          <p className="text-xs text-slate-400 mt-1">Singly linked list — insertion, deletion, traversal</p>
+          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-900 dark:text-white">Linked List</h2>
+          <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">Singly linked list — insertion, deletion, traversal</p>
         </div>
         <div className="flex-1 p-4 space-y-4 overflow-y-auto">
           <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-3 text-xs">
-            <p className="text-blue-200">Each node has a <strong>data</strong> field and a <strong>→ pointer</strong> to the next node. Last node points to NULL.</p>
+            <p className="text-blue-600 dark:text-blue-200">Each node has a <strong>data</strong> field and a <strong>→ pointer</strong> to the next node. Last node points to NULL.</p>
           </div>
 
           {/* Insert */}
           <div className="space-y-2">
-            <p className="text-[10px] text-slate-400 uppercase font-bold">Insert Node</p>
+            <p className="text-[10px] text-slate-600 dark:text-slate-400 uppercase font-bold">Insert Node</p>
             <div className="flex gap-2">
               <input type="number" placeholder="Value" value={insertVal} onChange={e => setInsertVal(e.target.value)}
-                className="flex-1 bg-slate-950 border border-white/15 rounded-xl px-3 py-2 text-sm text-white font-mono focus:outline-none focus:border-blue-500" />
+                className="flex-1 bg-slate-950 border border-white/15 rounded-xl px-3 py-2 text-sm text-slate-900 dark:text-white font-mono focus:outline-none focus:border-blue-500" />
               <input type="number" placeholder="At pos" value={insertPos} onChange={e => setInsertPos(Number(e.target.value))}
-                className="w-20 bg-slate-950 border border-white/15 rounded-xl px-2 py-2 text-sm text-white font-mono focus:outline-none focus:border-blue-500" min={0} max={nodes.length} />
+                className="w-20 bg-slate-950 border border-white/15 rounded-xl px-2 py-2 text-sm text-slate-900 dark:text-white font-mono focus:outline-none focus:border-blue-500" min={0} max={nodes.length} />
             </div>
             <button onClick={insertNode} disabled={!insertVal}
-              className="w-full py-2.5 rounded-xl font-bold text-white disabled:opacity-40 flex items-center justify-center gap-2"
+              className="w-full py-2.5 rounded-xl font-bold text-slate-900 dark:text-slate-900 dark:text-white disabled:opacity-40 flex items-center justify-center gap-2"
               style={{ backgroundColor: hex }}>
               <Plus size={14} /> Insert
             </button>
@@ -200,14 +200,14 @@ const LinkedListLab: React.FC<Props> = ({ hex }) => {
 
           {/* Node list */}
           <div className="space-y-1.5">
-            <p className="text-[10px] text-slate-400 uppercase font-bold">Current Nodes ({nodes.length})</p>
+            <p className="text-[10px] text-slate-600 dark:text-slate-400 uppercase font-bold">Current Nodes ({nodes.length})</p>
             {nodes.map((node, i) => (
               <div key={node.id}
                 className={`flex items-center justify-between p-2 rounded-xl border text-xs transition-all ${traverseIdx === i ? 'border-blue-500/60 bg-blue-500/10' : 'border-white/10'}`}>
-                <span className="text-slate-400">[{i}]</span>
-                <span className="font-mono font-bold text-white">{node.value}</span>
+                <span className="text-slate-600 dark:text-slate-400">[{i}]</span>
+                <span className="font-mono font-bold text-slate-900 dark:text-slate-900 dark:text-white">{node.value}</span>
                 <span className="text-slate-500">{node.next ? `→[${i + 1}]` : '→NULL'}</span>
-                <button onClick={() => deleteNode(node.id)} className="text-red-400 hover:text-red-300 transition-all">
+                <button onClick={() => deleteNode(node.id)} className="text-red-400 hover:text-red-600 dark:text-red-300 transition-all">
                   <Trash2 size={12} />
                 </button>
               </div>

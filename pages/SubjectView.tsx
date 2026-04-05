@@ -99,7 +99,7 @@ const SubjectView: React.FC = () => {
                 <UserCog size={22} className="text-amber-400" />
               </div>
               <div>
-                <p className="text-sm font-bold text-amber-300">Profile not configured</p>
+                <p className="text-sm font-bold text-amber-600 dark:text-amber-300">Profile not configured</p>
                 <p className="text-xs text-amber-400/70">Set your Syllabus & Grade in your Profile to see only your relevant experiments.</p>
               </div>
             </div>
@@ -118,7 +118,7 @@ const SubjectView: React.FC = () => {
           <div className="flex flex-col gap-3 w-full">
             {/* Board Tabs */}
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-xs font-bold text-slate-500 dark:text-gray-400 uppercase tracking-wider mr-2">Board:</span>
+              <span className="text-xs font-bold text-slate-500 dark:text-gray-600 dark:text-gray-400 uppercase tracking-wider mr-2">Board:</span>
               {boardsList.map(b => (
                 <button
                   key={b}
@@ -136,7 +136,7 @@ const SubjectView: React.FC = () => {
             
             {/* Standard Tabs */}
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-xs font-bold text-slate-500 dark:text-gray-400 uppercase tracking-wider mr-2">Grade:</span>
+              <span className="text-xs font-bold text-slate-500 dark:text-gray-600 dark:text-gray-400 uppercase tracking-wider mr-2">Grade:</span>
               {standardsList.map(s => (
                 <button
                   key={s}
@@ -153,7 +153,7 @@ const SubjectView: React.FC = () => {
             </div>
           </div>
           <div className="flex flex-col items-end shrink-0">
-             <span className="text-sm font-bold text-gray-400 px-4 py-2 bg-white/5 rounded-xl border border-white/10">
+             <span className="text-sm font-bold text-gray-400 px-4 py-2 bg-black/5 dark:bg-white/5 rounded-xl border border-black/10 dark:border-white/10">
                {enabledCount} of {sortedLabs.length} Labs Unlocked
              </span>
              {profileBoard && profileStandard && (selectedBoard !== profileBoard || selectedStandard !== profileStandard) && (
@@ -162,7 +162,7 @@ const SubjectView: React.FC = () => {
                    setSelectedBoard(profileBoard);
                    setSelectedStandard(profileStandard);
                  }}
-                 className="mt-2 text-xs font-bold text-blue-400 hover:text-blue-300 transition-colors"
+                 className="mt-2 text-xs font-bold text-blue-400 hover:text-blue-600 dark:text-blue-300 transition-colors"
                >
                  Reset to Profile ↺
                </button>
@@ -179,12 +179,12 @@ const SubjectView: React.FC = () => {
             ></div>
             <div className="relative z-10">
                 <div className="flex items-center gap-4 mb-4">
-                    <div className="p-3 rounded-xl bg-white/50 dark:bg-white/10 backdrop-blur-md border border-white/20 dark:border-white/5">
+                    <div className="p-3 rounded-xl bg-white/50 dark:bg-black/10 dark:bg-white/10 backdrop-blur-md border border-white/20 dark:border-black/5 dark:border-white/5">
                         <subject.icon size={32} style={{ color: subject.hex }} />
                     </div>
-                    <h1 className="text-4xl md:text-5xl font-display font-bold text-slate-900 dark:text-white transition-colors text-glow">{subject.name} Lab</h1>
+                    <h1 className="text-4xl md:text-5xl font-display font-bold text-slate-900 dark:text-slate-900 dark:text-slate-900 dark:text-white transition-colors text-glow">{subject.name} Lab</h1>
                 </div>
-                <p className="text-xl text-slate-600 dark:text-gray-300 max-w-2xl transition-colors">{subject.description}</p>
+                <p className="text-xl text-slate-600 dark:text-gray-700 dark:text-gray-700 dark:text-gray-300 max-w-2xl transition-colors">{subject.description}</p>
             </div>
         </div>
 
@@ -231,7 +231,7 @@ const SubjectView: React.FC = () => {
                     {lab.boards && (
                       <div className="flex flex-wrap gap-1 mb-3">
                         {lab.boards.map(b => (
-                          <span key={b} className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-white/5 text-gray-500 border border-white/5">{b}</span>
+                          <span key={b} className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-black/5 dark:bg-white/5 text-gray-500 border border-black/5 dark:border-white/5">{b}</span>
                         ))}
                         {lab.standards?.map(s => (
                           <span key={s} className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20">
@@ -249,7 +249,7 @@ const SubjectView: React.FC = () => {
                       </div>
                     )}
 
-                    <div className="flex items-center justify-between text-xs text-slate-500 dark:text-gray-500 border-t border-slate-200 dark:border-white/5 pt-4">
+                    <div className="flex items-center justify-between text-xs text-slate-500 dark:text-gray-500 border-t border-slate-200 dark:border-black/5 dark:border-white/5 pt-4">
                         <div className="flex items-center gap-1">
                             <Clock size={14} />
                             <span>{lab.duration}</span>

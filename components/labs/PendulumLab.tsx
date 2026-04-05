@@ -88,7 +88,7 @@ const PendulumLab: React.FC<{ hex: string }> = ({ hex }) => {
     <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-900 overflow-hidden">
 
       {/* ── TAB BAR ── */}
-      <div className="flex border-b border-slate-200 dark:border-white/10 bg-white dark:bg-slate-950 shrink-0">
+      <div className="flex border-b border-slate-200 dark:border-black/10 dark:border-white/10 bg-white dark:bg-slate-950 shrink-0">
         {([
           { key: 'sim',   label: '🔵 Pendulum' },
           { key: 'graph', label: '📈 L–T² Graph' },
@@ -166,7 +166,7 @@ const PendulumLab: React.FC<{ hex: string }> = ({ hex }) => {
                       </div>
                     )}
                   </>
-                : <div className="flex flex-col items-center justify-center h-48 text-slate-400 gap-3">
+                : <div className="flex flex-col items-center justify-center h-48 text-slate-600 dark:text-slate-400 gap-3">
                     <span className="text-3xl">📈</span>
                     <p className="text-sm">Log at least 2 readings with different L values</p>
                   </div>
@@ -181,19 +181,19 @@ const PendulumLab: React.FC<{ hex: string }> = ({ hex }) => {
                 <thead>
                   <tr className="bg-slate-100 dark:bg-slate-800">
                     {['#','L (m)','T (s)', 'T² (s²)', 'Del'].map(h => (
-                      <th key={h} className="px-3 py-2 text-left text-slate-500 dark:text-gray-400 font-bold uppercase">{h}</th>
+                      <th key={h} className="px-3 py-2 text-left text-slate-500 dark:text-gray-600 dark:text-gray-400 font-bold uppercase">{h}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
                   {loggedPoints.length === 0 &&
-                    <tr><td colSpan={5} className="text-center py-4 text-slate-400 italic">Log readings to build the table</td></tr>}
+                    <tr><td colSpan={5} className="text-center py-4 text-slate-600 dark:text-slate-400 italic">Log readings to build the table</td></tr>}
                   {loggedPoints.map((p, i) => (
                     <tr key={i} className={`border-b border-slate-100 dark:border-white/5 ${i%2===0?'bg-white dark:bg-slate-900':'bg-slate-50 dark:bg-slate-950'}`}>
                       <td className="px-3 py-1.5 font-mono text-slate-500">{i+1}</td>
                       <td className="px-3 py-1.5 font-mono text-indigo-600 dark:text-indigo-400">{p.L.toFixed(2)}</td>
                       <td className="px-3 py-1.5 font-mono text-green-600 dark:text-green-400">{p.T.toFixed(4)}</td>
-                      <td className="px-3 py-1.5 font-mono font-bold text-slate-800 dark:text-white">{p.T2.toFixed(4)}</td>
+                      <td className="px-3 py-1.5 font-mono font-bold text-slate-800 dark:text-slate-900 dark:text-slate-900 dark:text-white">{p.T2.toFixed(4)}</td>
                       <td className="px-3 py-1.5">
                         <button onClick={() => setLoggedPoints(ps => ps.filter((_,j)=>j!==i))} className="text-red-400 hover:text-red-600">
                           <Trash2 size={12} />
@@ -219,8 +219,8 @@ const PendulumLab: React.FC<{ hex: string }> = ({ hex }) => {
                     {i<step?'✓':i+1}
                   </div>
                   <div>
-                    <div className="text-xs font-bold text-slate-700 dark:text-white mb-0.5">{s.icon} {s.title}</div>
-                    <div className="text-xs text-slate-500 dark:text-gray-400 leading-relaxed">{s.desc}</div>
+                    <div className="text-xs font-bold text-slate-700 dark:text-slate-900 dark:text-slate-900 dark:text-white mb-0.5">{s.icon} {s.title}</div>
+                    <div className="text-xs text-slate-500 dark:text-gray-600 dark:text-gray-400 leading-relaxed">{s.desc}</div>
                   </div>
                 </div>
               ))}
@@ -237,7 +237,7 @@ const PendulumLab: React.FC<{ hex: string }> = ({ hex }) => {
         </div>
 
         {/* ── RIGHT CONTROLS ── */}
-        <div className="w-64 shrink-0 border-l border-slate-200 dark:border-white/10 bg-white dark:bg-slate-950 flex flex-col overflow-y-auto p-4 gap-4">
+        <div className="w-64 shrink-0 border-l border-slate-200 dark:border-black/10 dark:border-white/10 bg-white dark:bg-slate-950 flex flex-col overflow-y-auto p-4 gap-4">
 
           {/* Live display */}
           <div className="grid grid-cols-2 gap-2">
@@ -247,10 +247,10 @@ const PendulumLab: React.FC<{ hex: string }> = ({ hex }) => {
               { label: 'g calculated', val: result.g_calculated.toFixed(3), unit: 'm/s²', color: '#f59e0b' },
               { label: '% Error', val: result.percentage_error.toFixed(2), unit: '%', color: result.percentage_error < 2 ? '#22c55e' : '#ef4444' },
             ].map(m => (
-              <div key={m.label} className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-lg p-2 text-center">
-                <div className="text-[9px] text-slate-400 uppercase font-bold mb-1">{m.label}</div>
+              <div key={m.label} className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-black/10 dark:border-white/10 rounded-lg p-2 text-center">
+                <div className="text-[9px] text-slate-600 dark:text-slate-400 uppercase font-bold mb-1">{m.label}</div>
                 <div className="font-mono font-bold text-xs" style={{ color: m.color }}>{m.val}</div>
-                <div className="text-[8px] text-slate-400">{m.unit}</div>
+                <div className="text-[8px] text-slate-600 dark:text-slate-400">{m.unit}</div>
               </div>
             ))}
           </div>
@@ -264,13 +264,13 @@ const PendulumLab: React.FC<{ hex: string }> = ({ hex }) => {
             ].map(s => (
               <div key={s.key}>
                 <div className="flex justify-between items-end mb-2">
-                  <span className="text-xs font-bold text-slate-300 uppercase tracking-widest">{s.label}</span>
-                  <div className="flex bg-black/40 px-2 py-0.5 rounded-md border border-white/10">
-                    <span className="font-mono text-[10px] text-white font-bold">{s.val}</span>
+                  <span className="text-xs font-bold text-slate-700 dark:text-slate-700 dark:text-slate-300 uppercase tracking-widest">{s.label}</span>
+                  <div className="flex bg-black/40 px-2 py-0.5 rounded-md border border-black/10 dark:border-white/10">
+                    <span className="font-mono text-[10px] text-slate-900 dark:text-slate-900 dark:text-white font-bold">{s.val}</span>
                     <span className="text-[9px] text-slate-500 ml-1">{s.unit}</span>
                   </div>
                 </div>
-                <div className="relative h-2 bg-[#0a0f1a] rounded-full border border-slate-200 dark:border-white/5 shadow-inner">
+                <div className="relative h-2 bg-[#0a0f1a] rounded-full border border-slate-200 dark:border-black/5 dark:border-white/5 shadow-inner">
                   <div className={`absolute left-0 top-0 bottom-0 rounded-full ${s.color}`} style={{ width: `${((s.val - s.min) / (s.max - s.min)) * 100}%` }} />
                   <input type="range" min={s.min} max={s.max} step={s.step} value={s.val} onChange={e => s.onChange(parseFloat(e.target.value))} className="absolute inset-0 w-full opacity-0 cursor-ew-resize z-20" />
                   <motion.div className="absolute w-5 h-5 bg-white rounded-full shadow-[0_2px_10px_rgba(0,0,0,0.5)] pointer-events-none z-10" style={{ top: -6, left: `calc(${((s.val - s.min) / (s.max - s.min)) * 100}% - 10px)` }} />
@@ -282,7 +282,7 @@ const PendulumLab: React.FC<{ hex: string }> = ({ hex }) => {
           {/* Buttons */}
           <div className="flex flex-col gap-2">
             <button onClick={logReading}
-              className="w-full py-2.5 rounded-xl text-xs font-bold text-white active:scale-95 transition-all"
+              className="w-full py-2.5 rounded-xl text-xs font-bold text-slate-900 dark:text-slate-900 dark:text-white active:scale-95 transition-all"
               style={{ backgroundColor: hex, boxShadow: `0 6px 16px -6px ${hex}80` }}>
               + Log Reading (L={L}m)
             </button>
@@ -298,8 +298,8 @@ const PendulumLab: React.FC<{ hex: string }> = ({ hex }) => {
           </div>
 
           {/* Formulae */}
-          <div className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-xl p-3 space-y-1">
-            <div className="text-[9px] font-bold text-slate-400 uppercase mb-2">Key Formulae</div>
+          <div className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-black/10 dark:border-white/10 rounded-xl p-3 space-y-1">
+            <div className="text-[9px] font-bold text-slate-600 dark:text-slate-400 uppercase mb-2">Key Formulae</div>
             {['T = 2π√(L/g)', 'g = 4π²L/T²', 'Slope (L-T²) = g/4π²', 'δg/g = √[(δL/L)²+(2δT/T)²]'].map(f => (
               <div key={f} className="font-mono text-[9px] text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/20 px-2 py-1 rounded">{f}</div>
             ))}

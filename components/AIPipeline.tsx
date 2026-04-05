@@ -96,10 +96,10 @@ const AIPipeline: React.FC = () => {
                 <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-bold uppercase tracking-widest mb-4">
                     <Cpu size={14} /> System Architecture
                 </div>
-                <h2 className="text-3xl md:text-5xl font-display font-bold text-white text-glow leading-tight">
+                <h2 className="text-3xl md:text-5xl font-display font-bold text-slate-900 dark:text-slate-900 dark:text-white text-glow leading-tight">
                     How the Lab Generation<br/>Pipeline Works
                 </h2>
-                <p className="text-slate-400 max-w-xl mx-auto font-light leading-relaxed">
+                <p className="text-slate-600 dark:text-slate-400 max-w-xl mx-auto font-light leading-relaxed">
                     From a student's curiosity to a fully functional virtual simulation — in seven intelligent stages.
                 </p>
             </div>
@@ -134,9 +134,9 @@ const AIPipeline: React.FC = () => {
                                 <div className={`glass-panel rounded-2xl p-6 border ${step.borderClass} hover:shadow-lg ${step.glowClass} transition-all duration-300 group`}>
                                     <div className={`flex items-center gap-3 mb-3 ${isLeft ? 'md:flex-row-reverse' : ''}`}>
                                         <span className={`text-xs font-mono font-bold ${step.textClass} opacity-60`}>PHASE {step.phase}</span>
-                                        <h3 className="text-lg font-bold text-white tracking-tight">{step.title}</h3>
+                                        <h3 className="text-lg font-bold text-slate-900 dark:text-slate-900 dark:text-white tracking-tight">{step.title}</h3>
                                     </div>
-                                    <p className="text-sm text-slate-400 leading-relaxed">{step.desc}</p>
+                                    <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{step.desc}</p>
                                 </div>
                             </div>
 
@@ -154,11 +154,11 @@ const AIPipeline: React.FC = () => {
                             transition={{ repeat: Infinity, duration: 2 }}
                             className="w-14 h-14 rounded-full bg-gradient-to-br from-indigo-600 to-emerald-600 flex items-center justify-center shadow-xl shadow-indigo-500/30"
                         >
-                            <Zap className="text-white w-7 h-7" />
+                            <Zap className="text-slate-900 dark:text-slate-900 dark:text-white w-7 h-7" />
                         </MotionDiv>
                     </div>
                     <div className="ml-20 md:ml-0 md:w-full md:text-center md:pt-2">
-                        <p className="text-lg font-bold text-white md:ml-20">Experiment Ready ✨</p>
+                        <p className="text-lg font-bold text-slate-900 dark:text-slate-900 dark:text-white md:ml-20">Experiment Ready ✨</p>
                         <p className="text-xs text-slate-500 md:ml-20">The student can now interact with a fully generated virtual lab.</p>
                     </div>
                 </div>

@@ -200,20 +200,20 @@ const MicroscopySectionLab: React.FC<Props> = ({ hex }) => {
   const cur = SECTIONS.find(s => s.id === section)!;
 
   return (
-    <div className="flex flex-col md:flex-row h-full w-full bg-[#050505] overflow-hidden text-slate-200 select-none">
+    <div className="flex flex-col md:flex-row h-full w-full bg-[#050505] overflow-hidden text-slate-800 dark:text-slate-200 select-none">
       
       {/* 3D Visualization representing Microscope Eyepiece */}
-      <div className="flex-1 flex flex-col relative rounded-2xl overflow-hidden m-4 border border-white/10 shadow-[0_0_50px_rgba(236,72,153,0.05)] bg-gradient-radial from-slate-900 to-black">
+      <div className="flex-1 flex flex-col relative rounded-2xl overflow-hidden m-4 border border-black/10 dark:border-white/10 shadow-[0_0_50px_rgba(236,72,153,0.05)] bg-gradient-radial from-slate-900 to-black">
         <div className="absolute inset-x-0 top-0 p-4 z-10 flex justify-between items-start pointer-events-none">
             <div>
-                <h2 className="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+                <h2 className="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-900 dark:text-white flex items-center gap-2">
                     <span className="p-1.5 rounded-lg bg-pink-500/20 text-pink-400"><Microscope size={18} /></span>
                     Histology Section
                 </h2>
-                <p className="text-[11px] font-medium text-slate-400 uppercase tracking-widest mt-1">3D Volumetric Microscopic View</p>
+                <p className="text-[11px] font-medium text-slate-600 dark:text-slate-400 uppercase tracking-widest mt-1">3D Volumetric Microscopic View</p>
             </div>
             
-            <div className="bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/10 text-[10px] font-bold uppercase tracking-widest shadow-inner text-white flex items-center gap-2">
+            <div className="bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-xl border border-black/10 dark:border-white/10 text-[10px] font-bold uppercase tracking-widest shadow-inner text-slate-900 dark:text-white flex items-center gap-2">
                <ZoomIn size={12} className={section === 'testis' ? 'text-blue-400' : 'text-pink-400'} /> {magnification}x MAG
             </div>
         </div>
@@ -228,10 +228,10 @@ const MicroscopySectionLab: React.FC<Props> = ({ hex }) => {
         </Canvas>
 
         {/* Controls Overlay inside viewport */}
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 w-[80%] max-w-sm bg-black/60 backdrop-blur-xl p-4 rounded-2xl border border-white/10 shadow-2xl z-20">
-             <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 w-[80%] max-w-sm bg-black/60 backdrop-blur-xl p-4 rounded-2xl border border-black/10 dark:border-white/10 shadow-2xl z-20">
+             <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-widest text-slate-600 dark:text-slate-400 mb-2">
                  <span>Zoom Level</span>
-                 <span className="font-mono text-white bg-white/10 px-2 py-0.5 rounded">{magnification}×</span>
+                 <span className="font-mono text-slate-900 dark:text-white bg-black/10 dark:bg-white/10 px-2 py-0.5 rounded">{magnification}×</span>
              </div>
              <input type="range" min={40} max={400} step={10} value={magnification} onChange={e => setMagnification(Number(e.target.value))}
               className="w-full h-1.5 bg-slate-800 rounded-full appearance-none cursor-pointer hover:bg-slate-700 transition-colors" style={{ accentColor: cur.color }} />
@@ -240,15 +240,15 @@ const MicroscopySectionLab: React.FC<Props> = ({ hex }) => {
       </div>
 
       {/* Control Panel */}
-      <div className="w-full md:w-[320px] shrink-0 bg-[#0a0a0a] border-l border-white/10 flex flex-col z-20 shadow-[-10px_0_30px_rgba(0,0,0,0.5)]">
-        <div className="p-6 border-b border-white/5">
+      <div className="w-full md:w-[320px] shrink-0 bg-[#0a0a0a] border-l border-black/10 dark:border-white/10 flex flex-col z-20 shadow-[-10px_0_30px_rgba(0,0,0,0.5)]">
+        <div className="p-6 border-b border-black/5 dark:border-white/5">
           <p className="text-xs font-bold uppercase tracking-widest text-pink-500 mb-2 border-b border-pink-500/20 inline-block pb-1">Biology Lab — b13</p>
-          <h2 className="text-xl font-bold text-white tracking-tight">Tissue Histology</h2>
+          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-900 dark:text-white tracking-tight">Tissue Histology</h2>
         </div>
         
         <div className="flex-1 p-6 space-y-6 overflow-y-auto custom-scrollbar">
           
-          <div className="bg-[#111] border border-white/5 p-4 rounded-xl shadow-inner">
+          <div className="bg-[#111] border border-black/5 dark:border-white/5 p-4 rounded-xl shadow-inner">
             <h3 className="text-[10px] uppercase font-bold text-slate-500 tracking-widest mb-3">Load Slide</h3>
             <div className="grid grid-cols-2 gap-2">
               {SECTIONS.map(s => (
@@ -262,20 +262,20 @@ const MicroscopySectionLab: React.FC<Props> = ({ hex }) => {
             </div>
           </div>
 
-          <div className="bg-slate-900/50 border border-white/10 rounded-xl p-5 backdrop-blur-md">
-            <div className="flex items-center gap-2 mb-4 pb-2 border-b border-white/5">
+          <div className="bg-slate-900/50 border border-black/10 dark:border-white/10 rounded-xl p-5 backdrop-blur-md">
+            <div className="flex items-center gap-2 mb-4 pb-2 border-b border-black/5 dark:border-white/5">
                 <Info size={14} style={{ color: cur.color }} />
-                <h3 className="text-[11px] uppercase font-bold tracking-widest text-white">Identifiable Structures</h3>
+                <h3 className="text-[11px] uppercase font-bold tracking-widest text-slate-900 dark:text-slate-900 dark:text-white">Identifiable Structures</h3>
             </div>
             
             <div className="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
               {cur.structures.map((s, i) => (
-                <div key={s} className="flex items-start gap-3 p-2 rounded-lg bg-black/40 border border-white/5 hover:bg-white/5 transition-colors">
+                <div key={s} className="flex items-start gap-3 p-2 rounded-lg bg-black/40 border border-black/5 dark:border-white/5 hover:bg-black/5 dark:bg-white/5 transition-colors">
                   <div className="w-4 h-4 rounded-full flex items-center justify-center shrink-0 mt-0.5 text-[9px] font-bold" style={{ backgroundColor: cur.color, color: '#000' }}>
                      {i + 1}
                   </div>
                   <div>
-                      <span className="text-xs font-bold text-slate-200 block">{s}</span>
+                      <span className="text-xs font-bold text-slate-800 dark:text-slate-800 dark:text-slate-200 block">{s}</span>
                   </div>
                 </div>
               ))}
@@ -298,7 +298,7 @@ const MicroscopySectionLab: React.FC<Props> = ({ hex }) => {
             <div className="bg-pink-900/10 border border-pink-500/20 p-4 rounded-xl">
               <p className="text-pink-400 font-bold text-[10px] uppercase mb-2">Follicular Development</p>
               <p className="text-[10px] text-pink-200/70 font-medium leading-relaxed">
-                 Oocytes develop within follicles. A primary follicle matures into a large <span className="text-white font-bold">Graafian follicle</span> with a fluid-filled antrum. After ovulation, it forms the <span className="text-yellow-400 font-bold">Corpus luteum</span>.
+                 Oocytes develop within follicles. A primary follicle matures into a large <span className="text-slate-900 dark:text-slate-900 dark:text-white font-bold">Graafian follicle</span> with a fluid-filled antrum. After ovulation, it forms the <span className="text-yellow-400 font-bold">Corpus luteum</span>.
               </p>
             </div>
           )}

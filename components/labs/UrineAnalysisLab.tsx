@@ -236,17 +236,17 @@ const UrineAnalysisLab: React.FC<Props> = ({ hex }) => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row h-full w-full bg-[#050505] overflow-hidden text-slate-200 select-none">
+    <div className="flex flex-col md:flex-row h-full w-full bg-[#050505] overflow-hidden text-slate-800 dark:text-slate-200 select-none">
       
       {/* 3D Visualization */}
-      <div className="flex-1 flex flex-col relative rounded-2xl overflow-hidden m-4 border border-white/10 shadow-[0_0_50px_rgba(234,179,8,0.05)]">
+      <div className="flex-1 flex flex-col relative rounded-2xl overflow-hidden m-4 border border-black/10 dark:border-white/10 shadow-[0_0_50px_rgba(234,179,8,0.05)]">
         <div className="absolute inset-x-0 top-0 p-4 bg-gradient-to-b from-black/80 to-transparent z-10 flex justify-between items-start pointer-events-none">
             <div>
-                <h2 className="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+                <h2 className="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-900 dark:text-white flex items-center gap-2">
                     <span className="p-1.5 rounded-lg bg-amber-500/20 text-amber-400"><Droplets size={18} /></span>
                     Clinical Urinalysis
                 </h2>
-                <p className="text-[11px] font-medium text-slate-400 uppercase tracking-widest mt-1">Chemical Reagent Diagnostics</p>
+                <p className="text-[11px] font-medium text-slate-600 dark:text-slate-400 uppercase tracking-widest mt-1">Chemical Reagent Diagnostics</p>
             </div>
             {/* Status chip */}
             <div className={`backdrop-blur-md px-3 py-1.5 rounded-xl border text-[10px] font-bold uppercase tracking-widest shadow-inner transition-colors ${animating ? 'bg-amber-500/20 border-amber-500/40 text-amber-400 animate-pulse' : 'bg-black/40 border-white/10 text-slate-300'}`}>
@@ -263,17 +263,17 @@ const UrineAnalysisLab: React.FC<Props> = ({ hex }) => {
         </Canvas>
 
         {/* Dynamic Context Panel */}
-        <div className="absolute bottom-6 left-6 right-6 p-4 rounded-xl bg-black/60 backdrop-blur-xl border border-white/10 shadow-2xl">
-            <h3 className="text-[10px] uppercase font-bold text-slate-400 tracking-widest mb-1 flex items-center gap-2"><Activity size={12} /> Diagnosis Notes</h3>
-            <p className="font-medium text-sm text-slate-200 leading-relaxed">{getUrinalysisSummary()}</p>
+        <div className="absolute bottom-6 left-6 right-6 p-4 rounded-xl bg-black/60 backdrop-blur-xl border border-black/10 dark:border-white/10 shadow-2xl">
+            <h3 className="text-[10px] uppercase font-bold text-slate-600 dark:text-slate-400 tracking-widest mb-1 flex items-center gap-2"><Activity size={12} /> Diagnosis Notes</h3>
+            <p className="font-medium text-sm text-slate-800 dark:text-slate-800 dark:text-slate-200 leading-relaxed">{getUrinalysisSummary()}</p>
         </div>
       </div>
 
       {/* Control Panel */}
-      <div className="w-full md:w-[320px] shrink-0 bg-[#0a0a0a] border-l border-white/10 flex flex-col z-20 shadow-[-10px_0_30px_rgba(0,0,0,0.5)]">
-        <div className="p-6 border-b border-white/5">
+      <div className="w-full md:w-[320px] shrink-0 bg-[#0a0a0a] border-l border-black/10 dark:border-white/10 flex flex-col z-20 shadow-[-10px_0_30px_rgba(0,0,0,0.5)]">
+        <div className="p-6 border-b border-black/5 dark:border-white/5">
           <p className="text-xs font-bold uppercase tracking-widest text-amber-500 mb-2 border-b border-amber-500/20 inline-block pb-1">Biology Lab — b12</p>
-          <h2 className="text-xl font-bold text-white tracking-tight">Urine Analysis</h2>
+          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-900 dark:text-white tracking-tight">Urine Analysis</h2>
         </div>
         
         <div className="flex-1 p-6 space-y-6 overflow-y-auto custom-scrollbar">
@@ -315,7 +315,7 @@ const UrineAnalysisLab: React.FC<Props> = ({ hex }) => {
                     
                     <div className="flex justify-between items-end mt-2">
                         <span className="text-[10px] font-medium text-slate-500"><span className="opacity-70">Reagent:</span> {test.reagent}</span>
-                        {done2 && <span className="text-[10px] font-bold text-slate-300">{isAbnormal ? test.abnormal : test.normal}</span>}
+                        {done2 && <span className="text-[10px] font-bold text-slate-700 dark:text-slate-700 dark:text-slate-300">{isAbnormal ? test.abnormal : test.normal}</span>}
                     </div>
                   </button>
                 );

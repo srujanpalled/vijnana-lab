@@ -63,7 +63,7 @@ const Home: React.FC = () => {
       {/* Theme Toggle Button */}
       <button 
         onClick={toggleTheme}
-        className="fixed top-24 right-6 z-50 p-3 rounded-full bg-white/10 dark:bg-slate-800/50 border border-slate-200 dark:border-white/10 shadow-lg backdrop-blur-md text-slate-700 dark:text-yellow-300 hover:scale-110 transition-all"
+        className="fixed top-24 right-6 z-50 p-3 rounded-full bg-white/10 dark:bg-slate-800/50 border border-slate-200 dark:border-black/10 dark:border-white/10 shadow-lg backdrop-blur-md text-slate-700 dark:text-yellow-300 hover:scale-110 transition-all"
         title="Toggle Theme"
         aria-label={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
       >
@@ -75,7 +75,7 @@ const Home: React.FC = () => {
          {[...Array(15)].map((_, i) => (
             <MotionDiv
               key={i}
-              className="absolute rounded-full bg-blue-600/5 dark:bg-white/5 blur-sm"
+              className="absolute rounded-full bg-blue-600/5 dark:bg-black/5 dark:bg-white/5 blur-sm"
               initial={{
                 x: Math.random() * 100 + "%",
                 y: Math.random() * 100 + "%",
@@ -114,7 +114,7 @@ const Home: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-bold leading-tight text-slate-900 dark:text-white drop-shadow-sm dark:drop-shadow-lg transition-colors min-h-[160px] md:min-h-[220px] text-glow">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-bold leading-tight text-slate-900 dark:text-slate-900 dark:text-slate-900 dark:text-white drop-shadow-sm dark:drop-shadow-lg transition-colors min-h-[160px] md:min-h-[220px] text-glow">
               <AnimatePresence mode="wait">
                 <MotionSpan
                     key={titleIndex}
@@ -139,7 +139,7 @@ const Home: React.FC = () => {
                 transition={{ delay: 0.3, duration: 0.8 }}
                 className="border-l-4 border-blue-500 pl-4 my-4"
             >
-                <h2 className="text-xl md:text-2xl font-light text-blue-600 dark:text-blue-200 italic transition-colors">
+                <h2 className="text-xl md:text-2xl font-light text-blue-600 dark:text-blue-600 dark:text-blue-200 italic transition-colors">
                     "Where learning becomes interactive, visual, and intelligent."
                 </h2>
             </MotionDiv>
@@ -149,7 +149,7 @@ const Home: React.FC = () => {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.4, duration: 1 }}
             >
-                <p className="text-lg text-slate-600 dark:text-gray-400 max-w-xl leading-relaxed transition-colors">
+                <p className="text-lg text-slate-600 dark:text-gray-600 dark:text-gray-400 max-w-xl leading-relaxed transition-colors">
                 Master PCMB & CS concepts with immersive 3D virtual labs, interactive simulations, and a personalized AI Tutor.
                 </p>
             </MotionDiv>
@@ -164,7 +164,7 @@ const Home: React.FC = () => {
               </Link>
               <Link to="/tutor">
                  <MotionDiv whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                    <button className="px-8 py-4 rounded-full glass-panel text-slate-900 dark:text-white font-bold hover:bg-slate-100 dark:hover:bg-white/10 border border-slate-200 dark:border-white/20 transition-all duration-300 flex items-center gap-2">
+                    <button className="px-8 py-4 rounded-full glass-panel text-slate-900 dark:text-slate-900 dark:text-white font-bold hover:bg-slate-100 dark:hover:bg-black/10 dark:bg-white/10 border border-slate-200 dark:border-white/20 transition-all duration-300 flex items-center gap-2">
                     AI Tutor <Bot size={20} className="text-emerald-600 dark:text-emerald-400 animate-bounce" />
                     </button>
                 </MotionDiv>
@@ -214,8 +214,8 @@ const Home: React.FC = () => {
       <section className="px-6 md:px-12 lg:px-20 py-16 z-10 relative">
         <div className="flex justify-between items-end mb-12">
           <div>
-            <h2 className="text-3xl md:text-4xl font-display font-bold text-slate-900 dark:text-white mb-2 transition-colors">Explore Subjects</h2>
-            <p className="text-slate-600 dark:text-gray-400 transition-colors">Select a discipline to enter the lab.</p>
+            <h2 className="text-3xl md:text-4xl font-display font-bold text-slate-900 dark:text-slate-900 dark:text-slate-900 dark:text-white mb-2 transition-colors">Explore Subjects</h2>
+            <p className="text-slate-600 dark:text-gray-600 dark:text-gray-400 transition-colors">Select a discipline to enter the lab.</p>
           </div>
         </div>
         
@@ -232,8 +232,8 @@ const Home: React.FC = () => {
                 >
                   <subject.icon size={32} style={{ color: subject.hex }} />
                 </div>
-                <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-2 transition-colors">{subject.name}</h3>
-                <p className="text-sm text-slate-600 dark:text-gray-400 line-clamp-3 transition-colors">{subject.description}</p>
+                <h3 className="text-xl font-bold text-slate-800 dark:text-slate-900 dark:text-slate-900 dark:text-white mb-2 transition-colors">{subject.name}</h3>
+                <p className="text-sm text-slate-600 dark:text-gray-600 dark:text-gray-400 line-clamp-3 transition-colors">{subject.description}</p>
               </GlassCard>
             </Link>
           ))}
@@ -247,8 +247,8 @@ const Home: React.FC = () => {
             <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-indigo-600/10 to-emerald-600/10 dark:from-indigo-600/20 dark:to-emerald-600/20 animate-gradient-x"></div>
             <div className="relative z-10 flex flex-col md:flex-row items-center">
                 <div className="p-12 md:w-2/3">
-                    <h2 className="text-3xl font-display font-bold mb-4 text-slate-900 dark:text-white">Stuck on a complex problem?</h2>
-                    <p className="text-slate-700 dark:text-gray-300 mb-8 text-lg">Our Vijnana Lab AI Tutor is available 24/7 to help you understand derivations, logic, and reactions.</p>
+                    <h2 className="text-3xl font-display font-bold mb-4 text-slate-900 dark:text-slate-900 dark:text-slate-900 dark:text-white">Stuck on a complex problem?</h2>
+                    <p className="text-slate-700 dark:text-gray-700 dark:text-gray-700 dark:text-gray-300 mb-8 text-lg">Our Vijnana Lab AI Tutor is available 24/7 to help you understand derivations, logic, and reactions.</p>
                     <Link to="/tutor">
                         <MotionDiv whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                             <button className="px-6 py-3 bg-blue-600 dark:bg-white text-white dark:text-blue-900 font-bold rounded-xl hover:bg-blue-700 dark:hover:bg-gray-100 transition-colors shadow-lg">
@@ -271,7 +271,7 @@ const Home: React.FC = () => {
         
         {/* Students */}
         <GlassCard className="p-8 md:p-10 relative overflow-hidden group" color="indigo">
-            <div className="absolute top-0 right-0 p-10 opacity-10 group-hover:opacity-20 transition-opacity transform group-hover:scale-110 duration-700 text-purple-600 dark:text-white">
+            <div className="absolute top-0 right-0 p-10 opacity-10 group-hover:opacity-20 transition-opacity transform group-hover:scale-110 duration-700 text-purple-600 dark:text-slate-900 dark:text-slate-900 dark:text-white">
                  <Trophy size={120} />
             </div>
             <div className="relative z-10">
@@ -279,37 +279,37 @@ const Home: React.FC = () => {
                     <div className="w-14 h-14 rounded-2xl bg-indigo-500/20 flex items-center justify-center shadow-lg shadow-indigo-500/20">
                         <Smile className="text-indigo-600 dark:text-indigo-400" size={28} />
                     </div>
-                    <h2 className="text-2xl md:text-3xl font-display font-bold text-slate-900 dark:text-white">Students Love It</h2>
+                    <h2 className="text-2xl md:text-3xl font-display font-bold text-slate-900 dark:text-slate-900 dark:text-slate-900 dark:text-white">Students Love It</h2>
                 </div>
                 
                 <div className="space-y-6">
                     <div className="flex gap-4 items-start">
-                        <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center shrink-0 mt-1">
+                        <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-black/5 dark:bg-white/5 flex items-center justify-center shrink-0 mt-1">
                             <ShieldCheck className="text-green-600 dark:text-green-400" size={20} />
                         </div>
                         <div>
-                            <h3 className="font-bold text-slate-800 dark:text-white text-lg mb-1">No Fear of Failure</h3>
-                            <p className="text-sm text-slate-600 dark:text-gray-400 leading-relaxed">Explode virtual beakers or mess up circuits without any real-world consequences. It's the safest place to learn.</p>
+                            <h3 className="font-bold text-slate-800 dark:text-slate-900 dark:text-slate-900 dark:text-white text-lg mb-1">No Fear of Failure</h3>
+                            <p className="text-sm text-slate-600 dark:text-gray-600 dark:text-gray-400 leading-relaxed">Explode virtual beakers or mess up circuits without any real-world consequences. It's the safest place to learn.</p>
                         </div>
                     </div>
                     
                     <div className="flex gap-4 items-start">
-                        <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center shrink-0 mt-1">
+                        <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-black/5 dark:bg-white/5 flex items-center justify-center shrink-0 mt-1">
                             <Zap className="text-yellow-600 dark:text-yellow-400" size={20} />
                         </div>
                         <div>
-                            <h3 className="font-bold text-slate-800 dark:text-white text-lg mb-1">Gamified Learning</h3>
-                            <p className="text-sm text-slate-600 dark:text-gray-400 leading-relaxed">Interactive simulations and instant feedback make mastering complex concepts feel like playing a video game.</p>
+                            <h3 className="font-bold text-slate-800 dark:text-slate-900 dark:text-slate-900 dark:text-white text-lg mb-1">Gamified Learning</h3>
+                            <p className="text-sm text-slate-600 dark:text-gray-600 dark:text-gray-400 leading-relaxed">Interactive simulations and instant feedback make mastering complex concepts feel like playing a video game.</p>
                         </div>
                     </div>
 
                     <div className="flex gap-4 items-start">
-                        <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center shrink-0 mt-1">
+                        <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-black/5 dark:bg-white/5 flex items-center justify-center shrink-0 mt-1">
                             <Clock className="text-blue-600 dark:text-blue-400" size={20} />
                         </div>
                         <div>
-                            <h3 className="font-bold text-slate-800 dark:text-white text-lg mb-1">Learn Anytime</h3>
-                            <p className="text-sm text-slate-600 dark:text-gray-400 leading-relaxed">The lab is open 24/7. Practice experiments at 2 AM or right before your exam.</p>
+                            <h3 className="font-bold text-slate-800 dark:text-slate-900 dark:text-slate-900 dark:text-white text-lg mb-1">Learn Anytime</h3>
+                            <p className="text-sm text-slate-600 dark:text-gray-600 dark:text-gray-400 leading-relaxed">The lab is open 24/7. Practice experiments at 2 AM or right before your exam.</p>
                         </div>
                     </div>
                 </div>
@@ -318,7 +318,7 @@ const Home: React.FC = () => {
 
         {/* Teachers */}
          <GlassCard className="p-8 md:p-10 relative overflow-hidden group" color="emerald">
-            <div className="absolute top-0 right-0 p-10 opacity-10 group-hover:opacity-20 transition-opacity transform group-hover:scale-110 duration-700 text-emerald-600 dark:text-white">
+            <div className="absolute top-0 right-0 p-10 opacity-10 group-hover:opacity-20 transition-opacity transform group-hover:scale-110 duration-700 text-emerald-600 dark:text-slate-900 dark:text-slate-900 dark:text-white">
                  <GraduationCap size={120} />
             </div>
             <div className="relative z-10">
@@ -326,37 +326,37 @@ const Home: React.FC = () => {
                     <div className="w-14 h-14 rounded-2xl bg-emerald-500/20 flex items-center justify-center shadow-lg shadow-emerald-500/20">
                         <Users className="text-emerald-600 dark:text-emerald-400" size={28} />
                     </div>
-                    <h2 className="text-2xl md:text-3xl font-display font-bold text-slate-900 dark:text-white">Teachers Love It</h2>
+                    <h2 className="text-2xl md:text-3xl font-display font-bold text-slate-900 dark:text-slate-900 dark:text-slate-900 dark:text-white">Teachers Love It</h2>
                 </div>
                 
                 <div className="space-y-6">
                     <div className="flex gap-4 items-start">
-                        <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center shrink-0 mt-1">
+                        <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-black/5 dark:bg-white/5 flex items-center justify-center shrink-0 mt-1">
                             <Clock className="text-yellow-600 dark:text-yellow-400" size={20} />
                         </div>
                         <div>
-                            <h3 className="font-bold text-slate-800 dark:text-white text-lg mb-1">Zero Setup Time</h3>
-                            <p className="text-sm text-slate-600 dark:text-gray-400 leading-relaxed">Skip the tedious apparatus arrangement. Start the class instantly and cover more syllabus in less time.</p>
+                            <h3 className="font-bold text-slate-800 dark:text-slate-900 dark:text-slate-900 dark:text-white text-lg mb-1">Zero Setup Time</h3>
+                            <p className="text-sm text-slate-600 dark:text-gray-600 dark:text-gray-400 leading-relaxed">Skip the tedious apparatus arrangement. Start the class instantly and cover more syllabus in less time.</p>
                         </div>
                     </div>
                     
                     <div className="flex gap-4 items-start">
-                        <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center shrink-0 mt-1">
+                        <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-black/5 dark:bg-white/5 flex items-center justify-center shrink-0 mt-1">
                             <ShieldCheck className="text-blue-600 dark:text-blue-400" size={20} />
                         </div>
                         <div>
-                            <h3 className="font-bold text-slate-800 dark:text-white text-lg mb-1">100% Safety</h3>
-                            <p className="text-sm text-slate-600 dark:text-gray-400 leading-relaxed">Eliminate risks of chemical burns or broken glass. Perfect for large classes where monitoring everyone is hard.</p>
+                            <h3 className="font-bold text-slate-800 dark:text-slate-900 dark:text-slate-900 dark:text-white text-lg mb-1">100% Safety</h3>
+                            <p className="text-sm text-slate-600 dark:text-gray-600 dark:text-gray-400 leading-relaxed">Eliminate risks of chemical burns or broken glass. Perfect for large classes where monitoring everyone is hard.</p>
                         </div>
                     </div>
 
                     <div className="flex gap-4 items-start">
-                        <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center shrink-0 mt-1">
+                        <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-black/5 dark:bg-white/5 flex items-center justify-center shrink-0 mt-1">
                             <Bot className="text-indigo-600 dark:text-indigo-400" size={20} />
                         </div>
                         <div>
-                            <h3 className="font-bold text-slate-800 dark:text-white text-lg mb-1">AI Co-Pilot</h3>
-                            <p className="text-sm text-slate-600 dark:text-gray-400 leading-relaxed">Our AI Tutor handles basic doubts and conceptual clarifications, letting you focus on advanced mentoring.</p>
+                            <h3 className="font-bold text-slate-800 dark:text-slate-900 dark:text-slate-900 dark:text-white text-lg mb-1">AI Co-Pilot</h3>
+                            <p className="text-sm text-slate-600 dark:text-gray-600 dark:text-gray-400 leading-relaxed">Our AI Tutor handles basic doubts and conceptual clarifications, letting you focus on advanced mentoring.</p>
                         </div>
                     </div>
                 </div>

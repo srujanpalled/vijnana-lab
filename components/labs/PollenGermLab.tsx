@@ -196,17 +196,17 @@ const PollenGermLab: React.FC<Props> = ({ hex }) => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row h-full w-full bg-[#050505] overflow-hidden text-slate-200 select-none">
+    <div className="flex flex-col md:flex-row h-full w-full bg-[#050505] overflow-hidden text-slate-800 dark:text-slate-200 select-none">
       
       {/* 3D Visualization */}
-      <div className="flex-1 flex flex-col relative rounded-2xl overflow-hidden m-4 border border-white/10 shadow-[0_0_50px_rgba(245,158,11,0.05)]">
+      <div className="flex-1 flex flex-col relative rounded-2xl overflow-hidden m-4 border border-black/10 dark:border-white/10 shadow-[0_0_50px_rgba(245,158,11,0.05)]">
         <div className="absolute inset-x-0 top-0 p-4 bg-gradient-to-b from-black/80 to-transparent z-10 flex justify-between items-start">
             <div>
-                <h2 className="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+                <h2 className="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-900 dark:text-white flex items-center gap-2">
                     <span className="p-1.5 rounded-lg bg-amber-500/20 text-amber-400"><Sprout size={18} /></span>
                     Pollen Tube Germination In Vitro
                 </h2>
-                <p className="text-[11px] font-medium text-slate-400 uppercase tracking-widest mt-1">Microscopic View 400x (3D)</p>
+                <p className="text-[11px] font-medium text-slate-600 dark:text-slate-400 uppercase tracking-widest mt-1">Microscopic View 400x (3D)</p>
             </div>
             
             {/* Status chip */}
@@ -226,15 +226,15 @@ const PollenGermLab: React.FC<Props> = ({ hex }) => {
         </Canvas>
 
         {/* Dynamic Data Overlay */}
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-sm flex items-center gap-4 bg-black/80 p-4 rounded-xl border border-white/10 shadow-2xl backdrop-blur-md">
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-sm flex items-center gap-4 bg-black/80 p-4 rounded-xl border border-black/10 dark:border-white/10 shadow-2xl backdrop-blur-md">
              <div className="flex-1">
                  <p className="text-[10px] uppercase font-bold tracking-widest text-emerald-400 mb-1">Growth Outcome</p>
                  {running ? (
-                    <div className="w-full bg-white/10 h-2 rounded-full overflow-hidden mt-2">
+                    <div className="w-full bg-black/10 dark:bg-white/10 h-2 rounded-full overflow-hidden mt-2">
                          <div className="h-full bg-amber-400" style={{ width: `${tubeGrowth * 100}%` }} />
                     </div>
                  ) : (
-                    <p className="font-bold text-slate-300 leading-snug">
+                    <p className="font-bold text-slate-700 dark:text-slate-700 dark:text-slate-300 leading-snug">
                        {germinated ? "Pollen tubes formed." : "Awaiting incubation."}
                     </p>
                  )}
@@ -242,15 +242,15 @@ const PollenGermLab: React.FC<Props> = ({ hex }) => {
              
              <div className="shrink-0 bg-emerald-900/20 p-3 rounded-xl border border-emerald-500/20 text-center flex flex-col items-center justify-center min-w-[70px]">
                  <p className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest">Rate</p>
-                 <p className="font-black text-2xl text-white leading-none mt-1">{germinated ? germCount : Math.round(tubeGrowth * germCount)}<span className="text-sm">%</span></p>
+                 <p className="font-black text-2xl text-slate-900 dark:text-slate-900 dark:text-white leading-none mt-1">{germinated ? germCount : Math.round(tubeGrowth * germCount)}<span className="text-sm">%</span></p>
              </div>
         </div>
       </div>
 
-      <div className="w-full md:w-[320px] shrink-0 bg-[#0a0a0a] border-l border-white/10 flex flex-col z-20 shadow-[-10px_0_30px_rgba(0,0,0,0.5)]">
-        <div className="p-6 border-b border-white/5">
+      <div className="w-full md:w-[320px] shrink-0 bg-[#0a0a0a] border-l border-black/10 dark:border-white/10 flex flex-col z-20 shadow-[-10px_0_30px_rgba(0,0,0,0.5)]">
+        <div className="p-6 border-b border-black/5 dark:border-white/5">
           <p className="text-xs font-bold uppercase tracking-widest text-amber-500 mb-2 border-b border-amber-500/20 inline-block pb-1">Biology Lab — b6</p>
-          <h2 className="text-xl font-bold text-white tracking-tight">Pollen Germination</h2>
+          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-900 dark:text-white tracking-tight">Pollen Germination</h2>
         </div>
         
         <div className="flex-1 p-6 space-y-6 overflow-y-auto">
@@ -260,17 +260,17 @@ const PollenGermLab: React.FC<Props> = ({ hex }) => {
           </div>
 
           <div className="space-y-4">
-             <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-widest border-b border-white/10 pb-1 flex items-center gap-2"><TestTube size={12} /> Medium Composition</h3>
+             <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-widest border-b border-black/10 dark:border-white/10 pb-1 flex items-center gap-2"><TestTube size={12} /> Medium Composition</h3>
              
              <DraggableSlider label="Boric Acid (B₃)" min={0} max={400} step={10} value={boronConc} onChange={v => { setBoronConc(v); reset(); }} color="#10b981" unit="ppm" formatValue={(v) => v.toString()} />
              <DraggableSlider label="Sucrose" min={0} max={30} step={1} value={sucroseConc} onChange={v => { setSucroseConc(v); reset(); }} color="#f59e0b" unit="%" formatValue={(v) => v.toString()} />
              <DraggableSlider label="Temperature" min={10} max={40} step={1} value={temperature} onChange={v => { setTemperature(v); reset(); }} color="#ef4444" unit="°C" formatValue={(v) => v.toString()} />
           </div>
 
-          <div className="bg-[#111] p-4 rounded-xl border border-white/5 shadow-inner">
+          <div className="bg-[#111] p-4 rounded-xl border border-black/5 dark:border-white/5 shadow-inner">
              <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3">Theoretical Quality Score</p>
              <div className="flex items-center gap-3">
-                 <div className="flex-1 h-3 bg-white/10 rounded-full overflow-hidden">
+                 <div className="flex-1 h-3 bg-black/10 dark:bg-white/10 rounded-full overflow-hidden">
                      <div className="h-full bg-gradient-to-r from-red-500 via-yellow-500 to-green-500 transition-all duration-300" style={{ width: `${Math.max(5, germRate * 100)}%` }} />
                  </div>
                  <span className={`font-mono text-sm font-bold ${germRate > 0.7 ? 'text-green-400' : germRate > 0.3 ? 'text-yellow-400' : 'text-red-400'}`}>{Math.round(germRate * 100)}/100</span>
@@ -281,7 +281,7 @@ const PollenGermLab: React.FC<Props> = ({ hex }) => {
               <button onClick={() => { if (!germinated) setRunning(r => !r); }} disabled={germinated}
                 className={`flex-1 py-3.5 rounded-xl font-bold text-white transition-all shadow-lg active:scale-95 flex flex-col items-center justify-center leading-tight ${running ? 'bg-slate-700 shadow-slate-900' : 'bg-ambient bg-amber-600 shadow-amber-900/40 hover:bg-amber-500'} disabled:opacity-50`}>
                 <span className="flex items-center gap-1.5"><Sprout size={14} /> {running ? 'Incubating...' : 'Start Incubation'}</span>
-                {!running && !germinated && <span className="text-[9px] font-medium text-amber-200 mt-0.5 opacity-80">(Simulate 30 mins)</span>}
+                {!running && !germinated && <span className="text-[9px] font-medium text-amber-600 dark:text-amber-200 mt-0.5 opacity-80">(Simulate 30 mins)</span>}
               </button>
 
               <button onClick={reset} className="px-5 rounded-xl bg-slate-800 text-slate-400 hover:text-red-400 hover:bg-red-900/40 transition-colors font-bold"><RotateCcw size={16} /></button>

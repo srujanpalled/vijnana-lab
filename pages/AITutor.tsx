@@ -104,20 +104,20 @@ const AITutor: React.FC = () => {
       <div className="flex-1 glass-panel rounded-3xl overflow-hidden flex flex-col shadow-2xl border border-purple-500/20 min-h-0">
         
         {/* Header */}
-        <div className="bg-purple-900/20 p-6 border-b border-white/10 flex items-center gap-4 backdrop-blur-xl">
+        <div className="bg-purple-900/20 p-6 border-b border-black/10 dark:border-white/10 flex items-center gap-4 backdrop-blur-xl">
           <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-purple-500 to-blue-500 flex items-center justify-center shadow-lg shadow-purple-500/30">
-             <BrainCircuit className="text-white" size={24} />
+             <BrainCircuit className="text-slate-900 dark:text-slate-900 dark:text-white" size={24} />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-white flex items-center gap-2">
+            <h1 className="text-xl font-bold text-slate-900 dark:text-slate-900 dark:text-white flex items-center gap-2">
               AI Lab Assistant <Sparkles size={16} className="text-yellow-400 animate-pulse"/>
             </h1>
-            <p className="text-xs text-purple-300 font-mono tracking-wide uppercase">Powered by Gemini AI</p>
+            <p className="text-xs text-purple-600 dark:text-purple-300 font-mono tracking-wide uppercase">Powered by Gemini AI</p>
           </div>
         </div>
 
         {/* Messages Area */}
-        <div ref={messagesContainerRef} className="flex-1 overflow-y-auto p-6 space-y-6 bg-black/20 scrollbar-thin min-h-0">
+        <div ref={messagesContainerRef} className="flex-1 overflow-y-auto p-6 space-y-6 bg-transparent dark:bg-black/20 scrollbar-thin min-h-0">
           {messages.map((msg) => (
             <div
               key={msg.id}
@@ -150,11 +150,11 @@ const AITutor: React.FC = () => {
         </div>
 
         {/* Input Area */}
-        <div className="p-4 bg-black/30 border-t border-white/10">
+        <div className="p-4 bg-black/30 border-t border-black/10 dark:border-white/10">
             <div className="relative flex items-center">
                 <input 
                     type="text" 
-                    className="w-full bg-white/5 border border-white/10 rounded-full py-4 pl-6 pr-14 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500/50 focus:bg-white/10 transition-all"
+                    className="w-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-full py-4 pl-6 pr-14 text-slate-900 dark:text-white placeholder-gray-500 focus:outline-none focus:border-purple-500/50 focus:bg-black/10 dark:bg-white/10 transition-all"
                     placeholder="Ask about Physics, Chemistry, Math..."
                     value={input}
                     onChange={(e) => setInput(e.target.value)}

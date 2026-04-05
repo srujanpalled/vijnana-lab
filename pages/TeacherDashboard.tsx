@@ -91,8 +91,8 @@ const TeacherDashboard: React.FC = () => {
       
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-4">
         <div>
-             <h1 className="text-3xl md:text-4xl font-display font-bold text-white mb-2">Teacher Dashboard</h1>
-             <p className="text-gray-400">Manage your classes, assignments, and student progress.</p>
+             <h1 className="text-3xl md:text-4xl font-display font-bold text-slate-900 dark:text-slate-900 dark:text-white mb-2">Teacher Dashboard</h1>
+             <p className="text-gray-600 dark:text-gray-400">Manage your classes, assignments, and student progress.</p>
         </div>
         <div className="flex gap-4">
             <button 
@@ -102,9 +102,9 @@ const TeacherDashboard: React.FC = () => {
                 <Plus size={18}/> Create Class
             </button>
             <button 
-                className="px-6 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold flex items-center gap-2 transition-all"
+                className="px-6 py-3 rounded-xl bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:bg-white/10 border border-black/10 dark:border-white/10 text-slate-900 dark:text-white font-bold flex items-center gap-2 transition-all"
             >
-                <UserPlus size={18} className="text-gray-400"/> Invite Students
+                <UserPlus size={18} className="text-gray-600 dark:text-gray-400"/> Invite Students
             </button>
         </div>
       </div>
@@ -114,8 +114,8 @@ const TeacherDashboard: React.FC = () => {
          <GlassCard className="p-6" color="blue">
             <div className="flex justify-between items-start">
                 <div>
-                    <p className="text-gray-400 text-sm mb-1">Total Students</p>
-                    <h3 className="text-3xl font-bold text-white">{students.length}</h3>
+                    <p className="text-gray-600 dark:text-gray-400 text-sm mb-1">Total Students</p>
+                    <h3 className="text-3xl font-bold text-slate-900 dark:text-slate-900 dark:text-white">{students.length}</h3>
                 </div>
                 <div className="p-3 rounded-xl bg-blue-500/20 text-blue-400"><Users size={24}/></div>
             </div>
@@ -123,8 +123,8 @@ const TeacherDashboard: React.FC = () => {
          <GlassCard className="p-6" color="green">
             <div className="flex justify-between items-start">
                 <div>
-                    <p className="text-gray-400 text-sm mb-1">Avg. Completion</p>
-                    <h3 className="text-3xl font-bold text-white">76%</h3>
+                    <p className="text-gray-600 dark:text-gray-400 text-sm mb-1">Avg. Completion</p>
+                    <h3 className="text-3xl font-bold text-slate-900 dark:text-slate-900 dark:text-white">76%</h3>
                 </div>
                 <div className="p-3 rounded-xl bg-green-500/20 text-green-400"><CheckCircle size={24}/></div>
             </div>
@@ -132,8 +132,8 @@ const TeacherDashboard: React.FC = () => {
          <GlassCard className="p-6" color="purple">
             <div className="flex justify-between items-start">
                 <div>
-                    <p className="text-gray-400 text-sm mb-1">Pending Doubts</p>
-                    <h3 className="text-3xl font-bold text-white">{doubts.length}</h3>
+                    <p className="text-gray-600 dark:text-gray-400 text-sm mb-1">Pending Doubts</p>
+                    <h3 className="text-3xl font-bold text-slate-900 dark:text-slate-900 dark:text-white">{doubts.length}</h3>
                 </div>
                 <div className="p-3 rounded-xl bg-purple-500/20 text-purple-400"><MessageSquare size={24}/></div>
             </div>
@@ -146,7 +146,7 @@ const TeacherDashboard: React.FC = () => {
         <div className="lg:col-span-2">
             <GlassCard className="p-6 h-full" color="gray">
                 <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-xl font-bold text-white">Student Performance</h2>
+                    <h2 className="text-xl font-bold text-slate-900 dark:text-slate-900 dark:text-white">Student Performance</h2>
                     <div className="relative">
                         <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"/>
                         <input 
@@ -154,7 +154,7 @@ const TeacherDashboard: React.FC = () => {
                             placeholder="Search student..." 
                             value={searchQuery}
                             onChange={handleSearch}
-                            className="bg-white/5 border border-white/10 rounded-full py-2 pl-10 pr-4 text-sm text-gray-300 focus:outline-none focus:border-blue-500 transition-colors w-48 focus:w-64"
+                            className="bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-full py-2 pl-10 pr-4 text-sm text-gray-700 dark:text-gray-300 focus:outline-none focus:border-blue-500 transition-colors w-48 focus:w-64"
                         />
                     </div>
                 </div>
@@ -162,7 +162,7 @@ const TeacherDashboard: React.FC = () => {
                 <div className="overflow-x-auto">
                     <table className="w-full text-left">
                         <thead>
-                            <tr className="text-xs text-gray-500 uppercase border-b border-white/10">
+                            <tr className="text-xs text-gray-500 uppercase border-b border-black/10 dark:border-white/10">
                                 <th className="pb-4 pl-4">Student Name</th>
                                 <th className="pb-4">Grade</th>
                                 <th className="pb-4">Progress</th>
@@ -172,15 +172,15 @@ const TeacherDashboard: React.FC = () => {
                         </thead>
                         <tbody className="text-sm">
                             {filteredStudents.length > 0 ? filteredStudents.map(student => (
-                                <tr key={student.id} className="border-b border-white/5 hover:bg-white/5 transition-colors">
-                                    <td className="py-4 pl-4 font-medium text-white">{student.name}</td>
-                                    <td className="py-4 text-gray-400">{student.grade}</td>
+                                <tr key={student.id} className="border-b border-black/5 dark:border-white/5 hover:bg-black/5 dark:bg-white/5 transition-colors">
+                                    <td className="py-4 pl-4 font-medium text-slate-900 dark:text-slate-900 dark:text-white">{student.name}</td>
+                                    <td className="py-4 text-gray-600 dark:text-gray-400">{student.grade}</td>
                                     <td className="py-4">
                                         <div className="flex items-center gap-2">
-                                            <div className="w-24 bg-white/10 rounded-full h-1.5">
+                                            <div className="w-24 bg-black/10 dark:bg-white/10 rounded-full h-1.5">
                                                 <div className="bg-blue-500 h-1.5 rounded-full" style={{width: `${student.progress}%`}}></div>
                                             </div>
-                                            <span className="text-xs text-gray-400">{student.progress}%</span>
+                                            <span className="text-xs text-gray-600 dark:text-gray-400">{student.progress}%</span>
                                         </div>
                                     </td>
                                     <td className="py-4">
@@ -191,8 +191,8 @@ const TeacherDashboard: React.FC = () => {
                                             {student.status}
                                         </span>
                                     </td>
-                                    <td className="py-4 text-gray-400 hover:text-white cursor-pointer">
-                                        <button className="text-xs bg-white/5 px-2 py-1 rounded hover:bg-white/20">Give Feedback</button>
+                                    <td className="py-4 text-gray-600 dark:text-gray-400 hover:text-slate-900 dark:text-slate-900 dark:text-white cursor-pointer">
+                                        <button className="text-xs bg-black/5 dark:bg-white/5 px-2 py-1 rounded hover:bg-black/20 dark:bg-white/20">Give Feedback</button>
                                     </td>
                                 </tr>
                             )) : (
@@ -214,16 +214,16 @@ const TeacherDashboard: React.FC = () => {
             
             {/* Manage Assignments */}
             <GlassCard className="p-6" color="amber">
-                <h2 className="text-xl font-bold text-white mb-4">Assignments</h2>
+                <h2 className="text-xl font-bold text-slate-900 dark:text-slate-900 dark:text-white mb-4">Assignments</h2>
                 <div className="space-y-4 max-h-64 overflow-y-auto scrollbar-hide">
                     {assignments.map(assign => (
-                        <div key={assign.id} className="bg-white/5 p-4 rounded-xl border border-white/10 hover:bg-white/10 cursor-pointer transition-colors">
+                        <div key={assign.id} className="bg-black/5 dark:bg-white/5 p-4 rounded-xl border border-black/10 dark:border-white/10 hover:bg-black/10 dark:bg-white/10 cursor-pointer transition-colors">
                             <div className="flex justify-between mb-2">
-                                <h4 className="font-bold text-white text-sm">{assign.title}</h4>
+                                <h4 className="font-bold text-slate-900 dark:text-slate-900 dark:text-white text-sm">{assign.title}</h4>
                                 <span className="text-xs text-amber-400 bg-amber-500/10 px-2 py-1 rounded">Due {assign.due}</span>
                             </div>
-                            <p className="text-xs text-gray-400 mb-3">{assign.grade} • {assign.submitted}/{assign.total} Submitted</p>
-                            <div className="w-full bg-white/10 rounded-full h-1">
+                            <p className="text-xs text-gray-600 dark:text-gray-400 mb-3">{assign.grade} • {assign.submitted}/{assign.total} Submitted</p>
+                            <div className="w-full bg-black/10 dark:bg-white/10 rounded-full h-1">
                                 <div className="bg-amber-500 h-1 rounded-full" style={{width: `${(assign.submitted/assign.total)*100}%`}}></div>
                             </div>
                         </div>
@@ -231,7 +231,7 @@ const TeacherDashboard: React.FC = () => {
                     
                     <button 
                         onClick={handleAssignLab}
-                        className="w-full py-3 rounded-lg border border-dashed border-gray-500 text-gray-400 hover:border-amber-400 hover:text-amber-400 transition-colors flex items-center justify-center gap-2 text-sm group"
+                        className="w-full py-3 rounded-lg border border-dashed border-gray-500 text-gray-600 dark:text-gray-400 hover:border-amber-400 hover:text-amber-400 transition-colors flex items-center justify-center gap-2 text-sm group"
                     >
                         <Plus size={16} className="group-hover:rotate-90 transition-transform"/> Assign New Experiment
                     </button>
@@ -241,30 +241,30 @@ const TeacherDashboard: React.FC = () => {
             {/* Doubts / Queries */}
             <GlassCard className="p-6" color="red">
                 <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-xl font-bold text-white">Doubts</h2>
+                    <h2 className="text-xl font-bold text-slate-900 dark:text-slate-900 dark:text-white">Doubts</h2>
                     {doubts.length > 0 && <span className="text-xs bg-red-500 text-white px-2 py-0.5 rounded-full">{doubts.length} New</span>}
                 </div>
                 <div className="space-y-4">
                     {doubts.length > 0 ? doubts.map(doubt => (
-                        <div key={doubt.id} className="bg-white/5 p-3 rounded-xl border border-white/10">
+                        <div key={doubt.id} className="bg-black/5 dark:bg-white/5 p-3 rounded-xl border border-black/10 dark:border-white/10">
                             <div className="flex gap-3">
                                 <div className="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center text-xs font-bold text-white shrink-0">
                                     {doubt.studentId}
                                 </div>
                                 <div>
                                     <div className="flex justify-between items-center mb-1">
-                                        <span className="text-xs font-bold text-gray-300">{doubt.name}</span>
+                                        <span className="text-xs font-bold text-gray-700 dark:text-gray-700 dark:text-gray-300">{doubt.name}</span>
                                         <span className="text-[10px] text-gray-500">{doubt.time}</span>
                                     </div>
-                                    <p className="text-sm text-gray-300 line-clamp-2 mb-2">"{doubt.question}"</p>
+                                    <p className="text-sm text-gray-700 dark:text-gray-700 dark:text-gray-300 line-clamp-2 mb-2">"{doubt.question}"</p>
                                     <div className="flex gap-3">
                                         <button 
                                             onClick={() => handleReplyDoubt(doubt.id)}
-                                            className="text-xs text-blue-400 hover:text-blue-300 flex items-center gap-1"
+                                            className="text-xs text-blue-400 hover:text-blue-600 dark:text-blue-300 flex items-center gap-1"
                                         >
                                             <Send size={10}/> Reply
                                         </button>
-                                        <button className="text-xs text-gray-500 hover:text-white">Ignore</button>
+                                        <button className="text-xs text-gray-500 hover:text-slate-900 dark:text-slate-900 dark:text-white">Ignore</button>
                                     </div>
                                 </div>
                             </div>
@@ -277,7 +277,7 @@ const TeacherDashboard: React.FC = () => {
             
             {/* Resources */}
              <GlassCard className="p-6" color="indigo">
-                <h2 className="text-xl font-bold text-white mb-4">Class Resources</h2>
+                <h2 className="text-xl font-bold text-slate-900 dark:text-slate-900 dark:text-white mb-4">Class Resources</h2>
                 <button 
                     onClick={handleUpload}
                     disabled={uploading}
@@ -288,7 +288,7 @@ const TeacherDashboard: React.FC = () => {
                 </button>
                 <button 
                     onClick={handleDownloadReport}
-                    className="w-full py-3 bg-white/5 hover:bg-white/10 rounded-lg border border-white/10 text-gray-300 flex items-center justify-center gap-2 text-sm transition-all"
+                    className="w-full py-3 bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:bg-white/10 rounded-lg border border-black/10 dark:border-white/10 text-gray-700 dark:text-gray-300 flex items-center justify-center gap-2 text-sm transition-all"
                 >
                     <Download size={16}/> Download Class Report
                 </button>

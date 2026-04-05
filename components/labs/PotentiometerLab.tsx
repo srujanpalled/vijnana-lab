@@ -43,7 +43,7 @@ const PotentiometerScene = ({ jockeyX, emf1, l1, isNearBalance, galvDeflection, 
       <RoundedBox args={[1.5, 0.8, 1]} position={[-2, 0.4, -0.5]} radius={0.05} castShadow>
         <meshPhysicalMaterial color="#1e293b" roughness={0.2} metalness={0.8} />
         <Html position={[0, 0.6, 0]} center>
-          <div className="bg-blue-900/80 px-2 py-0.5 rounded text-[10px] font-bold text-blue-300 border border-blue-500/50 backdrop-blur-md">
+          <div className="bg-blue-900/80 px-2 py-0.5 rounded text-[10px] font-bold text-blue-600 dark:text-blue-300 border border-blue-500/50 backdrop-blur-md">
             Driver (E0)
           </div>
         </Html>
@@ -55,7 +55,7 @@ const PotentiometerScene = ({ jockeyX, emf1, l1, isNearBalance, galvDeflection, 
           <meshBasicMaterial color="#f59e0b" transparent opacity={0.6} />
         </Box>
         <Html position={[0, 0.4, 0]} center>
-          <div className="text-amber-400 text-[10px] whitespace-nowrap bg-black/50 px-1 rounded">l₁ (ref)</div>
+          <div className="text-amber-400 text-[10px] whitespace-nowrap bg-slate-200 dark:bg-black/50 px-1 rounded">l₁ (ref)</div>
         </Html>
       </group>
 
@@ -88,7 +88,7 @@ const PotentiometerScene = ({ jockeyX, emf1, l1, isNearBalance, galvDeflection, 
         {/* Scale marks */}
         <group position={[0, 0, 0.22]}>
             <Html center position={[0,-0.2,0]}>
-                <div className="font-bold text-[8px] text-slate-800">G</div>
+                <div className="font-bold text-[8px] text-slate-800 dark:text-gray-800 dark:text-gray-200">G</div>
             </Html>
             <group ref={needleRef} position={[0, -0.1, 0]}>
                 <mesh position={[0, 0.15, 0]}>
@@ -149,7 +149,7 @@ const PotentiometerLab: React.FC<Props> = ({ hex }) => {
     <div className="flex flex-col md:flex-row h-full w-full bg-slate-950">
       
       {/* 3D Viewport */}
-      <div className="flex-1 relative rounded-2xl overflow-hidden m-4 border border-white/10 shadow-2xl">
+      <div className="flex-1 relative rounded-2xl overflow-hidden m-4 border border-black/10 dark:border-white/10 shadow-2xl">
         <Canvas camera={{ position: [0, 5, 8], fov: 45 }}>
           <Environment preset="apartment" />
           <ambientLight intensity={0.5} />
@@ -169,17 +169,17 @@ const PotentiometerLab: React.FC<Props> = ({ hex }) => {
           <OrbitControls enablePan={true} enableZoom={true} maxPolarAngle={Math.PI / 2 - 0.1} />
         </Canvas>
 
-        <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md border border-white/10 rounded-xl px-4 py-3 shadow-xl max-w-xs">
+        <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md border border-black/10 dark:border-white/10 rounded-xl px-4 py-3 shadow-xl max-w-xs">
           <p className="text-[10px] font-bold uppercase tracking-widest text-amber-400 mb-1">Physics Lab — p16</p>
-          <p className="text-white font-bold text-sm">3D Potentiometer</p>
-          <p className="text-xs text-slate-400 mt-1">Determine EMF of a cell precisely without drawing current.</p>
+          <p className="text-slate-900 dark:text-slate-900 dark:text-white font-bold text-sm">3D Potentiometer</p>
+          <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">Determine EMF of a cell precisely without drawing current.</p>
         </div>
       </div>
 
       {/* UI Controls */}
-      <div className="w-full md:w-[320px] bg-[#0a0a0a] border-l border-white/5 flex flex-col z-10 shrink-0">
-        <div className="p-5 border-b border-white/5">
-          <h2 className="text-lg font-black text-white">Controls</h2>
+      <div className="w-full md:w-[320px] bg-[#0a0a0a] border-l border-black/5 dark:border-white/5 flex flex-col z-10 shrink-0">
+        <div className="p-5 border-b border-black/5 dark:border-white/5">
+          <h2 className="text-lg font-black text-slate-900 dark:text-slate-900 dark:text-white">Controls</h2>
         </div>
         
         <div className="flex-1 p-5 space-y-6 overflow-y-auto">
@@ -203,15 +203,15 @@ const PotentiometerLab: React.FC<Props> = ({ hex }) => {
               { label: 'E₂ = E₁×(l₂/l₁)', val: `${E2_calc.toFixed(3)}V`, color: '#10b981' },
               { label: 'Galvanometer', val: isNearBalance ? 'NULL ✓' : `${galvDeflection.toFixed(1)}μA`, color: isNearBalance ? '#10b981' : '#ef4444' },
             ].map(m => (
-              <div key={m.label} className="bg-slate-950/80 border border-white/5 rounded-xl p-3 text-center shadow-inner">
+              <div key={m.label} className="bg-slate-950/80 border border-black/5 dark:border-white/5 rounded-xl p-3 text-center shadow-inner">
                 <div className="text-[9px] text-slate-500 uppercase font-bold tracking-wider mb-1.5">{m.label}</div>
                 <div className="font-mono font-bold text-sm" style={{ color: m.color }}>{m.val}</div>
               </div>
             ))}
           </div>
 
-          <div className="bg-slate-950 p-4 rounded-xl border border-white/5 shadow-inner text-xs space-y-2">
-            <p className="text-slate-400 font-bold text-[10px] uppercase tracking-widest mb-2 border-b border-white/5 pb-1">Potentiometer Logic</p>
+          <div className="bg-slate-950 p-4 rounded-xl border border-black/5 dark:border-white/5 shadow-inner text-xs space-y-2">
+            <p className="text-slate-600 dark:text-slate-400 font-bold text-[10px] uppercase tracking-widest mb-2 border-b border-black/5 dark:border-white/5 pb-1">Potentiometer Logic</p>
             <p className="font-mono text-amber-400">E₁ / E₂ = l₁ / l₂</p>
             <p className="text-slate-500 text-[10px] leading-relaxed mt-2">At the null point, no current is drawn from the cell, meaning we measure the true Electro-Motive Force (EMF) unlike a standard voltmeter.</p>
           </div>
@@ -220,7 +220,7 @@ const PotentiometerLab: React.FC<Props> = ({ hex }) => {
             <button 
               onClick={() => setReading({ lBalance: jockeyX * 100, Vemf: E2_calc })}
               disabled={!isNearBalance}
-              className="flex-1 py-3.5 rounded-xl text-xs font-bold text-white shadow-lg transition-all active:scale-95 disabled:opacity-40 disabled:scale-100" 
+              className="flex-1 py-3.5 rounded-xl text-xs font-bold text-slate-900 dark:text-slate-900 dark:text-white shadow-lg transition-all active:scale-95 disabled:opacity-40 disabled:scale-100" 
               style={{ backgroundColor: hex, boxShadow: `0 8px 20px -8px ${hex}` }}>
               Record Balance
             </button>

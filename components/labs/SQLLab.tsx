@@ -162,19 +162,19 @@ const SQLLab: React.FC<Props> = ({ hex }) => {
     <div className="flex flex-col md:flex-row h-full w-full bg-slate-950">
       <div className="flex-1 flex flex-col p-4 gap-4 overflow-auto">
         {/* Query editor */}
-        <div className="bg-slate-900 rounded-2xl border border-white/10 overflow-hidden">
-          <div className="flex items-center gap-2 px-4 py-2.5 bg-slate-800 border-b border-white/5">
+        <div className="bg-slate-900 rounded-2xl border border-black/10 dark:border-white/10 overflow-hidden">
+          <div className="flex items-center gap-2 px-4 py-2.5 bg-slate-800 border-b border-black/5 dark:border-white/5">
             <span className="text-[10px] font-bold text-orange-400 uppercase">MySQL Query Editor</span>
             <div className="text-[9px] px-2 py-0.5 bg-green-500/20 text-green-400 rounded-full ml-auto">● Connected</div>
           </div>
           <textarea value={query} onChange={e => setQuery(e.target.value)} rows={3}
-            className="w-full bg-transparent p-4 text-sm font-mono text-blue-300 focus:outline-none resize-none" />
+            className="w-full bg-transparent p-4 text-sm font-mono text-blue-600 dark:text-blue-300 focus:outline-none resize-none" />
         </div>
 
         {/* Results table */}
-        <div className="bg-slate-900 rounded-2xl border border-white/10 overflow-hidden flex-1">
-          <div className="flex items-center gap-2 px-4 py-2.5 bg-slate-800 border-b border-white/5 text-xs">
-            <span className="text-slate-400 font-bold">Result Set</span>
+        <div className="bg-slate-900 rounded-2xl border border-black/10 dark:border-white/10 overflow-hidden flex-1">
+          <div className="flex items-center gap-2 px-4 py-2.5 bg-slate-800 border-b border-black/5 dark:border-white/5 text-xs">
+            <span className="text-slate-600 dark:text-slate-400 font-bold">Result Set</span>
             {result && <span className="text-green-400 ml-2">{result.length} rows</span>}
             {status === 'success' && <CheckCircle size={12} className="text-green-400 ml-auto" />}
             {status === 'error' && <XCircle size={12} className="text-red-400 ml-auto" />}
@@ -185,14 +185,14 @@ const SQLLab: React.FC<Props> = ({ hex }) => {
             ) : result ? (
               <table className="w-full text-xs">
                 <thead>
-                  <tr className="border-b border-white/10">
+                  <tr className="border-b border-black/10 dark:border-white/10">
                     {columns.map(c => <th key={c} className="px-4 py-2 text-left text-orange-400 font-bold uppercase text-[9px]">{c}</th>)}
                   </tr>
                 </thead>
                 <tbody>
                   {result.map((row, i) => (
                     <tr key={i} className={`border-b border-white/5 hover:bg-white/3 ${i % 2 === 0 ? '' : 'bg-white/2'}`}>
-                      {columns.map(c => <td key={c} className="px-4 py-2 font-mono text-slate-300">{String(row[c] ?? 'NULL')}</td>)}
+                      {columns.map(c => <td key={c} className="px-4 py-2 font-mono text-slate-700 dark:text-slate-700 dark:text-slate-300">{String(row[c] ?? 'NULL')}</td>)}
                     </tr>
                   ))}
                 </tbody>
@@ -204,33 +204,33 @@ const SQLLab: React.FC<Props> = ({ hex }) => {
         </div>
       </div>
 
-      <div className="w-full md:w-72 bg-slate-900 border-l border-white/5 flex flex-col">
-        <div className="p-4 border-b border-white/5">
+      <div className="w-full md:w-72 bg-slate-900 border-l border-black/5 dark:border-white/5 flex flex-col">
+        <div className="p-4 border-b border-black/5 dark:border-white/5">
           <p className="text-xs font-bold uppercase tracking-widest text-orange-400 mb-1">CS Lab — cs10</p>
-          <h2 className="text-xl font-bold text-white">Database & SQL</h2>
-          <p className="text-xs text-slate-400 mt-1">Execute SQL queries on virtual student database</p>
+          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-900 dark:text-white">Database & SQL</h2>
+          <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">Execute SQL queries on virtual student database</p>
         </div>
         <div className="flex-1 p-4 space-y-4 overflow-y-auto">
           <button onClick={runQuery}
-            className="w-full py-3 rounded-xl font-bold text-white flex items-center justify-center gap-2"
+            className="w-full py-3 rounded-xl font-bold text-slate-900 dark:text-slate-900 dark:text-white flex items-center justify-center gap-2"
             style={{ backgroundColor: hex }}>
             <Play size={14} /> Execute Query
           </button>
 
           <div className="space-y-1.5">
-            <p className="text-[10px] text-slate-400 uppercase font-bold">Quick Queries</p>
+            <p className="text-[10px] text-slate-600 dark:text-slate-400 uppercase font-bold">Quick Queries</p>
             {PRESETS.map(preset => (
               <button key={preset.label} onClick={() => { setQuery(preset.q); setResult(null); setStatus('idle'); }}
-                className="w-full p-2.5 rounded-xl text-left text-[10px] border border-white/10 hover:border-orange-500/40 hover:bg-orange-500/5 transition-all text-slate-400 hover:text-orange-300 font-mono">
+                className="w-full p-2.5 rounded-xl text-left text-[10px] border border-black/10 dark:border-white/10 hover:border-orange-500/40 hover:bg-orange-500/5 transition-all text-slate-400 hover:text-orange-300 font-mono">
                 {preset.q}
               </button>
             ))}
           </div>
 
           <div className="space-y-2">
-            <p className="text-[10px] text-slate-400 uppercase font-bold">Tables</p>
+            <p className="text-[10px] text-slate-600 dark:text-slate-400 uppercase font-bold">Tables</p>
             {Object.values(tables).map(table => (
-              <div key={table.name} className="bg-slate-950 border border-white/10 rounded-xl p-3">
+              <div key={table.name} className="bg-slate-950 border border-black/10 dark:border-white/10 rounded-xl p-3">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-orange-400 font-mono font-bold text-xs">{table.name}</span>
                   <span className="text-[9px] text-slate-500">{table.rows.length} rows</span>
@@ -238,7 +238,7 @@ const SQLLab: React.FC<Props> = ({ hex }) => {
                 <div className="space-y-0.5">
                   {table.columns.map(col => (
                     <div key={col.name} className="flex justify-between text-[9px]">
-                      <span className="text-slate-300 font-mono">{col.name}</span>
+                      <span className="text-slate-700 dark:text-slate-700 dark:text-slate-300 font-mono">{col.name}</span>
                       <span className="text-slate-500">{col.type}</span>
                     </div>
                   ))}
@@ -247,7 +247,7 @@ const SQLLab: React.FC<Props> = ({ hex }) => {
             ))}
           </div>
 
-          <div className="bg-slate-950 border border-white/10 rounded-xl p-3 text-[9px] space-y-1 text-slate-400">
+          <div className="bg-slate-950 border border-black/10 dark:border-white/10 rounded-xl p-3 text-[9px] space-y-1 text-slate-400">
             <p className="font-bold text-orange-400 text-[10px] uppercase mb-1">SQL Reference</p>
             {[['SELECT','Choose columns'],['FROM','Specify table'],['WHERE','Filter rows'],['ORDER BY','Sort results'],['LIMIT','Cap row count'],['COUNT(*)','Count rows'],['AVG(col)','Average value']].map(([kw,desc]) => (
               <div key={kw} className="flex gap-2"><span className="font-mono text-blue-400 w-16 shrink-0">{kw}</span><span>{desc}</span></div>

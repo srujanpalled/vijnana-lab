@@ -184,54 +184,54 @@ const BubbleSortLab: React.FC<BubbleSortLabProps> = ({ hex }) => {
   return (
     <div className="flex flex-col md:flex-row h-full w-full bg-slate-950">
       <div className="flex-1 flex items-center justify-center p-4 flex-col">
-        <canvas ref={canvasRef} width={400} height={300} className="rounded-2xl border border-white/10 shadow-2xl w-full max-w-[450px]" />
+        <canvas ref={canvasRef} width={400} height={300} className="rounded-2xl border border-black/10 dark:border-white/10 shadow-2xl w-full max-w-[450px]" />
         <div className="flex gap-3 mt-4 flex-wrap justify-center">
           <button onClick={doStep} disabled={completed} className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm disabled:opacity-30 transition-all">⏭ Step</button>
           <button onClick={() => setAutoRunning(!autoRunning)} disabled={completed} className={`px-4 py-2 rounded-xl font-bold text-sm transition-all ${autoRunning ? 'bg-red-600 hover:bg-red-500' : 'bg-green-600 hover:bg-green-500'} text-white disabled:opacity-30`}>
             {autoRunning ? '⏸ Pause' : '▶️ Auto'}
           </button>
           <button onClick={shuffle} className="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-sm transition-all">🔀 Shuffle</button>
-          <button onClick={reset} className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-sm transition-all"><RotateCcw size={14} /></button>
+          <button onClick={reset} className="px-4 py-2 rounded-xl bg-black/10 dark:bg-white/10 hover:bg-black/20 dark:bg-white/20 text-slate-900 dark:text-white font-bold text-sm transition-all"><RotateCcw size={14} /></button>
         </div>
         <div className="mt-3 w-full max-w-[240px]">
           <DraggableSlider label="Speed" min={1} max={5} value={speed} onChange={setSpeed} color="#3b82f6" unit="x" />
         </div>
       </div>
-      <div className="w-full md:w-72 bg-slate-900 border-l border-white/5 flex flex-col">
-        <div className="p-5 border-b border-white/5">
+      <div className="w-full md:w-72 bg-slate-900 border-l border-black/5 dark:border-white/5 flex flex-col">
+        <div className="p-5 border-b border-black/5 dark:border-white/5">
           <p className="text-xs font-bold uppercase tracking-widest text-blue-400 mb-1">Bubble Sort — CS Lab</p>
-          <h2 className="text-xl font-bold text-white">{STEPS[Math.min(step, STEPS.length-1)].title}</h2>
+          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-900 dark:text-white">{STEPS[Math.min(step, STEPS.length-1)].title}</h2>
         </div>
         <div className="flex-1 p-5 space-y-4 overflow-y-auto">
           {completed ? (
             <div className="text-center py-4">
               <CheckCircle size={36} className="mx-auto mb-3 text-green-400" />
-              <h3 className="text-lg font-bold text-white mb-2">Array Sorted! 🎉</h3>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-slate-900 dark:text-white mb-2">Array Sorted! 🎉</h3>
               <div className="bg-green-500/10 border border-green-500/30 p-4 rounded-xl text-sm space-y-2">
-                <p className="text-white">Sorted: [{arr.join(', ')}]</p>
-                <p className="text-gray-400">Comparisons: <b className="text-yellow-400">{comparisons}</b></p>
-                <p className="text-gray-400">Swaps: <b className="text-red-400">{swaps}</b></p>
-                <p className="text-gray-400 text-xs">Time Complexity: O(n²)</p>
+                <p className="text-slate-900 dark:text-slate-900 dark:text-white">Sorted: [{arr.join(', ')}]</p>
+                <p className="text-gray-600 dark:text-gray-400">Comparisons: <b className="text-yellow-400">{comparisons}</b></p>
+                <p className="text-gray-600 dark:text-gray-400">Swaps: <b className="text-red-400">{swaps}</b></p>
+                <p className="text-gray-600 dark:text-gray-400 text-xs">Time Complexity: O(n²)</p>
               </div>
-              <button onClick={reset} className="mt-3 flex items-center gap-2 mx-auto px-4 py-2 rounded-full bg-white/10 text-white hover:bg-white/20 text-sm"><RotateCcw size={14} /> Reset</button>
+              <button onClick={reset} className="mt-3 flex items-center gap-2 mx-auto px-4 py-2 rounded-full bg-black/10 dark:bg-white/10 text-slate-900 dark:text-white hover:bg-black/20 dark:bg-white/20 text-sm"><RotateCcw size={14} /> Reset</button>
             </div>
           ) : (
             <>
               <div className="bg-blue-500/10 border border-blue-500/30 p-4 rounded-xl">
-                <p className="text-blue-200 text-sm">{STEPS[Math.min(step, STEPS.length-1)].instruction}</p>
+                <p className="text-blue-600 dark:text-blue-200 text-sm">{STEPS[Math.min(step, STEPS.length-1)].instruction}</p>
               </div>
               <div className="flex gap-4">
                 {[{ label: 'Comparing', color: COLORS.comparing }, { label: 'Swapping', color: COLORS.swapping }, { label: 'Sorted', color: COLORS.sorted }].map(l => (
                   <div key={l.label} className="flex items-center gap-1.5">
                     <div className="w-3 h-3 rounded" style={{ backgroundColor: l.color }} />
-                    <span className="text-xs text-gray-400">{l.label}</span>
+                    <span className="text-xs text-gray-600 dark:text-gray-400">{l.label}</span>
                   </div>
                 ))}
               </div>
-              <div className="bg-white/5 p-3 rounded-xl text-sm space-y-1">
-                <p className="text-gray-400">Current pass: <b className="text-white">{i + 1}</b></p>
-                <p className="text-gray-400">Comparing index: <b className="text-yellow-300">[{j}] vs [{j+1}]</b></p>
-                <p className="text-gray-400">Unsorted elements: <b className="text-white">{sortedUpto}</b></p>
+              <div className="bg-black/5 dark:bg-white/5 p-3 rounded-xl text-sm space-y-1">
+                <p className="text-gray-600 dark:text-gray-400">Current pass: <b className="text-slate-900 dark:text-slate-900 dark:text-white">{i + 1}</b></p>
+                <p className="text-gray-600 dark:text-gray-400">Comparing index: <b className="text-yellow-300">[{j}] vs [{j+1}]</b></p>
+                <p className="text-gray-600 dark:text-gray-400">Unsorted elements: <b className="text-slate-900 dark:text-slate-900 dark:text-white">{sortedUpto}</b></p>
               </div>
             </>
           )}

@@ -130,14 +130,14 @@ const ProbabilityLab: React.FC<Props> = ({ hex }) => {
   return (
     <div className="flex flex-col md:flex-row h-full w-full bg-slate-950">
       <div className="flex-1 flex items-center justify-center p-4">
-        <canvas ref={canvasRef} width={420} height={340} className="rounded-2xl border border-white/10 shadow-2xl w-full max-w-[420px]" />
+        <canvas ref={canvasRef} width={420} height={340} className="rounded-2xl border border-black/10 dark:border-white/10 shadow-2xl w-full max-w-[420px]" />
       </div>
 
-      <div className="w-full md:w-72 bg-slate-900 border-l border-white/5 flex flex-col">
-        <div className="p-4 border-b border-white/5">
+      <div className="w-full md:w-72 bg-slate-900 border-l border-black/5 dark:border-white/5 flex flex-col">
+        <div className="p-4 border-b border-black/5 dark:border-white/5">
           <p className="text-xs font-bold uppercase tracking-widest text-blue-400 mb-1">Math Lab — m9</p>
-          <h2 className="text-xl font-bold text-white">Probability Distributions</h2>
-          <p className="text-xs text-slate-400 mt-1">Normal, Binomial & Poisson distributions</p>
+          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-900 dark:text-white">Probability Distributions</h2>
+          <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">Normal, Binomial & Poisson distributions</p>
         </div>
         <div className="flex-1 p-4 space-y-4 overflow-y-auto">
           <div className="grid grid-cols-3 gap-1.5">
@@ -152,23 +152,23 @@ const ProbabilityLab: React.FC<Props> = ({ hex }) => {
 
           {dist === 'normal' && (
             <div className="space-y-3">
-              <div className="space-y-1"><div className="flex justify-between text-xs"><span className="text-slate-400">Mean (μ)</span><span className="font-mono text-blue-400">{mu}</span></div>
+              <div className="space-y-1"><div className="flex justify-between text-xs"><span className="text-slate-600 dark:text-slate-400">Mean (μ)</span><span className="font-mono text-blue-400">{mu}</span></div>
                 <input type="range" min={-3} max={3} step={0.5} value={mu} onChange={e => setMu(Number(e.target.value))} className="w-full h-2 bg-slate-700 rounded-full appearance-none cursor-pointer accent-blue-500" /></div>
-              <div className="space-y-1"><div className="flex justify-between text-xs"><span className="text-slate-400">Std Dev (σ)</span><span className="font-mono text-blue-400">{sigma}</span></div>
+              <div className="space-y-1"><div className="flex justify-between text-xs"><span className="text-slate-600 dark:text-slate-400">Std Dev (σ)</span><span className="font-mono text-blue-400">{sigma}</span></div>
                 <input type="range" min={0.5} max={3} step={0.25} value={sigma} onChange={e => setSigma(Number(e.target.value))} className="w-full h-2 bg-slate-700 rounded-full appearance-none cursor-pointer accent-blue-500" /></div>
             </div>
           )}
           {dist === 'binomial' && (
             <div className="space-y-3">
-              <div className="space-y-1"><div className="flex justify-between text-xs"><span className="text-slate-400">Trials (n)</span><span className="font-mono text-purple-400">{n}</span></div>
+              <div className="space-y-1"><div className="flex justify-between text-xs"><span className="text-slate-600 dark:text-slate-400">Trials (n)</span><span className="font-mono text-purple-400">{n}</span></div>
                 <input type="range" min={2} max={20} value={n} onChange={e => setN(Number(e.target.value))} className="w-full h-2 bg-slate-700 rounded-full appearance-none cursor-pointer accent-purple-500" /></div>
-              <div className="space-y-1"><div className="flex justify-between text-xs"><span className="text-slate-400">Probability (p)</span><span className="font-mono text-purple-400">{p.toFixed(2)}</span></div>
+              <div className="space-y-1"><div className="flex justify-between text-xs"><span className="text-slate-600 dark:text-slate-400">Probability (p)</span><span className="font-mono text-purple-400">{p.toFixed(2)}</span></div>
                 <input type="range" min={0.05} max={0.95} step={0.05} value={p} onChange={e => setP(Number(e.target.value))} className="w-full h-2 bg-slate-700 rounded-full appearance-none cursor-pointer accent-purple-500" /></div>
             </div>
           )}
           {dist === 'poisson' && (
             <div className="space-y-3">
-              <div className="space-y-1"><div className="flex justify-between text-xs"><span className="text-slate-400">Rate (λ)</span><span className="font-mono text-green-400">{lambda}</span></div>
+              <div className="space-y-1"><div className="flex justify-between text-xs"><span className="text-slate-600 dark:text-slate-400">Rate (λ)</span><span className="font-mono text-green-400">{lambda}</span></div>
                 <input type="range" min={0.5} max={10} step={0.5} value={lambda} onChange={e => setLambda(Number(e.target.value))} className="w-full h-2 bg-slate-700 rounded-full appearance-none cursor-pointer accent-green-500" /></div>
             </div>
           )}
@@ -178,11 +178,11 @@ const ProbabilityLab: React.FC<Props> = ({ hex }) => {
             {showArea ? '✓ Area Fill On' : '○ Area Fill Off'}
           </button>
 
-          <div className="bg-slate-950 p-3 rounded-xl border border-white/10 text-xs space-y-1.5">
-            <p className="text-slate-400 font-bold text-[10px] uppercase">About This Distribution</p>
-            {dist === 'normal' && <p className="text-slate-300">Bell-shaped, symmetric. 68-95-99.7 rule. Models natural phenomena like height, errors.</p>}
-            {dist === 'binomial' && <p className="text-slate-300">Discrete. n independent trials, each with probability p of success. Models coin flips, defects.</p>}
-            {dist === 'poisson' && <p className="text-slate-300">Discrete. Models rare events in fixed intervals. λ = average rate of occurrence.</p>}
+          <div className="bg-slate-950 p-3 rounded-xl border border-black/10 dark:border-white/10 text-xs space-y-1.5">
+            <p className="text-slate-600 dark:text-slate-400 font-bold text-[10px] uppercase">About This Distribution</p>
+            {dist === 'normal' && <p className="text-slate-700 dark:text-slate-700 dark:text-slate-300">Bell-shaped, symmetric. 68-95-99.7 rule. Models natural phenomena like height, errors.</p>}
+            {dist === 'binomial' && <p className="text-slate-700 dark:text-slate-700 dark:text-slate-300">Discrete. n independent trials, each with probability p of success. Models coin flips, defects.</p>}
+            {dist === 'poisson' && <p className="text-slate-700 dark:text-slate-700 dark:text-slate-300">Discrete. Models rare events in fixed intervals. λ = average rate of occurrence.</p>}
           </div>
         </div>
       </div>

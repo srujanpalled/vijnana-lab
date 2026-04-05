@@ -67,7 +67,7 @@ const SonometerScene = ({ length, mass, freq, hex }: { length: number; mass: num
         <meshStandardMaterial color="#cbd5e1" metalness={0.6} roughness={0.2} />
       </mesh>
       <Html position={[b1x, 0.8, 0]} center>
-        <div className="text-[9px] text-green-400 font-bold uppercase tracking-widest bg-black/50 px-1 rounded backdrop-blur">Node</div>
+        <div className="text-[9px] text-green-400 font-bold uppercase tracking-widest bg-slate-200 dark:bg-black/50 px-1 rounded backdrop-blur">Node</div>
       </Html>
 
       {/* Bridge 2 (Movable) */}
@@ -76,12 +76,12 @@ const SonometerScene = ({ length, mass, freq, hex }: { length: number; mass: num
         <meshStandardMaterial color="#cbd5e1" metalness={0.6} roughness={0.2} />
       </mesh>
       <Html position={[b2x, 0.8, 0]} center>
-        <div className="text-[9px] text-green-400 font-bold uppercase tracking-widest bg-black/50 px-1 rounded backdrop-blur">Node</div>
+        <div className="text-[9px] text-green-400 font-bold uppercase tracking-widest bg-slate-200 dark:bg-black/50 px-1 rounded backdrop-blur">Node</div>
       </Html>
 
       {/* Antinode Label */}
       <Html position={[(b1x + b2x)/2, 1, 0]} center>
-        <div className="text-[10px] text-pink-400 font-bold uppercase tracking-widest bg-black/50 px-1 rounded backdrop-blur border border-pink-500/30">Antinode</div>
+        <div className="text-[10px] text-pink-400 font-bold uppercase tracking-widest bg-slate-200 dark:bg-black/50 px-1 rounded backdrop-blur border border-pink-500/30">Antinode</div>
       </Html>
 
       {/* Pulley */}
@@ -117,7 +117,7 @@ const SonometerScene = ({ length, mass, freq, hex }: { length: number; mass: num
         ))}
 
         <Html position={[0.7, 0, 0]}>
-          <div className="text-white font-bold bg-blue-900/80 px-2 py-0.5 rounded border border-blue-500/50 text-xs backdrop-blur whitespace-nowrap">
+          <div className="text-slate-900 dark:text-white font-bold bg-blue-900/80 px-2 py-0.5 rounded border border-blue-500/50 text-xs backdrop-blur whitespace-nowrap">
             {mass} g
           </div>
         </Html>
@@ -149,7 +149,7 @@ const SonometerLab: React.FC<Props> = ({ hex }) => {
 
   return (
     <div className="flex flex-col md:flex-row h-full w-full bg-slate-950">
-      <div className="flex-1 relative rounded-2xl overflow-hidden m-4 border border-white/10 shadow-2xl">
+      <div className="flex-1 relative rounded-2xl overflow-hidden m-4 border border-black/10 dark:border-white/10 shadow-2xl">
         <Canvas camera={{ position: [0, 2, 12], fov: 45 }}>
           <Environment preset="night" />
           <ambientLight intensity={0.6} />
@@ -162,16 +162,16 @@ const SonometerLab: React.FC<Props> = ({ hex }) => {
           <OrbitControls enablePan={true} enableZoom={true} maxPolarAngle={Math.PI / 2} minPolarAngle={0} target={[0,-1,0]} />
         </Canvas>
 
-        <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md border border-white/10 rounded-xl px-4 py-3 shadow-xl max-w-xs">
+        <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md border border-black/10 dark:border-white/10 rounded-xl px-4 py-3 shadow-xl max-w-xs">
           <p className="text-[10px] font-bold uppercase tracking-widest text-yellow-500 mb-1">Physics Lab — p11</p>
-          <p className="text-white font-bold text-sm">3D Sonometer</p>
-          <p className="text-xs text-slate-400 mt-1">Verify string formulas. Drag to explore resonant nodes & tension weights.</p>
+          <p className="text-slate-900 dark:text-slate-900 dark:text-white font-bold text-sm">3D Sonometer</p>
+          <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">Verify string formulas. Drag to explore resonant nodes & tension weights.</p>
         </div>
       </div>
 
-      <div className="w-full md:w-72 bg-slate-900 border-l border-white/5 flex flex-col z-10">
-        <div className="p-5 border-b border-white/5">
-          <h2 className="text-lg font-black text-white">Controls</h2>
+      <div className="w-full md:w-72 bg-slate-900 border-l border-black/5 dark:border-white/5 flex flex-col z-10">
+        <div className="p-5 border-b border-black/5 dark:border-white/5">
+          <h2 className="text-lg font-black text-slate-900 dark:text-slate-900 dark:text-white">Controls</h2>
         </div>
         <div className="flex-1 p-5 space-y-4 overflow-y-auto">
           <div className="bg-yellow-500/10 border border-yellow-500/30 p-3 rounded-xl shadow-inner">
@@ -188,15 +188,15 @@ const SonometerLab: React.FC<Props> = ({ hex }) => {
               { label: 'Length (l)', val: `${length} cm`, color: '#a78bfa' },
               { label: 'Freq (n)', val: `${freq.toFixed(1)} Hz`, color: '#4ade80' },
             ].map(m => (
-              <div key={m.label} className="bg-slate-950/50 border border-white/5 rounded-xl p-2.5 text-center shadow-sm">
+              <div key={m.label} className="bg-slate-950/50 border border-black/5 dark:border-white/5 rounded-xl p-2.5 text-center shadow-sm">
                 <div className="text-[9px] text-slate-500 uppercase font-bold tracking-wider mb-1">{m.label}</div>
                 <div className="font-mono font-bold text-sm" style={{ color: m.color }}>{m.val}</div>
               </div>
             ))}
           </div>
 
-          <div className="bg-slate-950 p-4 rounded-xl border border-white/5 shadow-inner text-xs space-y-1.5">
-            <p className="text-slate-400 font-bold text-[10px] uppercase tracking-widest mb-2 border-b border-white/5 pb-1">Formula</p>
+          <div className="bg-slate-950 p-4 rounded-xl border border-black/5 dark:border-white/5 shadow-inner text-xs space-y-1.5">
+            <p className="text-slate-600 dark:text-slate-400 font-bold text-[10px] uppercase tracking-widest mb-2 border-b border-black/5 dark:border-white/5 pb-1">Formula</p>
             <p className="font-mono text-yellow-400">n = (1/2l) × √(T/μ)</p>
             <p className="font-mono text-yellow-400/70">n ∝ √T at constant l</p>
             <p className="font-mono text-yellow-400/70">n ∝ 1/l at constant T</p>
@@ -204,24 +204,24 @@ const SonometerLab: React.FC<Props> = ({ hex }) => {
 
           <div className="flex gap-2 pt-2">
             <button onClick={logReading}
-              className="flex-1 py-3 rounded-xl text-sm font-bold text-white transition-all active:scale-95 shadow-lg shadow-yellow-600/20"
+              className="flex-1 py-3 rounded-xl text-sm font-bold text-slate-900 dark:text-slate-900 dark:text-white transition-all active:scale-95 shadow-lg shadow-yellow-600/20"
               style={{ backgroundColor: hex }}>
               Log Reading
             </button>
             <button onClick={() => setReadings([])}
-              className="px-4 py-3 rounded-xl bg-slate-800 text-red-400 hover:bg-red-900/30 hover:text-red-300 transition-colors">
+              className="px-4 py-3 rounded-xl bg-slate-800 text-red-400 hover:bg-red-900/30 hover:text-red-600 dark:text-red-300 transition-colors">
               <RotateCcw size={16} />
             </button>
           </div>
 
           {readings.length > 0 && (
-            <div className="overflow-x-auto text-xs bg-slate-950 rounded-xl border border-white/5 shadow-inner">
+            <div className="overflow-x-auto text-xs bg-slate-950 rounded-xl border border-black/5 dark:border-white/5 shadow-inner">
               <table className="w-full border-collapse">
-                <thead><tr className="bg-slate-900/80 border-b border-white/10">
-                  {['#', 'm(g)', '√T', 'n(Hz)', ''].map(h => <th key={h} className="px-3 py-2 text-slate-400 text-left font-semibold">{h}</th>)}
+                <thead><tr className="bg-slate-900/80 border-b border-black/10 dark:border-white/10">
+                  {['#', 'm(g)', '√T', 'n(Hz)', ''].map(h => <th key={h} className="px-3 py-2 text-slate-600 dark:text-slate-400 text-left font-semibold">{h}</th>)}
                 </tr></thead>
                 <tbody>{readings.map((r, i) => (
-                  <tr key={i} className="border-b border-white/5 last:border-b-0 hover:bg-white/5 transition-colors">
+                  <tr key={i} className="border-b border-black/5 dark:border-white/5 last:border-b-0 hover:bg-black/5 dark:bg-white/5 transition-colors">
                     <td className="px-3 py-2 text-slate-500">{i + 1}</td>
                     <td className="px-3 py-2 font-mono text-yellow-400/90">{r.mass}</td>
                     <td className="px-3 py-2 font-mono text-orange-400/90">{r.sqrtT.toFixed(3)}</td>

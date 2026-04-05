@@ -118,24 +118,24 @@ const AtomicStructureLab: React.FC<Props> = ({ hex }) => {
           <OrbitControls target={[0, 0, 0]} minDistance={3} maxDistance={15} />
         </Canvas>
 
-        <div className="absolute top-3 left-3 bg-black/70 backdrop-blur-sm border border-white/10 rounded-xl px-3 py-2">
-          <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">3D Chemistry Lab</p>
-          <p className="text-white font-bold text-sm">Atomic Structure</p>
+        <div className="absolute top-3 left-3 bg-black/70 backdrop-blur-sm border border-black/10 dark:border-white/10 rounded-xl px-3 py-2">
+          <p className="text-[10px] text-slate-600 dark:text-slate-400 font-bold uppercase tracking-widest">3D Chemistry Lab</p>
+          <p className="text-slate-900 dark:text-slate-900 dark:text-white font-bold text-sm">Atomic Structure</p>
         </div>
       </div>
 
-      <div className="w-full md:w-72 bg-slate-900 border-l border-white/5 flex flex-col">
-        <div className="p-4 border-b border-white/5">
+      <div className="w-full md:w-72 bg-slate-900 border-l border-black/5 dark:border-white/5 flex flex-col">
+        <div className="p-4 border-b border-black/5 dark:border-white/5">
           <p className="text-xs font-bold uppercase tracking-widest text-purple-400 mb-1">Chemistry 3D Lab</p>
-          <h2 className="text-xl font-bold text-white">Atomic Structure</h2>
-          <p className="text-xs text-slate-400 mt-1">3D Bohr model with orbiting electrons</p>
+          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-900 dark:text-white">Atomic Structure</h2>
+          <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">3D Bohr model with orbiting electrons</p>
         </div>
         <div className="flex-1 p-4 space-y-4 overflow-y-auto">
           {/* Element info card */}
           <div className="rounded-2xl p-4 text-center border" style={{ backgroundColor: `${el.color}15`, borderColor: `${el.color}40` }}>
             <div className="text-6xl font-black" style={{ color: el.color }}>{el.symbol}</div>
-            <div className="text-white font-bold text-sm mt-1">{el.name}</div>
-            <div className="text-slate-400 text-xs">Atomic Mass: {el.mass} u</div>
+            <div className="text-slate-900 dark:text-slate-900 dark:text-white font-bold text-sm mt-1">{el.name}</div>
+            <div className="text-slate-600 dark:text-slate-400 text-xs">Atomic Mass: {el.mass} u</div>
           </div>
 
           {/* Properties grid */}
@@ -146,22 +146,22 @@ const AtomicStructureLab: React.FC<Props> = ({ hex }) => {
               { label: 'Electrons', val: el.electrons.reduce((a, b) => a + b, 0), color: '#60a5fa' },
               { label: 'Shells', val: el.electrons.length, color: '#a78bfa' },
             ].map(m => (
-              <div key={m.label} className="bg-slate-950 border border-white/10 rounded-xl p-3 text-center">
+              <div key={m.label} className="bg-slate-950 border border-black/10 dark:border-white/10 rounded-xl p-3 text-center">
                 <div className="text-[9px] text-slate-500 uppercase font-bold mb-1">{m.label}</div>
                 <div className="font-mono font-bold text-xl" style={{ color: m.color }}>{m.val}</div>
               </div>
             ))}
           </div>
 
-          <div className="bg-slate-950 border border-white/10 rounded-xl p-3">
+          <div className="bg-slate-950 border border-black/10 dark:border-white/10 rounded-xl p-3">
             <p className="text-[9px] text-slate-500 uppercase font-bold mb-1">Electron Configuration</p>
             <p className="font-mono text-sm text-green-400">{el.config}</p>
-            <p className="text-[10px] text-slate-400 mt-1">Shell distribution: {el.electrons.join(', ')}</p>
+            <p className="text-[10px] text-slate-600 dark:text-slate-400 mt-1">Shell distribution: {el.electrons.join(', ')}</p>
           </div>
 
           {/* Element picker */}
           <div>
-            <p className="text-[10px] text-slate-400 uppercase font-bold mb-2">Select Element</p>
+            <p className="text-[10px] text-slate-600 dark:text-slate-400 uppercase font-bold mb-2">Select Element</p>
             <div className="grid grid-cols-5 gap-1.5">
               {ELEMENTS.map(e => (
                 <button key={e.symbol} onClick={() => setSelectedElement(e)}

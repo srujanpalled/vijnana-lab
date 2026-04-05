@@ -79,7 +79,7 @@ const DraggableSlider: React.FC<DraggableSliderProps> = ({
     <div className="select-none w-full">
       {/* Label row */}
       <div className="flex items-center justify-between mb-2">
-        <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">{label}</span>
+        <span className="text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider">{label}</span>
         {showValue && (
           <span className="text-xs font-bold px-2 py-0.5 rounded-full" style={{ backgroundColor: color + '25', color: color }}>
             {displayVal}
@@ -98,7 +98,7 @@ const DraggableSlider: React.FC<DraggableSliderProps> = ({
         onMouseLeave={() => setHovering(false)}
       >
         {/* Track background */}
-        <div className="absolute w-full h-2 rounded-full bg-white/10" />
+        <div className="absolute w-full h-2 rounded-full bg-black/10 dark:bg-white/10" />
 
         {/* Filled portion */}
         <div

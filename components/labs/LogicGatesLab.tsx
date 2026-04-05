@@ -47,7 +47,7 @@ const LogicGatesLab: React.FC<LogicGatesLabProps> = ({ hex }) => {
   return (
     <div className="flex flex-col h-full bg-slate-100 dark:bg-slate-900 overflow-hidden">
       {/* Tab Bar */}
-      <div className="flex border-b border-slate-200 dark:border-white/10 bg-white dark:bg-slate-950">
+      <div className="flex border-b border-slate-200 dark:border-black/10 dark:border-white/10 bg-white dark:bg-slate-950">
         {[
           { key: 'simulation', label: '⚡ Simulation' },
           { key: 'truth-table', label: '📊 Truth Table' },
@@ -65,7 +65,7 @@ const LogicGatesLab: React.FC<LogicGatesLabProps> = ({ hex }) => {
       <div className="flex-1 overflow-y-auto p-6">
         {tab === 'simulation' && (
           <div className="h-full flex flex-col items-center justify-center gap-12">
-            <div className="relative flex items-center gap-12 bg-white dark:bg-slate-800 p-12 rounded-[32px] shadow-2xl border border-slate-200 dark:border-white/10">
+            <div className="relative flex items-center gap-12 bg-white dark:bg-slate-800 p-12 rounded-[32px] shadow-2xl border border-slate-200 dark:border-black/10 dark:border-white/10">
               
               {/* Inputs */}
               <div className="flex flex-col gap-12">
@@ -80,7 +80,7 @@ const LogicGatesLab: React.FC<LogicGatesLabProps> = ({ hex }) => {
                     >
                       <div className="w-6 h-6 bg-white rounded-full shadow-md" />
                     </button>
-                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{input.label}</span>
+                    <span className="text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest">{input.label}</span>
                     <span className={`font-mono text-xl font-bold ${input.val ? 'text-green-500' : 'text-slate-400'}`}>{input.val ? '1' : '0'}</span>
                   </div>
                 ))}
@@ -95,7 +95,7 @@ const LogicGatesLab: React.FC<LogicGatesLabProps> = ({ hex }) => {
                 <div className="w-40 h-40 bg-slate-900 border-2 border-slate-700 rounded-2xl flex flex-col items-center justify-center relative overflow-hidden group-hover:border-purple-500 transition-colors">
                   <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-transparent pointer-events-none" />
                   <Cpu size={56} className="text-purple-400 mb-2 animate-pulse" />
-                  <span className="text-xl font-black text-white tracking-widest">{logic.type}</span>
+                  <span className="text-xl font-black text-slate-900 dark:text-slate-900 dark:text-white tracking-widest">{logic.type}</span>
                   <div className="text-[10px] text-slate-500 font-mono mt-1 tracking-tighter">74HC SERIES</div>
                 </div>
 
@@ -109,7 +109,7 @@ const LogicGatesLab: React.FC<LogicGatesLabProps> = ({ hex }) => {
                   <Zap size={32} className={output ? 'text-yellow-900' : 'text-slate-800'} />
                 </div>
                 <div className="text-center">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1">Result</span>
+                  <span className="text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest block mb-1">Result</span>
                   <span className={`font-mono text-2xl font-black ${output ? 'text-yellow-500' : 'text-slate-400'}`}>{output ? '1 (ON)' : '0 (OFF)'}</span>
                 </div>
               </div>
@@ -134,23 +134,23 @@ const LogicGatesLab: React.FC<LogicGatesLabProps> = ({ hex }) => {
 
                 {tab === 'truth-table' && (
           <div className="max-w-md mx-auto">
-            <div className="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-white/10 overflow-hidden shadow-xl">
+            <div className="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-black/10 dark:border-white/10 overflow-hidden shadow-xl">
               <div className="bg-purple-600 p-4 text-white font-bold text-center uppercase tracking-widest text-sm">
                 Truth Table: {logic.type} Gate
               </div>
               <table className="w-full">
                 <thead>
-                  <tr className="bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-white/10">
-                    <th className="p-4 text-slate-400 font-mono text-xs text-center border-r border-slate-200 dark:border-white/10 uppercase">Input A</th>
-                    <th className="p-4 text-slate-400 font-mono text-xs text-center border-r border-slate-200 dark:border-white/10 uppercase">Input B</th>
+                  <tr className="bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-black/10 dark:border-white/10">
+                    <th className="p-4 text-slate-600 dark:text-slate-400 font-mono text-xs text-center border-r border-slate-200 dark:border-black/10 dark:border-white/10 uppercase">Input A</th>
+                    <th className="p-4 text-slate-600 dark:text-slate-400 font-mono text-xs text-center border-r border-slate-200 dark:border-black/10 dark:border-white/10 uppercase">Input B</th>
                     <th className="p-4 text-purple-500 font-mono text-xs text-center uppercase">Output Y</th>
                   </tr>
                 </thead>
                 <tbody>
                   {truthTable.map((row) => (
                     <tr key={`${row.a}-${row.b}`} className={`border-b border-slate-100 dark:border-white/5 transition-colors ${row.a === logic.a && row.b === logic.b ? 'bg-purple-500/10' : ''}`}>
-                      <td className="p-4 text-center border-r border-slate-200 dark:border-white/10 font-mono font-bold">{row.a ? '1' : '0'}</td>
-                      <td className="p-4 text-center border-r border-slate-200 dark:border-white/10 font-mono font-bold">{row.b ? '1' : '0'}</td>
+                      <td className="p-4 text-center border-r border-slate-200 dark:border-black/10 dark:border-white/10 font-mono font-bold">{row.a ? '1' : '0'}</td>
+                      <td className="p-4 text-center border-r border-slate-200 dark:border-black/10 dark:border-white/10 font-mono font-bold">{row.b ? '1' : '0'}</td>
                       <td className={`p-4 text-center font-mono font-black ${row.out ? 'text-yellow-500' : 'text-slate-400'}`}>{row.out ? '1' : '0'}</td>
                     </tr>
                   ))}
@@ -168,13 +168,13 @@ const LogicGatesLab: React.FC<LogicGatesLabProps> = ({ hex }) => {
               { title: 'Binary States', desc: 'In digital logic, 1 (High/True) and 0 (Low/False) represent discrete voltage levels.', icon: <Power className="text-green-500"/> },
               { title: 'Truth Tables', desc: 'A mathematical table used in logic to determine the functional values of logical expressions.', icon: <Check className="text-blue-500"/> },
             ].map((item, i) => (
-              <div key={i} className="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-200 dark:border-white/10 flex gap-6 shadow-sm">
+              <div key={i} className="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-200 dark:border-black/10 dark:border-white/10 flex gap-6 shadow-sm">
                 <div className="w-12 h-12 rounded-2xl bg-slate-50 dark:bg-slate-900 flex items-center justify-center shrink-0">
                   {item.icon}
                 </div>
                 <div>
                   <h3 className="text-lg font-bold mb-1">{item.title}</h3>
-                  <p className="text-sm text-slate-500 dark:text-gray-400 leading-relaxed">{item.desc}</p>
+                  <p className="text-sm text-slate-500 dark:text-gray-600 dark:text-gray-400 leading-relaxed">{item.desc}</p>
                 </div>
               </div>
             ))}

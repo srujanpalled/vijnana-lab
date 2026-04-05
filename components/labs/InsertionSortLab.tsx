@@ -152,43 +152,43 @@ const InsertionSortLab: React.FC<InsertionSortLabProps> = ({ hex }) => {
   return (
     <div className="flex flex-col md:flex-row h-full w-full bg-slate-950">
       <div className="flex-1 flex items-center justify-center p-4 flex-col gap-4">
-        <canvas ref={canvasRef} width={400} height={290} className="rounded-2xl border border-white/10 shadow-2xl w-full max-w-[450px]" />
+        <canvas ref={canvasRef} width={400} height={290} className="rounded-2xl border border-black/10 dark:border-white/10 shadow-2xl w-full max-w-[450px]" />
         <div className="flex gap-3 flex-wrap justify-center">
           <button onClick={doStep} disabled={completed} className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold disabled:opacity-30 transition-all active:scale-95">
             ⏭ {phase === 'pick' ? 'Pick Key' : phase === 'shift' ? 'Shift' : 'Insert'} →
           </button>
           <button onClick={shuffle} className="px-5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold transition-all">🔀 Shuffle</button>
-          <button onClick={reset} className="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold transition-all"><RotateCcw size={14} /></button>
+          <button onClick={reset} className="px-4 py-2.5 rounded-xl bg-black/10 dark:bg-white/10 hover:bg-black/20 dark:bg-white/20 text-slate-900 dark:text-white font-bold transition-all"><RotateCcw size={14} /></button>
         </div>
         <div className="flex gap-5">
           {[{ label: 'Sorted', color: COLORS.sorted }, { label: 'Key', color: COLORS.key }, { label: 'Shifting', color: COLORS.shifting }].map(l => (
             <div key={l.label} className="flex items-center gap-1.5">
               <div className="w-3 h-3 rounded" style={{ backgroundColor: l.color }} />
-              <span className="text-xs text-gray-400">{l.label}</span>
+              <span className="text-xs text-gray-600 dark:text-gray-400">{l.label}</span>
             </div>
           ))}
         </div>
       </div>
-      <div className="w-full md:w-72 bg-slate-900 border-l border-white/5 flex flex-col">
-        <div className="p-5 border-b border-white/5">
+      <div className="w-full md:w-72 bg-slate-900 border-l border-black/5 dark:border-white/5 flex flex-col">
+        <div className="p-5 border-b border-black/5 dark:border-white/5">
           <p className="text-xs font-bold uppercase tracking-widest text-violet-400 mb-1">Insertion Sort — CS Lab</p>
-          <h2 className="text-xl font-bold text-white">{STEPS[Math.min(step, STEPS.length-1)].title}</h2>
+          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-900 dark:text-white">{STEPS[Math.min(step, STEPS.length-1)].title}</h2>
         </div>
         <div className="flex-1 p-5 space-y-4 overflow-y-auto">
           <div className="bg-violet-500/10 border border-violet-500/30 p-4 rounded-xl">
             <p className="text-violet-200 text-sm">{STEPS[Math.min(step, STEPS.length-1)].instruction}</p>
           </div>
-          <div className="bg-white/5 p-3 rounded-xl text-sm space-y-1 font-mono">
-            <p className="text-gray-400">Phase: <span className="text-yellow-300 font-bold">{phase.toUpperCase()}</span></p>
-            <p className="text-gray-400">Key: <span className="text-white font-bold">{key}</span></p>
-            <p className="text-gray-400">Index i={i}, j={j}</p>
-            <p className="text-gray-400">Comparisons: <span className="text-blue-300">{comparisons}</span></p>
+          <div className="bg-black/5 dark:bg-white/5 p-3 rounded-xl text-sm space-y-1 font-mono">
+            <p className="text-gray-600 dark:text-gray-400">Phase: <span className="text-yellow-300 font-bold">{phase.toUpperCase()}</span></p>
+            <p className="text-gray-600 dark:text-gray-400">Key: <span className="text-slate-900 dark:text-slate-900 dark:text-white font-bold">{key}</span></p>
+            <p className="text-gray-600 dark:text-gray-400">Index i={i}, j={j}</p>
+            <p className="text-gray-600 dark:text-gray-400">Comparisons: <span className="text-blue-600 dark:text-blue-300">{comparisons}</span></p>
           </div>
           {completed && (
             <div className="bg-green-500/10 border border-green-500/30 p-4 rounded-xl text-center">
               <p className="text-green-400 font-bold">✅ Array Sorted!</p>
-              <p className="text-white text-sm mt-1">[{arr.join(', ')}]</p>
-              <p className="text-gray-400 text-xs mt-1">{comparisons} comparisons total</p>
+              <p className="text-slate-900 dark:text-slate-900 dark:text-white text-sm mt-1">[{arr.join(', ')}]</p>
+              <p className="text-gray-600 dark:text-gray-400 text-xs mt-1">{comparisons} comparisons total</p>
             </div>
           )}
           <div className="flex gap-1">

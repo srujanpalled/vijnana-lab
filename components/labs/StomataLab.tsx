@@ -177,7 +177,7 @@ const PotometerScene = ({ bubbleX, transpRate }: { bubbleX: number, transpRate: 
                 <Html position={[0, 0.1, 0]} transform>
                    {/* The label position needs to track the bubble, but transform doesn't easily bind to ref in raw fiber without extra state.
                        We will use absolute DOM overlay for exact measurement. */}
-                   <div className="bg-white/10 invisible"></div>
+                   <div className="bg-black/10 dark:bg-white/10 invisible"></div>
                 </Html>
             </group>
         </group>
@@ -207,23 +207,23 @@ const StomataLab: React.FC<Props> = ({ hex }) => {
   }, [running, transp]);
 
   return (
-    <div className="flex flex-col md:flex-row h-full w-full bg-[#050505] overflow-hidden text-slate-200 select-none">
+    <div className="flex flex-col md:flex-row h-full w-full bg-[#050505] overflow-hidden text-slate-800 dark:text-slate-200 select-none">
       
       {/* 3D Visualization */}
-      <div className="flex-1 flex flex-col relative rounded-2xl overflow-hidden m-4 border border-white/10 shadow-2xl">
+      <div className="flex-1 flex flex-col relative rounded-2xl overflow-hidden m-4 border border-black/10 dark:border-white/10 shadow-2xl">
         <div className="absolute inset-x-0 top-0 p-4 bg-gradient-to-b from-black/80 to-transparent z-10 flex justify-between items-start">
             <div>
-                <h2 className="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+                <h2 className="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-900 dark:text-white flex items-center gap-2">
                     <span className="p-1.5 rounded-lg bg-green-500/20 text-green-400"><Droplets size={18} /></span>
                     Transpiration Dynamics
                 </h2>
-                <p className="text-[11px] font-medium text-slate-400 uppercase tracking-widest mt-1">
+                <p className="text-[11px] font-medium text-slate-600 dark:text-slate-400 uppercase tracking-widest mt-1">
                     {viewMode === 'microscope' ? 'Microscopic Guard Cell View' : 'Macroscopic Potometer Apparatus'}
                 </p>
             </div>
             
             {/* View Mode Switcher */}
-            <div className="flex bg-black/60 p-1 rounded-xl border border-white/10 backdrop-blur-md shadow-inner">
+            <div className="flex bg-black/60 p-1 rounded-xl border border-black/10 dark:border-white/10 backdrop-blur-md shadow-inner">
                 <button onClick={() => setViewMode('microscope')} className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${viewMode === 'microscope' ? 'bg-green-600 shadow-md shadow-green-500/50 text-white' : 'text-slate-400 hover:text-white'}`}>🔬 Micro</button>
                 <button onClick={() => setViewMode('potometer')} className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${viewMode === 'potometer' ? 'bg-blue-600 shadow-md shadow-blue-500/50 text-white' : 'text-slate-400 hover:text-white'}`}>🌡️ Potometer</button>
             </div>
@@ -246,7 +246,7 @@ const StomataLab: React.FC<Props> = ({ hex }) => {
              <div className={`absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-4 bg-black/80 px-6 py-3 rounded-2xl backdrop-blur-xl border transition-colors shadow-2xl ${stomataOpen ? 'border-green-500/50' : 'border-red-500/50'}`}>
                 <div className={`w-3 h-3 rounded-full ${stomataOpen ? 'bg-green-400 shadow-[0_0_10px_#4ade80] animate-pulse' : 'bg-red-500'}`} />
                 <div>
-                     <p className="text-[10px] uppercase font-bold tracking-widest text-slate-400 mb-0.5">Stomata Status</p>
+                     <p className="text-[10px] uppercase font-bold tracking-widest text-slate-600 dark:text-slate-400 mb-0.5">Stomata Status</p>
                      <p className={`text-lg font-black leading-none ${stomataOpen ? 'text-green-400' : 'text-red-400'}`}>
                          {stomataOpen ? `OPEN (${Math.round(aperture*100)}%)` : 'CLOSED'}
                      </p>
@@ -254,19 +254,19 @@ const StomataLab: React.FC<Props> = ({ hex }) => {
              </div>
         ) : (
             <div className="absolute bottom-6 left-6 flex flex-col gap-2">
-                 <div className="bg-black/80 px-4 py-3 rounded-xl border border-white/10 backdrop-blur-md">
+                 <div className="bg-black/80 px-4 py-3 rounded-xl border border-black/10 dark:border-white/10 backdrop-blur-md">
                      <p className="text-[10px] uppercase font-bold tracking-widest text-blue-400 mb-1">Capillary Bubble X</p>
-                     <p className="font-mono text-xl font-bold text-white leading-none">{(Math.round((1 - bubbleX)*100))} mm</p>
+                     <p className="font-mono text-xl font-bold text-slate-900 dark:text-slate-900 dark:text-white leading-none">{(Math.round((1 - bubbleX)*100))} mm</p>
                  </div>
             </div>
         )}
       </div>
 
       {/* Control Panel */}
-      <div className="w-full md:w-[320px] shrink-0 bg-[#0a0a0a] border-l border-white/10 flex flex-col z-20 shadow-[-10px_0_30px_rgba(0,0,0,0.5)]">
-        <div className="p-6 border-b border-white/5">
+      <div className="w-full md:w-[320px] shrink-0 bg-[#0a0a0a] border-l border-black/10 dark:border-white/10 flex flex-col z-20 shadow-[-10px_0_30px_rgba(0,0,0,0.5)]">
+        <div className="p-6 border-b border-black/5 dark:border-white/5">
           <p className="text-xs font-bold uppercase tracking-widest text-green-400 mb-2 border-b border-green-500/20 inline-block pb-1">Biology Lab — b7</p>
-          <h2 className="text-xl font-bold text-white tracking-tight">Plant Transpiration</h2>
+          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-900 dark:text-white tracking-tight">Plant Transpiration</h2>
         </div>
         
         <div className="flex-1 p-6 space-y-6 overflow-y-auto">
@@ -278,7 +278,7 @@ const StomataLab: React.FC<Props> = ({ hex }) => {
           </div>
 
           <div className="space-y-5">
-              <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 border-b border-white/10 pb-1">Environmental Variables</h3>
+              <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 border-b border-black/10 dark:border-white/10 pb-1">Environmental Variables</h3>
               
               <DraggableSlider label="Light Intensity" min={0} max={100} value={lightIntensity} onChange={setLightIntensity} color="#f59e0b" unit="%" />
               <DraggableSlider label="Relative Humidity" min={10} max={100} value={humidity} onChange={setHumidity} color="#3b82f6" unit="%" />
@@ -286,11 +286,11 @@ const StomataLab: React.FC<Props> = ({ hex }) => {
           </div>
 
           <div className="grid grid-cols-2 gap-3 pb-2">
-             <div className="bg-[#111] border border-white/5 shadow-inner rounded-xl p-3 text-center">
+             <div className="bg-[#111] border border-black/5 dark:border-white/5 shadow-inner rounded-xl p-3 text-center">
                  <p className="text-[9px] uppercase font-bold text-slate-500 mb-1">Aperture Size</p>
                  <p className={`font-mono text-sm font-bold ${stomataOpen ? 'text-green-400' : 'text-red-400'}`}>{Math.round(aperture*100)}%</p>
              </div>
-             <div className="bg-[#111] border border-white/5 shadow-inner rounded-xl p-3 text-center">
+             <div className="bg-[#111] border border-black/5 dark:border-white/5 shadow-inner rounded-xl p-3 text-center">
                  <p className="text-[9px] uppercase font-bold text-slate-500 mb-1">Transpiration Rate</p>
                  <p className="font-mono text-sm font-bold text-blue-400">{(transp * 20).toFixed(2)}</p>
              </div>

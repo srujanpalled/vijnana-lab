@@ -36,7 +36,7 @@ const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="bg-[#020617] border-t border-white/5 pt-16 pb-8 z-10 relative mt-auto">
+    <footer className="bg-[#020617] border-t border-black/5 dark:border-white/5 pt-16 pb-8 z-10 relative mt-auto">
       <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           
@@ -55,28 +55,28 @@ const Footer: React.FC = () => {
                             animate={{ y: 0, opacity: 1 }}
                             exit={{ y: -5, opacity: 0 }}
                             transition={{ duration: 0.5 }}
-                            className="text-2xl font-display font-bold text-white tracking-tight leading-none whitespace-nowrap text-glow"
+                            className="text-2xl font-display font-bold text-slate-900 dark:text-slate-900 dark:text-white tracking-tight leading-none whitespace-nowrap text-glow"
                         >
                             {TITLES[titleIndex].text.split(' ')[0]} <span className="text-emerald-400">{TITLES[titleIndex].text.split(' ')[1]}</span>
                         </MotionSpan>
                     </AnimatePresence>
                 </div>
             </Link>
-            <p className="text-gray-400 text-sm leading-relaxed max-w-xs">
+            <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed max-w-xs">
               Empowering the next generation of scientists with immersive virtual simulations and AI-driven mentorship.
             </p>
             <div className="flex gap-4 pt-2">
-              <a href="#" aria-label="Follow us on Twitter" rel="noopener noreferrer" className="text-gray-400 hover:text-emerald-400 transition-colors"><Twitter size={20} /></a>
-              <a href="#" aria-label="Visit our Github" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors"><Github size={20} /></a>
-              <a href="#" aria-label="Connect on LinkedIn" rel="noopener noreferrer" className="text-gray-400 hover:text-indigo-400 transition-colors"><Linkedin size={20} /></a>
-              <a href="#" aria-label="Follow us on Instagram" rel="noopener noreferrer" className="text-gray-400 hover:text-pink-500 transition-colors"><Instagram size={20} /></a>
+              <a href="#" aria-label="Follow us on Twitter" rel="noopener noreferrer" className="text-gray-600 dark:text-gray-400 hover:text-emerald-400 transition-colors"><Twitter size={20} /></a>
+              <a href="#" aria-label="Visit our Github" rel="noopener noreferrer" className="text-gray-600 dark:text-gray-400 hover:text-slate-900 dark:text-slate-900 dark:text-white transition-colors"><Github size={20} /></a>
+              <a href="#" aria-label="Connect on LinkedIn" rel="noopener noreferrer" className="text-gray-600 dark:text-gray-400 hover:text-indigo-400 transition-colors"><Linkedin size={20} /></a>
+              <a href="#" aria-label="Follow us on Instagram" rel="noopener noreferrer" className="text-gray-600 dark:text-gray-400 hover:text-pink-500 transition-colors"><Instagram size={20} /></a>
             </div>
           </div>
  
           {/* Quick Links */}
           <div>
-            <h3 className="text-white font-bold mb-6 tracking-wide">Platform</h3>
-            <ul className="space-y-3 text-sm text-gray-400">
+            <h3 className="text-slate-900 dark:text-slate-900 dark:text-white font-bold mb-6 tracking-wide">Platform</h3>
+            <ul className="space-y-3 text-sm text-gray-600 dark:text-gray-400">
               <li><Link to="/" className="hover:text-emerald-400 transition-colors">Home</Link></li>
               <li><Link to="/subjects" className="hover:text-emerald-400 transition-colors">Virtual Labs</Link></li>
               <li><Link to="/tutor" className="hover:text-emerald-400 transition-colors">AI Tutor</Link></li>
@@ -87,8 +87,8 @@ const Footer: React.FC = () => {
  
           {/* Support & Legal */}
           <div>
-            <h3 className="text-white font-bold mb-6 tracking-wide">Support</h3>
-            <ul className="space-y-3 text-sm text-gray-400">
+            <h3 className="text-slate-900 dark:text-slate-900 dark:text-white font-bold mb-6 tracking-wide">Support</h3>
+            <ul className="space-y-3 text-sm text-gray-600 dark:text-gray-400">
               <li><Link to="/contact" className="hover:text-emerald-400 transition-colors">Contact Us</Link></li>
               <li><Link to="/about" className="hover:text-emerald-400 transition-colors">About Us</Link></li>
               <li><a href="#" className="hover:text-emerald-400 transition-colors">Privacy Policy</a></li>
@@ -99,8 +99,8 @@ const Footer: React.FC = () => {
  
           {/* Feedback Form */}
           <div>
-            <h3 className="text-white font-bold mb-6 tracking-wide">Feedback</h3>
-            <p className="text-xs text-gray-400 mb-4">Help us improve your experience.</p>
+            <h3 className="text-slate-900 dark:text-slate-900 dark:text-white font-bold mb-6 tracking-wide">Feedback</h3>
+            <p className="text-xs text-gray-600 dark:text-gray-400 mb-4">Help us improve your experience.</p>
             <form onSubmit={handleFeedback} className="space-y-4">
               <div className="relative group">
                 <textarea 
@@ -108,7 +108,7 @@ const Footer: React.FC = () => {
                   onChange={(e) => setFeedback(e.target.value)}
                   placeholder="Your suggestions..."
                   aria-label="Send us your feedback"
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-sm text-white focus:outline-none focus:border-emerald-500/50 focus:bg-white/10 transition-all resize-none h-28 placeholder-gray-600 shadow-inner"
+                  className="w-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-2xl p-4 text-sm text-slate-900 dark:text-white focus:outline-none focus:border-emerald-500/50 focus:bg-black/10 dark:bg-white/10 transition-all resize-none h-28 placeholder-gray-600 shadow-inner"
                 />
                 <button 
                   type="submit"
@@ -125,7 +125,7 @@ const Footer: React.FC = () => {
           </div>
         </div>
 
-        <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="border-t border-black/5 dark:border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-xs text-gray-500">
             © {new Date().getFullYear()} Vijnana Lab Inc. All rights reserved.
           </p>
@@ -135,9 +135,9 @@ const Footer: React.FC = () => {
           </div>
         </div>
         
-        <div className="w-full text-center mt-6 pt-4 border-t border-white/5 pb-4">
+        <div className="w-full text-center mt-6 pt-4 border-t border-black/5 dark:border-white/5 pb-4">
             <p className="text-sm text-gray-500 flex items-center justify-center gap-1">
-                Innovation by <span className="text-slate-300 font-bold tracking-wide">TEAM SUPRA</span>
+                Innovation by <span className="text-slate-700 dark:text-slate-700 dark:text-slate-300 font-bold tracking-wide">TEAM SUPRA</span>
             </p>
         </div>
       </div>

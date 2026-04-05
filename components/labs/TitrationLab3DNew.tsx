@@ -177,32 +177,32 @@ const TitrationLab3DNew: React.FC<Props> = ({ hex }) => {
           <OrbitControls target={[0, 0, 0]} minDistance={4} maxDistance={14} />
         </Canvas>
 
-        <div className="absolute top-3 left-3 bg-black/60 backdrop-blur-sm border border-white/10 rounded-xl px-3 py-2">
-          <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">3D Chemistry Lab — c6</p>
-          <p className="text-white font-bold text-sm">KMnO₄ Titration</p>
+        <div className="absolute top-3 left-3 bg-black/60 backdrop-blur-sm border border-black/10 dark:border-white/10 rounded-xl px-3 py-2">
+          <p className="text-[10px] text-slate-600 dark:text-slate-400 font-bold uppercase tracking-widest">3D Chemistry Lab — c6</p>
+          <p className="text-slate-900 dark:text-slate-900 dark:text-white font-bold text-sm">KMnO₄ Titration</p>
         </div>
 
         {endpoint && (
           <div className="absolute inset-x-0 bottom-6 flex justify-center">
             <div className="bg-purple-900/80 backdrop-blur-sm border border-purple-400/50 rounded-2xl px-6 py-3 text-center">
-              <p className="text-purple-200 font-bold text-sm">🎉 Endpoint Reached!</p>
+              <p className="text-purple-600 dark:text-purple-200 font-bold text-sm">🎉 Endpoint Reached!</p>
               <p className="text-purple-400 text-xs">{volumeAdded.toFixed(1)} mL KMnO₄ used</p>
             </div>
           </div>
         )}
       </div>
 
-      <div className="w-full md:w-72 bg-slate-900 border-l border-white/5 flex flex-col">
-        <div className="p-4 border-b border-white/5">
+      <div className="w-full md:w-72 bg-slate-900 border-l border-black/5 dark:border-white/5 flex flex-col">
+        <div className="p-4 border-b border-black/5 dark:border-white/5">
           <p className="text-xs font-bold uppercase tracking-widest text-purple-400 mb-1">Chemistry 3D Lab</p>
-          <h2 className="text-xl font-bold text-white">Redox Titration</h2>
-          <p className="text-xs text-slate-400 mt-1">KMnO₄ vs Oxalic Acid — self-indicating</p>
+          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-900 dark:text-white">Redox Titration</h2>
+          <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">KMnO₄ vs Oxalic Acid — self-indicating</p>
         </div>
         <div className="flex-1 p-4 space-y-5 overflow-y-auto">
           {/* Burette reading */}
           <div className="bg-purple-500/10 border border-purple-500/30 rounded-2xl p-4 text-center">
             <p className="text-[10px] text-purple-400 uppercase font-bold tracking-widest mb-1">Volume Added</p>
-            <p className="text-5xl font-black text-white font-mono">{volumeAdded.toFixed(1)}</p>
+            <p className="text-5xl font-black text-slate-900 dark:text-slate-900 dark:text-white font-mono">{volumeAdded.toFixed(1)}</p>
             <p className="text-purple-400 text-sm font-bold mt-0.5">mL KMnO₄</p>
           </div>
 
@@ -213,7 +213,7 @@ const TitrationLab3DNew: React.FC<Props> = ({ hex }) => {
               { label: 'Endpoint', val: endpoint ? '✓ Done' : `~${endpointVol} mL`, color: endpoint ? '#4ade80' : '#94a3b8' },
               { label: 'Flask color', val: endpoint ? 'Pink' : volumeAdded > 15 ? 'Pale pink' : 'Colorless', color: '#f0abfc' },
             ].map(m => (
-              <div key={m.label} className="bg-slate-950 border border-white/10 rounded-xl p-3 text-center">
+              <div key={m.label} className="bg-slate-950 border border-black/10 dark:border-white/10 rounded-xl p-3 text-center">
                 <div className="text-[9px] text-slate-500 uppercase font-bold mb-1">{m.label}</div>
                 <div className="font-mono font-bold text-xs" style={{ color: m.color }}>{m.val}</div>
               </div>
@@ -221,8 +221,8 @@ const TitrationLab3DNew: React.FC<Props> = ({ hex }) => {
           </div>
 
           {/* Reaction */}
-          <div className="bg-slate-950 rounded-xl p-3 border border-white/10 space-y-1">
-            <p className="text-[10px] text-slate-400 uppercase font-bold">Redox Reaction</p>
+          <div className="bg-slate-950 rounded-xl p-3 border border-black/10 dark:border-white/10 space-y-1">
+            <p className="text-[10px] text-slate-600 dark:text-slate-400 uppercase font-bold">Redox Reaction</p>
             <p className="font-mono text-[10px] text-purple-400">2KMnO₄ + 5H₂C₂O₄ + 3H₂SO₄ →</p>
             <p className="font-mono text-[10px] text-green-400">K₂SO₄ + 2MnSO₄ + 10CO₂ + 8H₂O</p>
           </div>

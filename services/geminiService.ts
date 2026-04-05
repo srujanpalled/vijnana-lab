@@ -75,14 +75,28 @@ export const sendMessageToGemini = async (chat: Chat, message: string, maxRetrie
     try {
       return await chat.sendMessageStream({ message });
     } catch (error: any) {
-      const isRateLimit = error?.message?.includes('429') || error?.message?.includes('Quota');
+      const errMsg = error?.message || '';
+      const isRateLimit = errMsg.includes('429') || errMsg.includes('Quota');
+      const isLeaked = errMsg.includes('leaked') || errMsg.includes('PERMISSION_DENIED');
+      const isInvalidKey = errMsg.includes('400') || errMsg.includes('API key not valid');
+
+      // Give user-friendly messages
+      if (isLeaked) {
+        throw new Error('🔐 Your Gemini API key has been revoked (leaked to a public repository). Please generate a new key at https://aistudio.google.com/apikey and update VITE_GEMINI_API_KEY in your .env file.');
+      }
+      if (isInvalidKey) {
+        throw new Error('🔑 Invalid API Key. Please check that VITE_GEMINI_API_KEY in your .env file is correct, then restart the dev server.');
+      }
       if (isRateLimit && attempt < maxRetries) {
         const delay = 3000 * Math.pow(2, attempt); // 3s, 6s, 12s
         console.warn(`Rate limited (429). Retrying in ${delay / 1000}s... (attempt ${attempt + 1}/${maxRetries})`);
         await sleep(delay);
         continue;
       }
-      throw error; // Not a rate limit error, or retries exhausted — propagate
+      if (isRateLimit) {
+        throw new Error('⏳ Rate limit exceeded. The free Gemini tier limits requests. Please wait 60 seconds and try again.');
+      }
+      throw error; // Unknown error — propagate
     }
   }
   throw new Error('Max retries exceeded for Gemini API.');

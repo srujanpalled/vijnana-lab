@@ -150,17 +150,17 @@ const CrystalStructureLab: React.FC<Props> = ({ hex }) => {
           <OrbitControls target={[0, 0, 0]} minDistance={3} maxDistance={15} />
         </Canvas>
 
-        <div className="absolute top-3 left-3 bg-black/70 backdrop-blur-sm border border-white/10 rounded-xl px-3 py-2">
-          <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">3D Chemistry Lab</p>
-          <p className="text-white font-bold text-sm">{CRYSTAL_TYPES[crystalType].name}</p>
+        <div className="absolute top-3 left-3 bg-black/70 backdrop-blur-sm border border-black/10 dark:border-white/10 rounded-xl px-3 py-2">
+          <p className="text-[10px] text-slate-600 dark:text-slate-400 font-bold uppercase tracking-widest">3D Chemistry Lab</p>
+          <p className="text-slate-900 dark:text-slate-900 dark:text-white font-bold text-sm">{CRYSTAL_TYPES[crystalType].name}</p>
         </div>
       </div>
 
-      <div className="w-full md:w-72 bg-slate-900 border-l border-white/5 flex flex-col">
-        <div className="p-4 border-b border-white/5">
+      <div className="w-full md:w-72 bg-slate-900 border-l border-black/5 dark:border-white/5 flex flex-col">
+        <div className="p-4 border-b border-black/5 dark:border-white/5">
           <p className="text-xs font-bold uppercase tracking-widest text-cyan-400 mb-1">Chemistry 3D Lab</p>
-          <h2 className="text-xl font-bold text-white">Crystal Structure</h2>
-          <p className="text-xs text-slate-400 mt-1">Ionic and covalent crystal lattice models</p>
+          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-900 dark:text-white">Crystal Structure</h2>
+          <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">Ionic and covalent crystal lattice models</p>
         </div>
         <div className="flex-1 p-4 space-y-4 overflow-y-auto">
           <div className="p-3 rounded-xl border border-cyan-500/30 bg-cyan-500/10">
@@ -168,7 +168,7 @@ const CrystalStructureLab: React.FC<Props> = ({ hex }) => {
           </div>
 
           <div>
-            <p className="text-[10px] text-slate-400 uppercase font-bold mb-2">Crystal Type</p>
+            <p className="text-[10px] text-slate-600 dark:text-slate-400 uppercase font-bold mb-2">Crystal Type</p>
             <div className="grid grid-cols-2 gap-2">
               {(Object.keys(CRYSTAL_TYPES) as CrystalType[]).map(k => (
                 <button key={k} onClick={() => setCrystalType(k)}
@@ -184,8 +184,8 @@ const CrystalStructureLab: React.FC<Props> = ({ hex }) => {
           </div>
 
           {crystalType === 'NaCl' && (
-            <div className="bg-slate-950 p-3 rounded-xl border border-white/10 space-y-2 text-xs">
-              <p className="text-slate-400 font-bold text-[10px] uppercase">NaCl Properties</p>
+            <div className="bg-slate-950 p-3 rounded-xl border border-black/10 dark:border-white/10 space-y-2 text-xs">
+              <p className="text-slate-600 dark:text-slate-400 font-bold text-[10px] uppercase">NaCl Properties</p>
               {[
                 ['Lattice type', 'FCC'],
                 ['Coord. number', '6'],
@@ -196,7 +196,7 @@ const CrystalStructureLab: React.FC<Props> = ({ hex }) => {
               ].map(([k, v]) => (
                 <div key={k} className="flex justify-between">
                   <span className="text-slate-500">{k}</span>
-                  <span className="text-slate-200 font-mono">{v}</span>
+                  <span className="text-slate-800 dark:text-slate-800 dark:text-slate-200 font-mono">{v}</span>
                 </div>
               ))}
             </div>
@@ -205,11 +205,11 @@ const CrystalStructureLab: React.FC<Props> = ({ hex }) => {
           <div className="flex gap-1.5">
             <div className="flex items-center gap-1.5 px-3 py-2 bg-slate-800 rounded-xl flex-1">
               <div className="w-3 h-3 rounded-full" style={{ backgroundColor: CRYSTAL_TYPES[crystalType].color1 }} />
-              <span className="text-xs text-slate-300">{CRYSTAL_TYPES[crystalType].label1}</span>
+              <span className="text-xs text-slate-700 dark:text-slate-700 dark:text-slate-300">{CRYSTAL_TYPES[crystalType].label1}</span>
             </div>
             <div className="flex items-center gap-1.5 px-3 py-2 bg-slate-800 rounded-xl flex-1">
               <div className="w-3 h-3 rounded-full" style={{ backgroundColor: CRYSTAL_TYPES[crystalType].color2 }} />
-              <span className="text-xs text-slate-300">{CRYSTAL_TYPES[crystalType].label2}</span>
+              <span className="text-xs text-slate-700 dark:text-slate-700 dark:text-slate-300">{CRYSTAL_TYPES[crystalType].label2}</span>
             </div>
           </div>
 

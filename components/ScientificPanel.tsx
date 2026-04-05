@@ -23,16 +23,16 @@ const Card: React.FC<{ title: string; icon?: React.ReactNode; children: React.Re
 }) => {
   const [open, setOpen] = useState(true);
   return (
-    <div className="border border-slate-200 dark:border-white/10 rounded-xl overflow-hidden mb-3">
+    <div className="border border-slate-200 dark:border-black/10 dark:border-white/10 rounded-xl overflow-hidden mb-3">
       <button
         onClick={() => setOpen(o => !o)}
-        className="w-full flex items-center justify-between px-4 py-3 bg-slate-50 dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors"
+        className="w-full flex items-center justify-between px-4 py-3 bg-slate-50 dark:bg-black/5 dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-black/10 dark:bg-white/10 transition-colors"
       >
-        <span className="flex items-center gap-2 text-sm font-bold text-slate-700 dark:text-white">
+        <span className="flex items-center gap-2 text-sm font-bold text-slate-700 dark:text-slate-900 dark:text-slate-900 dark:text-white">
           <span style={{ color: accent }}>{icon}</span>
           {title}
         </span>
-        {open ? <ChevronUp size={14} className="text-slate-400" /> : <ChevronDown size={14} className="text-slate-400" />}
+        {open ? <ChevronUp size={14} className="text-slate-600 dark:text-slate-400" /> : <ChevronDown size={14} className="text-slate-600 dark:text-slate-400" />}
       </button>
       <AnimatePresence initial={false}>
         {open && (
@@ -40,7 +40,7 @@ const Card: React.FC<{ title: string; icon?: React.ReactNode; children: React.Re
             initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.2 }}
           >
-            <div className="px-4 py-3 bg-white dark:bg-slate-900 text-sm text-slate-700 dark:text-gray-300">
+            <div className="px-4 py-3 bg-white dark:bg-slate-900 text-sm text-slate-700 dark:text-gray-700 dark:text-gray-300">
               {children}
             </div>
           </MotionDiv>
@@ -53,15 +53,15 @@ const Card: React.FC<{ title: string; icon?: React.ReactNode; children: React.Re
 // ─── KV ROW ──────────────────────────────────────────────────────────────────
 const KV: React.FC<{ k: string; v: string | number; unit?: string; highlight?: boolean }> = ({ k, v, unit, highlight }) => (
   <div className={`flex justify-between items-center py-1 border-b border-slate-100 dark:border-white/5 last:border-0 ${highlight ? 'font-bold' : ''}`}>
-    <span className="text-slate-500 dark:text-gray-400 text-xs">{k}</span>
+    <span className="text-slate-500 dark:text-gray-600 dark:text-gray-400 text-xs">{k}</span>
     <span className={`font-mono text-xs ${highlight ? 'text-green-600 dark:text-green-400' : 'text-slate-800 dark:text-white'}`}>
-      {v}{unit ? <span className="text-slate-400 ml-1">{unit}</span> : null}
+      {v}{unit ? <span className="text-slate-600 dark:text-slate-400 ml-1">{unit}</span> : null}
     </span>
   </div>
 );
 
 const Formula: React.FC<{ expr: string }> = ({ expr }) => (
-  <div className="my-2 px-3 py-2 bg-slate-100 dark:bg-black/30 rounded-lg font-mono text-xs text-blue-600 dark:text-blue-300 break-all">{expr}</div>
+  <div className="my-2 px-3 py-2 bg-slate-100 dark:bg-black/30 rounded-lg font-mono text-xs text-blue-600 dark:text-blue-600 dark:text-blue-300 break-all">{expr}</div>
 );
 
 // ─── ENVIRONMENT EDITOR ───────────────────────────────────────────────────────
@@ -76,8 +76,8 @@ const EnvEditor: React.FC<{ env: EnvironmentState; onChange: (e: EnvironmentStat
       ] as const).map(({ label, key, min, max, step }) => (
         <div key={key}>
           <div className="flex justify-between text-xs mb-0.5">
-            <span className="text-slate-500 dark:text-gray-400">{label}</span>
-            <span className="font-mono text-slate-700 dark:text-white">{env[key as keyof EnvironmentState]}</span>
+            <span className="text-slate-500 dark:text-gray-600 dark:text-gray-400">{label}</span>
+            <span className="font-mono text-slate-700 dark:text-slate-900 dark:text-slate-900 dark:text-white">{env[key as keyof EnvironmentState]}</span>
           </div>
           <input
             type="range" min={min} max={max} step={step}
@@ -146,7 +146,7 @@ const VernierPanel: React.FC<{ sliderVal: number; hex: string }> = ({ sliderVal,
         <KV k="Volume (V)" v={vol.volume} unit="cm³" highlight />
       </Card>
       <Card title="Statistical Error Analysis" icon={<AlertTriangle size={14} />} accent="#ef4444">
-        <p className="text-xs text-slate-400 mb-2">Simulated 5 repeat measurements:</p>
+        <p className="text-xs text-slate-600 dark:text-slate-400 mb-2">Simulated 5 repeat measurements:</p>
         <KV k="Mean" v={stats.mean.toFixed(3)} unit="cm" />
         <KV k="Std. Deviation (σ)" v={stats.std_deviation.toFixed(5)} unit="cm" />
         <KV k="Std. Error" v={stats.std_error.toFixed(5)} unit="cm" />
@@ -330,8 +330,8 @@ const OsmosisPanel: React.FC<{ hex: string }> = ({ hex }) => {
       </Card>
       <div className="mb-2">
         <div className="flex justify-between text-xs mb-1">
-          <span className="text-slate-500 dark:text-gray-400">Sugar Solution Molarity</span>
-          <span className="font-mono text-slate-700 dark:text-white">{molarity} M</span>
+          <span className="text-slate-500 dark:text-gray-600 dark:text-gray-400">Sugar Solution Molarity</span>
+          <span className="font-mono text-slate-700 dark:text-slate-900 dark:text-slate-900 dark:text-white">{molarity} M</span>
         </div>
         <input type="range" min="0.1" max="2.0" step="0.1" value={molarity}
           onChange={e => setMolarity(parseFloat(e.target.value))}
@@ -362,10 +362,10 @@ interface ScientificPanelProps {
 
 const ScientificPanel: React.FC<ScientificPanelProps> = ({ labId, hex, sliderValue = 0, secondaryValue = 10 }) => {
   return (
-    <div className="h-full overflow-y-auto bg-white dark:bg-slate-950 border-l border-slate-200 dark:border-white/10 p-3 w-72 shrink-0 custom-scrollbar">
+    <div className="h-full overflow-y-auto bg-white dark:bg-slate-950 border-l border-slate-200 dark:border-black/10 dark:border-white/10 p-3 w-72 shrink-0 custom-scrollbar">
       <div className="flex items-center gap-2 mb-3">
         <Wind size={14} style={{ color: hex }} />
-        <span className="text-xs font-bold text-slate-700 dark:text-white uppercase tracking-wider">Scientific Analysis</span>
+        <span className="text-xs font-bold text-slate-700 dark:text-slate-900 dark:text-slate-900 dark:text-white uppercase tracking-wider">Scientific Analysis</span>
       </div>
 
       {labId === 'p1' && <VernierPanel sliderVal={sliderValue} hex={hex} />}

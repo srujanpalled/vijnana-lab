@@ -165,14 +165,14 @@ const SearchAlgoLab: React.FC<Props> = ({ hex }) => {
     <div className="flex flex-col md:flex-row h-full w-full bg-slate-950">
       <div className="flex-1 flex items-center justify-center p-4">
         <canvas ref={canvasRef} width={500} height={340}
-          className="rounded-2xl border border-white/10 shadow-2xl w-full max-w-[500px]" />
+          className="rounded-2xl border border-black/10 dark:border-white/10 shadow-2xl w-full max-w-[500px]" />
       </div>
 
-      <div className="w-full md:w-72 bg-slate-900 border-l border-white/5 flex flex-col">
-        <div className="p-4 border-b border-white/5">
+      <div className="w-full md:w-72 bg-slate-900 border-l border-black/5 dark:border-white/5 flex flex-col">
+        <div className="p-4 border-b border-black/5 dark:border-white/5">
           <p className="text-xs font-bold uppercase tracking-widest text-cyan-400 mb-1">CS Lab — cs3</p>
-          <h2 className="text-lg font-bold text-white">Search Algorithms</h2>
-          <p className="text-xs text-slate-400 mt-1">Compare Linear Search O(n) vs Binary Search O(log n)</p>
+          <h2 className="text-lg font-bold text-slate-900 dark:text-slate-900 dark:text-white">Search Algorithms</h2>
+          <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">Compare Linear Search O(n) vs Binary Search O(log n)</p>
         </div>
         <div className="flex-1 p-4 space-y-4 overflow-y-auto">
           <div className="bg-cyan-500/10 border border-cyan-500/30 p-3 rounded-xl">
@@ -191,15 +191,15 @@ const SearchAlgoLab: React.FC<Props> = ({ hex }) => {
               { label: 'Linear O(n)', val: arr.length, color: '#94a3b8' },
               { label: 'Binary O(log n)', val: Math.ceil(Math.log2(arr.length)), color: '#94a3b8' },
             ].map(m => (
-              <div key={m.label} className="bg-slate-950 border border-white/10 rounded-lg p-2 text-center">
+              <div key={m.label} className="bg-slate-950 border border-black/10 dark:border-white/10 rounded-lg p-2 text-center">
                 <div className="text-[9px] text-slate-500 uppercase font-bold mb-1">{m.label}</div>
                 <div className="font-mono font-bold text-xs" style={{ color: m.color }}>{m.val}</div>
               </div>
             ))}
           </div>
 
-          <div className="bg-slate-950 p-3 rounded-xl border border-white/10 text-xs space-y-1">
-            <p className="text-slate-400 font-bold text-[10px] uppercase">Algorithm Info</p>
+          <div className="bg-slate-950 p-3 rounded-xl border border-black/10 dark:border-white/10 text-xs space-y-1">
+            <p className="text-slate-600 dark:text-slate-400 font-bold text-[10px] uppercase">Algorithm Info</p>
             <p className="font-mono text-blue-400">Linear: check each elem → O(n)</p>
             <p className="font-mono text-green-400">Binary: halve range each step → O(log n)</p>
             <p className="text-slate-500 text-[9px]">Binary requires sorted array!</p>

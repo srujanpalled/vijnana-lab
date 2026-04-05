@@ -133,17 +133,17 @@ const MendelLab: React.FC<Props> = ({ hex }) => {
   }
 
   return (
-    <div className="flex flex-col md:flex-row h-full w-full bg-[#050505] overflow-hidden text-slate-200 select-none">
+    <div className="flex flex-col md:flex-row h-full w-full bg-[#050505] overflow-hidden text-slate-800 dark:text-slate-200 select-none">
       
       {/* 3D Visualization */}
-      <div className="flex-1 flex flex-col relative rounded-2xl overflow-hidden m-4 border border-white/10 shadow-[0_0_50px_rgba(168,85,247,0.05)]">
+      <div className="flex-1 flex flex-col relative rounded-2xl overflow-hidden m-4 border border-black/10 dark:border-white/10 shadow-[0_0_50px_rgba(168,85,247,0.05)]">
         <div className="absolute inset-x-0 top-0 p-4 bg-gradient-to-b from-black/80 to-transparent z-10 flex justify-between items-start">
             <div>
-                <h2 className="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+                <h2 className="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-900 dark:text-white flex items-center gap-2">
                     <span className="p-1.5 rounded-lg bg-purple-500/20 text-purple-400"><Leaf size={18} /></span>
                     Mendelian Inheritance Simulation
                 </h2>
-                <p className="text-[11px] font-medium text-slate-400 uppercase tracking-widest mt-1">Pisum sativum (Pea Plant) Phenotypes</p>
+                <p className="text-[11px] font-medium text-slate-600 dark:text-slate-400 uppercase tracking-widest mt-1">Pisum sativum (Pea Plant) Phenotypes</p>
             </div>
             {/* View Mode Status */}
             <div className={`backdrop-blur-md px-3 py-1.5 rounded-xl border text-[10px] font-bold uppercase tracking-widest shadow-inner ${isPlanted ? 'bg-green-500/20 border-green-500/40 text-green-400' : 'bg-black/40 border-white/10 text-slate-300'}`}>
@@ -159,18 +159,18 @@ const MendelLab: React.FC<Props> = ({ hex }) => {
         </Canvas>
 
         {/* 2D HUD: Punnett Square Overlay */}
-        <div className="absolute bottom-6 left-6 p-4 rounded-xl bg-black/60 backdrop-blur-md border border-white/10 shadow-2xl animate-fade-in">
-             <p className="text-[10px] uppercase font-bold text-slate-400 tracking-widest mb-3 border-b border-white/10 pb-1">Theoretical Genotypes (Punnett)</p>
+        <div className="absolute bottom-6 left-6 p-4 rounded-xl bg-black/60 backdrop-blur-md border border-black/10 dark:border-white/10 shadow-2xl animate-fade-in">
+             <p className="text-[10px] uppercase font-bold text-slate-600 dark:text-slate-400 tracking-widest mb-3 border-b border-black/10 dark:border-white/10 pb-1">Theoretical Genotypes (Punnett)</p>
              <div className="grid grid-cols-3 gap-1 w-48 text-center text-xs font-bold">
                  <div className="p-1 text-slate-500">P2 \ P1</div>
-                 <div className="bg-purple-900/40 p-1 rounded text-purple-300 border border-purple-500/20">{p1[0]}</div>
-                 <div className="bg-purple-900/40 p-1 rounded text-purple-300 border border-purple-500/20">{p1[1]}</div>
+                 <div className="bg-purple-900/40 p-1 rounded text-purple-600 dark:text-purple-300 border border-purple-500/20">{p1[0]}</div>
+                 <div className="bg-purple-900/40 p-1 rounded text-purple-600 dark:text-purple-300 border border-purple-500/20">{p1[1]}</div>
                  
-                 <div className="bg-purple-900/40 p-1 rounded text-purple-300 flex items-center justify-center border border-purple-500/20">{p2[0]}</div>
+                 <div className="bg-purple-900/40 p-1 rounded text-purple-600 dark:text-purple-300 flex items-center justify-center border border-purple-500/20">{p2[0]}</div>
                  <div className={`p-2 rounded border ${offspring[0][0] === 'T' ? 'bg-green-900/40 border-green-500/30 text-green-300' : 'bg-slate-800 border-white/10 text-slate-400'}`}>{offspring[0]}</div>
                  <div className={`p-2 rounded border ${offspring[1][0] === 'T' ? 'bg-green-900/40 border-green-500/30 text-green-300' : 'bg-slate-800 border-white/10 text-slate-400'}`}>{offspring[1]}</div>
 
-                 <div className="bg-purple-900/40 p-1 rounded text-purple-300 flex items-center justify-center border border-purple-500/20">{p2[1]}</div>
+                 <div className="bg-purple-900/40 p-1 rounded text-purple-600 dark:text-purple-300 flex items-center justify-center border border-purple-500/20">{p2[1]}</div>
                  <div className={`p-2 rounded border ${offspring[2][0] === 'T' ? 'bg-green-900/40 border-green-500/30 text-green-300' : 'bg-slate-800 border-white/10 text-slate-400'}`}>{offspring[2]}</div>
                  <div className={`p-2 rounded border ${offspring[3][0] === 'T' ? 'bg-green-900/40 border-green-500/30 text-green-300' : 'bg-slate-800 border-white/10 text-slate-400'}`}>{offspring[3]}</div>
              </div>
@@ -179,16 +179,16 @@ const MendelLab: React.FC<Props> = ({ hex }) => {
       </div>
 
       {/* Control Panel */}
-      <div className="w-full md:w-[320px] shrink-0 bg-[#0a0a0a] border-l border-white/10 flex flex-col z-20 shadow-[-10px_0_30px_rgba(0,0,0,0.5)]">
-        <div className="p-6 border-b border-white/5">
+      <div className="w-full md:w-[320px] shrink-0 bg-[#0a0a0a] border-l border-black/10 dark:border-white/10 flex flex-col z-20 shadow-[-10px_0_30px_rgba(0,0,0,0.5)]">
+        <div className="p-6 border-b border-black/5 dark:border-white/5">
           <p className="text-xs font-bold uppercase tracking-widest text-purple-500 mb-2 border-b border-purple-500/20 inline-block pb-1">Biology Lab — b8</p>
-          <h2 className="text-xl font-bold text-white tracking-tight">Mendelian Genetics</h2>
+          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-900 dark:text-white tracking-tight">Mendelian Genetics</h2>
         </div>
         
         <div className="flex-1 p-6 space-y-6 overflow-y-auto">
           
           <div className="bg-purple-900/10 border border-purple-500/20 p-4 rounded-xl backdrop-blur-md">
-            <p className="text-purple-200 text-xs leading-relaxed">
+            <p className="text-purple-600 dark:text-purple-200 text-xs leading-relaxed">
                Select parent genotypes to perform a cross. Seedlings will literally inherit traits and express physical phenotypes (Tall or Dwarf).
             </p>
           </div>
@@ -201,26 +201,26 @@ const MendelLab: React.FC<Props> = ({ hex }) => {
                        className={`w-full p-3 flex flex-col items-start rounded-xl text-left transition-all ${selectedCross.name === c.name ? 'border-purple-500 bg-purple-900/30 shadow-inner' : 'border-white/10 bg-[#111] hover:border-purple-500/50'}`}
                        style={{ border: `1px solid ${selectedCross.name === c.name ? '#a855f7' : 'rgba(255,255,255,0.05)'}` }}>
                        <span className={`font-bold text-lg leading-tight ${selectedCross.name === c.name ? 'text-purple-300' : 'text-slate-200'}`}>{c.parent1} × {c.parent2}</span>
-                       <span className="text-[10px] font-medium text-slate-400 mt-1">{c.name}</span>
+                       <span className="text-[10px] font-medium text-slate-600 dark:text-slate-400 mt-1">{c.name}</span>
                      </button>
                  ))}
              </div>
           </div>
 
-          <div className="bg-[#111] p-4 rounded-xl border border-white/5 shadow-inner">
-             <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3 border-b border-white/10 pb-1">Genetic Output Ratio</p>
-             <div className="flex justify-between items-center bg-black/40 p-2 rounded-lg border border-white/5 mb-2">
-                 <span className="text-xs font-bold text-slate-400">Phenotype (T : D)</span>
+          <div className="bg-[#111] p-4 rounded-xl border border-black/5 dark:border-white/5 shadow-inner">
+             <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3 border-b border-black/10 dark:border-white/10 pb-1">Genetic Output Ratio</p>
+             <div className="flex justify-between items-center bg-black/40 p-2 rounded-lg border border-black/5 dark:border-white/5 mb-2">
+                 <span className="text-xs font-bold text-slate-600 dark:text-slate-400">Phenotype (T : D)</span>
                  <span className="text-sm font-mono font-bold text-green-400">{tallCount} : {4 - tallCount}</span>
              </div>
-             <div className="flex justify-between items-center bg-black/40 p-2 rounded-lg border border-white/5">
-                 <span className="text-xs font-bold text-slate-400">Genotype (TT:Tt:tt)</span>
+             <div className="flex justify-between items-center bg-black/40 p-2 rounded-lg border border-black/5 dark:border-white/5">
+                 <span className="text-xs font-bold text-slate-600 dark:text-slate-400">Genotype (TT:Tt:tt)</span>
                  <span className="text-sm font-mono font-bold text-purple-400">{counts['TT']||0} : {counts['Tt']||0} : {counts['tt']||0}</span>
              </div>
           </div>
 
           <button onClick={handlePlant}
-            className="w-full py-4 flex items-center justify-center gap-2 rounded-xl font-bold text-white transition-all shadow-lg shadow-purple-900/40 active:scale-95"
+            className="w-full py-4 flex items-center justify-center gap-2 rounded-xl font-bold text-slate-900 dark:text-slate-900 dark:text-white transition-all shadow-lg shadow-purple-900/40 active:scale-95"
             style={{ backgroundColor: hex }}>
             <Sprout size={16} /> Germinate Seeds
           </button>

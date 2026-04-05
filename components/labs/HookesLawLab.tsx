@@ -83,7 +83,7 @@ const HookesLawScene = ({ mass, extension }: { mass: number; extension: number }
         ))}
 
         <Html position={[0.7, -0.6, 0]}>
-          <div className="text-white font-bold bg-blue-900/80 px-2 py-1 rounded border border-blue-500/50 text-xs backdrop-blur whitespace-nowrap">
+          <div className="text-slate-900 dark:text-white font-bold bg-blue-900/80 px-2 py-1 rounded border border-blue-500/50 text-xs backdrop-blur whitespace-nowrap">
             {mass} g
           </div>
         </Html>
@@ -94,7 +94,7 @@ const HookesLawScene = ({ mass, extension }: { mass: number; extension: number }
         {/* Line for natural length */}
         <Line points={[[-0.2, -2, 0], [0.5, -2, 0]]} color="#94a3b8" lineWidth={1} dashed />
         <Html position={[0.6, -2, 0]}>
-          <div className="text-[10px] text-slate-400 whitespace-nowrap">Natural Length</div>
+          <div className="text-[10px] text-slate-600 dark:text-slate-400 whitespace-nowrap">Natural Length</div>
         </Html>
 
         {/* Line for current displacement */}
@@ -128,7 +128,7 @@ const HookesLawLab: React.FC<Props> = ({ hex }) => {
 
   return (
     <div className="flex flex-col md:flex-row h-full w-full bg-slate-950">
-      <div className="flex-1 relative rounded-2xl overflow-hidden m-4 border border-white/10 shadow-2xl">
+      <div className="flex-1 relative rounded-2xl overflow-hidden m-4 border border-black/10 dark:border-white/10 shadow-2xl">
         <Canvas camera={{ position: [0, 0, 7], fov: 50 }}>
           <Environment preset="city" />
           <ambientLight intensity={0.6} />
@@ -162,25 +162,25 @@ const HookesLawLab: React.FC<Props> = ({ hex }) => {
                    );
                  })()}
                </svg>
-               <div className="absolute top-0 right-0 p-1 text-[9px] text-slate-400">F vs x Plot</div>
+               <div className="absolute top-0 right-0 p-1 text-[9px] text-slate-600 dark:text-slate-400">F vs x Plot</div>
              </div>
           </div>
         )}
 
-        <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md border border-white/10 rounded-xl px-4 py-3 shadow-xl max-w-xs">
+        <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md border border-black/10 dark:border-white/10 rounded-xl px-4 py-3 shadow-xl max-w-xs">
           <p className="text-[10px] font-bold uppercase tracking-widest text-blue-400 mb-1">Physics Lab — p15</p>
-          <p className="text-white font-bold text-sm">3D Hooke's Law</p>
-          <p className="text-xs text-slate-400 mt-1">F = kx. Watch the spring stretch under load.</p>
+          <p className="text-slate-900 dark:text-slate-900 dark:text-white font-bold text-sm">3D Hooke's Law</p>
+          <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">F = kx. Watch the spring stretch under load.</p>
         </div>
       </div>
 
-      <div className="w-full md:w-72 bg-slate-900 border-l border-white/5 flex flex-col z-10">
-        <div className="p-5 border-b border-white/5">
-           <h2 className="text-lg font-black text-white">Controls</h2>
+      <div className="w-full md:w-72 bg-slate-900 border-l border-black/5 dark:border-white/5 flex flex-col z-10">
+        <div className="p-5 border-b border-black/5 dark:border-white/5">
+           <h2 className="text-lg font-black text-slate-900 dark:text-slate-900 dark:text-white">Controls</h2>
         </div>
         <div className="flex-1 p-5 space-y-4 overflow-y-auto">
           <div className="bg-blue-500/10 border border-blue-500/30 p-3 rounded-xl shadow-inner">
-            <p className="text-blue-200 text-xs leading-relaxed">Increase mass to stretch the spring. Log readings to plot F vs x line, whose slope determines k.</p>
+            <p className="text-blue-600 dark:text-blue-200 text-xs leading-relaxed">Increase mass to stretch the spring. Log readings to plot F vs x line, whose slope determines k.</p>
           </div>
 
           <DraggableSlider label="Total Mass (m)" min={50} max={1000} step={50} value={mass} onChange={setMass} color="#60a5fa" unit="g" />
@@ -193,7 +193,7 @@ const HookesLawLab: React.FC<Props> = ({ hex }) => {
               { label: 'Extension (x)', val: `${x_cm.toFixed(2)} cm`, color: '#f87171' },
               { label: 'k Calc', val: `${(F / (x || 0.001)).toFixed(2)} N/m`, color: '#4ade80' },
             ].map(m => (
-              <div key={m.label} className="bg-slate-950/50 border border-white/5 rounded-xl p-2.5 text-center shadow-sm">
+              <div key={m.label} className="bg-slate-950/50 border border-black/5 dark:border-white/5 rounded-xl p-2.5 text-center shadow-sm">
                 <div className="text-[9px] text-slate-500 uppercase font-bold tracking-wider mb-1">{m.label}</div>
                 <div className="font-mono font-bold text-sm" style={{ color: m.color }}>{m.val}</div>
               </div>
@@ -202,7 +202,7 @@ const HookesLawLab: React.FC<Props> = ({ hex }) => {
 
           <div className="flex gap-2 pt-2">
             <button onClick={() => setReadings(prev => [...prev, { mass, F, x: x_cm }])}
-              className="flex-1 py-3 rounded-xl text-sm font-bold text-white transition-all active:scale-95 shadow-lg shadow-blue-500/20"
+              className="flex-1 py-3 rounded-xl text-sm font-bold text-slate-900 dark:text-slate-900 dark:text-white transition-all active:scale-95 shadow-lg shadow-blue-500/20"
               style={{ backgroundColor: hex }}>
               Log Reading
             </button>
@@ -213,13 +213,13 @@ const HookesLawLab: React.FC<Props> = ({ hex }) => {
           </div>
 
           {readings.length > 0 && (
-            <div className="overflow-x-auto text-[10px] bg-slate-950 rounded-xl border border-white/5 mt-2">
+            <div className="overflow-x-auto text-[10px] bg-slate-950 rounded-xl border border-black/5 dark:border-white/5 mt-2">
               <table className="w-full border-collapse">
-                <thead><tr className="bg-slate-900/80 border-b border-white/10">
-                  {['#', 'm(g)', 'F(N)', 'x(cm)', ''].map(h => <th key={h} className="px-3 py-2 text-slate-400 text-left font-semibold">{h}</th>)}
+                <thead><tr className="bg-slate-900/80 border-b border-black/10 dark:border-white/10">
+                  {['#', 'm(g)', 'F(N)', 'x(cm)', ''].map(h => <th key={h} className="px-3 py-2 text-slate-600 dark:text-slate-400 text-left font-semibold">{h}</th>)}
                 </tr></thead>
                 <tbody>{readings.map((r, i) => (
-                  <tr key={i} className="border-b border-white/5 last:border-b-0 hover:bg-white/5 transition-colors">
+                  <tr key={i} className="border-b border-black/5 dark:border-white/5 last:border-b-0 hover:bg-black/5 dark:bg-white/5 transition-colors">
                     <td className="px-3 py-2 text-slate-500">{i + 1}</td>
                     <td className="px-3 py-2 font-mono text-blue-400">{r.mass}</td>
                     <td className="px-3 py-2 font-mono text-yellow-400">{r.F.toFixed(3)}</td>
@@ -235,7 +235,7 @@ const HookesLawLab: React.FC<Props> = ({ hex }) => {
             </div>
           )}
           <button onClick={() => { setReadings([]); setMass(100); setShowGraph(false); }}
-             className="w-full py-2.5 rounded-xl text-xs bg-slate-800 text-slate-300 flex items-center justify-center gap-1.5 hover:bg-red-900/40 hover:text-red-300 transition-colors mt-2">
+             className="w-full py-2.5 rounded-xl text-xs bg-slate-800 text-slate-300 flex items-center justify-center gap-1.5 hover:bg-red-900/40 hover:text-red-600 dark:text-red-300 transition-colors mt-2">
              <RotateCcw size={12} /> Reset Canvas
           </button>
         </div>

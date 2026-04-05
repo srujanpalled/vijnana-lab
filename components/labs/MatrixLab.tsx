@@ -150,7 +150,7 @@ const MatrixLab: React.FC<Props> = ({ hex }) => {
   const resizeB = (r: number, c: number) => { setSizeB({r,c}); setMatB(makeMatrix(r,c)); };
 
   const MatrixInput = ({ mat, setMat, label, color }: { mat: Matrix; setMat: (m: Matrix) => void; label: string; color: string }) => (
-    <div className="space-y-1.5 p-3 rounded-xl bg-black/20 border border-white/5 backdrop-blur-md">
+    <div className="space-y-1.5 p-3 rounded-xl bg-transparent dark:bg-black/20 border border-black/5 dark:border-white/5 backdrop-blur-md">
       <p className="text-[10px] uppercase font-bold tracking-widest" style={{ color }}>{label}</p>
       <div className="space-y-1.5">
         {mat.map((row, r) => (
@@ -158,7 +158,7 @@ const MatrixLab: React.FC<Props> = ({ hex }) => {
             {row.map((val, c) => (
               <input key={c} type="number" value={val === 0 && val.toString() === "0" ? "" : val} onChange={e => updateCell(mat, setMat, r, c, e.target.value)}
                 placeholder="0"
-                className="w-14 h-10 bg-slate-900 border border-white/10 opacity-80 hover:opacity-100 rounded-lg text-center text-sm font-mono font-bold text-white focus:outline-none focus:border-white/40 focus:ring-1 focus:ring-white/20 transition-all shadow-inner" />
+                className="w-14 h-10 bg-slate-900 border border-black/10 dark:border-white/10 opacity-80 hover:opacity-100 rounded-lg text-center text-sm font-mono font-bold text-slate-900 dark:text-white focus:outline-none focus:border-white/40 focus:ring-1 focus:ring-white/20 transition-all shadow-inner" />
             ))}
           </div>
         ))}
@@ -190,7 +190,7 @@ const MatrixLab: React.FC<Props> = ({ hex }) => {
     : (operation === 'determinant' || operation === 'inverse' || operation === 'transpose') ? matA : null;
 
   return (
-    <div className="flex flex-col md:flex-row h-full w-full bg-[#030712] text-slate-200">
+    <div className="flex flex-col md:flex-row h-full w-full bg-[#030712] text-slate-800 dark:text-slate-200">
       
       {/* Left Area - Mixed UI and 3D Canvas */}
       <div className="flex-1 relative flex flex-col">
@@ -217,15 +217,15 @@ const MatrixLab: React.FC<Props> = ({ hex }) => {
         <div className="absolute inset-x-0 top-0 z-10 pointer-events-none flex flex-col items-center pt-8">
           
           <div className="text-center mb-6 drop-shadow-lg">
-            <span className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[10px] text-purple-400 uppercase font-bold tracking-widest backdrop-blur-md">Math Lab — M10</span>
-            <h2 className="text-3xl font-black text-white mt-3 drop-shadow-md">Matrix Operations</h2>
+            <span className="px-3 py-1 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-full text-[10px] text-purple-400 uppercase font-bold tracking-widest backdrop-blur-md">Math Lab — M10</span>
+            <h2 className="text-3xl font-black text-slate-900 dark:text-slate-900 dark:text-white mt-3 drop-shadow-md">Matrix Operations</h2>
           </div>
 
           <div className="flex flex-wrap justify-center gap-8 px-8 pointer-events-auto w-full max-w-4xl">
             {/* MATRIX A */}
             <div className="space-y-2 flex-1 min-w-[200px]">
-              <div className="flex justify-between items-center bg-black/40 px-3 py-2 rounded-t-xl border-b border-white/10">
-                <span className="text-[10px] text-slate-400 font-bold uppercase">Dimensions A</span>
+              <div className="flex justify-between items-center bg-black/40 px-3 py-2 rounded-t-xl border-b border-black/10 dark:border-white/10">
+                <span className="text-[10px] text-slate-600 dark:text-slate-400 font-bold uppercase">Dimensions A</span>
                 <div className="flex gap-1">
                   {[2,3].map(r => [2,3].map(c => (
                     <button key={`${r}x${c}`} onClick={() => resizeA(r,c)}
@@ -241,8 +241,8 @@ const MatrixLab: React.FC<Props> = ({ hex }) => {
             {/* MATRIX B (if relevant) */}
             {!['transpose','determinant','inverse'].includes(operation) && (
               <div className="space-y-2 flex-1 min-w-[200px]">
-                <div className="flex justify-between items-center bg-black/40 px-3 py-2 rounded-t-xl border-b border-white/10">
-                  <span className="text-[10px] text-slate-400 font-bold uppercase">Dimensions B</span>
+                <div className="flex justify-between items-center bg-black/40 px-3 py-2 rounded-t-xl border-b border-black/10 dark:border-white/10">
+                  <span className="text-[10px] text-slate-600 dark:text-slate-400 font-bold uppercase">Dimensions B</span>
                   <div className="flex gap-1">
                     {[2,3].map(r => [2,3].map(c => (
                       <button key={`${r}x${c}`} onClick={() => resizeB(r,c)}
@@ -259,7 +259,7 @@ const MatrixLab: React.FC<Props> = ({ hex }) => {
           
           {/* Results Overlay */}
           <div className="mt-8 pointer-events-auto">
-            {error && <div className="bg-red-500/20 border border-red-500/40 backdrop-blur-xl shadow-2xl rounded-xl px-6 py-3 text-red-300 font-bold text-sm tracking-wide">{error}</div>}
+            {error && <div className="bg-red-500/20 border border-red-500/40 backdrop-blur-xl shadow-2xl rounded-xl px-6 py-3 text-red-600 dark:text-red-300 font-bold text-sm tracking-wide">{error}</div>}
             
             {result !== null && !error && (
               <div className="space-y-3 flex flex-col items-center">
@@ -268,7 +268,7 @@ const MatrixLab: React.FC<Props> = ({ hex }) => {
                 {typeof result === 'number' ? (
                   <div className="bg-black/60 backdrop-blur-2xl border border-green-500/30 rounded-3xl px-12 py-8 shadow-[0_10px_40px_rgba(0,0,0,0.8),inset_0_0_20px_rgba(34,197,94,0.1)]">
                     <p className="text-6xl font-black font-mono text-green-400 tracking-tighter drop-shadow-md">{result.toFixed(2)}</p>
-                    <p className="text-xs text-slate-400 mt-2 text-center uppercase tracking-widest">det(A)</p>
+                    <p className="text-xs text-slate-600 dark:text-slate-400 mt-2 text-center uppercase tracking-widest">det(A)</p>
                   </div>
                 ) : Array.isArray(result) ? (
                   <MatrixDisplay mat={result} />
@@ -281,13 +281,13 @@ const MatrixLab: React.FC<Props> = ({ hex }) => {
       </div>
 
       {/* Right Control Panel */}
-      <div className="w-full md:w-72 bg-black/40 border-l border-white/10 flex flex-col z-20 shrink-0 backdrop-blur-3xl shadow-[-20px_0_50px_rgba(0,0,0,0.5)]">
-        <div className="p-5 border-b border-white/5 bg-white/[0.02]">
+      <div className="w-full md:w-72 bg-black/40 border-l border-black/10 dark:border-white/10 flex flex-col z-20 shrink-0 backdrop-blur-3xl shadow-[-20px_0_50px_rgba(0,0,0,0.5)]">
+        <div className="p-5 border-b border-black/5 dark:border-white/5 bg-white/[0.02]">
           <p className="text-[10px] font-bold uppercase tracking-widest text-purple-400 mb-1 flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-purple-500 animate-pulse"></span>
             Linear Algebra
           </p>
-          <h2 className="text-xl font-bold text-white tracking-tight">Operations</h2>
+          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-900 dark:text-white tracking-tight">Operations</h2>
         </div>
         
         <div className="flex-1 p-5 space-y-5 overflow-y-auto">
@@ -311,22 +311,22 @@ const MatrixLab: React.FC<Props> = ({ hex }) => {
           </div>
 
           <button onClick={compute}
-            className="w-full py-4 rounded-xl font-bold text-white shadow-xl transition-all active:scale-95 flex justify-center items-center gap-2 group"
+            className="w-full py-4 rounded-xl font-bold text-slate-900 dark:text-slate-900 dark:text-white shadow-xl transition-all active:scale-95 flex justify-center items-center gap-2 group"
             style={{ backgroundImage: `linear-gradient(135deg, ${hex}, #4c1d95)` }}>
             <span className="group-hover:scale-110 transition-transform">=</span> Calculate
           </button>
 
           <button onClick={() => { setMatA([[1,2],[3,4]]); setMatB([[5,6],[7,8]]); setResult(null); setError(''); setSizeA({r:2,c:2}); setSizeB({r:2,c:2}); }}
-            className="w-full py-3 rounded-xl bg-white/5 text-slate-400 text-xs flex items-center justify-center gap-2 border border-white/5 hover:bg-red-500/10 hover:text-red-300 hover:border-red-500/30 transition-all">
+            className="w-full py-3 rounded-xl bg-black/5 dark:bg-white/5 text-slate-400 text-xs flex items-center justify-center gap-2 border border-black/5 dark:border-white/5 hover:bg-red-500/10 hover:text-red-600 dark:text-red-300 hover:border-red-500/30 transition-all">
             <RotateCcw size={14} /> Reset Matrices
           </button>
 
-          <div className="bg-[#0f172a] p-4 rounded-2xl border border-white/5 text-xs space-y-2 shadow-inner">
+          <div className="bg-[#0f172a] p-4 rounded-2xl border border-black/5 dark:border-white/5 text-xs space-y-2 shadow-inner">
             <p className="text-slate-500 font-bold text-[9px] uppercase tracking-widest mb-3">Geometric Meaning</p>
             {[['Matrix','Transforms Grid'],['det(A)','Area/Volume Scale'],['A⁻¹','Reverses previous'],['Identity','No Change']].map(([k,v]) => (
-              <div key={k} className="flex justify-between items-center border-b border-white/5 pb-2 last:border-0 last:pb-0">
-                <span className="font-mono text-purple-300 bg-purple-900/30 px-1.5 py-0.5 rounded text-[10px]">{k}</span>
-                <span className="text-slate-400 text-[10px]">{v}</span>
+              <div key={k} className="flex justify-between items-center border-b border-black/5 dark:border-white/5 pb-2 last:border-0 last:pb-0">
+                <span className="font-mono text-purple-600 dark:text-purple-300 bg-purple-900/30 px-1.5 py-0.5 rounded text-[10px]">{k}</span>
+                <span className="text-slate-600 dark:text-slate-400 text-[10px]">{v}</span>
               </div>
             ))}
           </div>

@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Plus, Trash2, ChevronLeft, ChevronRight, RotateCcw } from 'lucide-react';
 import { Canvas, useFrame } from '@react-three/fiber';
@@ -51,86 +51,207 @@ const VernierScale2D: React.FC<{ coinciding: number }> = ({ coinciding }) => {
   );
 };
 
-// ─── 3D CALIPER SCENE ─────────────────────────────────────────────────────────
+// ─── 3D CALIPER SCENE — ULTRA-REALISTIC ───────────────────────────────────────
+// PBR hardened stainless steel, engraved graduation ticks (InstancedMesh),
+// beveled jaw profiles, knurled thumb wheel, depth-probe rod, glass vernier
+// window, accurate measured-sphere with transmission material.
+// ──────────────────────────────────────────────────────────────────────────────
+
+// Graduation tick InstancedMesh along X axis of main beam
+const BeamGraduations: React.FC<{ count?: number; beamY?: number }> = ({ count = 120, beamY = 0 }) => {
+  const meshRef = useRef<THREE.InstancedMesh>(null);
+  const dummy = useMemo(() => new THREE.Object3D(), []);
+  React.useEffect(() => {
+    if (!meshRef.current) return;
+    for (let i = 0; i < count; i++) {
+      const isMajor = i % 10 === 0;
+      const isMid   = i % 5 === 0;
+      dummy.position.set(-1.8 + i * 0.10, beamY + (isMajor ? 0.20 : isMid ? 0.14 : 0.09), 0.065);
+      dummy.scale.set(1, isMajor ? 1.0 : isMid ? 0.72 : 0.44, 1);
+      dummy.updateMatrix();
+      meshRef.current.setMatrixAt(i, dummy.matrix);
+      const col = new THREE.Color(isMajor ? '#1e293b' : '#475569');
+      meshRef.current.setColorAt(i, col);
+    }
+    meshRef.current.instanceMatrix.needsUpdate = true;
+    if (meshRef.current.instanceColor) meshRef.current.instanceColor.needsUpdate = true;
+  }, []);
+  return (
+    <instancedMesh ref={meshRef} args={[undefined, undefined, count]} castShadow>
+      <boxGeometry args={[0.012, 0.22, 0.015]} />
+      <meshStandardMaterial color="#1e293b" roughness={0.9} metalness={0.0} />
+    </instancedMesh>
+  );
+};
+
+// Knurled thumb wheel
+const KnurledWheel: React.FC<{ position: [number, number, number] }> = ({ position }) => {
+  const ridges = 20;
+  return (
+    <group position={position} rotation={[Math.PI / 2, 0, 0]}>
+      <mesh castShadow>
+        <cylinderGeometry args={[0.17, 0.17, 0.14, 32]} />
+        <meshStandardMaterial color="#c8a840" metalness={0.88} roughness={0.18} />
+      </mesh>
+      {Array.from({ length: ridges }, (_, i) => {
+        const a = (i / ridges) * Math.PI * 2;
+        return (
+          <mesh key={i} position={[Math.cos(a) * 0.17, 0, Math.sin(a) * 0.17]} rotation={[0, -a, 0]}>
+            <boxGeometry args={[0.022, 0.14, 0.032]} />
+            <meshStandardMaterial color="#b28830" metalness={0.85} roughness={0.28} />
+          </mesh>
+        );
+      })}
+    </group>
+  );
+};
 
 const Caliper3D: React.FC<{ openingMm: number; zeroError: number }> = ({ openingMm, zeroError }) => {
   const slidingJawRef = useRef<THREE.Group>(null);
   
-  // Real world unit scaling: let's map 10mm to 1 unit in 3D space
   const correctedMm = Math.max(0, openingMm - zeroError);
-  const targetX = correctedMm / 10; 
+  const targetX = correctedMm / 10;
 
-  useFrame((state, delta) => {
+  useFrame((_, delta) => {
     if (slidingJawRef.current) {
       slidingJawRef.current.position.x += (targetX - slidingJawRef.current.position.x) * 15 * delta;
     }
   });
 
-  const steelMat = <meshStandardMaterial color="#cbd5e1" metalness={0.8} roughness={0.3} />;
-  const darkSteelMat = <meshStandardMaterial color="#64748b" metalness={0.7} roughness={0.4} />;
-  const blueSteelMat = <meshStandardMaterial color="#475569" metalness={0.9} roughness={0.1} />;
+  // PBR stainless steel materials
+  const beamMat     = <meshStandardMaterial color="#c2ccd6" metalness={0.88} roughness={0.22} envMapIntensity={2.0} />;
+  const polishedMat = <meshStandardMaterial color="#d8e2ea" metalness={0.94} roughness={0.08} envMapIntensity={2.5} />;
+  const slideMat    = <meshStandardMaterial color="#4a6070" metalness={0.90} roughness={0.18} envMapIntensity={2.2} />;
+  const bevelMat    = <meshStandardMaterial color="#2e5580" metalness={0.95} roughness={0.10} envMapIntensity={2.5} />;
+  const glassMat    = <meshPhysicalMaterial color="#d0eaf8" transmission={0.80} roughness={0.04} ior={1.52} thickness={0.1} clearcoat={1} transparent opacity={0.25} depthWrite={false} />;
 
   return (
     <group position={[-1, 0, 0]}>
-      {/* ─── FIXED PART (Main Scale Beam, Upper & Lower Fixed Jaws) ─── */}
+
+      {/* ══════════════════════════════════════════════════════
+          FIXED BODY — Main Scale Beam + Fixed Jaws
+          ══════════════════════════════════════════════════════ */}
       <group>
-        {/* Main Beam */}
-        <Box args={[12, 0.4, 0.1]} position={[4, 0, 0]} castShadow receiveShadow>
-          {steelMat}
+        {/* ── Main scale beam (chamfered look via two overlapping boxes) ── */}
+        <Box args={[12.0, 0.38, 0.12]} position={[4, 0, 0]} castShadow receiveShadow>
+          {beamMat}
         </Box>
-        {/* Lower Fixed Jaw (Outside measurements) */}
-        <Box args={[0.6, 2.5, 0.1]} position={[-1.7, -1.25, 0]} castShadow>
-          {steelMat}
+        {/* Chamfer top edge */}
+        <Box args={[12.0, 0.04, 0.04]} position={[4, 0.21, 0.08]} rotation={[Math.PI / 4, 0, 0]} castShadow>
+          {polishedMat}
         </Box>
-        {/* Jaw Bevel Inside */}
-        <Box args={[0.2, 2.5, 0.12]} position={[-1.4, -1.25, 0]} castShadow>
-          {darkSteelMat}
+        {/* Chamfer bottom edge */}
+        <Box args={[12.0, 0.04, 0.04]} position={[4, -0.21, 0.08]} rotation={[-Math.PI / 4, 0, 0]} castShadow>
+          {polishedMat}
         </Box>
-        {/* Upper Fixed Jaw (Inside measurements) */}
-        <Box args={[0.4, 1.2, 0.1]} position={[-1.8, 0.8, 0]} castShadow>
-          {steelMat}
-        </Box>
-        {/* Ruler Text Markers purely for visual flair */}
-        {Array.from({ length: 10 }).map((_, i) => (
-          <Text key={i} position={[i - 1.2, 0.1, 0.06]} fontSize={0.15} color="#1e293b" anchorX="center" anchorY="bottom">
-            {i}
+
+        {/* ── Engraved graduation ticks (InstancedMesh) ── */}
+        <BeamGraduations count={120} beamY={0.04} />
+
+        {/* mm numeral labels at every 10 ticks */}
+        {Array.from({ length: 13 }, (_, i) => (
+          <Text key={i} position={[-1.8 + i * 1.0, 0.30, 0.065]} fontSize={0.13} color="#1e293b" anchorX="center" anchorY="bottom">
+            {i * 10}
           </Text>
         ))}
+
+        {/* ── Lower Fixed Jaw (outside measurement) — beveled profile ── */}
+        {/* Main jaw body */}
+        <Box args={[0.55, 2.55, 0.12]} position={[-1.72, -1.27, 0]} castShadow>
+          {beamMat}
+        </Box>
+        {/* Polished flat face bevel */}
+        <Box args={[0.55, 2.55, 0.04]} position={[-1.72, -1.27, 0.08]} castShadow>
+          {polishedMat}
+        </Box>
+        {/* Carbide tip (darker, harder insert) */}
+        <Box args={[0.25, 0.15, 0.15]} position={[-1.72, -2.47, 0]} castShadow>
+          <meshStandardMaterial color="#1e293b" metalness={0.60} roughness={0.55} />
+        </Box>
+
+        {/* ── Upper Fixed Jaw (inside measurement) ── */}
+        <Box args={[0.38, 1.15, 0.12]} position={[-1.82, 0.77, 0]} castShadow>
+          {beamMat}
+        </Box>
+        <Box args={[0.38, 1.15, 0.04]} position={[-1.82, 0.77, 0.08]} castShadow>
+          {polishedMat}
+        </Box>
+
+        {/* ── Depth probe rod (from back of beam) ── */}
+        <Box args={[0.04, 0.02, correctedMm > 0 ? correctedMm / 10 + 0.2 : 0.2]} position={[correctedMm > 0 ? -1.8 + correctedMm / 20 : -1.7, 0.22, -0.15]} castShadow>
+          {polishedMat}
+        </Box>
       </group>
 
-      {/* ─── SLIDING PART ─── */}
-      <group ref={slidingJawRef} position={[0, 0, 0.05]} castShadow>
-        {/* Slider Body enveloping the main scale */}
-        <Box args={[1.5, 0.5, 0.15]} position={[-0.8, 0, 0]} castShadow>
-          {blueSteelMat}
+      {/* ══════════════════════════════════════════════════════
+          SLIDING ASSEMBLY
+          ══════════════════════════════════════════════════════ */}
+      <group ref={slidingJawRef} position={[0, 0, 0.07]}>
+
+        {/* ── Slider carriage body ── */}
+        <Box args={[1.55, 0.50, 0.18]} position={[-0.82, 0, 0]} castShadow>
+          {slideMat}
         </Box>
-        {/* Lower Sliding Jaw */}
-        <Box args={[0.6, 2.5, 0.15]} position={[-1.3, -1.25, 0]} castShadow>
-          {blueSteelMat}
+        {/* Top bevel highlight */}
+        <Box args={[1.55, 0.03, 0.03]} position={[-0.82, 0.26, 0.09]} rotation={[Math.PI / 4, 0, 0]}>
+          <meshStandardMaterial color="#7090aa" metalness={0.92} roughness={0.10} />
         </Box>
-        {/* Jaw Bevel Inside */}
-        <Box args={[0.2, 2.5, 0.17]} position={[-1.6, -1.25, 0]} castShadow>
-          <meshStandardMaterial color="#3b82f6" metalness={0.9} roughness={0.1} />
+
+        {/* ── Vernier scale glass window ── */}
+        <Box args={[0.65, 0.22, 0.01]} position={[-0.82, -0.08, 0.10]}>
+          {glassMat}
         </Box>
-        {/* Upper Sliding Jaw */}
-        <Box args={[0.4, 1.2, 0.15]} position={[-1.2, 0.8, 0]} castShadow>
-          {blueSteelMat}
+        {/* Vernier tick marks on window */}
+        {Array.from({ length: 11 }, (_, i) => (
+          <Box key={i} args={[0.009, i % 5 === 0 ? 0.17 : 0.10, 0.012]} position={[-1.14 + i * 0.056, -0.06, 0.105]}>
+            <meshStandardMaterial color={i === 0 ? '#c084fc' : '#64748b'} />
+          </Box>
+        ))}
+
+        {/* ── Lower Sliding Jaw ── */}
+        <Box args={[0.55, 2.55, 0.18]} position={[-1.32, -1.27, 0]} castShadow>
+          {slideMat}
         </Box>
-        {/* Thumb Grip Screw */}
-        <Cylinder args={[0.15, 0.15, 0.1]} position={[-0.5, -0.25, 0.1]} rotation={[Math.PI/2, 0, 0]} castShadow>
-          <meshStandardMaterial color="#fbbf24" metalness={0.9} roughness={0.2} />
+        <Box args={[0.55, 2.55, 0.04]} position={[-1.32, -1.27, 0.09]} castShadow>
+          {bevelMat}
+        </Box>
+        {/* Carbide tip insert */}
+        <Box args={[0.25, 0.15, 0.20]} position={[-1.32, -2.47, 0]} castShadow>
+          <meshStandardMaterial color="#1e3a5f" metalness={0.65} roughness={0.50} />
+        </Box>
+
+        {/* ── Upper Sliding Jaw (inside) ── */}
+        <Box args={[0.38, 1.15, 0.18]} position={[-1.22, 0.77, 0]} castShadow>
+          {slideMat}
+        </Box>
+        <Box args={[0.38, 1.15, 0.04]} position={[-1.22, 0.77, 0.09]} castShadow>
+          {bevelMat}
+        </Box>
+
+        {/* ── Knurled thumb wheel ── */}
+        <KnurledWheel position={[-0.48, -0.22, 0.12]} />
+
+        {/* ── Locking screw ── */}
+        <Cylinder args={[0.06, 0.06, 0.10]} position={[-0.22, 0.16, 0.12]} rotation={[Math.PI / 2, 0, 0]} castShadow>
+          <meshStandardMaterial color="#334155" metalness={0.75} roughness={0.35} />
         </Cylinder>
-        {/* Vernier scale indicator window */}
-        <Box args={[0.6, 0.15, 0.16]} position={[-0.8, -0.15, 0]} castShadow>
-          <meshStandardMaterial color="#e2e8f0" />
-        </Box>
       </group>
 
-      {/* ─── OBJECT BEING MEASURED (Sphere) ─── */}
-      <group position={[-1.5 + (targetX / 2), -1.5, 0]}>
+      {/* ══════════════════════════════════════════════════════
+          OBJECT BEING MEASURED — polished sphere
+          ══════════════════════════════════════════════════════ */}
+      <group position={[-1.48 + targetX / 2, -1.55, 0]}>
         {targetX > 0.05 && (
-          <Sphere args={[targetX / 2, 32, 32]} castShadow receiveShadow>
-            <meshPhysicalMaterial color="#3b82f6" transmission={0.2} opacity={0.9} transparent roughness={0.2} metalness={0.1} />
+          <Sphere args={[targetX / 2, 48, 48]} castShadow receiveShadow>
+            <meshPhysicalMaterial
+              color="#3b6ea0"
+              metalness={0.15}
+              roughness={0.12}
+              transmission={0.18}
+              clearcoat={1}
+              clearcoatRoughness={0.08}
+              envMapIntensity={2.5}
+            />
           </Sphere>
         )}
       </group>
@@ -145,7 +266,7 @@ const ReadingDisplay: React.FC<{ msr: number; vsd: number; zeroError: number; lc
   const isNegativeZE = zeroError < 0;
 
   return (
-    <div className="bg-[#0b101e] border-2 border-white/5 rounded-2xl p-4 font-mono shadow-inner">
+    <div className="bg-[#0b101e] border-2 border-black/5 dark:border-white/5 rounded-2xl p-4 font-mono shadow-inner">
       <div className="text-[10px] text-slate-500 mb-3 tracking-widest font-bold uppercase">Digital Readout (Simulated)</div>
       <div className="space-y-2">
         {[
@@ -155,12 +276,12 @@ const ReadingDisplay: React.FC<{ msr: number; vsd: number; zeroError: number; lc
           { label: 'Zero Error', val: zeroError.toFixed(2), unit: 'mm', color: zeroError !== 0 ? '#ef4444' : '#475569' },
         ].map(r => (
           <div key={r.label} className="flex justify-between items-baseline text-xs">
-            <span className="text-slate-400">{r.label}</span>
+            <span className="text-slate-600 dark:text-slate-400">{r.label}</span>
             <span><span style={{ color: r.color, fontWeight: 'bold' }}>{r.val}</span> <span className="text-[10px] text-slate-600">{r.unit}</span></span>
           </div>
         ))}
-        <div className="pt-2 mt-2 border-t border-white/10 flex justify-between items-center bg-green-500/10 -mx-2 px-2 py-2 rounded-lg">
-          <span className="text-slate-300 font-bold uppercase text-[10px]">Corrected Result</span>
+        <div className="pt-2 mt-2 border-t border-black/10 dark:border-white/10 flex justify-between items-center bg-green-500/10 -mx-2 px-2 py-2 rounded-lg">
+          <span className="text-slate-700 dark:text-slate-700 dark:text-slate-300 font-bold uppercase text-[10px]">Corrected Result</span>
           <span className="text-xl font-bold text-green-400 shadow-green-500 drop-shadow-md">{corrected.toFixed(2)} <span className="text-xs text-green-700">mm</span></span>
         </div>
       </div>
@@ -203,8 +324,8 @@ const VernierCalipersLab3D: React.FC<{ hex: string; onLog?: (data: any) => void 
   const [guideStep, setGuideStep] = useState(0);
 
   return (
-    <div className="flex flex-col h-full bg-slate-950 overflow-hidden text-slate-200">
-      <div className="flex border-b border-white/5 bg-[#030712] shrink-0">
+    <div className="flex flex-col h-full bg-slate-950 overflow-hidden text-slate-800 dark:text-slate-200">
+      <div className="flex border-b border-black/5 dark:border-white/5 bg-[#030712] shrink-0">
         {([
           { key: 'caliper', label: '📐 3D Caliper' },
           { key: 'table',   label: '📋 Readings Table' },
@@ -228,7 +349,7 @@ const VernierCalipersLab3D: React.FC<{ hex: string; onLog?: (data: any) => void 
           {tab === 'caliper' && (
             <>
               {/* 3D WebGL Area */}
-              <div className="absolute inset-0 z-0 h-3/5 border-b border-white/5">
+              <div className="absolute inset-0 z-0 h-3/5 border-b border-black/5 dark:border-white/5">
                 <Canvas shadows camera={{ position: [0, 0, 8], fov: 40 }}>
                   <ambientLight intensity={0.6} />
                   <directionalLight position={[5, 10, 5]} intensity={1.5} castShadow shadow-bias={-0.0001} />
@@ -243,11 +364,11 @@ const VernierCalipersLab3D: React.FC<{ hex: string; onLog?: (data: any) => void 
               </div>
 
               {/* HUD Scaler Overlays */}
-              <div className="absolute bottom-0 left-0 w-full h-2/5 p-6 flex items-center justify-center gap-8 bg-black/60 backdrop-blur-xl shrink-0 pointer-events-auto z-10 border-t border-white/10">
+              <div className="absolute bottom-0 left-0 w-full h-2/5 p-6 flex items-center justify-center gap-8 bg-black/60 backdrop-blur-xl shrink-0 pointer-events-auto z-10 border-t border-black/10 dark:border-white/10">
                 <div className="space-y-4">
                   <div>
-                    <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5 drop-shadow-md">Main Scale (mm details)</div>
-                    <div className="bg-slate-900 rounded-xl p-2 border border-white/10 shadow-inner">
+                    <div className="text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest mb-1.5 drop-shadow-md">Main Scale (mm details)</div>
+                    <div className="bg-slate-900 rounded-xl p-2 border border-black/10 dark:border-white/10 shadow-inner">
                       <MainScale2D offset={Math.floor(diameter / 10)} />
                     </div>
                   </div>
@@ -259,7 +380,7 @@ const VernierCalipersLab3D: React.FC<{ hex: string; onLog?: (data: any) => void 
                   </div>
                 </div>
 
-                <div className="w-80 border-l border-white/10 pl-8 space-y-4">
+                <div className="w-80 border-l border-black/10 dark:border-white/10 pl-8 space-y-4">
                    <ReadingDisplay msr={msr} vsd={vsd} zeroError={zeroError} lc={LC * 10} />
                 </div>
               </div>
@@ -268,10 +389,10 @@ const VernierCalipersLab3D: React.FC<{ hex: string; onLog?: (data: any) => void 
 
           {tab === 'table' && (
             <div className="p-8 space-y-6 w-full max-w-4xl mx-auto overflow-y-auto">
-              <div className="bg-black/40 border border-white/10 rounded-2xl overflow-hidden backdrop-blur-xl">
+              <div className="bg-black/40 border border-black/10 dark:border-white/10 rounded-2xl overflow-hidden backdrop-blur-xl">
                 <table className="w-full text-sm border-collapse">
                   <thead>
-                    <tr className="bg-white/5 border-b border-white/10 text-slate-400">
+                    <tr className="bg-black/5 dark:bg-white/5 border-b border-black/10 dark:border-white/10 text-slate-400">
                       <th className="px-6 py-4 text-left font-bold uppercase tracking-wider text-[10px]">#</th>
                       <th className="px-6 py-4 text-left font-bold uppercase tracking-wider text-[10px]">Diameter (mm)</th>
                       <th className="px-6 py-4 text-left font-bold uppercase tracking-wider text-[10px]">Deviation</th>
@@ -313,19 +434,19 @@ const VernierCalipersLab3D: React.FC<{ hex: string; onLog?: (data: any) => void 
                         ['Mean (d̄)', `${stats.mean.toFixed(3)} mm`],
                         ['Std Dev (σ)', `±${stats.std_deviation.toFixed(3)} mm`]
                       ].map(([k,v]) => (
-                        <div key={k} className="flex justify-between text-sm border-b border-white/5 pb-2">
-                          <span className="text-slate-400">{k}</span>
-                          <span className="font-mono font-bold text-white">{v}</span>
+                        <div key={k} className="flex justify-between text-sm border-b border-black/5 dark:border-white/5 pb-2">
+                          <span className="text-slate-600 dark:text-slate-400">{k}</span>
+                          <span className="font-mono font-bold text-slate-900 dark:text-slate-900 dark:text-white">{v}</span>
                         </div>
                       ))}
                     </div>
                   </div>
-                  <div className="flex flex-col justify-center items-center text-center bg-black/40 rounded-xl p-6 border border-white/5">
+                  <div className="flex flex-col justify-center items-center text-center bg-black/40 rounded-xl p-6 border border-black/5 dark:border-white/5">
                     <div className="text-[10px] text-slate-500 uppercase font-bold mb-2">Final Reported Cylinder Diameter</div>
-                    <div className="text-3xl font-black text-white">{stats.mean.toFixed(2)} <span className="text-lg text-slate-500">± {stats.absolute_uncertainty.toFixed(2)}</span></div>
+                    <div className="text-3xl font-black text-slate-900 dark:text-slate-900 dark:text-white">{stats.mean.toFixed(2)} <span className="text-lg text-slate-500">± {stats.absolute_uncertainty.toFixed(2)}</span></div>
                     
                     {volume && (
-                      <div className="mt-4 pt-4 border-t border-white/10 w-full">
+                      <div className="mt-4 pt-4 border-t border-black/10 dark:border-white/10 w-full">
                         <div className="text-[10px] text-violet-400 uppercase font-bold mb-1">Calculated Volume (Sphere)</div>
                         <div className="font-mono text-xl text-violet-200">
                           {volume.volume.toFixed(2)} <span className="text-sm">{volume.unit}</span>
@@ -340,15 +461,15 @@ const VernierCalipersLab3D: React.FC<{ hex: string; onLog?: (data: any) => void 
 
           {tab === 'guide' && (
             <div className="p-8 max-w-3xl mx-auto space-y-4">
-              <h2 className="text-2xl font-bold text-white mb-6">Simulation Procedure</h2>
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-900 dark:text-white mb-6">Simulation Procedure</h2>
               {GUIDE_STEPS.map((s, i) => (
                 <div key={i} onClick={() => setGuideStep(i)} className={`flex gap-6 p-6 rounded-2xl border cursor-pointer transition-all ${guideStep===i ? 'border-violet-500 bg-violet-900/20 shadow-[0_0_20px_rgba(139,92,246,0.2)]' : 'border-white/10 bg-black/40 hover:border-white/30'}`}>
                   <div className={`w-10 h-10 rounded-full flex items-center justify-center text-lg font-black shrink-0 ${i<guideStep?'bg-green-500 text-white':i===guideStep?'bg-violet-500 text-white':'bg-slate-800 text-slate-500'}`}>
                     {i<guideStep?'✓':i+1}
                   </div>
                   <div>
-                    <div className="text-lg font-bold text-white mb-2">{s.icon} {s.title}</div>
-                    <div className="text-sm text-slate-400 leading-relaxed">{s.desc}</div>
+                    <div className="text-lg font-bold text-slate-900 dark:text-slate-900 dark:text-white mb-2">{s.icon} {s.title}</div>
+                    <div className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{s.desc}</div>
                   </div>
                 </div>
               ))}
@@ -357,12 +478,12 @@ const VernierCalipersLab3D: React.FC<{ hex: string; onLog?: (data: any) => void 
         </div>
 
         {/* RIGHT CONTROLS */}
-        <div className="w-72 shrink-0 border-l border-white/5 bg-[#030712] flex flex-col z-20 shadow-[-20px_0_50px_rgba(0,0,0,0.5)]">
-          <div className="p-6 border-b border-white/5 space-y-1">
+        <div className="w-72 shrink-0 border-l border-black/5 dark:border-white/5 bg-[#030712] flex flex-col z-20 shadow-[-20px_0_50px_rgba(0,0,0,0.5)]">
+          <div className="p-6 border-b border-black/5 dark:border-white/5 space-y-1">
              <div className="text-[10px] font-bold text-violet-500 uppercase tracking-widest flex justify-between">
                 Physics Lab P1 <span className="bg-violet-500/20 text-violet-300 px-2 rounded-full">Interactive</span>
              </div>
-             <h2 className="text-xl font-bold text-white drop-shadow-md">Vernier Calipers</h2>
+             <h2 className="text-xl font-bold text-slate-900 dark:text-slate-900 dark:text-white drop-shadow-md">Vernier Calipers</h2>
           </div>
           <div className="p-6 flex flex-col gap-6 overflow-y-auto w-full">
             
@@ -370,9 +491,9 @@ const VernierCalipersLab3D: React.FC<{ hex: string; onLog?: (data: any) => void 
             <div className="space-y-6">
               <div>
                 <div className="flex justify-between items-end mb-3">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Target Object Size</span>
-                  <div className="flex bg-white/5 px-3 py-1 rounded-md border border-white/10 shadow-inner">
-                    <span className="font-mono text-xs text-white font-bold">{diameter.toFixed(1)}</span>
+                  <span className="text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest">Target Object Size</span>
+                  <div className="flex bg-black/5 dark:bg-white/5 px-3 py-1 rounded-md border border-black/10 dark:border-white/10 shadow-inner">
+                    <span className="font-mono text-xs text-slate-900 dark:text-slate-900 dark:text-white font-bold">{diameter.toFixed(1)}</span>
                     <span className="text-[10px] text-slate-500 ml-1">mm</span>
                   </div>
                 </div>
@@ -383,8 +504,8 @@ const VernierCalipersLab3D: React.FC<{ hex: string; onLog?: (data: any) => void 
 
               <div>
                 <div className="flex justify-between items-end mb-3">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Calibration: Zero Error</span>
-                  <div className="flex bg-white/5 px-3 py-1 rounded-md border border-white/10 shadow-inner">
+                  <span className="text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest">Calibration: Zero Error</span>
+                  <div className="flex bg-black/5 dark:bg-white/5 px-3 py-1 rounded-md border border-black/10 dark:border-white/10 shadow-inner">
                     <span className={`font-mono text-xs font-bold ${zeroError>0?'text-red-400':zeroError<0?'text-blue-400':'text-green-400'}`}>
                       {zeroError>=0?'+':''}{zeroError.toFixed(2)}
                     </span>
@@ -402,17 +523,17 @@ const VernierCalipersLab3D: React.FC<{ hex: string; onLog?: (data: any) => void 
               </div>
             </div>
 
-            <div className="w-full h-px bg-white/5 my-2" />
+            <div className="w-full h-px bg-black/5 dark:bg-white/5 my-2" />
 
             {/* Actions */}
             <div className="flex flex-col gap-3 mt-auto">
               <button onClick={logReading}
-                className="w-full py-4 rounded-xl text-sm font-bold text-white flex items-center justify-center gap-2 transition-all active:scale-95 group shadow-[0_10px_20px_rgba(139,92,246,0.3)]"
+                className="w-full py-4 rounded-xl text-sm font-bold text-slate-900 dark:text-slate-900 dark:text-white flex items-center justify-center gap-2 transition-all active:scale-95 group shadow-[0_10px_20px_rgba(139,92,246,0.3)]"
                 style={{ backgroundImage: `linear-gradient(135deg, ${hex}, #4c1d95)` }}>
                 <Plus size={16} className="group-hover:rotate-90 transition-transform"/> Log Measurement
               </button>
               <button onClick={() => setReadings([])}
-                className="w-full py-3 rounded-xl text-xs bg-white/[0.03] text-slate-400 flex items-center justify-center gap-2 border border-white/5 hover:border-red-500/30 hover:bg-red-500/10 hover:text-red-400 transition-all">
+                className="w-full py-3 rounded-xl text-xs bg-white/[0.03] text-slate-400 flex items-center justify-center gap-2 border border-black/5 dark:border-white/5 hover:border-red-500/30 hover:bg-red-500/10 hover:text-red-400 transition-all">
                 <RotateCcw size={14}/> Clear Readings
               </button>
             </div>

@@ -78,7 +78,7 @@ const CalorimeterScene = ({ mixing, mixed, mixProgress, dT, tempFinal }: any) =>
            <meshBasicMaterial color={mixing || mixed ? "#ef4444" : "#3b82f6"} />
          </mesh>
          <Html position={[0.2, 3, 0]} center>
-           <div className="text-[10px] font-bold bg-black/60 rounded px-1.5 py-0.5 text-white whitespace-nowrap">
+           <div className="text-[10px] font-bold bg-black/60 rounded px-1.5 py-0.5 text-slate-900 dark:text-white whitespace-nowrap">
              {tempFinal.toFixed(1)}°C
            </div>
          </Html>
@@ -109,7 +109,7 @@ const CalorimeterScene = ({ mixing, mixed, mixProgress, dT, tempFinal }: any) =>
               <meshBasicMaterial color="#f87171" transparent opacity={0.6} />
            </mesh>
          )}
-         <Html position={[-0.6, 0, 0]}><div className="text-[10px] bg-red-900/60 font-bold text-red-200 px-1 rounded">HCl</div></Html>
+         <Html position={[-0.6, 0, 0]}><div className="text-[10px] bg-red-900/60 font-bold text-red-600 dark:text-red-200 px-1 rounded">HCl</div></Html>
       </group>
 
       {/* Base Beaker (NaOH) */}
@@ -172,7 +172,7 @@ const EnthalpyLab: React.FC<Props> = ({ hex }) => {
 
   return (
     <div className="flex flex-col md:flex-row h-full w-full bg-slate-950">
-      <div className="flex-1 relative rounded-2xl overflow-hidden m-4 border border-white/10 shadow-2xl">
+      <div className="flex-1 relative rounded-2xl overflow-hidden m-4 border border-black/10 dark:border-white/10 shadow-2xl">
         <Canvas camera={{ position: [0, 2, 7], fov: 55 }}>
           <Environment preset="apartment" />
           <ambientLight intensity={0.6} />
@@ -185,16 +185,16 @@ const EnthalpyLab: React.FC<Props> = ({ hex }) => {
           <OrbitControls enablePan={true} enableZoom={true} target={[0, 0, 0]} maxPolarAngle={Math.PI/2 - 0.1} />
         </Canvas>
 
-        <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md border border-white/10 rounded-xl px-4 py-3 shadow-xl max-w-xs">
+        <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md border border-black/10 dark:border-white/10 rounded-xl px-4 py-3 shadow-xl max-w-xs">
           <p className="text-[10px] font-bold uppercase tracking-widest text-rose-400 mb-1">Chemistry Lab — c10</p>
-          <p className="text-white font-bold text-sm">3D Enthalpy of Neutralization</p>
-          <p className="text-xs text-slate-400 mt-1">Measure heat evolved in insulated calorimeter when mixing strong acid and base.</p>
+          <p className="text-slate-900 dark:text-slate-900 dark:text-white font-bold text-sm">3D Enthalpy of Neutralization</p>
+          <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">Measure heat evolved in insulated calorimeter when mixing strong acid and base.</p>
         </div>
       </div>
 
-      <div className="w-full md:w-72 bg-slate-900 border-l border-white/5 flex flex-col z-10">
-        <div className="p-5 border-b border-white/5">
-           <h2 className="text-lg font-black text-white">Controls</h2>
+      <div className="w-full md:w-72 bg-slate-900 border-l border-black/5 dark:border-white/5 flex flex-col z-10">
+        <div className="p-5 border-b border-black/5 dark:border-white/5">
+           <h2 className="text-lg font-black text-slate-900 dark:text-slate-900 dark:text-white">Controls</h2>
         </div>
         <div className="flex-1 p-5 space-y-4 overflow-y-auto">
           <div className={`p-3 rounded-xl border shadow-inner transition-colors duration-500 ${mixed ? 'bg-green-500/10 border-green-500/30' : 'bg-rose-500/10 border-rose-500/30'}`}>
@@ -214,18 +214,18 @@ const EnthalpyLab: React.FC<Props> = ({ hex }) => {
               { label: 'Enthalpy ΔH', val: mixed ? `${dH_per_mol.toFixed(2)}` : '—', color: '#f472b6' },
               { label: 'Lit. value', val: '-57.1 kJ/mol', color: '#94a3b8' },
             ].map(m => (
-              <div key={m.label} className="bg-slate-950/50 border border-white/5 rounded-xl p-2.5 text-center shadow-sm">
+              <div key={m.label} className="bg-slate-950/50 border border-black/5 dark:border-white/5 rounded-xl p-2.5 text-center shadow-sm">
                 <div className="text-[9px] text-slate-500 uppercase font-bold tracking-wider mb-1">{m.label}</div>
-                <div className="font-mono font-bold text-sm bg-black/20 rounded py-0.5" style={{ color: m.color }}>{m.val}</div>
+                <div className="font-mono font-bold text-sm bg-transparent dark:bg-black/20 rounded py-0.5" style={{ color: m.color }}>{m.val}</div>
               </div>
             ))}
           </div>
 
-          <div className="bg-slate-950 p-4 rounded-xl border border-white/5 shadow-inner text-xs space-y-1.5 mt-2">
-            <p className="text-slate-400 font-bold text-[10px] uppercase tracking-widest mb-1 border-b border-white/5 pb-1">Thermodynamics</p>
+          <div className="bg-slate-950 p-4 rounded-xl border border-black/5 dark:border-white/5 shadow-inner text-xs space-y-1.5 mt-2">
+            <p className="text-slate-600 dark:text-slate-400 font-bold text-[10px] uppercase tracking-widest mb-1 border-b border-black/5 dark:border-white/5 pb-1">Thermodynamics</p>
             <p className="font-mono text-rose-400 pt-1">Q = m × c × ΔT</p>
             <p className="font-mono text-rose-300 pt-1">ΔH = -Q / n <span className="text-[10px] text-slate-500">(kJ/mol)</span></p>
-            <p className="font-mono text-slate-500 text-[9px] mt-1 border-t border-white/5 pt-1">HCl + NaOH → NaCl + H₂O</p>
+            <p className="font-mono text-slate-500 text-[9px] mt-1 border-t border-black/5 dark:border-white/5 pt-1">HCl + NaOH → NaCl + H₂O</p>
           </div>
 
           <div className="flex gap-2 pt-2">

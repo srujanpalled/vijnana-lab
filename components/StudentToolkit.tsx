@@ -971,7 +971,7 @@ const CalculatorApp = () => {
 
   return (
     <div className="max-w-xs mx-auto bg-slate-800 rounded-xl p-4 shadow-2xl border border-slate-700">
-      <div className="bg-slate-900 text-right text-3xl text-white p-4 rounded-lg mb-4 font-mono h-16 overflow-hidden">
+      <div className="bg-slate-900 text-right text-3xl text-slate-900 dark:text-white p-4 rounded-lg mb-4 font-mono h-16 overflow-hidden">
         {display}
       </div>
       <div className="grid grid-cols-4 gap-2">
@@ -1008,18 +1008,18 @@ const View3DModal = ({ diagId, onClose }: { diagId: string, onClose: () => void 
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-        <div className="relative w-full max-w-3xl bg-slate-900 rounded-3xl border border-white/10 shadow-2xl overflow-hidden">
-             <div className="p-4 border-b border-white/10 flex justify-between items-center bg-slate-800/50">
-                 <h2 className="text-xl font-bold text-white flex items-center gap-2">
+        <div className="relative w-full max-w-3xl bg-slate-900 rounded-3xl border border-black/10 dark:border-white/10 shadow-2xl overflow-hidden">
+             <div className="p-4 border-b border-black/10 dark:border-white/10 flex justify-between items-center bg-slate-800/50">
+                 <h2 className="text-xl font-bold text-slate-900 dark:text-slate-900 dark:text-white flex items-center gap-2">
                     <Box className="text-blue-400"/> {diag.title} - 3D Viewer
                  </h2>
-                 <button onClick={onClose} className="p-2 hover:bg-white/10 rounded-full text-gray-400 hover:text-white">
+                 <button onClick={onClose} className="p-2 hover:bg-black/10 dark:bg-white/10 rounded-full text-gray-400 hover:text-slate-900 dark:text-white">
                      <X size={24}/>
                  </button>
              </div>
              
              <div 
-               className="h-[500px] flex items-center justify-center bg-black/50"
+               className="h-[500px] flex items-center justify-center bg-slate-200 dark:bg-black/50"
                style={{ perspective: '1000px' }}
                onMouseMove={handleMouseMove}
                onMouseLeave={() => setRotate({ x: 0, y: 0 })}
@@ -1040,7 +1040,7 @@ const View3DModal = ({ diagId, onClose }: { diagId: string, onClose: () => void 
                      <div className="absolute inset-0 transform translate-z-10 drop-shadow-[0_0_30px_rgba(255,255,255,0.1)]">
                         {diag.svg}
                      </div>
-                     <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/60 px-3 py-1 rounded-full text-xs text-gray-300 border border-white/10 z-20">
+                     <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/60 px-3 py-1 rounded-full text-xs text-gray-700 dark:text-gray-300 border border-black/10 dark:border-white/10 z-20">
                         Move cursor to rotate
                      </div>
                  </MotionDiv>
@@ -1083,7 +1083,7 @@ const StudentToolkit: React.FC = () => {
             <div className={`w-10 h-10 rounded-full ${tool.bg} flex items-center justify-center`}>
                <tool.icon className={tool.color} size={20} />
             </div>
-            <span className="text-xs font-medium text-slate-700 dark:text-gray-300 text-center">{tool.label}</span>
+            <span className="text-xs font-medium text-slate-700 dark:text-gray-700 dark:text-gray-700 dark:text-gray-300 text-center">{tool.label}</span>
           </MotionDiv>
         ))}
       </div>
@@ -1096,17 +1096,17 @@ const StudentToolkit: React.FC = () => {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
-              className="w-full max-w-4xl bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-200 dark:border-white/10 max-h-[85vh] flex flex-col overflow-hidden"
+              className="w-full max-w-4xl bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-200 dark:border-black/10 dark:border-white/10 max-h-[85vh] flex flex-col overflow-hidden"
             >
               {/* Header */}
-              <div className="p-6 border-b border-slate-200 dark:border-white/10 flex justify-between items-center bg-slate-50 dark:bg-slate-800/50">
+              <div className="p-6 border-b border-slate-200 dark:border-black/10 dark:border-white/10 flex justify-between items-center bg-slate-50 dark:bg-slate-800/50">
                  <div className="flex items-center gap-3">
                     <div className={`w-10 h-10 rounded-full ${TOOLS.find(t=>t.id===activeTool)?.bg} flex items-center justify-center`}>
                         {React.createElement(TOOLS.find(t=>t.id===activeTool)?.icon || Activity, { className: TOOLS.find(t=>t.id===activeTool)?.color, size: 20 })}
                     </div>
-                    <h2 className="text-xl font-bold text-slate-900 dark:text-white">{TOOLS.find(t=>t.id===activeTool)?.label}</h2>
+                    <h2 className="text-xl font-bold text-slate-900 dark:text-slate-900 dark:text-slate-900 dark:text-white">{TOOLS.find(t=>t.id===activeTool)?.label}</h2>
                  </div>
-                 <button onClick={() => setActiveTool(null)} className="p-2 hover:bg-slate-200 dark:hover:bg-white/10 rounded-full text-slate-500 dark:text-gray-400 transition-colors">
+                 <button onClick={() => setActiveTool(null)} className="p-2 hover:bg-slate-200 dark:hover:bg-black/10 dark:bg-white/10 rounded-full text-slate-500 dark:text-gray-400 transition-colors">
                     <X size={24} />
                  </button>
               </div>
@@ -1128,12 +1128,12 @@ const StudentToolkit: React.FC = () => {
                           ))}
                        </div>
                        {FORMULAS[activeSubject]?.map((chapter: any, idx: number) => (
-                          <div key={idx} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/5 rounded-xl p-5 shadow-sm mb-4">
-                             <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-4 border-b border-slate-100 dark:border-white/5 pb-2">{chapter.chapter}</h3>
+                          <div key={idx} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-black/5 dark:border-white/5 rounded-xl p-5 shadow-sm mb-4">
+                             <h3 className="text-lg font-bold text-slate-800 dark:text-slate-900 dark:text-slate-900 dark:text-white mb-4 border-b border-slate-100 dark:border-black/5 dark:border-white/5 pb-2">{chapter.chapter}</h3>
                              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                 {chapter.items.map((item: any, i: number) => (
-                                   <div key={i} className="bg-slate-50 dark:bg-white/5 p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-white/10 transition-colors">
-                                      <div className="text-xs text-slate-500 dark:text-gray-400 mb-1">{item.name}</div>
+                                   <div key={i} className="bg-slate-50 dark:bg-black/5 dark:bg-white/5 p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-black/10 dark:bg-white/10 transition-colors">
+                                      <div className="text-xs text-slate-500 dark:text-gray-600 dark:text-gray-400 mb-1">{item.name}</div>
                                       <div className="font-mono text-sm text-blue-600 dark:text-blue-400 font-bold break-words">{item.eq}</div>
                                       <div className="text-[10px] text-slate-400 dark:text-gray-500 mt-1 italic">{item.desc}</div>
                                    </div>
@@ -1147,10 +1147,10 @@ const StudentToolkit: React.FC = () => {
                  {activeTool === 'constants' && (
                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {CONSTANTS.map((c, i) => (
-                           <div key={i} className="flex items-center justify-between bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-white/5">
+                           <div key={i} className="flex items-center justify-between bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-black/5 dark:border-white/5">
                                <div>
-                                   <div className="text-2xl font-serif italic font-bold text-slate-900 dark:text-white">{c.symbol}</div>
-                                   <div className="text-xs text-slate-500 dark:text-gray-400">{c.name}</div>
+                                   <div className="text-2xl font-serif italic font-bold text-slate-900 dark:text-slate-900 dark:text-slate-900 dark:text-white">{c.symbol}</div>
+                                   <div className="text-xs text-slate-500 dark:text-gray-600 dark:text-gray-400">{c.name}</div>
                                </div>
                                <div className="font-mono text-yellow-600 dark:text-yellow-400 font-bold">{c.val}</div>
                            </div>
@@ -1161,20 +1161,20 @@ const StudentToolkit: React.FC = () => {
                  {activeTool === 'logic' && (
                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                      {LOGIC_GATES.map((gate, i) => (
-                       <div key={i} className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-white/5 flex flex-col items-center">
+                       <div key={i} className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-black/5 dark:border-white/5 flex flex-col items-center">
                           <h3 className="text-lg font-bold text-purple-600 dark:text-purple-400 mb-4">{gate.name} Gate</h3>
-                          <div className="mb-6 text-slate-800 dark:text-white scale-110">{gate.symbol}</div>
+                          <div className="mb-6 text-slate-800 dark:text-slate-900 dark:text-slate-900 dark:text-white scale-110">{gate.symbol}</div>
                           <div className="w-full">
                              <table className="w-full text-center text-sm border-collapse">
                                <thead>
-                                 <tr className="bg-slate-100 dark:bg-white/10 text-slate-600 dark:text-gray-300">
-                                   {gate.table[0].map((h, k) => <th key={k} className="border border-slate-300 dark:border-white/10 p-1">{h}</th>)}
+                                 <tr className="bg-slate-100 dark:bg-black/10 dark:bg-white/10 text-slate-600 dark:text-gray-700 dark:text-gray-300">
+                                   {gate.table[0].map((h, k) => <th key={k} className="border border-slate-300 dark:border-black/10 dark:border-white/10 p-1">{h}</th>)}
                                  </tr>
                                </thead>
                                <tbody>
                                  {gate.table.slice(1).map((row, r) => (
-                                   <tr key={r} className="text-slate-800 dark:text-gray-400">
-                                      {row.map((cell, c) => <td key={c} className="border border-slate-300 dark:border-white/10 p-1">{cell}</td>)}
+                                   <tr key={r} className="text-slate-800 dark:text-gray-600 dark:text-gray-400">
+                                      {row.map((cell, c) => <td key={c} className="border border-slate-300 dark:border-black/10 dark:border-white/10 p-1">{cell}</td>)}
                                    </tr>
                                  ))}
                                </tbody>
@@ -1198,9 +1198,9 @@ const StudentToolkit: React.FC = () => {
                             el.g === 'Metalloid' ? 'bg-teal-100 dark:bg-teal-500/20 border-teal-300 dark:border-teal-500/30' :
                             'bg-blue-50 dark:bg-blue-500/10 border-blue-200 dark:border-blue-500/20'
                           } hover:scale-105 transition-transform cursor-pointer`}>
-                             <div className="text-[10px] text-slate-500 dark:text-gray-400">{el.n}</div>
-                             <div className="text-xl font-bold text-slate-900 dark:text-white my-1">{el.s}</div>
-                             <div className="text-[10px] text-slate-600 dark:text-gray-300 truncate">{el.name}</div>
+                             <div className="text-[10px] text-slate-500 dark:text-gray-600 dark:text-gray-400">{el.n}</div>
+                             <div className="text-xl font-bold text-slate-900 dark:text-slate-900 dark:text-slate-900 dark:text-white my-1">{el.s}</div>
+                             <div className="text-[10px] text-slate-600 dark:text-gray-700 dark:text-gray-700 dark:text-gray-300 truncate">{el.name}</div>
                              <div className="text-[9px] text-slate-400 dark:text-gray-500">{el.m}</div>
                           </div>
                         ))}
@@ -1220,13 +1220,13 @@ const StudentToolkit: React.FC = () => {
                  {activeTool === 'safety' && (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {SAFETY_RULES.map((rule, i) => (
-                           <div key={i} className="flex gap-4 bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-white/5 items-start">
+                           <div key={i} className="flex gap-4 bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-black/5 dark:border-white/5 items-start">
                               <div className={`p-3 rounded-full bg-slate-100 dark:bg-white/5 ${rule.color}`}>
                                  <rule.icon size={24} />
                               </div>
                               <div>
                                  <h3 className={`font-bold text-lg ${rule.color}`}>{rule.title}</h3>
-                                 <p className="text-sm text-slate-600 dark:text-gray-400 mt-1 leading-relaxed">{rule.desc}</p>
+                                 <p className="text-sm text-slate-600 dark:text-gray-600 dark:text-gray-400 mt-1 leading-relaxed">{rule.desc}</p>
                               </div>
                            </div>
                         ))}
@@ -1239,24 +1239,24 @@ const StudentToolkit: React.FC = () => {
                           <MotionDiv 
                             key={diag.id} 
                             whileHover={{ scale: 1.02, translateY: -5 }}
-                            className="bg-white dark:bg-white/5 backdrop-blur-md rounded-2xl border border-slate-200 dark:border-white/10 p-5 flex flex-col shadow-lg hover:shadow-lime-500/20 transition-all group relative overflow-hidden"
+                            className="bg-white dark:bg-black/5 dark:bg-white/5 backdrop-blur-md rounded-2xl border border-slate-200 dark:border-black/10 dark:border-white/10 p-5 flex flex-col shadow-lg hover:shadow-lime-500/20 transition-all group relative overflow-hidden"
                           >
                              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-lime-400 to-green-600 opacity-0 group-hover:opacity-100 transition-opacity"/>
                              
                              <div className="flex justify-between items-start mb-3">
-                                <h3 className="text-lg font-bold text-slate-800 dark:text-white group-hover:text-lime-600 dark:group-hover:text-lime-400 transition-colors">{diag.title}</h3>
-                                <span className="p-1.5 rounded-full bg-slate-100 dark:bg-white/5 text-slate-400 dark:text-gray-500 group-hover:bg-lime-500/10 group-hover:text-lime-500 transition-colors">
+                                <h3 className="text-lg font-bold text-slate-800 dark:text-slate-900 dark:text-slate-900 dark:text-white group-hover:text-lime-600 dark:group-hover:text-lime-400 transition-colors">{diag.title}</h3>
+                                <span className="p-1.5 rounded-full bg-slate-100 dark:bg-black/5 dark:bg-white/5 text-slate-400 dark:text-gray-500 group-hover:bg-lime-500/10 group-hover:text-lime-500 transition-colors">
                                     <Dna size={16} />
                                 </span>
                              </div>
                              
-                             <div className="w-full h-48 bg-slate-50 dark:bg-black/30 rounded-xl mb-4 border border-slate-100 dark:border-white/5 flex items-center justify-center text-slate-800 dark:text-gray-200 p-4 overflow-hidden relative">
+                             <div className="w-full h-48 bg-slate-50 dark:bg-black/30 rounded-xl mb-4 border border-slate-100 dark:border-black/5 dark:border-white/5 flex items-center justify-center text-slate-800 dark:text-gray-800 dark:text-gray-200 p-4 overflow-hidden relative">
                                 <div className="w-full h-full transition-transform duration-500 group-hover:scale-105">
                                     {diag.svg}
                                 </div>
                              </div>
                              
-                             <p className="text-xs text-slate-500 dark:text-gray-400 mb-4 flex-1 leading-relaxed">
+                             <p className="text-xs text-slate-500 dark:text-gray-600 dark:text-gray-400 mb-4 flex-1 leading-relaxed">
                                 {diag.desc}
                              </p>
                              
@@ -1265,7 +1265,7 @@ const StudentToolkit: React.FC = () => {
                                    e.stopPropagation();
                                    setView3D(diag.id);
                                }}
-                               className="w-full py-2.5 rounded-xl bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-gray-300 text-xs font-bold border border-slate-200 dark:border-white/10 hover:bg-lime-500 hover:text-white hover:border-lime-500 dark:hover:bg-lime-500 dark:hover:text-white transition-all flex items-center justify-center gap-2 shadow-sm cursor-pointer z-10"
+                               className="w-full py-2.5 rounded-xl bg-slate-100 dark:bg-black/5 dark:bg-white/5 text-slate-600 dark:text-gray-300 text-xs font-bold border border-slate-200 dark:border-black/10 dark:border-white/10 hover:bg-lime-500 hover:text-white hover:border-lime-500 dark:hover:bg-lime-500 dark:hover:text-white transition-all flex items-center justify-center gap-2 shadow-sm cursor-pointer z-10"
                              >
                                 <Box size={14} /> View in 3D
                              </button>

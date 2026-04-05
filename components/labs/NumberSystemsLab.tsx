@@ -77,7 +77,7 @@ const NumberSystemsLab: React.FC<NumberSystemsLabProps> = ({ hex }) => {
           ].map(item => (
             <div key={item.base} className="p-3 rounded-xl text-center" style={{ backgroundColor: item.color + '15', border: `1px solid ${item.color}40` }}>
               <p className="text-xs font-bold mb-1" style={{ color: item.color }}>{item.base} ({item.sub})</p>
-              <p className="font-mono text-white text-lg font-bold">{item.val}</p>
+              <p className="font-mono text-slate-900 dark:text-slate-900 dark:text-white text-lg font-bold">{item.val}</p>
             </div>
           ))}
         </div>
@@ -85,35 +85,35 @@ const NumberSystemsLab: React.FC<NumberSystemsLabProps> = ({ hex }) => {
         {/* Quick buttons */}
         <div className="flex gap-2 flex-wrap justify-center">
           {[0, 42, 127, 170, 255].map(v => (
-            <button key={v} onClick={() => setDecValue(v)} className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition-all">
+            <button key={v} onClick={() => setDecValue(v)} className="px-3 py-1.5 rounded-lg bg-black/10 dark:bg-white/10 hover:bg-black/20 dark:bg-white/20 text-slate-900 dark:text-white text-xs font-bold transition-all">
               {v}
             </button>
           ))}
-          <button onClick={() => { setTarget(42); setStep(4); }} className="px-3 py-1.5 rounded-lg bg-purple-600/30 hover:bg-purple-600/50 text-purple-300 text-xs font-bold border border-purple-500/40 transition-all">
+          <button onClick={() => { setTarget(42); setStep(4); }} className="px-3 py-1.5 rounded-lg bg-purple-600/30 hover:bg-purple-600/50 text-purple-600 dark:text-purple-300 text-xs font-bold border border-purple-500/40 transition-all">
             🎯 Make 42
           </button>
         </div>
 
         {celebrating && (
-          <div className="px-6 py-3 rounded-xl bg-green-500/20 border border-green-500/50 text-green-300 font-bold animate-bounce">
+          <div className="px-6 py-3 rounded-xl bg-green-500/20 border border-green-500/50 text-green-600 dark:text-green-300 font-bold animate-bounce">
             🎉 Target reached! You got {decimal}!
           </div>
         )}
       </div>
 
-      <div className="w-full md:w-72 bg-slate-900 border-l border-white/5 flex flex-col">
-        <div className="p-5 border-b border-white/5">
+      <div className="w-full md:w-72 bg-slate-900 border-l border-black/5 dark:border-white/5 flex flex-col">
+        <div className="p-5 border-b border-black/5 dark:border-white/5">
           <p className="text-xs font-bold uppercase tracking-widest text-purple-400 mb-1">Number Systems — CS Lab</p>
-          <h2 className="text-xl font-bold text-white">{current.title}</h2>
+          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-900 dark:text-white">{current.title}</h2>
         </div>
         <div className="flex-1 p-5 space-y-4 overflow-y-auto">
           <div className="bg-purple-500/10 border border-purple-500/30 p-4 rounded-xl">
-            <p className="text-purple-200 text-sm">{current.instruction}</p>
+            <p className="text-purple-600 dark:text-purple-200 text-sm">{current.instruction}</p>
           </div>
-          <div className="bg-white/5 p-4 rounded-xl border border-white/10 font-mono text-sm space-y-1">
-            <p className="text-gray-400">Decimal: <span className="text-white font-bold">{decimal}</span></p>
-            <p className="text-gray-400">Active bits: <span className="text-yellow-300">{bits.filter(Boolean).length}/8</span></p>
-            <p className="text-gray-400">Bit sum: <span className="text-white">{bits.map((b, i) => b ? POWERS[i] : 0).filter(Boolean).join(' + ') || '0'}</span></p>
+          <div className="bg-black/5 dark:bg-white/5 p-4 rounded-xl border border-black/10 dark:border-white/10 font-mono text-sm space-y-1">
+            <p className="text-gray-600 dark:text-gray-400">Decimal: <span className="text-slate-900 dark:text-slate-900 dark:text-white font-bold">{decimal}</span></p>
+            <p className="text-gray-600 dark:text-gray-400">Active bits: <span className="text-yellow-300">{bits.filter(Boolean).length}/8</span></p>
+            <p className="text-gray-600 dark:text-gray-400">Bit sum: <span className="text-slate-900 dark:text-slate-900 dark:text-white">{bits.map((b, i) => b ? POWERS[i] : 0).filter(Boolean).join(' + ') || '0'}</span></p>
           </div>
           <div className="text-xs text-gray-500 space-y-1">
             <p><span className="text-blue-400">A</span>=10, <span className="text-blue-400">B</span>=11, <span className="text-blue-400">C</span>=12, <span className="text-blue-400">D</span>=13, <span className="text-blue-400">E</span>=14, <span className="text-blue-400">F</span>=15</p>
@@ -127,7 +127,7 @@ const NumberSystemsLab: React.FC<NumberSystemsLabProps> = ({ hex }) => {
             <button onClick={() => setCompleted(true)} className="w-full py-3 rounded-xl font-bold text-white bg-green-700 hover:bg-green-600 transition-all active:scale-95">✅ Complete</button>
           )}
           {completed && <div className="text-center"><CheckCircle size={28} className="mx-auto text-green-400 mb-2" /><p className="text-green-400 font-bold text-sm">Number Systems Mastered!</p></div>}
-          <button onClick={reset} className="w-full py-2 rounded-xl text-gray-500 hover:bg-white/5 text-sm flex items-center justify-center gap-1"><RotateCcw size={12} /> Reset</button>
+          <button onClick={reset} className="w-full py-2 rounded-xl text-gray-500 hover:bg-black/5 dark:bg-white/5 text-sm flex items-center justify-center gap-1"><RotateCcw size={12} /> Reset</button>
           <div className="flex gap-1">
             {STEPS.map((_, idx) => <div key={idx} className="flex-1 h-1.5 rounded-full" style={{ backgroundColor: idx <= step ? '#8b5cf6' : 'rgba(255,255,255,0.1)' }} />)}
           </div>

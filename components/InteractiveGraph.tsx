@@ -101,19 +101,19 @@ const InteractiveGraph: React.FC<InteractiveGraphProps> = ({
   }
 
   return (
-    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-xl overflow-hidden">
+    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-black/10 dark:border-white/10 rounded-xl overflow-hidden">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-2 border-b border-slate-100 dark:border-white/10">
-        <span className="text-xs font-bold text-slate-600 dark:text-white">{title || `${yLabel} vs ${xLabel}`}</span>
+      <div className="flex items-center justify-between px-4 py-2 border-b border-slate-100 dark:border-black/10 dark:border-white/10">
+        <span className="text-xs font-bold text-slate-600 dark:text-slate-900 dark:text-slate-900 dark:text-white">{title || `${yLabel} vs ${xLabel}`}</span>
         <div className="flex gap-2">
           <button onClick={() => setShowReg(r => !r)}
             className={`text-[10px] px-2 py-0.5 rounded border transition-colors ${showReg ? 'bg-blue-600 text-white border-blue-500' : 'text-slate-400 border-slate-200 dark:border-white/10'}`}>
             Best Fit
           </button>
-          <button onClick={() => setZoom(z => Math.min(z + 0.25, 2))} className="p-1 hover:bg-slate-100 dark:hover:bg-white/10 rounded text-slate-400" title="Zoom In"><ZoomIn size={12} /></button>
-          <button onClick={() => setZoom(z => Math.max(z - 0.25, 0.5))} className="p-1 hover:bg-slate-100 dark:hover:bg-white/10 rounded text-slate-400" title="Zoom Out"><ZoomOut size={12} /></button>
-          <button onClick={handleDownload} className="p-1 hover:bg-slate-100 dark:hover:bg-white/10 rounded text-slate-400" title="Download SVG"><Download size={12} /></button>
-          <button onClick={handleExportCSV} className="p-1 hover:bg-slate-100 dark:hover:bg-white/10 rounded text-slate-400" title="Export CSV"><Trash2 size={12} className="rotate-180" /></button>
+          <button onClick={() => setZoom(z => Math.min(z + 0.25, 2))} className="p-1 hover:bg-slate-100 dark:hover:bg-black/10 dark:bg-white/10 rounded text-slate-400" title="Zoom In"><ZoomIn size={12} /></button>
+          <button onClick={() => setZoom(z => Math.max(z - 0.25, 0.5))} className="p-1 hover:bg-slate-100 dark:hover:bg-black/10 dark:bg-white/10 rounded text-slate-400" title="Zoom Out"><ZoomOut size={12} /></button>
+          <button onClick={handleDownload} className="p-1 hover:bg-slate-100 dark:hover:bg-black/10 dark:bg-white/10 rounded text-slate-400" title="Download SVG"><Download size={12} /></button>
+          <button onClick={handleExportCSV} className="p-1 hover:bg-slate-100 dark:hover:bg-black/10 dark:bg-white/10 rounded text-slate-400" title="Export CSV"><Trash2 size={12} className="rotate-180" /></button>
         </div>
       </div>
 
@@ -125,11 +125,11 @@ const InteractiveGraph: React.FC<InteractiveGraphProps> = ({
             <g opacity="0.15">
               {ticks(xMin, xMax).map((v, i) => (
                 <line key={`vg-${v}-${i}`} x1={toSvgX(v)} y1={PAD.top} x2={toSvgX(v)} y2={PAD.top + PH}
-                  stroke="currentColor" strokeWidth="1" className="text-slate-400 dark:text-white" />
+                  stroke="currentColor" strokeWidth="1" className="text-slate-400 dark:text-slate-900 dark:text-slate-900 dark:text-white" />
               ))}
               {ticks(yMin, yMax).map((v, i) => (
                 <line key={`hg-${v}-${i}`} x1={PAD.left} y1={toSvgY(v)} x2={PAD.left + PW} y2={toSvgY(v)}
-                  stroke="currentColor" strokeWidth="1" className="text-slate-400 dark:text-white" />
+                  stroke="currentColor" strokeWidth="1" className="text-slate-400 dark:text-slate-900 dark:text-slate-900 dark:text-white" />
               ))}
             </g>
           )}
@@ -237,18 +237,18 @@ const InteractiveGraph: React.FC<InteractiveGraphProps> = ({
       </div>
 
       {/* Legend */}
-      <div className="flex flex-wrap gap-3 px-4 pb-2 pt-1 border-t border-slate-100 dark:border-white/10">
+      <div className="flex flex-wrap gap-3 px-4 pb-2 pt-1 border-t border-slate-100 dark:border-black/10 dark:border-white/10">
         {series.map((s, i) => (
           <div key={`lg-${s.label}-${i}`} className="flex items-center gap-1.5">
             <div className="w-3 h-3 rounded-full" style={{ backgroundColor: s.color }} />
-            <span className="text-[10px] text-slate-500 dark:text-gray-400">{s.label}</span>
+            <span className="text-[10px] text-slate-500 dark:text-gray-600 dark:text-gray-400">{s.label}</span>
           </div>
         ))}
         {series.map((s, i) => {
           const r = linReg(s.points);
           if (!r) return null;
           return (
-            <div key={`slope-${i}`} className="text-[10px] text-slate-400">
+            <div key={`slope-${i}`} className="text-[10px] text-slate-600 dark:text-slate-400">
               {s.label} Slope = {r.slope.toFixed(4)} {yUnit}/{xUnit}
             </div>
           );

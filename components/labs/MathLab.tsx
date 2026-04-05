@@ -110,25 +110,25 @@ const GraphingLab: React.FC<{ hex: string }> = ({ hex }) => {
   return (
     <div className="flex flex-col md:flex-row h-full w-full bg-slate-950">
       <div className="flex-1 flex items-center justify-center p-3">
-        <canvas ref={canvasRef} width={400} height={340} className="rounded-2xl border border-white/10 shadow-2xl w-full max-w-[450px]" />
+        <canvas ref={canvasRef} width={400} height={340} className="rounded-2xl border border-black/10 dark:border-white/10 shadow-2xl w-full max-w-[450px]" />
       </div>
-      <div className="w-full md:w-72 bg-slate-900 border-l border-white/5 flex flex-col">
-        <div className="p-4 border-b border-white/5">
+      <div className="w-full md:w-72 bg-slate-900 border-l border-black/5 dark:border-white/5 flex flex-col">
+        <div className="p-4 border-b border-black/5 dark:border-white/5">
           <p className="text-xs font-bold uppercase tracking-widest text-blue-400 mb-1">Math Lab — Graphing</p>
-          <h2 className="text-lg font-bold text-white">{STEPS[Math.min(step, STEPS.length-1)].title}</h2>
+          <h2 className="text-lg font-bold text-slate-900 dark:text-slate-900 dark:text-white">{STEPS[Math.min(step, STEPS.length-1)].title}</h2>
         </div>
         <div className="flex-1 p-4 space-y-4 overflow-y-auto">
           <div className="bg-blue-500/10 border border-blue-500/30 p-3 rounded-xl">
-            <p className="text-blue-200 text-xs">{STEPS[Math.min(step, STEPS.length-1)].instruction}</p>
+            <p className="text-blue-600 dark:text-blue-200 text-xs">{STEPS[Math.min(step, STEPS.length-1)].instruction}</p>
           </div>
           <div>
-            <label className="text-xs font-bold text-gray-400 uppercase mb-1 block">f(x) =</label>
-            <input value={fn} onChange={e => handleFnChange(e.target.value)} className="w-full bg-white/5 border border-white/20 rounded-xl px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-blue-400" placeholder="e.g. x*x" />
+            <label className="text-xs font-bold text-gray-600 dark:text-gray-400 uppercase mb-1 block">f(x) =</label>
+            <input value={fn} onChange={e => handleFnChange(e.target.value)} className="w-full bg-black/5 dark:bg-white/5 border border-white/20 rounded-xl px-3 py-2 text-slate-900 dark:text-white font-mono text-sm focus:outline-none focus:border-blue-400" placeholder="e.g. x*x" />
             {error && <p className="text-red-400 text-xs mt-1">{error}</p>}
           </div>
           <div className="grid grid-cols-2 gap-2">
             {['x*x', 'Math.sin(x)*5', 'Math.abs(x)', 'x*x*x/10'].map(f => (
-              <button key={f} onClick={() => handleFnChange(f)} className="py-2 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-mono text-gray-300 border border-white/10 transition-all">{f}</button>
+              <button key={f} onClick={() => handleFnChange(f)} className="py-2 rounded-xl bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:bg-white/10 text-xs font-mono text-gray-700 dark:text-gray-300 border border-black/10 dark:border-white/10 transition-all">{f}</button>
             ))}
           </div>
           <DraggableSlider label="Trace x" min={-10} max={10} step={0.5} value={traceX} onChange={setTraceX} color="#ef4444" formatValue={v => `${v}`} />
@@ -238,12 +238,12 @@ const IntegrationLab: React.FC<{ hex: string }> = ({ hex }) => {
   return (
     <div className="flex flex-col md:flex-row h-full w-full bg-slate-950">
       <div className="flex-1 flex items-center justify-center p-3">
-        <canvas ref={canvasRef} width={400} height={320} className="rounded-2xl border border-white/10 shadow-2xl w-full max-w-[450px]" />
+        <canvas ref={canvasRef} width={400} height={320} className="rounded-2xl border border-black/10 dark:border-white/10 shadow-2xl w-full max-w-[450px]" />
       </div>
-      <div className="w-full md:w-72 bg-slate-900 border-l border-white/5 flex flex-col">
-        <div className="p-4 border-b border-white/5">
+      <div className="w-full md:w-72 bg-slate-900 border-l border-black/5 dark:border-white/5 flex flex-col">
+        <div className="p-4 border-b border-black/5 dark:border-white/5">
           <p className="text-xs font-bold uppercase tracking-widest text-indigo-400 mb-1">Math Lab — Integration</p>
-          <h2 className="text-lg font-bold text-white">{STEPS[Math.min(step, STEPS.length-1)].title}</h2>
+          <h2 className="text-lg font-bold text-slate-900 dark:text-slate-900 dark:text-white">{STEPS[Math.min(step, STEPS.length-1)].title}</h2>
         </div>
         <div className="flex-1 p-4 space-y-4 overflow-y-auto">
           <div className="bg-indigo-500/10 border border-indigo-500/30 p-3 rounded-xl">
@@ -253,10 +253,10 @@ const IntegrationLab: React.FC<{ hex: string }> = ({ hex }) => {
             <DraggableSlider label="Upper limit b" min={1} max={6} step={0.5} value={b} onChange={setB} color="#6366f1" />
             <DraggableSlider label="Strips n" min={1} max={50} value={n} onChange={v => { setN(v); if (step < 1) setStep(1); }} color="#8b5cf6" />
 
-          <div className="bg-white/5 p-3 rounded-xl text-xs space-y-1">
-            <p className="text-gray-400">Function: <span className="text-white font-mono">f(x) = x²</span></p>
-            <p className="text-gray-400">Exact: <span className="text-green-400 font-mono">{((b**3 - a**3)/3).toFixed(4)}</span></p>
-            <p className="text-gray-400">Formula: <span className="text-white font-mono">∫x²dx = x³/3</span></p>
+          <div className="bg-black/5 dark:bg-white/5 p-3 rounded-xl text-xs space-y-1">
+            <p className="text-gray-600 dark:text-gray-400">Function: <span className="text-slate-900 dark:text-slate-900 dark:text-white font-mono">f(x) = x²</span></p>
+            <p className="text-gray-600 dark:text-gray-400">Exact: <span className="text-green-400 font-mono">{((b**3 - a**3)/3).toFixed(4)}</span></p>
+            <p className="text-gray-600 dark:text-gray-400">Formula: <span className="text-slate-900 dark:text-slate-900 dark:text-white font-mono">∫x²dx = x³/3</span></p>
           </div>
           <div className="flex gap-1">
             {STEPS.map((_, idx) => <div key={idx} className="flex-1 h-1.5 rounded-full cursor-pointer" style={{ backgroundColor: idx <= step ? '#6366f1' : 'rgba(255,255,255,0.1)' }} onClick={() => setStep(idx)} />)}
@@ -353,10 +353,10 @@ const ConicsLab: React.FC<{ hex: string }> = ({ hex }) => {
         </div>
       </div>
 
-      <div className="w-full md:w-80 bg-slate-900 border-l border-white/5 flex flex-col z-20 shrink-0 shadow-[-20px_0_50px_rgba(0,0,0,0.5)]">
-        <div className="p-5 border-b border-white/5 bg-slate-950">
+      <div className="w-full md:w-80 bg-slate-900 border-l border-black/5 dark:border-white/5 flex flex-col z-20 shrink-0 shadow-[-20px_0_50px_rgba(0,0,0,0.5)]">
+        <div className="p-5 border-b border-black/5 dark:border-white/5 bg-slate-950">
           <p className="text-xs font-bold uppercase tracking-widest text-violet-400 mb-1">Math Lab — Conics</p>
-          <h2 className="text-xl font-bold text-white">{STEPS[Math.min(step, STEPS.length-1)].title}</h2>
+          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-900 dark:text-white">{STEPS[Math.min(step, STEPS.length-1)].title}</h2>
         </div>
         <div className="flex-1 p-5 space-y-5 overflow-y-auto">
           <div className="bg-violet-500/10 border border-violet-500/30 p-4 rounded-xl shadow-inner">
@@ -376,9 +376,9 @@ const ConicsLab: React.FC<{ hex: string }> = ({ hex }) => {
             </div>
           </div>
 
-          <div className="bg-black/40 border border-white/5 p-4 rounded-xl">
+          <div className="bg-black/40 border border-black/5 dark:border-white/5 p-4 rounded-xl">
             <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mb-3">Geometric Equations</p>
-            <div className="space-y-2 font-mono text-xs text-slate-300">
+            <div className="space-y-2 font-mono text-xs text-slate-700 dark:text-slate-700 dark:text-slate-300">
               {type === 'ellipse' && <p>x²/a² + y²/b² = 1</p>}
               {type === 'parabola' && <p>y = ax² + bx + c</p>}
               {type === 'hyperbola' && <p>x²/a² - y²/b² = 1</p>}
@@ -480,27 +480,27 @@ const VectorsLab: React.FC<{ hex: string }> = ({ hex }) => {
   return (
     <div className="flex flex-col md:flex-row h-full w-full bg-slate-950">
       <div className="flex-1 flex items-center justify-center p-3">
-        <canvas ref={canvasRef} width={400} height={360} className="rounded-2xl border border-white/10 shadow-2xl w-full max-w-[450px]" />
+        <canvas ref={canvasRef} width={400} height={360} className="rounded-2xl border border-black/10 dark:border-white/10 shadow-2xl w-full max-w-[450px]" />
       </div>
-      <div className="w-full md:w-72 bg-slate-900 border-l border-white/5 flex flex-col">
-        <div className="p-4 border-b border-white/5">
+      <div className="w-full md:w-72 bg-slate-900 border-l border-black/5 dark:border-white/5 flex flex-col">
+        <div className="p-4 border-b border-black/5 dark:border-white/5">
           <p className="text-xs font-bold uppercase tracking-widest text-pink-400 mb-1">Math Lab — Vectors</p>
-          <h2 className="text-lg font-bold text-white">{STEPS[Math.min(step, STEPS.length-1)].title}</h2>
+          <h2 className="text-lg font-bold text-slate-900 dark:text-slate-900 dark:text-white">{STEPS[Math.min(step, STEPS.length-1)].title}</h2>
         </div>
         <div className="flex-1 p-4 space-y-3 overflow-y-auto">
           <div className="bg-pink-500/10 border border-pink-500/30 p-3 rounded-xl">
             <p className="text-pink-200 text-xs">{STEPS[Math.min(step, STEPS.length-1)].instruction}</p>
           </div>
-          <div className="bg-white/5 p-3 rounded-xl border border-white/10 space-y-2 text-sm font-mono">
-            <p className="text-gray-400">A = <span className="text-blue-400">({ax}, {ay})</span> |A|={magA.toFixed(2)}</p>
-            <p className="text-gray-400">B = <span className="text-red-400">({bx}, {by})</span> |B|={magB.toFixed(2)}</p>
-            <p className="text-gray-400">A·B = <span className={`font-bold ${dot >= 0 ? 'text-green-400' : 'text-red-400'}`}>{dot}</span> {dot === 0 ? '(⊥ perpendicular!)' : ''}</p>
-            <p className="text-gray-400">A×B = <span className="text-purple-300">{cross.toFixed(2)}</span></p>
-            <p className="text-gray-400">θ = <span className="text-yellow-300">{angle.toFixed(1)}°</span></p>
+          <div className="bg-black/5 dark:bg-white/5 p-3 rounded-xl border border-black/10 dark:border-white/10 space-y-2 text-sm font-mono">
+            <p className="text-gray-600 dark:text-gray-400">A = <span className="text-blue-400">({ax}, {ay})</span> |A|={magA.toFixed(2)}</p>
+            <p className="text-gray-600 dark:text-gray-400">B = <span className="text-red-400">({bx}, {by})</span> |B|={magB.toFixed(2)}</p>
+            <p className="text-gray-600 dark:text-gray-400">A·B = <span className={`font-bold ${dot >= 0 ? 'text-green-400' : 'text-red-400'}`}>{dot}</span> {dot === 0 ? '(⊥ perpendicular!)' : ''}</p>
+            <p className="text-gray-600 dark:text-gray-400">A×B = <span className="text-purple-600 dark:text-purple-300">{cross.toFixed(2)}</span></p>
+            <p className="text-gray-600 dark:text-gray-400">θ = <span className="text-yellow-300">{angle.toFixed(1)}°</span></p>
           </div>
           {[['A', ax, ay, setAx, setAy, '#60a5fa', '#f87171'], ['B', bx, by, setBx, setBy, '#60a5fa', '#f87171']].map(([label, vx, vy, setX, setY, cX, cY]: any) => (
             <div key={label} className="space-y-1">
-              <p className="text-xs font-bold text-gray-400">Vector {label} = ({vx}, {vy})</p>
+              <p className="text-xs font-bold text-gray-600 dark:text-gray-400">Vector {label} = ({vx}, {vy})</p>
               <DraggableSlider label={`${label}x`} min={-5} max={5} value={vx} onChange={v => { setX(v); if (step < 1) setStep(1); }} color={cX} />
               <DraggableSlider label={`${label}y`} min={-4} max={4} value={vy} onChange={v => { setY(v); if (step < 2) setStep(2); }} color={cY} />
             </div>
@@ -519,7 +519,7 @@ const MathLab: React.FC<MathLabProps> = ({ hex, labId }) => {
   if (labId === 'm2') return <IntegrationLab hex={hex} />;
   if (labId === 'm4') return <ConicsLab hex={hex} />;
   if (labId === 'm5') return <VectorsLab hex={hex} />;
-  return <div className="flex items-center justify-center h-full text-gray-400">Math lab coming soon</div>;
+  return <div className="flex items-center justify-center h-full text-gray-600 dark:text-gray-400">Math lab coming soon</div>;
 };
 
 export default MathLab;

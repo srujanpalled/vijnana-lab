@@ -324,7 +324,7 @@ const TitrationLab3D: React.FC<{ hex: string }> = ({ hex }) => {
       `}</style>
 
       {/* Tab bar */}
-      <div className="flex border-b border-white/10 bg-slate-900 shrink-0">
+      <div className="flex border-b border-black/10 dark:border-white/10 bg-slate-900 shrink-0">
         {([
           { key: 'lab',    label: '🔬 3D Lab' },
           { key: 'graph',  label: '📈 pH Curve' },
@@ -415,7 +415,7 @@ const TitrationLab3D: React.FC<{ hex: string }> = ({ hex }) => {
                 </div>
             }
             {phCurve.length > 1 && (
-              <div className="p-4 bg-slate-900 border border-white/10 rounded-xl text-sm text-slate-300 space-y-2">
+              <div className="p-4 bg-slate-900 border border-black/10 dark:border-white/10 rounded-xl text-sm text-slate-700 dark:text-slate-300 space-y-2">
                 <div className="font-bold text-purple-400 mb-1">Key points on curve:</div>
                 <div className="grid grid-cols-2 gap-2 text-xs">
                   {[
@@ -426,7 +426,7 @@ const TitrationLab3D: React.FC<{ hex: string }> = ({ hex }) => {
                   ].map(([k,v]) => (
                     <div key={k} className="bg-slate-800 px-3 py-2 rounded-lg">
                       <div className="text-slate-500 text-[10px]">{k}</div>
-                      <div className="font-mono text-purple-300 font-bold">{v}</div>
+                      <div className="font-mono text-purple-600 dark:text-purple-300 font-bold">{v}</div>
                     </div>
                   ))}
                 </div>
@@ -437,8 +437,8 @@ const TitrationLab3D: React.FC<{ hex: string }> = ({ hex }) => {
 
         {/* ── THEORY ── */}
         {tab === 'theory' && (
-          <div className="flex-1 p-6 overflow-y-auto space-y-4 text-slate-300 text-sm">
-            <h2 className="text-lg font-bold text-purple-300">Acid-Base Titration Theory</h2>
+          <div className="flex-1 p-6 overflow-y-auto space-y-4 text-slate-700 dark:text-slate-700 dark:text-slate-300 text-sm">
+            <h2 className="text-lg font-bold text-purple-600 dark:text-purple-300">Acid-Base Titration Theory</h2>
             {[
               { title: 'Neutralization Reaction', body: 'HCl(aq) + NaOH(aq) → NaCl(aq) + H₂O(l) — At the equivalence point, moles of acid = moles of base.' },
               { title: 'Quantitative Formula', body: 'M₁V₁ = M₂V₂  (for 1:1 stoichiometry). Means molarity × volume is conserved across equivalence.' },
@@ -448,16 +448,16 @@ const TitrationLab3D: React.FC<{ hex: string }> = ({ hex }) => {
               { title: 'Indicator: Phenolphthalein', body: 'Colorless below pH 8.3, pink/magenta above pH 8.3. Endpoint = first permanent pink color. This slightly overshoots equivalence point.' },
               { title: 'Enthalpy of Neutralisation', body: 'ΔH = −57.1 kJ/mol for strong acid-strong base. Exothermic. Solution warms slightly as neutralization proceeds.' },
             ].map(s => (
-              <div key={s.title} className="bg-slate-900 border border-white/10 rounded-xl p-4">
-                <div className="font-bold text-purple-300 mb-1">{s.title}</div>
-                <div className="text-slate-400 text-xs leading-relaxed">{s.body}</div>
+              <div key={s.title} className="bg-slate-900 border border-black/10 dark:border-white/10 rounded-xl p-4">
+                <div className="font-bold text-purple-600 dark:text-purple-300 mb-1">{s.title}</div>
+                <div className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">{s.body}</div>
               </div>
             ))}
           </div>
         )}
 
         {/* ── CONTROLS ── */}
-        <div className="w-64 shrink-0 border-l border-white/10 bg-slate-900 flex flex-col p-4 gap-4 overflow-y-auto">
+        <div className="w-64 shrink-0 border-l border-black/10 dark:border-white/10 bg-slate-900 flex flex-col p-4 gap-4 overflow-y-auto">
 
           {/* Meters */}
           <div className="grid grid-cols-2 gap-2">
@@ -467,7 +467,7 @@ const TitrationLab3D: React.FC<{ hex: string }> = ({ hex }) => {
               { label: 'Endpoint', val: `${res.V_base_theoretical.toFixed(1)}`, unit: 'mL', color: '#a855f7' },
               { label: 'M(HCl) calc', val: res.M_acid_back_calculated.toFixed(4), unit: 'M', color: '#22c55e' },
             ].map(m => (
-              <div key={m.label} className="bg-slate-950 border border-white/10 rounded-lg p-2 text-center">
+              <div key={m.label} className="bg-slate-950 border border-black/10 dark:border-white/10 rounded-lg p-2 text-center">
                 <div className="text-[9px] text-slate-500 uppercase font-bold mb-1">{m.label}</div>
                 <div className="font-mono font-bold text-xs" style={{ color: m.color }}>{m.val}</div>
                 {m.unit && <div className="text-[8px] text-slate-500">{m.unit}</div>}
@@ -478,14 +478,14 @@ const TitrationLab3D: React.FC<{ hex: string }> = ({ hex }) => {
           {/* Manual volume slider */}
           <div>
             <div className="flex justify-between items-end mb-2">
-              <span className="text-xs font-bold text-slate-300 uppercase tracking-widest">NaOH Volume</span>
-              <div className="flex bg-black/40 px-2 py-0.5 rounded-md border border-white/10">
-                <span className="font-mono text-[10px] text-white font-bold">{volAdded.toFixed(2)}</span>
+              <span className="text-xs font-bold text-slate-700 dark:text-slate-700 dark:text-slate-300 uppercase tracking-widest">NaOH Volume</span>
+              <div className="flex bg-black/40 px-2 py-0.5 rounded-md border border-black/10 dark:border-white/10">
+                <span className="font-mono text-[10px] text-slate-900 dark:text-slate-900 dark:text-white font-bold">{volAdded.toFixed(2)}</span>
                 <span className="text-[9px] text-cyan-400 ml-1">mL</span>
               </div>
             </div>
             
-            <div className="relative h-2 bg-[#0a0f1a] rounded-full border border-white/5 shadow-inner mb-2">
+            <div className="relative h-2 bg-[#0a0f1a] rounded-full border border-black/5 dark:border-white/5 shadow-inner mb-2">
               <div className="absolute left-0 top-0 bottom-0 rounded-full bg-purple-500" style={{ width: `${((volAdded - 0) / (30 - 0)) * 100}%` }} />
               <input type="range" min="0" max="30" step="0.1" value={volAdded}
                 onChange={e => {
@@ -508,8 +508,8 @@ const TitrationLab3D: React.FC<{ hex: string }> = ({ hex }) => {
 
           {/* Color indicator strip */}
           <div>
-            <div className="text-[10px] font-bold text-slate-400 uppercase mb-1">pH Indicator Strip</div>
-            <div className="w-full h-8 rounded-lg border border-white/10 transition-all duration-700"
+            <div className="text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">pH Indicator Strip</div>
+            <div className="w-full h-8 rounded-lg border border-black/10 dark:border-white/10 transition-all duration-700"
               style={{ background: pHToColor(pH), boxShadow: `0 0 12px ${pHToColor(pH)}60` }} />
             <div className="flex justify-between text-[8px] text-slate-500 mt-0.5">
               <span>Acidic</span><span>Neutral</span><span>Basic</span>
@@ -529,7 +529,7 @@ const TitrationLab3D: React.FC<{ hex: string }> = ({ hex }) => {
           </div>
 
           {/* Formula card */}
-          <div className="bg-slate-950 border border-white/10 rounded-xl p-3 space-y-1.5">
+          <div className="bg-slate-950 border border-black/10 dark:border-white/10 rounded-xl p-3 space-y-1.5">
             <div className="text-[9px] font-bold text-slate-500 uppercase">Formulae</div>
             {['HCl + NaOH → NaCl + H₂O', 'M₁V₁ = M₂V₂', 'pH = -log[H⁺]', 'pOH = -log[OH⁻]', 'pH + pOH = 14', 'ΔH = -57.1 kJ/mol'].map(f => (
               <div key={f} className="font-mono text-[9px] text-purple-400 bg-purple-900/20 px-2 py-1 rounded">{f}</div>

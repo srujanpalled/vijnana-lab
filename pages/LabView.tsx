@@ -69,17 +69,17 @@ const LabView: React.FC = () => {
     };
 
     return (
-        <div className="pt-20 min-h-screen flex flex-col bg-slate-50 dark:bg-[#0f172a] overflow-hidden font-sans transition-colors duration-300">
+        <div className="pt-20 h-screen flex flex-col bg-slate-50 dark:bg-[#0f172a] overflow-hidden font-sans transition-colors duration-300">
             {/* Top Bar */}
-            <div className="bg-white/80 dark:bg-slate-900/80 border-b border-slate-200 dark:border-white/5 backdrop-blur-md px-6 py-3 flex justify-between items-center z-20">
-                <div className="flex items-center text-sm text-slate-500 dark:text-gray-400 overflow-hidden whitespace-nowrap">
-                    <Link to="/" className="hover:text-slate-900 dark:hover:text-white">Home</Link>
+            <div className="bg-white/80 dark:bg-slate-900/80 border-b border-slate-200 dark:border-black/5 dark:border-white/5 backdrop-blur-md px-6 py-3 flex justify-between items-center z-20">
+                <div className="flex items-center text-sm text-slate-500 dark:text-gray-600 dark:text-gray-400 overflow-hidden whitespace-nowrap">
+                    <Link to="/" className="hover:text-slate-900 dark:hover:text-slate-900 dark:text-slate-900 dark:text-white">Home</Link>
                     <ChevronRight size={14} className="mx-2" />
-                    <Link to="/subjects" className="hover:text-slate-900 dark:hover:text-white">Subjects</Link>
+                    <Link to="/subjects" className="hover:text-slate-900 dark:hover:text-slate-900 dark:text-slate-900 dark:text-white">Subjects</Link>
                     <ChevronRight size={14} className="mx-2" />
                     <Link to={`/subjects/${subject.id}`} style={{ color: subject.hex }} className="font-medium hover:brightness-110 hover:underline">{subject.name}</Link>
                     <ChevronRight size={14} className="mx-2" />
-                    <span className="text-slate-900 dark:text-white truncate">{lab.title}</span>
+                    <span className="text-slate-900 dark:text-slate-900 dark:text-slate-900 dark:text-white truncate">{lab.title}</span>
                 </div>
 
                 <div className="flex items-center gap-4">
@@ -92,12 +92,12 @@ const LabView: React.FC = () => {
                     >
                         {teacherMode ? 'Teacher Mode On' : 'Student Mode'}
                     </button>
-                    <div className="flex items-center gap-2 bg-slate-100 dark:bg-white/5 rounded-full px-3 py-1 border border-slate-200 dark:border-white/10">
-                        <Languages size={14} className="text-slate-500 dark:text-gray-300" />
+                    <div className="flex items-center gap-2 bg-slate-100 dark:bg-black/5 dark:bg-white/5 rounded-full px-3 py-1 border border-slate-200 dark:border-black/10 dark:border-white/10">
+                        <Languages size={14} className="text-slate-500 dark:text-gray-700 dark:text-gray-700 dark:text-gray-300" />
                         <select
                             value={lang}
                             onChange={(e) => setLang(e.target.value as 'en' | 'hi' | 'kn')}
-                            className="bg-transparent text-xs text-slate-700 dark:text-white focus:outline-none cursor-pointer"
+                            className="bg-transparent text-xs text-slate-700 dark:text-slate-900 dark:text-slate-900 dark:text-white focus:outline-none cursor-pointer"
                         >
                             <option value="en" className="bg-white dark:bg-slate-800">English</option>
                             <option value="hi" className="bg-white dark:bg-slate-800">Hindi</option>
@@ -110,16 +110,16 @@ const LabView: React.FC = () => {
             <div className="flex flex-col lg:flex-row flex-1 min-h-0 relative">
 
                 {/* Sidebar / Tabs */}
-                <div className="lg:w-64 bg-white/50 dark:bg-slate-900/50 border-r border-slate-200 dark:border-white/5 flex lg:flex-col overflow-x-auto lg:overflow-y-auto scrollbar-hide shrink-0">
+                <div className="lg:w-64 bg-white/50 dark:bg-slate-900/50 border-r border-slate-200 dark:border-black/5 dark:border-white/5 flex lg:flex-col overflow-x-auto lg:overflow-y-auto scrollbar-hide shrink-0">
                     <div className="p-4 hidden lg:block">
-                        <Link to={`/subjects/${subject.id}`} className="group flex items-center gap-2 text-xs font-bold text-slate-500 dark:text-gray-400 mb-6 hover:text-slate-900 dark:hover:text-white transition-colors">
-                            <div className="w-6 h-6 rounded-lg bg-slate-200 dark:bg-white/10 flex items-center justify-center group-hover:bg-slate-300 dark:group-hover:bg-white/20 transition-colors">
+                        <Link to={`/subjects/${subject.id}`} className="group flex items-center gap-2 text-xs font-bold text-slate-500 dark:text-gray-600 dark:text-gray-400 mb-6 hover:text-slate-900 dark:hover:text-slate-900 dark:text-slate-900 dark:text-white transition-colors">
+                            <div className="w-6 h-6 rounded-lg bg-slate-200 dark:bg-black/10 dark:bg-white/10 flex items-center justify-center group-hover:bg-slate-300 dark:group-hover:bg-black/20 dark:bg-white/20 transition-colors">
                                 <ArrowLeft size={14} />
                             </div>
                             Back to Modules
                         </Link>
-                        <h1 className="text-xl font-bold text-slate-900 dark:text-white leading-tight transition-colors">{lab.title}</h1>
-                        <p className="text-xs text-slate-500 dark:text-gray-400 mt-1">{lab.difficulty} • {lab.duration}</p>
+                        <h1 className="text-xl font-bold text-slate-900 dark:text-slate-900 dark:text-slate-900 dark:text-white leading-tight transition-colors">{lab.title}</h1>
+                        <p className="text-xs text-slate-500 dark:text-gray-600 dark:text-gray-400 mt-1">{lab.difficulty} • {lab.duration}</p>
                     </div>
 
                     <nav className="flex lg:flex-col p-2 lg:p-4 gap-2">
@@ -143,10 +143,10 @@ const LabView: React.FC = () => {
                     </nav>
 
                     {teacherMode && (
-                        <div className="mt-auto p-4 border-t border-slate-200 dark:border-white/10 bg-blue-50 dark:bg-blue-900/20">
+                        <div className="mt-auto p-4 border-t border-slate-200 dark:border-black/10 dark:border-white/10 bg-blue-50 dark:bg-blue-900/20">
                             <h3 className="text-xs font-bold text-blue-600 dark:text-blue-400 uppercase mb-2">Teacher Controls</h3>
                             <button className="w-full mb-2 py-2 rounded bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-colors">Assign to Class</button>
-                            <button className="w-full py-2 rounded border border-blue-400/30 text-blue-600 dark:text-blue-300 hover:bg-blue-100 dark:hover:text-white text-xs transition-colors">Download Worksheet</button>
+                            <button className="w-full py-2 rounded border border-blue-400/30 text-blue-600 dark:text-blue-600 dark:text-blue-300 hover:bg-blue-100 dark:hover:text-slate-900 dark:text-white text-xs transition-colors">Download Worksheet</button>
                         </div>
                     )}
                 </div>
@@ -155,11 +155,11 @@ const LabView: React.FC = () => {
                 <div className="flex-1 relative bg-white dark:bg-slate-950 flex flex-col min-w-0 transition-colors">
 
                     {/* Toolbar */}
-                    <div className="h-12 border-b border-slate-200 dark:border-white/5 flex items-center justify-between px-6 bg-slate-50/50 dark:bg-white/[0.02]">
+                    <div className="h-12 border-b border-slate-200 dark:border-black/5 dark:border-white/5 flex items-center justify-between px-6 bg-slate-50/50 dark:bg-white/[0.02]">
                         <span className="text-xs text-slate-500 dark:text-gray-500 uppercase tracking-wider font-bold">Virtual Lab Workspace</span>
                         <div className="flex gap-3">
                             {activeTab === 'theory' && (
-                                <button onClick={() => speakText(lab.content?.theory || '')} className="p-1.5 hover:bg-slate-200 dark:hover:bg-white/10 rounded text-slate-400 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white" title="Read Aloud">
+                                <button onClick={() => speakText(lab.content?.theory || '')} className="p-1.5 hover:bg-slate-200 dark:hover:bg-black/10 dark:bg-white/10 rounded text-slate-400 dark:text-gray-400 hover:text-slate-900 dark:hover:text-slate-900 dark:text-white" title="Read Aloud">
                                     <Volume2 size={16} />
                                 </button>
                             )}
@@ -179,14 +179,14 @@ const LabView: React.FC = () => {
                                 >
                                     <div className="max-w-3xl mx-auto space-y-8">
                                         <section>
-                                            <h2 className="text-2xl font-display font-bold text-slate-900 dark:text-white mb-4 border-b border-slate-200 dark:border-white/10 pb-2">Aim</h2>
-                                            <p className="text-lg text-slate-700 dark:text-gray-300 leading-relaxed">{lab.content?.aim}</p>
+                                            <h2 className="text-2xl font-display font-bold text-slate-900 dark:text-slate-900 dark:text-slate-900 dark:text-white mb-4 border-b border-slate-200 dark:border-black/10 dark:border-white/10 pb-2">Aim</h2>
+                                            <p className="text-lg text-slate-700 dark:text-gray-700 dark:text-gray-700 dark:text-gray-300 leading-relaxed">{lab.content?.aim}</p>
                                         </section>
 
                                         {lab.content?.objectives && (
                                             <section>
-                                                <h2 className="text-2xl font-display font-bold text-slate-900 dark:text-white mb-4 border-b border-slate-200 dark:border-white/10 pb-2">Learning Objectives</h2>
-                                                <ul className="list-disc list-inside space-y-2 text-slate-700 dark:text-gray-300 text-lg">
+                                                <h2 className="text-2xl font-display font-bold text-slate-900 dark:text-slate-900 dark:text-slate-900 dark:text-white mb-4 border-b border-slate-200 dark:border-black/10 dark:border-white/10 pb-2">Learning Objectives</h2>
+                                                <ul className="list-disc list-inside space-y-2 text-slate-700 dark:text-gray-700 dark:text-gray-700 dark:text-gray-300 text-lg">
                                                     {lab.content.objectives.map((obj) => (
                                                         <li key={obj}>{obj}</li>
                                                     ))}
@@ -195,17 +195,17 @@ const LabView: React.FC = () => {
                                         )}
 
                                         <section>
-                                            <h2 className="text-2xl font-display font-bold text-slate-900 dark:text-white mb-4 border-b border-slate-200 dark:border-white/10 pb-2">Requirements</h2>
+                                            <h2 className="text-2xl font-display font-bold text-slate-900 dark:text-slate-900 dark:text-slate-900 dark:text-white mb-4 border-b border-slate-200 dark:border-black/10 dark:border-white/10 pb-2">Requirements</h2>
                                             <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                                 {lab.content?.requirements?.map((req) => (
-                                                    <li key={req} className="flex items-center gap-3 p-3 rounded-lg bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/5">
+                                                    <li key={req} className="flex items-center gap-3 p-3 rounded-lg bg-slate-100 dark:bg-black/5 dark:bg-white/5 border border-slate-200 dark:border-black/5 dark:border-white/5">
                                                         <div className="w-2 h-2 rounded-full" style={{ backgroundColor: subject.hex }}></div>
-                                                        <span className="text-slate-700 dark:text-gray-300">{req}</span>
+                                                        <span className="text-slate-700 dark:text-gray-700 dark:text-gray-700 dark:text-gray-300">{req}</span>
                                                     </li>
                                                 ))}
                                             </ul>
                                         </section>
-                                        <button onClick={() => setActiveTab('theory')} className="mt-8 px-6 py-3 rounded-full bg-slate-900 dark:bg-white/10 hover:bg-slate-800 dark:hover:bg-white/20 text-white font-medium flex items-center gap-2 transition-colors">
+                                        <button onClick={() => setActiveTab('theory')} className="mt-8 px-6 py-3 rounded-full bg-slate-900 dark:bg-black/10 dark:bg-white/10 hover:bg-slate-800 dark:hover:bg-black/20 dark:bg-white/20 text-white font-medium flex items-center gap-2 transition-colors">
                                             Next: Theory <ChevronRight size={16} />
                                         </button>
                                     </div>
@@ -221,12 +221,12 @@ const LabView: React.FC = () => {
                                 >
                                     <div className="max-w-3xl mx-auto pb-12">
                                         <h2 className="text-3xl font-display font-bold mb-6" style={{ color: subject.hex }}>Theoretical Background</h2>
-                                        <div className="text-slate-700 dark:text-gray-300 text-lg leading-relaxed space-y-6">
+                                        <div className="text-slate-700 dark:text-gray-700 dark:text-gray-700 dark:text-gray-300 text-lg leading-relaxed space-y-6">
                                             {lab.content?.theory?.split('\n').map((para) => (
                                                 para.trim() && <p key={para}>{para}</p>
                                             ))}
                                         </div>
-                                        <button onClick={() => setActiveTab('procedure')} className="mt-8 px-6 py-3 rounded-full bg-slate-900 dark:bg-white/10 hover:bg-slate-800 dark:hover:bg-white/20 text-white font-medium flex items-center gap-2 transition-colors">
+                                        <button onClick={() => setActiveTab('procedure')} className="mt-8 px-6 py-3 rounded-full bg-slate-900 dark:bg-black/10 dark:bg-white/10 hover:bg-slate-800 dark:hover:bg-black/20 dark:bg-white/20 text-white font-medium flex items-center gap-2 transition-colors">
                                             Next: Procedure <ChevronRight size={16} />
                                         </button>
                                     </div>
@@ -246,7 +246,7 @@ const LabView: React.FC = () => {
                                                 <h3 className="text-lg font-bold text-red-600 dark:text-red-400 mb-3 flex items-center gap-2">
                                                     <AlertTriangle size={20} /> Safety Precautions
                                                 </h3>
-                                                <ul className="list-disc list-inside space-y-1 text-slate-700 dark:text-gray-300">
+                                                <ul className="list-disc list-inside space-y-1 text-slate-700 dark:text-gray-700 dark:text-gray-700 dark:text-gray-300">
                                                     {lab.content.safety.map((s) => <li key={s}>{s}</li>)}
                                                 </ul>
                                             </div>
@@ -255,18 +255,18 @@ const LabView: React.FC = () => {
                                         <h2 className="text-3xl font-display font-bold mb-8" style={{ color: subject.hex }}>Step-by-Step Procedure</h2>
                                         <div className="space-y-4">
                                             {lab.content?.procedure?.map((step, index) => (
-                                                <div key={step} className="flex gap-5 p-5 rounded-2xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/5 hover:bg-slate-200 dark:hover:bg-white/10 transition-all">
-                                                    <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-white text-sm shadow-lg" style={{ backgroundColor: subject.hex }}>
+                                                <div key={step} className="flex gap-5 p-5 rounded-2xl bg-slate-100 dark:bg-black/5 dark:bg-white/5 border border-slate-200 dark:border-black/5 dark:border-white/5 hover:bg-slate-200 dark:hover:bg-black/10 dark:bg-white/10 transition-all">
+                                                    <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-slate-900 dark:text-slate-900 dark:text-white text-sm shadow-lg" style={{ backgroundColor: subject.hex }}>
                                                         {index + 1}
                                                     </div>
-                                                    <p className="text-slate-700 dark:text-gray-200 text-lg leading-relaxed">{step}</p>
+                                                    <p className="text-slate-700 dark:text-gray-800 dark:text-gray-800 dark:text-gray-200 text-lg leading-relaxed">{step}</p>
                                                 </div>
                                             ))}
                                         </div>
                                         <div className="mt-12 flex justify-center">
                                             <button
                                                 onClick={() => setActiveTab(lab.content?.videoId ? 'video' : 'simulation')}
-                                                className="px-8 py-4 rounded-full bg-slate-900 dark:bg-white/10 hover:bg-slate-800 dark:hover:bg-white/20 text-white font-medium flex items-center gap-2 transition-colors"
+                                                className="px-8 py-4 rounded-full bg-slate-900 dark:bg-black/10 dark:bg-white/10 hover:bg-slate-800 dark:hover:bg-black/20 dark:bg-white/20 text-white font-medium flex items-center gap-2 transition-colors"
                                             >
                                                 Next: {lab.content?.videoId ? 'Video Lecture' : 'Start Simulation'} <Play size={16} fill="currentColor" />
                                             </button>
@@ -284,7 +284,7 @@ const LabView: React.FC = () => {
                                 >
                                     <div className="max-w-4xl mx-auto pb-12">
                                         <h2 className="text-3xl font-display font-bold mb-8" style={{ color: subject.hex }}>Video Lecture</h2>
-                                        <div className="aspect-video w-full rounded-2xl overflow-hidden shadow-2xl border border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-white/5">
+                                        <div className="aspect-video w-full rounded-2xl overflow-hidden shadow-2xl border border-slate-200 dark:border-black/10 dark:border-white/10 bg-slate-100 dark:bg-black/5 dark:bg-white/5">
                                             <iframe 
                                                 className="w-full h-full"
                                                 src={`https://www.youtube.com/embed/${lab.content.videoId}`} 
@@ -297,7 +297,7 @@ const LabView: React.FC = () => {
                                         <div className="mt-12 flex justify-center">
                                             <button
                                                 onClick={() => setActiveTab('simulation')}
-                                                className="px-8 py-4 rounded-full bg-slate-900 dark:bg-white/10 hover:bg-slate-800 dark:hover:bg-white/20 text-white font-medium flex items-center gap-2 transition-colors"
+                                                className="px-8 py-4 rounded-full bg-slate-900 dark:bg-black/10 dark:bg-white/10 hover:bg-slate-800 dark:hover:bg-black/20 dark:bg-white/20 text-white font-medium flex items-center gap-2 transition-colors"
                                             >
                                                 Next: Start Simulation <Play size={16} fill="currentColor" />
                                             </button>
@@ -332,23 +332,23 @@ const LabView: React.FC = () => {
                                     className="absolute inset-0 overflow-y-auto p-6 md:p-10 custom-scrollbar"
                                 >
                                     <div className="max-w-3xl mx-auto">
-                                        <h2 className="text-3xl font-display font-bold mb-8 text-slate-900 dark:text-white flex items-center gap-3">
+                                        <h2 className="text-3xl font-display font-bold mb-8 text-slate-900 dark:text-slate-900 dark:text-slate-900 dark:text-white flex items-center gap-3">
                                             <Globe className="text-blue-500 dark:text-blue-400" size={32} /> Real-World Applications
                                         </h2>
                                         {lab.content?.realWorldApplications ? (
                                             <div className="grid gap-6">
                                                 {lab.content.realWorldApplications.map((app, index) => (
-                                                    <div key={app} className="bg-slate-100 dark:bg-white/5 p-6 rounded-2xl border border-slate-200 dark:border-white/10 hover:bg-slate-200 dark:hover:bg-white/10 transition-all flex gap-4 items-start">
+                                                    <div key={app} className="bg-slate-100 dark:bg-black/5 dark:bg-white/5 p-6 rounded-2xl border border-slate-200 dark:border-black/10 dark:border-white/10 hover:bg-slate-200 dark:hover:bg-black/10 dark:bg-white/10 transition-all flex gap-4 items-start">
                                                         <div className="mt-1 w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center flex-shrink-0 text-blue-600 dark:text-blue-400 font-bold">
                                                             {index + 1}
                                                         </div>
-                                                        <p className="text-slate-700 dark:text-gray-200 text-lg leading-relaxed">{app}</p>
+                                                        <p className="text-slate-700 dark:text-gray-800 dark:text-gray-800 dark:text-gray-200 text-lg leading-relaxed">{app}</p>
                                                     </div>
                                                 ))}
                                             </div>
                                         ) : (
-                                            <div className="text-center p-12 bg-slate-100 dark:bg-white/5 rounded-2xl border border-slate-200 dark:border-white/10">
-                                                <p className="text-slate-500 dark:text-gray-400">Content coming soon...</p>
+                                            <div className="text-center p-12 bg-slate-100 dark:bg-black/5 dark:bg-white/5 rounded-2xl border border-slate-200 dark:border-black/10 dark:border-white/10">
+                                                <p className="text-slate-500 dark:text-gray-600 dark:text-gray-400">Content coming soon...</p>
                                             </div>
                                         )}
                                     </div>
@@ -364,12 +364,12 @@ const LabView: React.FC = () => {
                                     className="absolute inset-0 overflow-y-auto p-6 md:p-10 custom-scrollbar"
                                 >
                                     <div className="max-w-3xl mx-auto">
-                                        <h2 className="text-3xl font-display font-bold mb-8 text-slate-900 dark:text-white">Viva Voce</h2>
+                                        <h2 className="text-3xl font-display font-bold mb-8 text-slate-900 dark:text-slate-900 dark:text-slate-900 dark:text-white">Viva Voce</h2>
                                         <div className="space-y-6">
                                             {lab.content?.vivaQuestions?.map((q, i) => (
-                                                <div key={q.question} className="bg-slate-100 dark:bg-white/5 p-6 rounded-xl border border-slate-200 dark:border-white/10">
-                                                    <h3 className="text-lg font-semibold text-blue-600 dark:text-blue-300 mb-2">Q{i + 1}: {q.question}</h3>
-                                                    <div className="mt-2 text-slate-600 dark:text-gray-400 text-sm italic border-l-2 border-slate-400 dark:border-gray-600 pl-3">
+                                                <div key={q.question} className="bg-slate-100 dark:bg-black/5 dark:bg-white/5 p-6 rounded-xl border border-slate-200 dark:border-black/10 dark:border-white/10">
+                                                    <h3 className="text-lg font-semibold text-blue-600 dark:text-blue-600 dark:text-blue-300 mb-2">Q{i + 1}: {q.question}</h3>
+                                                    <div className="mt-2 text-slate-600 dark:text-gray-600 dark:text-gray-400 text-sm italic border-l-2 border-slate-400 dark:border-gray-600 pl-3">
                                                         Ans: {q.answer}
                                                     </div>
                                                 </div>
@@ -387,24 +387,24 @@ const LabView: React.FC = () => {
                                     className="absolute inset-0 overflow-y-auto p-6 md:p-10 custom-scrollbar"
                                 >
                                     <div className="max-w-4xl mx-auto pb-12">
-                                        <h2 className="text-3xl font-display font-bold mb-8 text-slate-900 dark:text-white">Lab Assignment</h2>
+                                        <h2 className="text-3xl font-display font-bold mb-8 text-slate-900 dark:text-slate-900 dark:text-slate-900 dark:text-white">Lab Assignment</h2>
 
                                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                                             {/* Questions Column */}
                                             <div className="lg:col-span-2 space-y-6">
                                                 {lab.content?.assignments && lab.content.assignments.length > 0 ? (
                                                     lab.content.assignments.map((assign, i) => (
-                                                        <div key={assign.id} className="bg-slate-100 dark:bg-white/5 p-6 rounded-xl border border-slate-200 dark:border-white/10 hover:shadow-md transition-shadow">
+                                                        <div key={assign.id} className="bg-slate-100 dark:bg-black/5 dark:bg-white/5 p-6 rounded-xl border border-slate-200 dark:border-black/10 dark:border-white/10 hover:shadow-md transition-shadow">
                                                             <div className="flex justify-between items-start mb-3">
                                                                 <span className="text-sm font-bold text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-900/30 px-2 py-1 rounded">Question {i + 1}</span>
-                                                                <span className="text-xs font-semibold text-slate-500 dark:text-gray-400">{assign.marks} Marks</span>
+                                                                <span className="text-xs font-semibold text-slate-500 dark:text-gray-600 dark:text-gray-400">{assign.marks} Marks</span>
                                                             </div>
-                                                            <p className="text-slate-800 dark:text-gray-200 leading-relaxed font-medium">{assign.question}</p>
+                                                            <p className="text-slate-800 dark:text-gray-800 dark:text-gray-800 dark:text-gray-200 leading-relaxed font-medium">{assign.question}</p>
                                                         </div>
                                                     ))
                                                 ) : (
-                                                    <div className="bg-slate-100 dark:bg-white/5 p-8 rounded-xl border border-slate-200 dark:border-white/10 text-center">
-                                                        <p className="text-slate-500 dark:text-gray-400">No assignments posted for this module yet.</p>
+                                                    <div className="bg-slate-100 dark:bg-black/5 dark:bg-white/5 p-8 rounded-xl border border-slate-200 dark:border-black/10 dark:border-white/10 text-center">
+                                                        <p className="text-slate-500 dark:text-gray-600 dark:text-gray-400">No assignments posted for this module yet.</p>
                                                     </div>
                                                 )}
                                             </div>
@@ -412,10 +412,10 @@ const LabView: React.FC = () => {
                                             {/* Submission & Notes Column */}
                                             <div className="space-y-6">
                                                 <div className="bg-blue-50 dark:bg-blue-900/10 p-6 rounded-xl border border-blue-200 dark:border-blue-500/20">
-                                                    <h3 className="font-bold text-blue-700 dark:text-blue-300 mb-2 flex items-center gap-2">
+                                                    <h3 className="font-bold text-blue-700 dark:text-blue-600 dark:text-blue-300 mb-2 flex items-center gap-2">
                                                         <AlertTriangle size={18} /> Important Instructions
                                                     </h3>
-                                                    <ul className="text-sm text-blue-900 dark:text-blue-200 space-y-2 list-disc list-inside">
+                                                    <ul className="text-sm text-blue-900 dark:text-blue-600 dark:text-blue-200 space-y-2 list-disc list-inside">
                                                         <li>Show all working for calculation problems.</li>
                                                         <li>Diagrams must be labeled clearly.</li>
                                                         <li>Submit your work in PDF format only.</li>
@@ -423,11 +423,11 @@ const LabView: React.FC = () => {
                                                     </ul>
                                                 </div>
 
-                                                <div className="bg-white dark:bg-white/5 p-6 rounded-xl border border-slate-200 dark:border-white/10 shadow-sm">
-                                                    <h3 className="font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+                                                <div className="bg-white dark:bg-black/5 dark:bg-white/5 p-6 rounded-xl border border-slate-200 dark:border-black/10 dark:border-white/10 shadow-sm">
+                                                    <h3 className="font-bold text-slate-900 dark:text-slate-900 dark:text-slate-900 dark:text-white mb-4 flex items-center gap-2">
                                                         <Upload size={18} /> Submit Work
                                                     </h3>
-                                                    <div className="border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg p-6 text-center cursor-pointer hover:bg-slate-50 dark:hover:bg-white/5 transition-colors relative">
+                                                    <div className="border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg p-6 text-center cursor-pointer hover:bg-slate-50 dark:hover:bg-black/5 dark:bg-white/5 transition-colors relative">
                                                         <input
                                                             type="file"
                                                             accept=".pdf,.doc,.docx"
@@ -440,7 +440,7 @@ const LabView: React.FC = () => {
                                                                 <span className="text-sm truncate max-w-full">{submissionFile.name}</span>
                                                             </div>
                                                         ) : (
-                                                            <div className="text-slate-500 dark:text-gray-400 flex flex-col items-center gap-2">
+                                                            <div className="text-slate-500 dark:text-gray-600 dark:text-gray-400 flex flex-col items-center gap-2">
                                                                 <Upload size={24} />
                                                                 <span className="text-xs">Click to upload PDF</span>
                                                             </div>
@@ -468,12 +468,12 @@ const LabView: React.FC = () => {
                                     className="absolute inset-0 overflow-y-auto p-6 md:p-10 custom-scrollbar"
                                 >
                                     <div className="max-w-3xl mx-auto">
-                                        <h2 className="text-3xl font-display font-bold mb-8 text-slate-900 dark:text-white">Post-Lab Quiz</h2>
+                                        <h2 className="text-3xl font-display font-bold mb-8 text-slate-900 dark:text-slate-900 dark:text-slate-900 dark:text-white">Post-Lab Quiz</h2>
                                         {lab.content?.quizQuestions ? (
                                             <div className="space-y-8">
                                                 {lab.content.quizQuestions.map((q, i) => (
-                                                    <div key={q.id} className="bg-slate-100 dark:bg-white/5 p-6 rounded-xl border border-slate-200 dark:border-white/10">
-                                                        <p className="text-lg font-medium text-slate-900 dark:text-white mb-4">{i + 1}. {q.question}</p>
+                                                    <div key={q.id} className="bg-slate-100 dark:bg-black/5 dark:bg-white/5 p-6 rounded-xl border border-slate-200 dark:border-black/10 dark:border-white/10">
+                                                        <p className="text-lg font-medium text-slate-900 dark:text-slate-900 dark:text-slate-900 dark:text-white mb-4">{i + 1}. {q.question}</p>
                                                         <div className="grid grid-cols-1 gap-3">
                                                             {q.options.map((opt, optIdx) => (
                                                                 <button
@@ -500,7 +500,7 @@ const LabView: React.FC = () => {
                                                 {showQuizResult ? (
                                                     <div className="p-6 bg-green-100 dark:bg-green-900/20 border border-green-500/30 rounded-xl text-center">
                                                         <p className="text-2xl font-bold text-green-600 dark:text-green-400 mb-2">Quiz Completed!</p>
-                                                        <button onClick={() => { setShowQuizResult(false); setQuizAnswers({}) }} className="text-sm underline text-slate-500 dark:text-gray-400">Retake</button>
+                                                        <button onClick={() => { setShowQuizResult(false); setQuizAnswers({}) }} className="text-sm underline text-slate-500 dark:text-gray-600 dark:text-gray-400">Retake</button>
                                                     </div>
                                                 ) : (
                                                     <button onClick={handleQuizSubmit} className="px-8 py-3 bg-green-600 hover:bg-green-500 text-white font-bold rounded-lg shadow-lg">
@@ -524,30 +524,30 @@ const LabView: React.FC = () => {
                                 >
                                     <div className="max-w-5xl mx-auto pb-12">
                                         <div className="flex justify-between items-center mb-6">
-                                            <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Observations</h2>
+                                            <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-900 dark:text-slate-900 dark:text-white">Observations</h2>
                                             <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold shadow-lg shadow-blue-900/20">
                                                 <Save size={18} /> Export Report
                                             </button>
                                         </div>
 
                                         {lab.content?.observationTable ? (
-                                            <div className="border border-slate-200 dark:border-white/10 rounded-xl overflow-hidden">
+                                            <div className="border border-slate-200 dark:border-black/10 dark:border-white/10 rounded-xl overflow-hidden">
                                                 <table className="w-full text-left">
-                                                    <thead className="bg-slate-100 dark:bg-white/5 text-slate-500 dark:text-gray-400 uppercase text-xs font-bold">
+                                                    <thead className="bg-slate-100 dark:bg-black/5 dark:bg-white/5 text-slate-500 dark:text-gray-400 uppercase text-xs font-bold">
                                                         <tr>
-                                                            <th className="p-4 border-b border-slate-200 dark:border-white/10 w-16">#</th>
+                                                            <th className="p-4 border-b border-slate-200 dark:border-black/10 dark:border-white/10 w-16">#</th>
                                                             {lab.content.observationTable.columns.map((col) => (
-                                                                <th key={col} className="p-4 border-b border-slate-200 dark:border-white/10">{col}</th>
+                                                                <th key={col} className="p-4 border-b border-slate-200 dark:border-black/10 dark:border-white/10">{col}</th>
                                                             ))}
                                                         </tr>
                                                     </thead>
-                                                    <tbody className="divide-y divide-slate-200 dark:divide-white/5 text-slate-700 dark:text-gray-300">
+                                                    <tbody className="divide-y divide-slate-200 dark:divide-white/5 text-slate-700 dark:text-gray-700 dark:text-gray-700 dark:text-gray-300">
                                                         {Array.from({ length: lab.content.observationTable.rows || 5 }).map((_, r) => (
-                                                            <tr key={`row-${r}`} className="hover:bg-slate-50 dark:hover:bg-white/5">
+                                                            <tr key={`row-${r}`} className="hover:bg-slate-50 dark:hover:bg-black/5 dark:bg-white/5">
                                                                 <td className="p-4 font-mono text-slate-500 dark:text-gray-500">{r + 1}</td>
                                                                 {lab.content?.observationTable?.columns.map((col) => (
                                                                     <td key={col} className="p-4">
-                                                                        <input className="bg-transparent border border-slate-300 dark:border-white/20 rounded px-2 py-1 w-full focus:border-blue-500 focus:outline-none text-sm text-slate-900 dark:text-white" placeholder="..." />
+                                                                        <input className="bg-transparent border border-slate-300 dark:border-white/20 rounded px-2 py-1 w-full focus:border-blue-500 focus:outline-none text-sm text-slate-900 dark:text-slate-900 dark:text-slate-900 dark:text-white" placeholder="..." />
                                                                     </td>
                                                                 ))}
                                                             </tr>
@@ -556,9 +556,9 @@ const LabView: React.FC = () => {
                                                 </table>
                                             </div>
                                         ) : (
-                                            <div className="text-center p-16 border border-slate-200 dark:border-white/10 rounded-xl bg-slate-50 dark:bg-white/5 text-slate-400 dark:text-gray-400 flex flex-col items-center">
+                                            <div className="text-center p-16 border border-slate-200 dark:border-black/10 dark:border-white/10 rounded-xl bg-slate-50 dark:bg-black/5 dark:bg-white/5 text-slate-400 dark:text-gray-400 flex flex-col items-center">
                                                 <FileText size={48} className="mb-4 opacity-50" />
-                                                <h3 className="text-lg font-medium text-slate-900 dark:text-white">No Structured Table</h3>
+                                                <h3 className="text-lg font-medium text-slate-900 dark:text-slate-900 dark:text-slate-900 dark:text-white">No Structured Table</h3>
                                                 <p className="max-w-md mt-2 text-sm">This simulation does not require a standard observation table. Please record your qualitative findings in your notebook.</p>
                                             </div>
                                         )}

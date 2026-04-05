@@ -1,316 +1,643 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { RotateCcw, CheckCircle } from 'lucide-react';
+/**
+ * AcetanilideLab.tsx — Synthesis of Acetanilide
+ * ─────────────────────────────────────────────────────────────────────────────
+ * C₆H₅NH₂ + (CH₃CO)₂O → C₆H₅NHCOCH₃ + CH₃COOH
+ * Nucleophilic Acyl Substitution — Acetylation of Aniline
+ *
+ * Architecture:
+ *  - 3-phase LabProtocolEngine (PREP → OBSERVATION → ANALYSIS)
+ *  - All animations via useChemProgress (useFrame delta) — zero RAF cascade
+ *  - Vapor: InstancedMesh (30 spheres) — single draw call
+ *  - White crystal flakes: InstancedMesh (120 box-flakes) — single draw call
+ *  - useMemo for all positions — no per-render jitter
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
+
+import React, { useRef, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Environment, ContactShadows, Html } from '@react-three/drei';
+import { OrbitControls, Environment, ContactShadows, Float, Html } from '@react-three/drei';
 import * as THREE from 'three';
+import { LabProtocolEngine, ProtocolStep } from './shared/LabProtocolEngine';
+import {
+  UltraBeaker as Beaker,
+  UltraBunsenBurner as BunsenBurner,
+  UltraRoundBottomFlask as RoundBottomFlask,
+} from './shared/UltraApparatus';
+import { useChemProgress } from './shared/useChemProgress';
+import { ChemicalFormula } from './shared/ChemicalFormula';
 
 interface Props { hex: string; }
 
-const STAGES = [
+// ─── PROTOCOL STEPS ──────────────────────────────────────────────────────────
+const PREP_STEPS: ProtocolStep[] = [
   {
-    name: 'Add Aniline + Acetic Anhydride',
-    desc: 'Measure 2 mL aniline in RB flask. Add 3 mL acetic anhydride dropwise. An exothermic reaction begins immediately.',
-    color: '#f59e0b',
+    id: 'mix',
+    name: 'Reagent Mixing',
+    action: 'Attach Condenser & Reflux',
+    desc: 'Measure 5 mL Aniline (C₆H₅NH₂), 5 mL Acetic Anhydride [(CH₃CO)₂O], and 5 mL Glacial Acetic Acid into a 100 mL round-bottom flask. Both reagents must be measured in a fume hood — Aniline is toxic and Acetic Anhydride is lachrymatory.',
   },
   {
-    name: 'Heat & Reflux',
-    desc: 'Heat mixture to 160°C for 30 minutes. Acetic acid distills off as vapors. Reaction completes.',
-    color: '#ef4444',
+    id: 'reflux',
+    name: 'Reflux (Acetylation)',
+    action: 'Quench in Ice Water',
+    desc: 'Attach a water condenser to the flask. Heat on a water bath at 100°C for 15–20 minutes. The vapors rise, condense in the cooled condenser, and flow back — preventing reagent loss. The reaction undergoes Nucleophilic Acyl Substitution.',
   },
   {
-    name: 'Pour into Ice Water',
-    desc: 'Pour the hot mixture into 200 mL ice-cold water. Crude acetanilide precipitates as a white solid.',
-    color: '#60a5fa',
+    id: 'quench',
+    name: 'Ice-Water Quenching',
+    action: 'Filter Crystals',
+    desc: 'Pour the hot reaction mixture carefully into 100 mL of ice-cold distilled water with constant stirring. Acetanilide immediately precipitates as shiny white leafy flakes due to its low solubility in cold water. Collect by Buchner filtration.',
   },
-  {
-    name: 'Filter & Recrystallize',
-    desc: 'Filter under suction using Buchner funnel. Recrystallize from hot water to form pure white crystals.',
-    color: '#10b981',
-  }
 ];
 
-const glassMat = <meshPhysicalMaterial transmission={0.9} thickness={0.1} roughness={0} ior={1.4} color="#e0f2fe" transparent opacity={0.6} side={THREE.DoubleSide} />;
+// ─── VAPOR InstancedMesh ──────────────────────────────────────────────────────
+const VaporCloud: React.FC<{ active: boolean; originY?: number }> = ({
+  active, originY = 0
+}) => {
+  const meshRef = useRef<THREE.InstancedMesh>(null);
+  const dummy = useMemo(() => new THREE.Object3D(), []);
+  const particles = useMemo(() =>
+    Array.from({ length: 30 }, () => ({
+      x: (Math.random() - 0.5) * 0.22,
+      y: originY + Math.random() * 0.6,
+      z: (Math.random() - 0.5) * 0.22,
+      vy: 0.008 + Math.random() * 0.007,
+      s: 0.04 + Math.random() * 0.03,
+    })), [originY]);
 
-const RoundBottomFlask = ({ liquidColor, progress, showCondenser = false, heating = false }: any) => {
+  useFrame(() => {
+    if (!meshRef.current || !active) return;
+    particles.forEach((p, i) => {
+      p.y += p.vy;
+      if (p.y > originY + 2.2) p.y = originY;
+      dummy.position.set(p.x, p.y, p.z);
+      dummy.scale.setScalar(p.s);
+      dummy.updateMatrix();
+      meshRef.current!.setMatrixAt(i, dummy.matrix);
+    });
+    meshRef.current.instanceMatrix.needsUpdate = true;
+  });
+
+  return (
+    <instancedMesh ref={meshRef} args={[undefined, undefined, 30]}>
+      <sphereGeometry args={[1, 6, 6]} />
+      <meshStandardMaterial color="#f1f5f9" transparent opacity={0.20} depthWrite={false} />
+    </instancedMesh>
+  );
+};
+
+// ─── SCENE: MIXING (Step 0) ───────────────────────────────────────────────────
+const MixingScene: React.FC = () => {
+  const progress = useChemProgress(0.09);
+  // Tilt the aniline beaker to pour — rotation driven by progress
+  const pourAngle = -progress * 1.1;
+
   return (
     <group position={[0, -0.5, 0]}>
-      {/* RB Flask glass */}
-      <mesh position={[0, 0, 0]}>
-         <sphereGeometry args={[1, 32, 16]} />
-         {glassMat}
-      </mesh>
-      <mesh position={[0, 1.3, 0]}>
-         <cylinderGeometry args={[0.3, 0.3, 1.2, 16, 1, true]} />
-         {glassMat}
-      </mesh>
-      
-      {/* Liquid inside */}
-      <mesh position={[0, -0.2, 0]}>
-         <sphereGeometry args={[0.95, 32, 16, 0, Math.PI*2, Math.PI/2, Math.PI/2]} />
-         <meshPhysicalMaterial transmission={0.6} roughness={0.1} color={liquidColor} />
-      </mesh>
-
-      {/* Condenser Tube above neck */}
-      {showCondenser && (
-        <group position={[0, 3, 0]}>
-           <mesh><cylinderGeometry args={[0.2, 0.2, 2.5, 16, 1, true]} />{glassMat}</mesh>
-           <mesh><cylinderGeometry args={[0.5, 0.5, 2, 16, 1, true]} />{glassMat}</mesh>
-           {/* Water cooling ports */}
-           <mesh position={[0.5, -0.6, 0]} rotation={[0,0,Math.PI/2]}><cylinderGeometry args={[0.1, 0.1, 0.5, 8]} />{glassMat}</mesh>
-           <mesh position={[-0.5, 0.6, 0]} rotation={[0,0,Math.PI/2]}><cylinderGeometry args={[0.1, 0.1, 0.5, 8]} />{glassMat}</mesh>
-           
-           {heating && (
-             <Html position={[0.8, 0, 0]} center>
-                <div className="text-[9px] text-blue-300 font-bold bg-black/60 px-1 rounded backdrop-blur">Reflux</div>
-             </Html>
-           )}
+      {/* Main round-bottom flask fills up */}
+      <RoundBottomFlask
+        position={[0, 0.6, 0]}
+        fluidLevel={0.08 + progress * 0.42}
+        fluidColor="#fde68a"
+      />
+      {/* Pouring aniline beaker */}
+      {progress < 0.88 && (
+        <group position={[1.6, 2.2, 0]} rotation={[0, 0, pourAngle]}>
+          <Beaker scale={0.52} fluidLevel={Math.max(0, 0.95 - progress)} fluidColor="#fbbf24" />
         </group>
       )}
+      {progress > 0.15 && progress < 0.85 && (
+        <Html position={[0, 2.6, 0]} center>
+          <div className="text-[9px] text-yellow-300 font-bold bg-black/70 px-2 py-1 rounded-lg border border-yellow-500/30 backdrop-blur whitespace-nowrap">
+            Adding Aniline + Acetic Anhydride
+          </div>
+        </Html>
+      )}
+      <ContactShadows position={[0, 0, 0]} opacity={0.35} scale={10} blur={2} />
     </group>
   );
 };
 
-const MixingScene = ({ progress }: { progress: number }) => {
-  const dropRef = useRef<THREE.Mesh>(null);
-  useFrame(({ clock }) => {
-    if (dropRef.current && progress < 1) {
-       dropRef.current.position.y = 2 - (clock.elapsedTime * 3) % 2;
-    }
-  });
+// ─── SCENE: REFLUX (Step 1) ───────────────────────────────────────────────────
+const RefluxScene: React.FC = () => {
+  const progress = useChemProgress(0.055);
 
   return (
-    <group>
-       {/* Dropping Funnel */}
-       <group position={[0, 2.5, 0]}>
-         <mesh position={[0, 1, 0]}><cylinderGeometry args={[0.5, 0.5, 1, 16, 1, true]} />{glassMat}</mesh>
-         <mesh position={[0, 0.25, 0]}><cylinderGeometry args={[0.1, 0.5, 0.5, 16, 1, true]} />{glassMat}</mesh>
-         <mesh position={[0, -0.5, 0]}><cylinderGeometry args={[0.05, 0.05, 1, 16]} />{glassMat}</mesh>
-         {/* Drop */}
-         {progress < 1 && <mesh ref={dropRef} position={[0, 0, 0]}><sphereGeometry args={[0.08, 8, 8]}/><meshBasicMaterial color="#fef08a"/></mesh>}
-       </group>
-       
-       <RoundBottomFlask 
-         liquidColor={new THREE.Color().lerpColors(new THREE.Color("#475569"), new THREE.Color("#f59e0b"), progress)}
-         progress={progress}
-       />
-    </group>
-  );
-};
+    <group position={[0, -1.4, 0]}>
+      <BunsenBurner position={[0, 0, 0]} active={progress < 0.92} />
 
-const RefluxScene = ({ progress }: { progress: number }) => {
-  const bubblesRef = useRef<THREE.Group>(null);
-  const flameRef = useRef<THREE.Mesh>(null);
+      <group position={[0, 2.2, 0]}>
+        <RoundBottomFlask position={[0, 0, 0]} fluidLevel={0.52} fluidColor="#f59e0b" />
 
-  useFrame(({ clock }) => {
-    if (flameRef.current) {
-      flameRef.current.scale.y = 1 + Math.sin(clock.elapsedTime * 20) * 0.1;
-      flameRef.current.scale.x = 1 + Math.sin(clock.elapsedTime * 25) * 0.05;
-    }
-    if (bubblesRef.current) {
-      bubblesRef.current.children.forEach(mesh => {
-         mesh.position.y += 0.05;
-         if(mesh.position.y > 0) {
-            mesh.position.y = -0.8;
-            mesh.position.x = (Math.random()-0.5)*1.5;
-         }
-      })
-    }
-  });
+        {/* Water condenser — outer jacket */}
+        <mesh position={[0, 2.25, 0]}>
+          <cylinderGeometry args={[0.38, 0.38, 2.2, 24, 1, true]} />
+          <meshPhysicalMaterial
+            color="#cde8f5" transmission={0.88} ior={1.45} roughness={0.06}
+            clearcoat={1} side={THREE.DoubleSide}
+          />
+        </mesh>
+        {/* Inner tube */}
+        <mesh position={[0, 2.25, 0]}>
+          <cylinderGeometry args={[0.14, 0.14, 2.6, 18]} />
+          <meshPhysicalMaterial
+            color="#d8eef8" transmission={0.92} ior={1.45} roughness={0.04} clearcoat={1}
+          />
+        </mesh>
+        {/* Water inlet/outlet nubs */}
+        {[[-1.22, 0.55], [1.22, -0.55]].map(([x, yo], i) => (
+          <mesh key={i} position={[0.38, 2.25 + yo, 0]} rotation={[0, 0, Math.PI / 2]}>
+            <cylinderGeometry args={[0.04, 0.04, 0.22, 12]} />
+            <meshStandardMaterial color="#64748b" metalness={0.7} roughness={0.35} />
+          </mesh>
+        ))}
 
-  return (
-    <group>
-       <RoundBottomFlask liquidColor="#b45309" progress={progress} showCondenser={true} heating={true} />
-       
-       <group ref={bubblesRef}>
-         {Array.from({length: 10}).map((_, i) => (
-           <mesh key={i} position={[(Math.random()-0.5)*1.5, -0.8, (Math.random()-0.5)*1.5]}><sphereGeometry args={[0.05]} /><meshBasicMaterial color="#fcd34d"/></mesh>
-         ))}
-       </group>
+        <VaporCloud active={progress < 0.9} originY={1.2} />
 
-       {/* Heat Source */}
-       <group position={[0, -2, 0]}>
-         <mesh><cylinderGeometry args={[0.6, 0.7, 0.5, 16]} /><meshStandardMaterial color="#334155"/></mesh>
-         <mesh ref={flameRef} position={[0, 0.6, 0]}><coneGeometry args={[0.4, 0.8, 16]} /><meshBasicMaterial color="#ef4444" transparent opacity={0.8}/></mesh>
-       </group>
-    </group>
-  );
-};
-
-const IceWaterScene = ({ progress }: { progress: number }) => {
-  const crystalCount = Math.floor(progress * 150);
-  return (
-    <group position={[0, -1, 0]}>
-       {/* Beaker */}
-       <mesh><cylinderGeometry args={[1.5, 1.5, 2.5, 32, 1, true]} />{glassMat}</mesh>
-       <mesh position={[0, -1.25, 0]}><cylinderGeometry args={[1.5, 1.5, 0.1, 32]} />{glassMat}</mesh>
-
-       {/* Ice Water liquid */}
-       <mesh position={[0, -0.2, 0]}>
-         <cylinderGeometry args={[1.45, 1.45, 2, 32]} />
-         <meshPhysicalMaterial transmission={0.9} color="#bae6fd" roughness={0.1} />
-       </mesh>
-
-       {/* Ice Cubes floating */}
-       {Array.from({length: 8}).map((_, i) => (
-         <mesh key={i} position={[Math.cos(i)*0.8, 0.8, Math.sin(i)*0.8]} rotation={[Math.random(), Math.random(), 0]}>
-           <boxGeometry args={[0.4, 0.4, 0.4]} />
-           <meshPhysicalMaterial transmission={0.9} color="#e0f2fe" roughness={0.2} ior={1.3} />
-         </mesh>
-       ))}
-
-       {/* Precipitate forming */}
-       {Array.from({length: crystalCount}).map((_, i) => (
-         <mesh key={i} position={[(Math.random()-0.5)*2, -1 + Math.random()*2, (Math.random()-0.5)*2]}>
-           <sphereGeometry args={[0.04]} />
-           <meshBasicMaterial color="#f8fafc" />
-         </mesh>
-       ))}
-    </group>
-  );
-};
-
-const BuchnerScene = ({ progress }: { progress: number }) => {
-  return (
-    <group position={[0, -1, 0]}>
-      {/* Filtering Flask */}
-      <mesh position={[0, 0, 0]}><cylinderGeometry args={[0.5, 1.5, 2, 32, 1, true]} />{glassMat}</mesh>
-      {/* Side arm */}
-      <mesh position={[0.6, 0.5, 0]} rotation={[0, 0, Math.PI/2]}><cylinderGeometry args={[0.08, 0.08, 0.6, 16, 1, true]} />{glassMat}</mesh>
-
-      {/* Buchner Funnel (Ceramic) */}
-      <group position={[0, 1.6, 0]}>
-         <mesh position={[0, 0.8, 0]}><cylinderGeometry args={[0.8, 0.8, 0.8, 32]} /><meshStandardMaterial color="#f8fafc" roughness={1} /></mesh>
-         <mesh position={[0, 0.4, 0]}><cylinderGeometry args={[0.8, 0.2, 0.4, 32]} /><meshStandardMaterial color="#f8fafc" roughness={1} /></mesh>
-         <mesh position={[0, -0.2, 0]}><cylinderGeometry args={[0.2, 0.2, 0.8, 16]} /><meshStandardMaterial color="#f8fafc" roughness={1} /></mesh>
-         
-         {/* Filter paper & pure crystals */}
-         <mesh position={[0, 0.45, 0]}><cylinderGeometry args={[0.75, 0.75, 0.02, 32]} /><meshBasicMaterial color="#e2e8f0" /></mesh>
-         
-         {Array.from({length: Math.floor(progress * 150)}).map((_, i) => (
-           <mesh key={i} position={[(Math.random()-0.5)*1.2, 0.48 + Math.random()*0.1, (Math.random()-0.5)*1.2]} rotation={[Math.random()*Math.PI, 0, 0]}>
-              <boxGeometry args={[0.03, 0.08, 0.03]} />
-              <meshBasicMaterial color="#ffffff" />
-           </mesh>
-         ))}
+        {progress > 0.3 && progress < 0.88 && (
+          <Html position={[1.8, 2.5, 0]} center>
+            <div className="text-[9px] text-orange-300 font-bold bg-black/70 px-2 py-1 rounded-lg border border-orange-500/30 backdrop-blur animate-pulse whitespace-nowrap">
+              Refluxing at 100°C…
+            </div>
+          </Html>
+        )}
       </group>
+      <ContactShadows position={[0, 0, 0]} opacity={0.4} scale={10} blur={2} />
     </group>
   );
 };
 
+// ─── SCENE: QUENCH (Step 2) ──────────────────────────────────────────────────
+const QuenchScene: React.FC = () => {
+  const progress = useChemProgress(0.072);
+  const crystalMesh = useRef<THREE.InstancedMesh>(null);
+  const dummy = useMemo(() => new THREE.Object3D(), []);
 
-const AcetanilideLab: React.FC<Props> = ({ hex }) => {
-  const [stage, setStage] = useState(0);
-  const [progress, setProgress] = useState(0);
-  const [running, setRunning] = useState(false);
-  const [completed, setCompleted] = useState(false);
+  // Stable positions for white crystal flakes
+  const flakes = useMemo(() =>
+    Array.from({ length: 80 }, () => ({
+      x: (Math.random() - 0.5) * 1.5,
+      y: -0.7 + Math.random() * 0.55,
+      z: (Math.random() - 0.5) * 1.5,
+      rx: Math.random() * Math.PI,
+      ry: Math.random() * Math.PI,
+    })), []);
 
-  const currentStage = STAGES[stage];
+  useFrame(() => {
+    if (!crystalMesh.current) return;
+    const count = Math.floor(progress * 80);
+    for (let i = 0; i < 80; i++) {
+      const p = flakes[i];
+      if (i < count) {
+        dummy.position.set(p.x, p.y, p.z);
+        dummy.rotation.set(p.rx, p.ry, 0);
+        dummy.scale.set(1, 1, 1);
+      } else {
+        dummy.scale.setScalar(0);
+      }
+      dummy.updateMatrix();
+      crystalMesh.current.setMatrixAt(i, dummy.matrix);
+    }
+    crystalMesh.current.instanceMatrix.needsUpdate = true;
+  });
 
-  useEffect(() => {
-    if (!running) return;
-    const id = setInterval(() => {
-      setProgress(p => {
-        if (p >= 1) { clearInterval(id); setRunning(false); return 1; }
-        return p + 0.01;
-      });
-    }, 50);
-    return () => clearInterval(id);
-  }, [running]);
-
-  const nextStage = () => {
-    if (stage < STAGES.length - 1) { setStage(s => s + 1); setProgress(0); setRunning(false); }
-    else setCompleted(true);
-  };
+  // Para RBF tilted to pour
+  const flaskTilt = Math.min(1.1, progress * 2.2);
 
   return (
-    <div className="flex flex-col md:flex-row h-full w-full bg-slate-950">
-      <div className="flex-1 relative rounded-2xl overflow-hidden m-4 border border-white/10 shadow-2xl">
-        <Canvas camera={{ position: [0, 2, 7], fov: 55 }}>
-          <Environment preset="apartment" />
-          <ambientLight intensity={0.6} />
-          <pointLight position={[5, 10, 5]} intensity={1.5} color={currentStage.color} />
-          
-          {stage === 0 && <MixingScene progress={progress} />}
-          {stage === 1 && <RefluxScene progress={progress} />}
-          {stage === 2 && <IceWaterScene progress={progress} />}
-          {stage === 3 && <BuchnerScene progress={progress} />}
-          
-          <ContactShadows position={[0, -2.5, 0]} opacity={0.5} scale={10} blur={2.5} far={4} color="#000" />
-          <OrbitControls enablePan={true} enableZoom={true} target={[0, 0, 0]} maxPolarAngle={Math.PI/2}/>
+    <group position={[0, -0.9, 0]}>
+      {/* Ice water beaker */}
+      <Beaker position={[0, 0.5, 0]} fluidLevel={0.55} fluidColor="#e0f2fe" />
+
+      {/* RBF tilted to pour */}
+      <group position={[1.8, 2.6, 0]} rotation={[0, 0, -flaskTilt]}>
+        <RoundBottomFlask scale={0.7} fluidLevel={Math.max(0, 0.6 - progress * 0.65)} fluidColor="#f59e0b" />
+      </group>
+
+      {/* White precipitate flakes in beaker */}
+      <group position={[0, 0.5, 0]}>
+        <instancedMesh ref={crystalMesh} args={[undefined, undefined, 80]} castShadow>
+          <boxGeometry args={[0.18, 0.014, 0.10]} />
+          <meshStandardMaterial color="#f8fafc" roughness={0.88} metalness={0.04} />
+        </instancedMesh>
+      </group>
+
+      <Html position={[0, 2.3, 0]} center>
+        <div className="text-[9px] text-slate-900 dark:text-white font-bold bg-blue-600/50 px-2 py-1 rounded-lg backdrop-blur border border-blue-400/30">
+          Quenching in ice water — precipitating…
+        </div>
+      </Html>
+      <ContactShadows position={[0, 0, 0]} opacity={0.35} scale={10} blur={2} />
+    </group>
+  );
+};
+
+// ─── SCENE: OBSERVATION — Filtration Scene (REBUILT) ─────────────────────────
+const FiltrationScene: React.FC<{ onComplete: () => void }> = ({ onComplete }) => {
+  const progress = useChemProgress(0.065);
+  const calledRef = useRef(false);
+  const flakeMesh = useRef<THREE.InstancedMesh>(null);
+  const dummy = useMemo(() => new THREE.Object3D(), []);
+
+  // 120 stable white flake positions on filter paper
+  const flakes = useMemo(() =>
+    Array.from({ length: 120 }, () => {
+      const r = Math.random() * 0.82;
+      const theta = Math.random() * Math.PI * 2;
+      return {
+        x: Math.cos(theta) * r,
+        z: Math.sin(theta) * r,
+        y: 0.015 + Math.random() * 0.022,
+        rx: Math.random() * 0.4,
+        ry: Math.random() * Math.PI,
+      };
+    }), []);
+
+  useFrame(() => {
+    if (!flakeMesh.current) return;
+    const count = Math.floor(progress * 120);
+    for (let i = 0; i < 120; i++) {
+      const p = flakes[i];
+      if (i < count) {
+        dummy.position.set(p.x, p.y, p.z);
+        dummy.rotation.set(p.rx, p.ry, 0);
+        dummy.scale.set(1, 1, 1);
+      } else {
+        dummy.scale.setScalar(0);
+      }
+      dummy.updateMatrix();
+      flakeMesh.current.setMatrixAt(i, dummy.matrix);
+    }
+    flakeMesh.current.instanceMatrix.needsUpdate = true;
+
+    if (progress >= 0.95 && !calledRef.current) {
+      calledRef.current = true;
+      onComplete();
+    }
+  });
+
+  const collectedG = (progress * 7.4).toFixed(1);
+
+  return (
+    <group>
+      {/* Lab bench */}
+      <mesh position={[0, -2.0, 0]} receiveShadow rotation={[-Math.PI / 2, 0, 0]}>
+        <planeGeometry args={[14, 14]} />
+        <meshStandardMaterial color="#0a1525" roughness={0.9} />
+      </mesh>
+
+      {/* Buchner funnel + filter paper (top-down focal point) */}
+      <group position={[0, 0.4, 0]}>
+        {/* Funnel body (porcelain) */}
+        <mesh position={[0, -0.5, 0]} rotation={[Math.PI, 0, 0]}>
+          <coneGeometry args={[1.08, 0.9, 40, 1, true]} />
+          <meshStandardMaterial color="#f1f5f9" roughness={0.7} metalness={0} side={THREE.DoubleSide} />
+        </mesh>
+        {/* Funnel base rim */}
+        <mesh position={[0, -0.9, 0]}>
+          <torusGeometry args={[1.08, 0.04, 8, 48]} />
+          <meshStandardMaterial color="#e2e8f0" roughness={0.65} />
+        </mesh>
+        {/* Filter paper (flat disc) */}
+        <mesh position={[0, 0, 0]}>
+          <cylinderGeometry args={[1.0, 1.0, 0.018, 48]} />
+          <meshStandardMaterial color="#fffef5" roughness={0.94} />
+        </mesh>
+        {/* White acetanilide flakes on paper */}
+        <instancedMesh ref={flakeMesh} args={[undefined, undefined, 120]} castShadow>
+          <boxGeometry args={[0.18, 0.012, 0.10]} />
+          <meshStandardMaterial color="#f8fafc" roughness={0.88} metalness={0.03} />
+        </instancedMesh>
+        {/* Funnel stem */}
+        <mesh position={[0, -1.5, 0]}>
+          <cylinderGeometry args={[0.09, 0.09, 1.2, 18]} />
+          <meshStandardMaterial color="#e2e8f0" roughness={0.65} />
+        </mesh>
+      </group>
+
+      {/* Erlenmeyer catching filtrate */}
+      <group position={[0, -1.55, 0]}>
+        {/* Simple conical body */}
+        <mesh>
+          <cylinderGeometry args={[0.6, 0.9, 1.6, 36]} />
+          <meshPhysicalMaterial color="#c8e8f5" transmission={0.82} ior={1.45} roughness={0.06} clearcoat={1} transparent />
+        </mesh>
+        {/* Yellow-brown filtrate */}
+        <mesh position={[0, -0.48, 0]}>
+          <cylinderGeometry args={[0.58, 0.87, 0.5, 36]} />
+          <meshPhysicalMaterial color="#92400e" transmission={0.3} opacity={0.7} transparent roughness={0.1} />
+        </mesh>
+      </group>
+
+      {/* HUD */}
+      <group position={[1.8, 0.6, 0]}>
+        <mesh>
+          <planeGeometry args={[1.4, 0.8]} />
+          <meshBasicMaterial color="#000000" transparent opacity={0.0} />
+        </mesh>
+      </group>
+
+      <ContactShadows position={[0, -1.98, 0]} opacity={0.5} scale={12} blur={3} />
+    </group>
+  );
+};
+
+// ─── SCENE: ANALYSIS ──────────────────────────────────────────────────────────
+const AnalysisScene: React.FC = () => {
+  const groupRef = useRef<THREE.Group>(null);
+  const flakes = useMemo(() =>
+    Array.from({ length: 60 }, () => ({
+      x: (Math.random() - 0.5) * 7,
+      y: -2.0 + Math.random() * 0.8,
+      z: (Math.random() - 0.5) * 7,
+      rx: Math.random() * Math.PI,
+      ry: Math.random() * Math.PI,
+      sx: 0.15 + Math.random() * 0.35,
+      sy: 0.01 + Math.random() * 0.01,
+      sz: 0.10 + Math.random() * 0.2,
+    })), []);
+
+  useFrame(({ clock }) => {
+    if (groupRef.current) groupRef.current.rotation.y = clock.elapsedTime * 0.15;
+  });
+
+  return (
+    <group>
+      {/* Hero crystal cluster */}
+      <Float speed={1.0} rotationIntensity={0.3} floatIntensity={0.3}>
+        <group ref={groupRef} position={[0, 0.5, 0]}>
+          {[
+            { p: [0, 0, 0], s: [0.9, 0.065, 0.55] as [number, number, number] },
+            { p: [0.5, 0.06, 0.2], s: [0.75, 0.052, 0.44] as [number, number, number] },
+            { p: [-0.4, 0.05, -0.25], s: [0.8, 0.058, 0.48] as [number, number, number] },
+            { p: [0.15, 0.12, -0.5], s: [0.65, 0.046, 0.38] as [number, number, number] },
+          ].map((fl, i) => (
+            <mesh key={i} position={fl.p as [number, number, number]} scale={fl.s} castShadow>
+              <boxGeometry args={[1, 1, 1]} />
+              <meshPhysicalMaterial
+                color="#f8fafc"
+                roughness={0.12}
+                clearcoat={1}
+                clearcoatRoughness={0.08}
+                metalness={0.04}
+                envMapIntensity={2.5}
+              />
+            </mesh>
+          ))}
+          <pointLight color="#e2e8f0" intensity={1.5} distance={4} position={[0, 1.5, 0]} />
+        </group>
+      </Float>
+
+      {/* Field of small flakes */}
+      {flakes.map((p, i) => (
+        <mesh
+          key={i}
+          position={[p.x, p.y, p.z]}
+          rotation={[p.rx, p.ry, 0]}
+          scale={[p.sx, p.sy, p.sz]}
+        >
+          <boxGeometry args={[1, 1, 1]} />
+          <meshStandardMaterial color="#f1f5f9" roughness={0.85} />
+        </mesh>
+      ))}
+
+      <mesh position={[0, -2.1, 0]} receiveShadow rotation={[-Math.PI / 2, 0, 0]}>
+        <planeGeometry args={[16, 16]} />
+        <meshStandardMaterial color="#0c1220" roughness={0.9} />
+      </mesh>
+      <ContactShadows position={[0, -2.05, 0]} opacity={0.5} scale={14} blur={3} />
+    </group>
+  );
+};
+
+// ─── MAIN COMPONENT ───────────────────────────────────────────────────────────
+const AcetanilideLab: React.FC<Props> = ({ hex }) => {
+  const [canAnalyze, setCanAnalyze] = React.useState(false);
+
+  return (
+    <LabProtocolEngine
+      labId="C-03"
+      labTitle="Synthesis of Acetanilide"
+      labSubtitle="C₆H₅NHCOCH₃ — Nucleophilic Acyl Substitution of Aniline"
+      prepTitle="Organic Synthesis Setup"
+      prepSubtitle="Acetylation of Aniline via Acetic Anhydride"
+      hexColor={hex}
+      prepSteps={PREP_STEPS}
+
+      renderSetupScene={(step) => (
+        <Canvas camera={{ position: [3.5, 3.5, 7], fov: 46 }} dpr={[1, 1.8]}
+          gl={{ antialias: true }}>
+          <Environment preset="studio" />
+          <ambientLight intensity={0.45} />
+          <directionalLight position={[5, 9, 4]} intensity={1.2} castShadow
+            shadow-mapSize={[1024, 1024]} />
+          <pointLight position={[-3, 5, 2]} intensity={0.6} color="#fde68a" />
+          {step === 0 && <MixingScene />}
+          {step === 1 && <RefluxScene />}
+          {step === 2 && <QuenchScene />}
+          <OrbitControls enablePan={false} minDistance={3} maxDistance={14} />
         </Canvas>
+      )}
 
-        <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md border border-white/10 rounded-xl px-4 py-3 shadow-xl max-w-xs">
-          <p className="text-[10px] font-bold uppercase tracking-widest mb-1" style={{ color: currentStage.color }}>Chemistry Lab — c14</p>
-          <p className="text-white font-bold text-sm">3D Acetanilide Synthesis</p>
-        </div>
+      renderObservationScene={() => (
+        <Canvas camera={{ position: [0, 3.5, 6], fov: 50 }} dpr={[1, 1.8]}
+          gl={{ antialias: true }}>
+          <Environment preset="studio" />
+          <ambientLight intensity={0.55} />
+          <directionalLight position={[4, 10, 4]} intensity={1.2} castShadow />
+          <pointLight position={[0, 4, 0]} intensity={0.8} color="#f8fafc" />
+          <FiltrationScene onComplete={() => setCanAnalyze(true)} />
+          <OrbitControls enablePan={false} minDistance={3} maxDistance={14} />
+        </Canvas>
+      )}
 
-        <div className="absolute bottom-4 left-0 w-full px-8 flex justify-center">
-            <div className="bg-black/50 backdrop-blur-md p-1.5 rounded-2xl border border-white/10 flex gap-1 shadow-2xl">
-               {STAGES.map((st, i) => (
-                 <div key={i} className="h-2 rounded-full transition-all duration-300" style={{
-                   width: 50, backgroundColor: i < stage ? st.color : i === stage ? `${st.color}80` : 'rgba(255,255,255,0.1)'
-                 }} />
-               ))}
+      renderObservationSidebar={(finishObservation) => (
+        <div className="flex flex-col h-full space-y-4 animate-in fade-in slide-in-from-right-4 duration-500">
+          <div className="bg-slate-900/60 border border-slate-400/20 p-4 rounded-2xl backdrop-blur-md">
+            <h3 className="text-slate-900 dark:text-slate-900 dark:text-white font-bold text-sm mb-2 flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
+              Precipitate Quality
+            </h3>
+            <p className="text-slate-600 dark:text-slate-400 text-[11px] leading-relaxed">
+              Observe the shiny, white, leafy crystals of Acetanilide collecting on the filter paper.
+              Rapid quenching in ice water ensures <span className="text-slate-900 dark:text-slate-900 dark:text-white font-bold">small, uniform</span> crystal
+              size and high surface area for faster filtration.
+            </p>
+          </div>
+
+          <div className="bg-slate-950 p-4 rounded-2xl border border-black/10 dark:border-white/10">
+            <p className="text-[9px] text-slate-600 dark:text-slate-400 font-black uppercase tracking-widest mb-3">
+              Product Specs
+            </p>
+            <div className="space-y-2 text-[10px]">
+              {[
+                { k: 'Appearance', v: 'White leafy flakes' },
+                { k: 'Melting Point (pure)', v: '113.5°C (sharp)' },
+                { k: 'Odor', v: 'Faint aniline-like' },
+                { k: 'Solubility', v: 'Slightly sol. cold water' },
+                { k: 'MW', v: '135 g/mol' },
+              ].map(({ k, v }) => (
+                <div key={k} className="flex justify-between">
+                  <span className="text-slate-500">{k}:</span>
+                  <span className="text-slate-800 dark:text-slate-800 dark:text-slate-200 font-mono text-[9px]">{v}</span>
+                </div>
+              ))}
             </div>
-        </div>
-      </div>
+          </div>
 
-      <div className="w-full md:w-72 bg-slate-900 border-l border-white/5 flex flex-col z-10">
-        <div className="p-5 border-b border-white/5">
-           <h2 className="text-lg font-black text-white">Procedure</h2>
+          <div className="mt-auto space-y-2">
+            {!canAnalyze && (
+              <p className="text-[9px] text-slate-500 text-center">
+                Wait for filtration to complete…
+              </p>
+            )}
+            <button
+              onClick={finishObservation}
+              disabled={!canAnalyze}
+              className="w-full py-4 rounded-2xl bg-gradient-to-r from-slate-300 to-white text-slate-900 font-black text-xs uppercase tracking-widest shadow-lg shadow-white/10 active:scale-95 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              Analyze Mechanism →
+            </button>
+          </div>
         </div>
-        <div className="flex-1 p-5 space-y-4 overflow-y-auto">
-          {completed ? (
-            <div className="text-center py-6">
-              <CheckCircle size={56} className="mx-auto text-green-400 mb-4 drop-shadow-[0_0_15px_rgba(74,222,128,0.5)]" />
-              <h3 className="text-xl font-bold text-white mb-2">Acetanilide Prepared!</h3>
-              <p className="text-slate-400 text-sm mb-6">White crystalline solid representing pure Acetanilide confirmed.</p>
-              <button onClick={() => { setStage(0); setProgress(0); setCompleted(false); }}
-                className="w-full py-3 rounded-xl bg-slate-800 text-white font-bold hover:bg-slate-700 transition-all flex justify-center items-center gap-2">
-                <RotateCcw size={16} /> Repeat Synthesis
-              </button>
+      )}
+
+      renderAnalysisScene={() => (
+        <Canvas camera={{ position: [0, 2, 7], fov: 46 }} dpr={[1, 1.8]}
+          gl={{ antialias: true }}>
+          <Environment preset="night" />
+          <ambientLight intensity={0.4} />
+          <directionalLight position={[4, 8, 3]} intensity={0.9} castShadow />
+          <AnalysisScene />
+          <OrbitControls autoRotate autoRotateSpeed={0.55} enablePan={false}
+            minDistance={4} maxDistance={16} />
+        </Canvas>
+      )}
+
+      renderAnalysisSidebar={() => (
+        <div className="flex flex-col h-full space-y-4 animate-in fade-in slide-in-from-right-8 duration-700 overflow-y-auto pr-1">
+
+          {/* Balanced equation */}
+          <div className="bg-slate-900/80 p-4 rounded-2xl border border-yellow-500/20">
+            <p className="text-[9px] text-yellow-400 font-black uppercase tracking-widest mb-3">
+              ① Acetylation Reaction
+            </p>
+            <div className="bg-slate-200 dark:bg-black/50 px-3 py-3 rounded-xl border border-black/5 dark:border-white/5 text-center space-y-1.5">
+              <div className="text-slate-700 dark:text-slate-700 dark:text-slate-300 text-[10px] font-serif">
+                <ChemicalFormula formula="C6H5NH2" /> + <ChemicalFormula formula="(CH3CO)2O" />
+              </div>
+              <div className="text-yellow-400 text-base">⟶</div>
+              <div className="text-yellow-300 text-[10px] font-serif font-bold">
+                <ChemicalFormula formula="C6H5NHCOCH3" /> + <ChemicalFormula formula="CH3COOH" />
+              </div>
+              <div className="text-slate-500 text-[8px] mt-1">
+                Aniline + Acetic Anhydride → Acetanilide + Acetic Acid
+              </div>
             </div>
-          ) : (
-            <>
-              <div className="p-3 rounded-xl border shadow-inner transition-colors duration-500" style={{ backgroundColor: `${currentStage.color}15`, borderColor: `${currentStage.color}40` }}>
-                <p className="font-bold text-xs mb-1" style={{ color: currentStage.color }}>Step {stage + 1}: {currentStage.name}</p>
-                <p className="text-slate-300 text-xs leading-relaxed">{currentStage.desc}</p>
-              </div>
+          </div>
 
-              <div className="bg-slate-950 p-4 rounded-xl border border-white/5 shadow-inner text-xs space-y-1.5 mt-2">
-                <p className="text-slate-400 font-bold text-[10px] uppercase tracking-widest mb-1 border-b border-white/5 pb-1">Chemical Reaction</p>
-                <p className="font-mono text-[10px] text-yellow-400 pt-1">C₆H₅NH₂ + (CH₃CO)₂O</p>
-                <p className="font-mono text-[10px] text-green-400">↓ Heat</p>
-                <p className="font-mono text-[10px] text-green-400">C₆H₅NHCOCH₃ + CH₃COOH</p>
-              </div>
+          {/* NAS Mechanism — 4 steps */}
+          <div className="bg-slate-900/80 p-4 rounded-2xl border border-blue-500/20">
+            <p className="text-[9px] text-blue-400 font-black uppercase tracking-widest mb-3">
+              ② NAS Mechanism (4 Steps)
+            </p>
+            <div className="space-y-2">
+              {[
+                {
+                  n: '1',
+                  title: 'Nucleophilic Attack',
+                  desc: '-NH₂ lone pair attacks the electrophilic C=O carbon of acetic anhydride.',
+                  color: 'border-blue-500/30 text-blue-300',
+                },
+                {
+                  n: '2',
+                  title: 'Tetrahedral Intermediate',
+                  desc: 'C–N bond forms. Carbon becomes sp³ hybridized (tetrahedral). Negative charge on oxygen.',
+                  color: 'border-purple-500/30 text-purple-300',
+                },
+                {
+                  n: '3',
+                  title: 'Elimination of Leaving Group',
+                  desc: 'CH₃COO⁻ departs as the leaving group, C=O double bond reforms (sp² carbon).',
+                  color: 'border-orange-500/30 text-orange-300',
+                },
+                {
+                  n: '4',
+                  title: 'Proton Transfer',
+                  desc: 'CH₃COO⁻ accepts proton from N–H⁺ → Acetanilide + Acetic Acid formed.',
+                  color: 'border-green-500/30 text-green-300',
+                },
+              ].map(({ n, title, desc, color }) => (
+                <div key={n} className={`bg-black/40 p-2.5 rounded-xl border ${color.split(' ')[0]}`}>
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className={`text-[8px] font-black rounded-full w-4 h-4 flex items-center justify-center border ${color}`}>
+                      {n}
+                    </span>
+                    <span className={`text-[9px] font-bold ${color.split(' ')[1]}`}>{title}</span>
+                  </div>
+                  <p className="text-slate-600 dark:text-slate-400 text-[9px] leading-relaxed pl-6">{desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
 
-              <div className="flex gap-2 pt-2">
-                <button onClick={() => setRunning(r => !r)} disabled={progress >= 1}
-                  className="flex-1 py-3 rounded-xl text-sm font-bold text-white transition-all shadow-lg active:scale-95 disabled:opacity-50"
-                  style={{ backgroundColor: (running || progress >= 1) ? '#475569' : currentStage.color }}>
-                  {running ? '⏸ Paused' : (progress === 0 ? '▶️ Run Step' : '▶️ Resume')}
-                </button>
-                <button onClick={() => { setProgress(0); setRunning(false); }}
-                  className="px-4 py-3 rounded-xl bg-slate-800 text-red-400 hover:bg-red-900/30 transition-colors">
-                  <RotateCcw size={16} />
-                </button>
-              </div>
+          {/* Yield calculation */}
+          <div className="bg-slate-900/80 p-4 rounded-2xl border border-emerald-500/20">
+            <p className="text-[9px] text-emerald-400 font-black uppercase tracking-widest mb-3">
+              ③ Yield Calculation
+            </p>
+            <div className="space-y-1.5 text-[10px]">
+              {[
+                { k: 'Aniline volume', v: '5.0 mL' },
+                { k: 'Aniline density', v: '1.02 g/mL' },
+                { k: 'Mass of Aniline', v: '5.10 g' },
+                { k: 'MW of Aniline', v: '93 g/mol' },
+                { k: 'Moles of Aniline', v: '5.10 ÷ 93 = 0.0548 mol' },
+                { k: 'MW of Acetanilide', v: '135 g/mol' },
+                { k: 'Theoretical yield', v: '0.0548 × 135 = 7.40 g' },
+              ].map(({ k, v }) => (
+                <div key={k} className="flex justify-between">
+                  <span className="text-slate-500">{k}:</span>
+                  <span className="text-emerald-300 font-mono text-[9px]">{v}</span>
+                </div>
+              ))}
+            </div>
+          </div>
 
-              <div className="bg-slate-800/50 rounded-full h-1 mt-2 mb-4 overflow-hidden border border-white/5">
-                 <div className="h-full transition-all duration-300" style={{ width: `${progress * 100}%`, backgroundColor: currentStage.color }} />
+          {/* Melting point purity test */}
+          <div className="bg-slate-900/80 p-4 rounded-2xl border border-black/10 dark:border-white/10">
+            <p className="text-[9px] text-slate-900 dark:text-slate-900 dark:text-white font-black uppercase tracking-widest mb-3">
+              ④ Purity: Melting Point Test
+            </p>
+            <div className="space-y-2 text-[10px]">
+              <div className="flex gap-2 items-start">
+                <span className="text-green-400 font-bold shrink-0">Pure:</span>
+                <span className="text-slate-700 dark:text-slate-700 dark:text-slate-300">113.5°C — sharp, narrow range (± 1°C)</span>
               </div>
+              <div className="flex gap-2 items-start">
+                <span className="text-red-400 font-bold shrink-0">Impure:</span>
+                <span className="text-slate-700 dark:text-slate-700 dark:text-slate-300">105–111°C — broad, depressed range</span>
+              </div>
+              <p className="text-slate-500 text-[9px] italic mt-1">
+                Mixed melting point depression confirms identity → mix 1:1 with pure standard.
+              </p>
+            </div>
+          </div>
 
-              {progress >= 1 && (
-                <button onClick={nextStage}
-                  className="w-full py-3 rounded-xl text-sm font-bold text-white transition-all shadow-lg bg-green-600 hover:bg-green-500 shadow-green-600/20 active:scale-95">
-                  {stage === STAGES.length - 1 ? '🎉 Finalize' : 'Next Step →'}
-                </button>
-              )}
-            </>
-          )}
+          {/* Safety */}
+          <div className="bg-red-950/20 border border-red-500/20 p-4 rounded-2xl">
+            <p className="text-[9px] text-red-400 font-black uppercase tracking-widest mb-2">
+              ⑤ Safety
+            </p>
+            <div className="space-y-1.5 text-[9px]">
+              <p className="text-red-600 dark:text-red-300">🔴 <strong>Aniline</strong> — toxic, skin-absorbing. Fume hood + nitrile gloves.</p>
+              <p className="text-yellow-300">🟡 <strong>Acetic Anhydride</strong> — lachrymatory, corrosive. Handle with care.</p>
+              <p className="text-blue-600 dark:text-blue-300">🔵 <strong>Acetic Acid</strong> — irritant. Avoid breathing vapors.</p>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      )}
+    />
   );
 };
 

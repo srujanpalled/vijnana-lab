@@ -20,7 +20,7 @@ export const Atom3D: React.FC = () => {
           rotate: { duration: 20, repeat: Infinity, ease: "linear" }
         }}
       >
-         <div className="absolute inset-0 bg-white/10 blur-md rounded-full"></div>
+         <div className="absolute inset-0 bg-black/10 dark:bg-white/10 blur-md rounded-full"></div>
          <div className="w-full h-full rounded-full bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-30"></div>
       </MotionDiv>
  

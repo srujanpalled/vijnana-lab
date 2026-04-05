@@ -106,7 +106,7 @@ export default function ConcaveMirrorLab3D({ hex }: ConcaveMirrorLab3DProps) {
   const ray3Path = useTransform(() => `M ${oX_spring.get()},${AXIS_Y - s_h.get()} L ${cX_spring.get()},${AXIS_Y} L ${MIRROR_X},${AXIS_Y + s_h.get() * (2*s_f.get()/(s_u.get()-2*s_f.get()))}`);
 
   return (
-    <div className="flex flex-col h-full w-full bg-[#030712] overflow-hidden font-sans text-slate-200 select-none">
+    <div className="flex flex-col h-full w-full bg-[#030712] overflow-hidden font-sans text-slate-800 dark:text-slate-200 select-none">
       <style>{`
         @keyframes flow { to { stroke-dashoffset: -20; } }
       `}</style>
@@ -114,13 +114,13 @@ export default function ConcaveMirrorLab3D({ hex }: ConcaveMirrorLab3DProps) {
       {/* HEADER: Glassmorphic premium */}
       <div className="flex shrink-0 items-center justify-between px-6 py-4 border-b border-white/[0.05] bg-white/[0.01] backdrop-blur-2xl z-20 shadow-lg">
         <div>
-          <h2 className="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+          <h2 className="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-900 dark:text-white flex items-center gap-2">
             <span className="p-1.5 rounded-lg bg-blue-500/20 text-blue-400"><RotateCcw size={18} /></span>
             Concave Mirror Simulation
           </h2>
           <p className="text-[11px] font-medium text-slate-500 uppercase tracking-widest mt-1">Optical Ray Tracing & Focal Point Analysis</p>
         </div>
-        <div className="flex bg-[#0a0a0a] p-1 rounded-xl border border-white/5 shadow-inner">
+        <div className="flex bg-[#0a0a0a] p-1 rounded-xl border border-black/5 dark:border-white/5 shadow-inner">
           <button onClick={() => setTab('diagram')} className={`relative px-6 py-2 rounded-lg text-xs font-bold transition-colors ${tab === 'diagram' ? 'text-white' : 'text-slate-500'}`}>
             {tab === 'diagram' && <motion.div layoutId="t1" className="absolute inset-0 bg-blue-600 rounded-lg shadow-md" />}
             <span className="relative z-10">Ray Diagram</span>
@@ -138,7 +138,7 @@ export default function ConcaveMirrorLab3D({ hex }: ConcaveMirrorLab3DProps) {
           <ParticleEngine particles={particles} setParticles={setParticles} width={W} height={H} />
 
           {tab === 'diagram' && (
-            <div className="relative w-full max-w-4xl h-[400px] border border-white/10 flex flex-col items-center justify-center rounded-[30px] shadow-[inset_0_0_50px_rgba(0,0,0,0.8)] bg-black/40 backdrop-blur-md z-10 overflow-hidden">
+            <div className="relative w-full max-w-4xl h-[400px] border border-black/10 dark:border-white/10 flex flex-col items-center justify-center rounded-[30px] shadow-[inset_0_0_50px_rgba(0,0,0,0.8)] bg-black/40 backdrop-blur-md z-10 overflow-hidden">
               <svg width="100%" height="100%" viewBox={`0 0 ${W} ${H}`} className="absolute inset-0 overflow-visible">
                 <defs>
                   <filter id="glowF"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
@@ -202,21 +202,21 @@ export default function ConcaveMirrorLab3D({ hex }: ConcaveMirrorLab3DProps) {
           )}
 
           {tab === 'readings' && (
-             <div className="w-full max-w-3xl bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-xl">
-               <h3 className="text-sm font-bold text-white mb-4">Experimental Log</h3>
+             <div className="w-full max-w-3xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-2xl p-6 backdrop-blur-xl">
+               <h3 className="text-sm font-bold text-slate-900 dark:text-slate-900 dark:text-white mb-4">Experimental Log</h3>
                <table className="w-full text-xs text-left">
                  <thead className="bg-[#0b1120]">
                    <tr>
-                     <th className="p-3 text-slate-400">#</th>
-                     <th className="p-3 text-slate-400">Object Dist (u)</th>
-                     <th className="p-3 text-slate-400">Image Dist (v)</th>
+                     <th className="p-3 text-slate-600 dark:text-slate-400">#</th>
+                     <th className="p-3 text-slate-600 dark:text-slate-400">Object Dist (u)</th>
+                     <th className="p-3 text-slate-600 dark:text-slate-400">Image Dist (v)</th>
                      <th className="p-3 text-purple-400">Calculated (f)</th>
-                     <th className="p-3 text-slate-400">Nature</th>
+                     <th className="p-3 text-slate-600 dark:text-slate-400">Nature</th>
                    </tr>
                  </thead>
                  <tbody>
                    {recordings.map((r, i) => (
-                     <tr key={i} className="border-t border-white/5 hover:bg-white/5">
+                     <tr key={i} className="border-t border-black/5 dark:border-white/5 hover:bg-black/5 dark:bg-white/5">
                        <td className="p-3 text-slate-600">{i+1}</td>
                        <td className="p-3 font-mono text-green-400">{r.u.toFixed(1)} cm</td>
                        <td className="p-3 font-mono text-red-400">{r.v.toFixed(1)} cm</td>
@@ -231,12 +231,12 @@ export default function ConcaveMirrorLab3D({ hex }: ConcaveMirrorLab3DProps) {
 
           <div className="absolute top-8 left-8 p-3 rounded-xl border backdrop-blur-md" style={{ background: `${region.color}15`, border: `1px solid ${region.color}40` }}>
             <div className="text-[10px] font-bold tracking-widest uppercase mb-1" style={{ color: region.color }}>{region.label}</div>
-            <div className="text-[11px] text-slate-300">{region.desc}</div>
+            <div className="text-[11px] text-slate-700 dark:text-slate-700 dark:text-slate-300">{region.desc}</div>
           </div>
         </div>
 
         {/* RIGHT CONTROL PANEL */}
-        <div className="w-[320px] shrink-0 bg-white/[0.01] backdrop-blur-3xl border-l border-white/5 flex flex-col z-20 shadow-[-10px_0_30px_rgba(0,0,0,0.5)]">
+        <div className="w-[320px] shrink-0 bg-white/[0.01] backdrop-blur-3xl border-l border-black/5 dark:border-white/5 flex flex-col z-20 shadow-[-10px_0_30px_rgba(0,0,0,0.5)]">
           <div className="p-6 flex-1 overflow-y-auto space-y-8">
             
             {/* Real-time Apple-style controls */}
@@ -248,13 +248,13 @@ export default function ConcaveMirrorLab3D({ hex }: ConcaveMirrorLab3DProps) {
               ].map(ctrl => (
                 <div key={ctrl.label}>
                   <div className="flex justify-between items-end mb-2">
-                    <span className="text-xs font-bold text-slate-300 uppercase tracking-widest">{ctrl.label}</span>
-                    <div className="flex bg-black/40 px-2 py-0.5 rounded-md border border-white/10">
-                      <span className="font-mono text-[10px] text-white font-bold">{ctrl.val}</span>
+                    <span className="text-xs font-bold text-slate-700 dark:text-slate-700 dark:text-slate-300 uppercase tracking-widest">{ctrl.label}</span>
+                    <div className="flex bg-black/40 px-2 py-0.5 rounded-md border border-black/10 dark:border-white/10">
+                      <span className="font-mono text-[10px] text-slate-900 dark:text-slate-900 dark:text-white font-bold">{ctrl.val}</span>
                       <span className="text-[9px] text-slate-500 ml-1">{ctrl.unit}</span>
                     </div>
                   </div>
-                  <div className="relative h-2 bg-[#0a0f1a] rounded-full border border-white/5 shadow-inner">
+                  <div className="relative h-2 bg-[#0a0f1a] rounded-full border border-black/5 dark:border-white/5 shadow-inner">
                     <div className={`absolute left-0 top-0 bottom-0 rounded-full ${ctrl.color}`} style={{ width: `${((ctrl.val - ctrl.min) / (ctrl.max - ctrl.min)) * 100}%` }} />
                     <input type="range" min={ctrl.min} max={ctrl.max} value={ctrl.val} onChange={e => ctrl.set(Number(e.target.value))} className="absolute inset-0 w-full opacity-0 cursor-ew-resize z-20" />
                     <motion.div className="absolute w-5 h-5 bg-white rounded-full shadow-[0_2px_10px_rgba(0,0,0,0.5)] pointer-events-none z-10" style={{ top: -6, left: `calc(${((ctrl.val - ctrl.min) / (ctrl.max - ctrl.min)) * 100}% - 10px)` }} />
@@ -263,18 +263,18 @@ export default function ConcaveMirrorLab3D({ hex }: ConcaveMirrorLab3DProps) {
               ))}
             </div>
 
-            <div className="bg-[#0b1120] rounded-2xl p-5 border border-white/5 shadow-inner">
+            <div className="bg-[#0b1120] rounded-2xl p-5 border border-black/5 dark:border-white/5 shadow-inner">
               <h3 className="text-[10px] font-bold uppercase text-slate-500 tracking-widest mb-3 flex items-center gap-2"><Activity size={12}/> Analysis</h3>
               <div className="space-y-3">
                 <div>
                   <div className="text-[9px] text-slate-500 uppercase">Image Nature</div>
-                  <div className="text-sm font-bold text-white tracking-wide" style={{color: nature.color}}>{nature.nature}</div>
+                  <div className="text-sm font-bold text-slate-900 dark:text-slate-900 dark:text-white tracking-wide" style={{color: nature.color}}>{nature.nature}</div>
                 </div>
                 <div className="flex gap-4">
                   <div>
                     <div className="text-[9px] text-slate-500 uppercase">Magnification</div>
                     <div className="text-lg font-mono font-bold text-blue-400">{isFinite(m) ? Math.abs(m).toFixed(2) + 'x' : '∞'}</div>
-                    <div className="text-[10px] text-slate-400">{nature.size}</div>
+                    <div className="text-[10px] text-slate-600 dark:text-slate-400">{nature.size}</div>
                   </div>
                   <div>
                     <div className="text-[9px] text-slate-500 uppercase">Image Dist (v)</div>
@@ -284,7 +284,7 @@ export default function ConcaveMirrorLab3D({ hex }: ConcaveMirrorLab3DProps) {
               </div>
             </div>
 
-            <button onClick={logReading} disabled={!isFinite(v)} className="w-full py-3.5 rounded-xl text-sm font-bold text-white active:scale-95 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_25px_rgba(59,130,246,0.4)] disabled:opacity-50 disabled:active:scale-100" style={{ background: 'linear-gradient(135deg, #2563eb, #3b82f6)' }}>
+            <button onClick={logReading} disabled={!isFinite(v)} className="w-full py-3.5 rounded-xl text-sm font-bold text-slate-900 dark:text-slate-900 dark:text-white active:scale-95 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_25px_rgba(59,130,246,0.4)] disabled:opacity-50 disabled:active:scale-100" style={{ background: 'linear-gradient(135deg, #2563eb, #3b82f6)' }}>
               Log Data Point
             </button>
           </div>

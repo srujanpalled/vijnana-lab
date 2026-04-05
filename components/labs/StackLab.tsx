@@ -204,18 +204,18 @@ const StackLab: React.FC<StackLabProps> = ({ hex }) => {
         {/* Floating Controls Overlay */}
         <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-3">
           {message && (
-            <div className="px-5 py-2 rounded-xl font-bold text-sm bg-black/60 backdrop-blur-md border border-white/10" style={{ color: msgColor, boxShadow: `0 0 15px ${msgColor}40` }}>
+            <div className="px-5 py-2 rounded-xl font-bold text-sm bg-black/60 backdrop-blur-md border border-black/10 dark:border-white/10" style={{ color: msgColor, boxShadow: `0 0 15px ${msgColor}40` }}>
               {message}
             </div>
           )}
-          <div className="flex gap-3 bg-black/40 backdrop-blur-md p-3 rounded-2xl border border-white/10 shadow-2xl">
+          <div className="flex gap-3 bg-black/40 backdrop-blur-md p-3 rounded-2xl border border-black/10 dark:border-white/10 shadow-2xl">
             <button onClick={push} className="px-6 py-3 bg-gradient-to-t from-blue-700 to-blue-500 hover:to-blue-400 text-white font-bold rounded-xl transition-all active:scale-95 flex items-center gap-2 shadow-lg"><ArrowUp size={18}/> Push</button>
             <button onClick={peek} className="px-6 py-3 bg-gradient-to-t from-amber-700 to-amber-500 hover:to-amber-400 text-white font-bold rounded-xl transition-all active:scale-95 flex items-center gap-2 shadow-lg"><Eye size={18}/> Peek</button>
             <button onClick={pop} className="px-6 py-3 bg-gradient-to-t from-red-700 to-red-500 hover:to-red-400 text-white font-bold rounded-xl transition-all active:scale-95 flex items-center gap-2 shadow-lg"><ArrowDown size={18}/> Pop</button>
           </div>
           
           <div className="text-center">
-            <div className="flex justify-between text-[10px] text-gray-400 uppercase font-bold mb-1">
+            <div className="flex justify-between text-[10px] text-gray-600 dark:text-gray-400 uppercase font-bold mb-1">
               <span>Stack Size</span>
               <span>{stack.length}/{MAX_STACK}</span>
             </div>
@@ -227,25 +227,25 @@ const StackLab: React.FC<StackLabProps> = ({ hex }) => {
       </div>
 
       {/* Info panel */}
-      <div className="w-full md:w-80 bg-slate-900 border-l border-white/5 flex flex-col z-20 shrink-0">
-        <div className="p-5 border-b border-white/5 bg-slate-950">
+      <div className="w-full md:w-80 bg-slate-900 border-l border-black/5 dark:border-white/5 flex flex-col z-20 shrink-0">
+        <div className="p-5 border-b border-black/5 dark:border-white/5 bg-slate-950">
           <p className="text-xs font-bold uppercase tracking-widest text-blue-400 mb-1">Stack — CS Lab</p>
-          <h2 className="text-xl font-bold text-white">{current.title}</h2>
+          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-900 dark:text-white">{current.title}</h2>
         </div>
         <div className="flex-1 p-5 space-y-5 overflow-y-auto">
           <div className="bg-blue-500/10 border border-blue-500/30 p-4 rounded-xl shadow-inner">
-            <p className="text-blue-200 text-sm leading-relaxed">{current.instruction}</p>
+            <p className="text-blue-600 dark:text-blue-200 text-sm leading-relaxed">{current.instruction}</p>
           </div>
-          <div className="bg-black/40 p-4 rounded-xl border border-white/10 space-y-2 font-mono text-sm">
-            <p className="text-gray-400">Stack = <span className="text-white">[{stack.join(', ')}]</span></p>
-            <p className="text-gray-400">Top = <span className="text-yellow-300">{stack.length > 0 ? stack[stack.length - 1] : 'null'}</span></p>
-            <p className="text-gray-400">Size = <span className="text-blue-300">{stack.length}</span></p>
-            <p className="text-gray-400">isEmpty = <span className={stack.length === 0 ? 'text-green-400' : 'text-gray-500'}>{String(stack.length === 0)}</span></p>
-            <p className="text-gray-400">isFull = <span className={stack.length >= MAX_STACK ? 'text-red-400' : 'text-gray-500'}>{String(stack.length >= MAX_STACK)}</span></p>
+          <div className="bg-black/40 p-4 rounded-xl border border-black/10 dark:border-white/10 space-y-2 font-mono text-sm">
+            <p className="text-gray-600 dark:text-gray-400">Stack = <span className="text-slate-900 dark:text-slate-900 dark:text-white">[{stack.join(', ')}]</span></p>
+            <p className="text-gray-600 dark:text-gray-400">Top = <span className="text-yellow-300">{stack.length > 0 ? stack[stack.length - 1] : 'null'}</span></p>
+            <p className="text-gray-600 dark:text-gray-400">Size = <span className="text-blue-600 dark:text-blue-300">{stack.length}</span></p>
+            <p className="text-gray-600 dark:text-gray-400">isEmpty = <span className={stack.length === 0 ? 'text-green-400' : 'text-gray-500'}>{String(stack.length === 0)}</span></p>
+            <p className="text-gray-600 dark:text-gray-400">isFull = <span className={stack.length >= MAX_STACK ? 'text-red-400' : 'text-gray-500'}>{String(stack.length >= MAX_STACK)}</span></p>
           </div>
-          <div className="text-xs text-gray-500 bg-black/40 p-3 rounded-xl border border-white/10">
-            <p className="font-bold text-gray-300 mb-2 uppercase tracking-wider text-[10px]">Real-World Applications:</p>
-            <ul className="space-y-1.5 list-disc list-inside text-slate-400">
+          <div className="text-xs text-gray-500 bg-black/40 p-3 rounded-xl border border-black/10 dark:border-white/10">
+            <p className="font-bold text-gray-700 dark:text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-wider text-[10px]">Real-World Applications:</p>
+            <ul className="space-y-1.5 list-disc list-inside text-slate-600 dark:text-slate-400">
               <li>Undo/Redo in text editors</li>
               <li>Browser back button history</li>
               <li>Function call stack (Recursion)</li>

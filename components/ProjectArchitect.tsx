@@ -67,8 +67,8 @@ const ProjectArchitect: React.FC = () => {
                     <Lightbulb className="text-amber-500 w-8 h-8 animate-pulse" />
                 </div>
                 <div>
-                    <h2 className="text-3xl font-display font-bold text-slate-900 dark:text-white">Project Architect</h2>
-                    <p className="text-slate-600 dark:text-gray-400">Brainstorm and blueprint your next big scientific discovery.</p>
+                    <h2 className="text-3xl font-display font-bold text-slate-900 dark:text-slate-900 dark:text-slate-900 dark:text-white">Project Architect</h2>
+                    <p className="text-slate-600 dark:text-gray-600 dark:text-gray-400">Brainstorm and blueprint your next big scientific discovery.</p>
                 </div>
             </div>
 
@@ -91,7 +91,7 @@ const ProjectArchitect: React.FC = () => {
                         exit={{ opacity: 0, x: -20 }}
                         className="space-y-6"
                     >
-                        <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-4">Choose Your Discipline</h3>
+                        <h3 className="text-xl font-bold text-slate-800 dark:text-slate-900 dark:text-slate-900 dark:text-white mb-4">Choose Your Discipline</h3>
                         <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                             {SUBJECTS.map(sub => (
                                 <button
@@ -106,7 +106,7 @@ const ProjectArchitect: React.FC = () => {
                                     <div className={`p-3 rounded-xl bg-${sub.color}-500/20`}>
                                         <Rocket className={`text-${sub.color}-500 w-6 h-6`} />
                                     </div>
-                                    <span className="font-bold text-slate-700 dark:text-white">{sub.label}</span>
+                                    <span className="font-bold text-slate-700 dark:text-slate-900 dark:text-slate-900 dark:text-white">{sub.label}</span>
                                 </button>
                             ))}
                         </div>
@@ -129,7 +129,7 @@ const ProjectArchitect: React.FC = () => {
                                         id="topic-input"
                                         type="text" 
                                         placeholder="e.g. Thermodynamics, Genetics, Quantum Entanglement"
-                                        className="w-full mt-2 bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:outline-none focus:border-amber-500/50"
+                                        className="w-full mt-2 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-2xl p-4 text-slate-900 dark:text-white focus:outline-none focus:border-amber-500/50"
                                         value={formData.topic}
                                         onChange={e => setFormData({...formData, topic: e.target.value})}
                                     />
@@ -155,7 +155,7 @@ const ProjectArchitect: React.FC = () => {
                             </div>
                         </div>
                         <div className="flex justify-between pt-8">
-                            <button onClick={prevStep} className="px-6 py-3 rounded-xl hover:bg-white/5 text-slate-500 font-bold transition-all flex items-center gap-2">
+                            <button onClick={prevStep} className="px-6 py-3 rounded-xl hover:bg-black/5 dark:bg-white/5 text-slate-500 font-bold transition-all flex items-center gap-2">
                                 <ChevronLeft size={20} /> Back
                             </button>
                             <button onClick={nextStep} disabled={!formData.topic} className="px-8 py-3 bg-amber-600 rounded-xl text-white font-bold transition-all flex items-center gap-2 hover:bg-amber-500 disabled:opacity-50">
@@ -181,7 +181,7 @@ const ProjectArchitect: React.FC = () => {
                                 <textarea 
                                     id="goal-input"
                                     placeholder="Describe what you want to achieve or discover..."
-                                    className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:outline-none focus:border-amber-500/50 h-32 resize-none"
+                                    className="w-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-2xl p-4 text-slate-900 dark:text-white focus:outline-none focus:border-amber-500/50 h-32 resize-none"
                                     value={formData.goal}
                                     onChange={e => setFormData({...formData, goal: e.target.value})}
                                 />
@@ -193,14 +193,14 @@ const ProjectArchitect: React.FC = () => {
                                 <textarea 
                                     id="hypothesis-input"
                                     placeholder="I think that if I change X, then Y will happen because..."
-                                    className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:outline-none focus:border-amber-500/50 h-24 resize-none"
+                                    className="w-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-2xl p-4 text-slate-900 dark:text-white focus:outline-none focus:border-amber-500/50 h-24 resize-none"
                                     value={formData.hypothesis}
                                     onChange={e => setFormData({...formData, hypothesis: e.target.value})}
                                 />
                             </div>
                         </div>
                         <div className="flex justify-between pt-8">
-                            <button onClick={prevStep} className="px-6 py-3 rounded-xl hover:bg-white/5 text-slate-500 font-bold transition-all flex items-center gap-2">
+                            <button onClick={prevStep} className="px-6 py-3 rounded-xl hover:bg-black/5 dark:bg-white/5 text-slate-500 font-bold transition-all flex items-center gap-2">
                                 <ChevronLeft size={20} /> Back
                             </button>
                             <button 
@@ -230,18 +230,18 @@ const ProjectArchitect: React.FC = () => {
                                 <BookOpen size={200} />
                             </div>
                             <div className="relative z-10 space-y-8">
-                                <div className="border-b border-white/10 pb-6 flex justify-between items-start">
+                                <div className="border-b border-black/10 dark:border-white/10 pb-6 flex justify-between items-start">
                                     <div>
-                                        <h1 className="text-2xl font-display font-bold text-white mb-2">{result.title}</h1>
+                                        <h1 className="text-2xl font-display font-bold text-slate-900 dark:text-slate-900 dark:text-white mb-2">{result.title}</h1>
                                         <div className="flex gap-2">
                                             <span className="px-2 py-1 rounded-md bg-amber-500/20 text-amber-500 text-xs font-bold uppercase">{formData.subject}</span>
-                                            <span className="px-2 py-1 rounded-md bg-white/10 text-slate-400 text-xs font-bold uppercase">{formData.level}</span>
+                                            <span className="px-2 py-1 rounded-md bg-black/10 dark:bg-white/10 text-slate-400 text-xs font-bold uppercase">{formData.level}</span>
                                         </div>
                                     </div>
                                     <div className="flex gap-2">
-                                        <button className="p-2 rounded-lg bg-white/5 text-slate-400 hover:text-white transition-colors" title="Save Blueprint"><Save size={18}/></button>
-                                        <button className="p-2 rounded-lg bg-white/5 text-slate-400 hover:text-white transition-colors" title="Export PDF"><Download size={18}/></button>
-                                        <button className="p-2 rounded-lg bg-white/5 text-slate-400 hover:text-white transition-colors" title="Share"><Share2 size={18}/></button>
+                                        <button className="p-2 rounded-lg bg-black/5 dark:bg-white/5 text-slate-400 hover:text-slate-900 dark:text-white transition-colors" title="Save Blueprint"><Save size={18}/></button>
+                                        <button className="p-2 rounded-lg bg-black/5 dark:bg-white/5 text-slate-400 hover:text-slate-900 dark:text-white transition-colors" title="Export PDF"><Download size={18}/></button>
+                                        <button className="p-2 rounded-lg bg-black/5 dark:bg-white/5 text-slate-400 hover:text-slate-900 dark:text-white transition-colors" title="Share"><Share2 size={18}/></button>
                                     </div>
                                 </div>
 
@@ -251,7 +251,7 @@ const ProjectArchitect: React.FC = () => {
                                             <h4 className="text-amber-500 font-bold uppercase tracking-widest mb-3 flex items-center gap-2">
                                                 <Target size={16}/> Aim & Objective
                                             </h4>
-                                            <p className="text-slate-300 leading-relaxed font-light italic">"{result.aim}"</p>
+                                            <p className="text-slate-700 dark:text-slate-700 dark:text-slate-300 leading-relaxed font-light italic">"{result.aim}"</p>
                                         </section>
                                         
                                         <section>
@@ -260,7 +260,7 @@ const ProjectArchitect: React.FC = () => {
                                             </h4>
                                             <ul className="space-y-3">
                                                 {result.procedure.map((p: string, i: number) => (
-                                                    <li key={`${result.title}-step-${i}`} className="flex gap-3 text-slate-400">
+                                                    <li key={`${result.title}-step-${i}`} className="flex gap-3 text-slate-600 dark:text-slate-400">
                                                         <span className="text-sky-500 font-mono">0{i+1}.</span>
                                                         <p className="flex-1">{p}</p>
                                                     </li>
@@ -270,13 +270,13 @@ const ProjectArchitect: React.FC = () => {
                                     </div>
 
                                     <div className="space-y-6">
-                                        <section className="p-5 rounded-2xl bg-white/5 border border-white/5">
+                                        <section className="p-5 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5">
                                             <h4 className="text-emerald-500 font-bold uppercase tracking-widest mb-3 flex items-center gap-2">
                                                 <Sparkles size={16}/> Virtual Apparatus
                                             </h4>
                                             <ul className="space-y-2">
                                                 {result.apparatus.map((app: string, i: number) => (
-                                                    <li key={`${result.title}-app-${i}`} className="text-slate-400 flex items-center gap-2">
+                                                    <li key={`${result.title}-app-${i}`} className="text-slate-600 dark:text-slate-400 flex items-center gap-2">
                                                         <div className="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
                                                         {app}
                                                     </li>
@@ -296,7 +296,7 @@ const ProjectArchitect: React.FC = () => {
                         <div className="flex justify-center gap-4">
                             <button 
                                 onClick={() => { setStep(1); setResult(null); }} 
-                                className="px-8 py-3 rounded-xl bg-white/5 border border-white/10 text-white font-bold hover:bg-white/10 transition-all flex items-center gap-2"
+                                className="px-8 py-3 rounded-xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-slate-900 dark:text-white font-bold hover:bg-black/10 dark:bg-white/10 transition-all flex items-center gap-2"
                             >
                                 <Trash2 size={18} /> Start New Draft
                             </button>

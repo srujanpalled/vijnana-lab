@@ -105,11 +105,11 @@ const ObservationTable: React.FC<{ readings: Reading[]; onDelete: (i: number) =>
     <table className="w-full text-xs border-collapse">
       <thead>
         <tr className="bg-slate-100 dark:bg-slate-800">
-          <th className="px-3 py-2 text-left text-slate-500 dark:text-gray-400 font-bold uppercase">#</th>
-          <th className="px-3 py-2 text-left text-slate-500 dark:text-gray-400 font-bold uppercase">V (Volts)</th>
-          <th className="px-3 py-2 text-left text-slate-500 dark:text-gray-400 font-bold uppercase">I (Amps)</th>
-          <th className="px-3 py-2 text-left text-slate-500 dark:text-gray-400 font-bold uppercase">R=V/I (Ω)</th>
-          <th className="px-3 py-2 text-left text-slate-500 dark:text-gray-400 font-bold uppercase">Del</th>
+          <th className="px-3 py-2 text-left text-slate-500 dark:text-gray-600 dark:text-gray-400 font-bold uppercase">#</th>
+          <th className="px-3 py-2 text-left text-slate-500 dark:text-gray-600 dark:text-gray-400 font-bold uppercase">V (Volts)</th>
+          <th className="px-3 py-2 text-left text-slate-500 dark:text-gray-600 dark:text-gray-400 font-bold uppercase">I (Amps)</th>
+          <th className="px-3 py-2 text-left text-slate-500 dark:text-gray-600 dark:text-gray-400 font-bold uppercase">R=V/I (Ω)</th>
+          <th className="px-3 py-2 text-left text-slate-500 dark:text-gray-600 dark:text-gray-400 font-bold uppercase">Del</th>
         </tr>
       </thead>
       <tbody>
@@ -121,7 +121,7 @@ const ObservationTable: React.FC<{ readings: Reading[]; onDelete: (i: number) =>
             <td className="px-3 py-1.5 font-mono text-slate-500">{i + 1}</td>
             <td className="px-3 py-1.5 font-mono text-blue-600 dark:text-blue-400">{r.V.toFixed(3)}</td>
             <td className="px-3 py-1.5 font-mono text-green-600 dark:text-green-400">{r.I.toFixed(5)}</td>
-            <td className="px-3 py-1.5 font-mono font-bold text-slate-800 dark:text-white">{r.R_calc.toFixed(2)}</td>
+            <td className="px-3 py-1.5 font-mono font-bold text-slate-800 dark:text-slate-900 dark:text-slate-900 dark:text-white">{r.R_calc.toFixed(2)}</td>
             <td className="px-3 py-1.5">
               <button onClick={() => onDelete(i)} className="text-red-400 hover:text-red-600 transition-colors">
                 <Trash2 size={12} />
@@ -195,7 +195,7 @@ const OhmsLawLab: React.FC<{ hex: string; onLog?: (data: any) => void }> = ({ he
     <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-900 overflow-hidden">
 
       {/* ── TAB BAR ── */}
-      <div className="flex border-b border-slate-200 dark:border-white/10 bg-white dark:bg-slate-950 shrink-0">
+      <div className="flex border-b border-slate-200 dark:border-black/10 dark:border-white/10 bg-white dark:bg-slate-950 shrink-0">
         {([
           { key: 'circuit', label: '⚡ Circuit' },
           { key: 'graph',   label: '📈 V–I Graph' },
@@ -230,7 +230,7 @@ const OhmsLawLab: React.FC<{ hex: string; onLog?: (data: any) => void }> = ({ he
               {graphSeries.length > 0
                 ? <InteractiveGraph series={graphSeries} xLabel="Current" yLabel="Voltage" xUnit="A" yUnit="V"
                     title="Ohm's Law — V vs I Graph" />
-                : <div className="flex flex-col items-center justify-center h-48 text-slate-400 gap-3">
+                : <div className="flex flex-col items-center justify-center h-48 text-slate-600 dark:text-slate-400 gap-3">
                     <Activity size={40} className="opacity-30" />
                     <p className="text-sm">Log at least 2 readings to see graph</p>
                   </div>
@@ -256,8 +256,8 @@ const OhmsLawLab: React.FC<{ hex: string; onLog?: (data: any) => void }> = ({ he
                     {i < step ? '✓' : i + 1}
                   </div>
                   <div>
-                    <div className="text-xs font-bold text-slate-700 dark:text-white mb-0.5">{s.icon} {s.title}</div>
-                    <div className="text-xs text-slate-500 dark:text-gray-400 leading-relaxed">{s.desc}</div>
+                    <div className="text-xs font-bold text-slate-700 dark:text-slate-900 dark:text-slate-900 dark:text-white mb-0.5">{s.icon} {s.title}</div>
+                    <div className="text-xs text-slate-500 dark:text-gray-600 dark:text-gray-400 leading-relaxed">{s.desc}</div>
                   </div>
                 </div>
               ))}
@@ -274,7 +274,7 @@ const OhmsLawLab: React.FC<{ hex: string; onLog?: (data: any) => void }> = ({ he
         </div>
 
         {/* ── RIGHT: CONTROLS ── */}
-        <div className="w-72 shrink-0 border-l border-slate-200 dark:border-white/10 bg-white dark:bg-slate-950 flex flex-col overflow-y-auto p-4 gap-4">
+        <div className="w-72 shrink-0 border-l border-slate-200 dark:border-black/10 dark:border-white/10 bg-white dark:bg-slate-950 flex flex-col overflow-y-auto p-4 gap-4">
 
           {/* Live Meters */}
           <div className="grid grid-cols-3 gap-2">
@@ -283,10 +283,10 @@ const OhmsLawLab: React.FC<{ hex: string; onLog?: (data: any) => void }> = ({ he
               { label: 'Current', val: I_live.toFixed(5), unit: 'A', color: '#22c55e' },
               { label: 'R calc',  val: (V_live / I_live).toFixed(2), unit: 'Ω', color: '#f59e0b' },
             ].map(m => (
-              <div key={m.label} className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-lg p-2 text-center">
-                <div className="text-[10px] text-slate-400 uppercase font-bold mb-1">{m.label}</div>
+              <div key={m.label} className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-black/10 dark:border-white/10 rounded-lg p-2 text-center">
+                <div className="text-[10px] text-slate-600 dark:text-slate-400 uppercase font-bold mb-1">{m.label}</div>
                 <div className="font-mono font-bold text-xs" style={{ color: m.color }}>{m.val}</div>
-                <div className="text-[9px] text-slate-400">{m.unit}</div>
+                <div className="text-[9px] text-slate-600 dark:text-slate-400">{m.unit}</div>
               </div>
             ))}
           </div>
@@ -295,13 +295,13 @@ const OhmsLawLab: React.FC<{ hex: string; onLog?: (data: any) => void }> = ({ he
           <div className="space-y-3">
             <div className="mb-4">
               <div className="flex justify-between items-end mb-2">
-                <span className="text-xs font-bold text-slate-300 uppercase tracking-widest">Voltage (EMF)</span>
-                <div className="flex bg-black/40 px-2 py-0.5 rounded-md border border-white/10">
-                  <span className="font-mono text-[10px] text-white font-bold">{voltage.toFixed(1)}</span>
+                <span className="text-xs font-bold text-slate-700 dark:text-slate-700 dark:text-slate-300 uppercase tracking-widest">Voltage (EMF)</span>
+                <div className="flex bg-black/40 px-2 py-0.5 rounded-md border border-black/10 dark:border-white/10">
+                  <span className="font-mono text-[10px] text-slate-900 dark:text-slate-900 dark:text-white font-bold">{voltage.toFixed(1)}</span>
                   <span className="text-[9px] text-slate-500 ml-1">V</span>
                 </div>
               </div>
-              <div className="relative h-2 bg-[#0a0f1a] rounded-full border border-white/5 shadow-inner">
+              <div className="relative h-2 bg-[#0a0f1a] rounded-full border border-black/5 dark:border-white/5 shadow-inner">
                 <div className="absolute left-0 top-0 bottom-0 rounded-full bg-blue-500" style={{ width: `${((voltage - 0.5) / (12 - 0.5)) * 100}%` }} />
                 <input type="range" min="0.5" max="12" step="0.5" value={voltage} onChange={e => setVoltage(parseFloat(e.target.value))} className="absolute inset-0 w-full opacity-0 cursor-ew-resize z-20" />
                 <motion.div className="absolute w-5 h-5 bg-white rounded-full shadow-[0_2px_10px_rgba(0,0,0,0.5)] pointer-events-none z-10" style={{ top: -6, left: `calc(${((voltage - 0.5) / (12 - 0.5)) * 100}% - 10px)` }} />
@@ -313,13 +313,13 @@ const OhmsLawLab: React.FC<{ hex: string; onLog?: (data: any) => void }> = ({ he
 
             <div className="mb-4">
               <div className="flex justify-between items-end mb-2">
-                <span className="text-xs font-bold text-slate-300 uppercase tracking-widest">Resistance (R)</span>
-                <div className="flex bg-black/40 px-2 py-0.5 rounded-md border border-white/10">
-                  <span className="font-mono text-[10px] text-white font-bold">{resistance}</span>
+                <span className="text-xs font-bold text-slate-700 dark:text-slate-700 dark:text-slate-300 uppercase tracking-widest">Resistance (R)</span>
+                <div className="flex bg-black/40 px-2 py-0.5 rounded-md border border-black/10 dark:border-white/10">
+                  <span className="font-mono text-[10px] text-slate-900 dark:text-slate-900 dark:text-white font-bold">{resistance}</span>
                   <span className="text-[9px] text-slate-500 ml-1">Ω</span>
                 </div>
               </div>
-              <div className="relative h-2 bg-[#0a0f1a] rounded-full border border-white/5 shadow-inner">
+              <div className="relative h-2 bg-[#0a0f1a] rounded-full border border-black/5 dark:border-white/5 shadow-inner">
                 <div className="absolute left-0 top-0 bottom-0 rounded-full bg-amber-500" style={{ width: `${((resistance - 1) / (100 - 1)) * 100}%` }} />
                 <input type="range" min="1" max="100" step="1" value={resistance} onChange={e => setResistance(parseInt(e.target.value))} className="absolute inset-0 w-full opacity-0 cursor-ew-resize z-20" />
                 <motion.div className="absolute w-5 h-5 bg-white rounded-full shadow-[0_2px_10px_rgba(0,0,0,0.5)] pointer-events-none z-10" style={{ top: -6, left: `calc(${((resistance - 1) / (100 - 1)) * 100}% - 10px)` }} />
@@ -337,12 +337,12 @@ const OhmsLawLab: React.FC<{ hex: string; onLog?: (data: any) => void }> = ({ he
                   <span className="text-[9px] text-rose-500/50 ml-1">°C</span>
                 </div>
               </div>
-              <div className="relative h-2 bg-[#0a0f1a] rounded-full border border-white/5 shadow-inner">
+              <div className="relative h-2 bg-[#0a0f1a] rounded-full border border-black/5 dark:border-white/5 shadow-inner">
                 <div className="absolute left-0 top-0 bottom-0 rounded-full bg-rose-500" style={{ width: `${((env.temperature_C - 0) / (100 - 0)) * 100}%` }} />
                 <input type="range" min="0" max="100" step="5" value={env.temperature_C} onChange={e => setEnv(ev => ({ ...ev, temperature_C: parseInt(e.target.value) }))} className="absolute inset-0 w-full opacity-0 cursor-ew-resize z-20" />
                 <motion.div className="absolute w-5 h-5 bg-white rounded-full shadow-[0_2px_10px_rgba(0,0,0,0.5)] pointer-events-none z-10" style={{ top: -6, left: `calc(${((env.temperature_C - 0) / (100 - 0)) * 100}% - 10px)` }} />
               </div>
-              <div className="text-[9px] text-slate-500 mt-2 text-center bg-black/20 py-1 rounded-md border border-white/5 font-mono">
+              <div className="text-[9px] text-slate-500 mt-2 text-center bg-transparent dark:bg-black/20 py-1 rounded-md border border-black/5 dark:border-white/5 font-mono">
                 R(T): <span className="font-bold text-rose-200">{R_at_T.toFixed(3)} {'\u03A9'}</span>
                 &nbsp;|&nbsp; {'\u03B1'}=0.004
               </div>
@@ -352,7 +352,7 @@ const OhmsLawLab: React.FC<{ hex: string; onLog?: (data: any) => void }> = ({ he
           {/* Action buttons */}
           <div className="flex flex-col gap-2">
             <button onClick={logReading}
-              className="w-full py-2.5 rounded-xl text-xs font-bold text-white shadow-lg transition-all active:scale-95"
+              className="w-full py-2.5 rounded-xl text-xs font-bold text-slate-900 dark:text-slate-900 dark:text-white shadow-lg transition-all active:scale-95"
               style={{ backgroundColor: hex, boxShadow: `0 6px 16px -6px ${hex}80` }}>
               + Log Reading
             </button>
@@ -369,8 +369,8 @@ const OhmsLawLab: React.FC<{ hex: string; onLog?: (data: any) => void }> = ({ he
           </div>
 
           {/* Formula quick-ref */}
-          <div className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-xl p-3 space-y-1.5">
-            <div className="text-[10px] font-bold text-slate-400 uppercase mb-2">Formulae</div>
+          <div className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-black/10 dark:border-white/10 rounded-xl p-3 space-y-1.5">
+            <div className="text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase mb-2">Formulae</div>
             {[
               'V = I × R',
               'R(T) = R₀[1 + α(T−T₀)]',
@@ -388,8 +388,8 @@ const OhmsLawLab: React.FC<{ hex: string; onLog?: (data: any) => void }> = ({ he
             const std = Math.sqrt(rVals.reduce((a,r)=>a+(r-mean)**2,0)/(rVals.length-1));
             const err = Math.abs(mean - resistance) / resistance * 100;
             return (
-              <div className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-xl p-3">
-                <div className="text-[10px] font-bold text-slate-400 uppercase mb-2">Error Analysis</div>
+              <div className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-black/10 dark:border-white/10 rounded-xl p-3">
+                <div className="text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase mb-2">Error Analysis</div>
                 <div className="space-y-1">
                   {[
                     ['Set R', `${resistance} Ω`],
@@ -398,8 +398,8 @@ const OhmsLawLab: React.FC<{ hex: string; onLog?: (data: any) => void }> = ({ he
                     ['% Error', `${err.toFixed(2)}%`],
                   ].map(([k,v]) => (
                     <div key={k} className="flex justify-between text-[10px]">
-                      <span className="text-slate-400">{k}</span>
-                      <span className="font-mono font-bold text-slate-700 dark:text-white">{v}</span>
+                      <span className="text-slate-600 dark:text-slate-400">{k}</span>
+                      <span className="font-mono font-bold text-slate-700 dark:text-slate-900 dark:text-slate-900 dark:text-white">{v}</span>
                     </div>
                   ))}
                 </div>

@@ -92,12 +92,12 @@ export default function BinarySearchLab({ hex }: BinarySearchLabProps) {
   };
 
   return (
-    <div className="flex flex-col h-full w-full bg-[#030712] overflow-hidden font-sans text-slate-200 select-none">
+    <div className="flex flex-col h-full w-full bg-[#030712] overflow-hidden font-sans text-slate-800 dark:text-slate-200 select-none">
       
       {/* HEADER: Glassmorphic premium */}
       <div className="flex shrink-0 items-center justify-between px-6 py-4 border-b border-white/[0.05] bg-white/[0.01] backdrop-blur-2xl z-20 shadow-lg">
         <div>
-          <h2 className="text-xl font-bold tracking-tight text-white flex items-center gap-3">
+          <h2 className="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-900 dark:text-white flex items-center gap-3">
             <span className="p-1.5 rounded-lg bg-blue-500/20 text-blue-400"><Search size={18} /></span>
             Binary Search Algorithm
           </h2>
@@ -105,19 +105,19 @@ export default function BinarySearchLab({ hex }: BinarySearchLabProps) {
         </div>
 
         {/* Status indicator */}
-        <div className="flex items-center gap-6 px-5 py-2.5 rounded-2xl bg-white/5 border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.3)] backdrop-blur-2xl">
+        <div className="flex items-center gap-6 px-5 py-2.5 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.3)] backdrop-blur-2xl">
           <div className="flex flex-col items-center">
-            <span className="text-[10px] uppercase font-semibold text-slate-400">Target</span>
-            <span className="font-mono text-sm font-semibold text-white">{target}</span>
+            <span className="text-[10px] uppercase font-semibold text-slate-600 dark:text-slate-400">Target</span>
+            <span className="font-mono text-sm font-semibold text-slate-900 dark:text-slate-900 dark:text-white">{target}</span>
           </div>
-          <div className="w-px h-6 bg-white/10"></div>
+          <div className="w-px h-6 bg-black/10 dark:bg-white/10"></div>
           <div className="flex flex-col items-center">
-            <span className="text-[10px] uppercase font-semibold text-slate-400">Comparisons</span>
+            <span className="text-[10px] uppercase font-semibold text-slate-600 dark:text-slate-400">Comparisons</span>
             <span className="font-mono text-sm font-semibold text-amber-400">{comparisons}</span>
           </div>
-          <div className="w-px h-6 bg-white/10"></div>
+          <div className="w-px h-6 bg-black/10 dark:bg-white/10"></div>
           <div className="flex flex-col items-center">
-            <span className="text-[10px] uppercase font-semibold text-slate-400">Status</span>
+            <span className="text-[10px] uppercase font-semibold text-slate-600 dark:text-slate-400">Status</span>
             <span className={`font-mono text-sm font-semibold ${found ? 'text-green-400' : low > high ? 'text-red-400' : 'text-blue-400'}`}>
               {found ? 'FOUND' : low > high ? 'NOT FOUND' : 'SEARCHING'}
             </span>
@@ -134,7 +134,7 @@ export default function BinarySearchLab({ hex }: BinarySearchLabProps) {
           <div className="absolute inset-0 opacity-[0.02]" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)', backgroundSize: '40px 40px', backgroundPosition: 'center center' }} />
 
           {/* Core Array Container */}
-          <div className="relative w-full max-w-5xl h-64 border border-white/10 flex items-center justify-center px-4 rounded-[40px] shadow-[inset_0_0_50px_rgba(0,0,0,0.8)] bg-black/40 backdrop-blur-md z-10">
+          <div className="relative w-full max-w-5xl h-64 border border-black/10 dark:border-white/10 flex items-center justify-center px-4 rounded-[40px] shadow-[inset_0_0_50px_rgba(0,0,0,0.8)] bg-black/40 backdrop-blur-md z-10">
             
             <div className="flex gap-2 relative z-20">
               <AnimatePresence>
@@ -213,7 +213,7 @@ export default function BinarySearchLab({ hex }: BinarySearchLabProps) {
                           )}
                           {isSearching && idx === mid && !found && (
                             <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="flex flex-col items-center absolute -top-12 z-30">
-                              <span className="text-[10px] font-black text-amber-300 bg-amber-500/20 px-2.5 py-1 rounded-full border border-amber-400 shadow-[0_0_10px_rgba(251,191,36,0.5)] backdrop-blur-sm">MID</span>
+                              <span className="text-[10px] font-black text-amber-600 dark:text-amber-300 bg-amber-500/20 px-2.5 py-1 rounded-full border border-amber-400 shadow-[0_0_10px_rgba(251,191,36,0.5)] backdrop-blur-sm">MID</span>
                               <div className="w-0 h-0 border-l-[5px] border-l-transparent border-t-[8px] border-t-amber-400 border-r-[5px] border-r-transparent mt-1" />
                             </motion.div>
                           )}
@@ -238,7 +238,7 @@ export default function BinarySearchLab({ hex }: BinarySearchLabProps) {
           </div>
 
           {/* Quick Target Selectors */}
-          <div className="mt-8 flex gap-3 flex-wrap justify-center max-w-2xl bg-white/[0.02] p-3 rounded-2xl border border-white/5 backdrop-blur-md">
+          <div className="mt-8 flex gap-3 flex-wrap justify-center max-w-2xl bg-white/[0.02] p-3 rounded-2xl border border-black/5 dark:border-white/5 backdrop-blur-md">
             <span className="text-[10px] font-bold uppercase text-slate-500 flex items-center mr-2">Set Target:</span>
             {[5, 23, 42, 72, 85, 99].map(t => (
               <button 
@@ -254,7 +254,7 @@ export default function BinarySearchLab({ hex }: BinarySearchLabProps) {
         </div>
 
         {/* RIGHT CONTROL PANEL - Apple Glass Style */}
-        <div className="w-[340px] shrink-0 bg-white/[0.01] backdrop-blur-3xl border-l border-white/5 flex flex-col z-20 shadow-[-10px_0_30px_rgba(0,0,0,0.5)]">
+        <div className="w-[340px] shrink-0 bg-white/[0.01] backdrop-blur-3xl border-l border-black/5 dark:border-white/5 flex flex-col z-20 shadow-[-10px_0_30px_rgba(0,0,0,0.5)]">
           <div className="p-6 flex-1 overflow-y-auto space-y-6">
             
             {/* Playback Controls */}
@@ -264,14 +264,14 @@ export default function BinarySearchLab({ hex }: BinarySearchLabProps) {
                 disabled={found || low > high || isAutoSearching} 
                 className="col-span-2 group relative py-4 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-bold transition-all active:scale-95 disabled:opacity-30 disabled:active:scale-100 flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(59,130,246,0.3)]"
               >
-                <div className="bg-white/20 p-1.5 rounded-full"><StepForward size={16} fill="white" /></div>
+                <div className="bg-black/20 dark:bg-white/20 p-1.5 rounded-full"><StepForward size={16} fill="white" /></div>
                 Next Step
               </button>
 
               <button 
                 onClick={handleAutoSearch} 
                 disabled={isAutoSearching || found || low > high}
-                className="group relative py-3 rounded-2xl bg-white/10 hover:bg-white/15 text-white font-bold transition-all active:scale-95 disabled:opacity-30 flex items-center justify-center gap-2 border border-white/5"
+                className="group relative py-3 rounded-2xl bg-black/10 dark:bg-white/10 hover:bg-white/15 text-slate-900 dark:text-white font-bold transition-all active:scale-95 disabled:opacity-30 flex items-center justify-center gap-2 border border-black/5 dark:border-white/5"
               >
                 <Play size={14} fill="currentColor" />
                 Auto Play
@@ -279,7 +279,7 @@ export default function BinarySearchLab({ hex }: BinarySearchLabProps) {
 
               <button 
                 onClick={reset} 
-                className="group relative py-3 rounded-2xl bg-white/5 hover:bg-red-500/20 text-slate-300 hover:text-red-400 font-bold transition-all active:scale-95 flex items-center justify-center gap-2 border border-white/5 hover:border-red-500/30"
+                className="group relative py-3 rounded-2xl bg-black/5 dark:bg-white/5 hover:bg-red-500/20 text-slate-700 dark:text-slate-300 hover:text-red-400 font-bold transition-all active:scale-95 flex items-center justify-center gap-2 border border-black/5 dark:border-white/5 hover:border-red-500/30"
               >
                 <RotateCcw size={14} />
                 Reset
@@ -287,10 +287,10 @@ export default function BinarySearchLab({ hex }: BinarySearchLabProps) {
             </div>
 
             {/* Instruction Card */}
-            <div className="bg-[#0b1120] rounded-2xl p-5 border border-white/5 shadow-inner relative overflow-hidden">
+            <div className="bg-[#0b1120] rounded-2xl p-5 border border-black/5 dark:border-white/5 shadow-inner relative overflow-hidden">
               <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-blue-500/30 to-transparent" />
-              <h3 className="text-sm font-bold text-white mb-2">{STEPS[Math.min(step, STEPS.length - 1)].title}</h3>
-              <p className="text-xs text-slate-400 leading-relaxed">{STEPS[Math.min(step, STEPS.length - 1)].instruction}</p>
+              <h3 className="text-sm font-bold text-slate-900 dark:text-slate-900 dark:text-white mb-2">{STEPS[Math.min(step, STEPS.length - 1)].title}</h3>
+              <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">{STEPS[Math.min(step, STEPS.length - 1)].instruction}</p>
               
               <div className="flex gap-1.5 mt-4">
                 {STEPS.map((_, idx) => (
@@ -301,8 +301,8 @@ export default function BinarySearchLab({ hex }: BinarySearchLabProps) {
 
             {/* Event History Log */}
             <div>
-              <h3 className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-3 flex items-center gap-2">Execution Trace <span className="bg-white/10 text-white px-1.5 py-0.5 rounded">{history.length}</span></h3>
-              <div className="bg-[#0b1120] rounded-2xl border border-white/5 overflow-hidden">
+              <h3 className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-3 flex items-center gap-2">Execution Trace <span className="bg-black/10 dark:bg-white/10 text-slate-900 dark:text-white px-1.5 py-0.5 rounded">{history.length}</span></h3>
+              <div className="bg-[#0b1120] rounded-2xl border border-black/5 dark:border-white/5 overflow-hidden">
                 <div className="max-h-56 overflow-y-auto p-2 space-y-1">
                   {history.length === 0 && (
                     <div className="p-4 text-center text-[10px] text-slate-600 italic">Click "Next Step" to begin search.</div>
@@ -331,8 +331,8 @@ export default function BinarySearchLab({ hex }: BinarySearchLabProps) {
                   className="bg-gradient-to-br from-green-500/20(0) to-emerald-600/20 p-5 rounded-2xl border border-green-500/30 text-center shadow-[0_10px_30px_rgba(16,185,129,0.2)]"
                 >
                   <div className="w-12 h-12 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center mx-auto mb-3 text-2xl">✓</div>
-                  <h3 className="text-white font-bold mb-1">Target Found!</h3>
-                  <p className="text-[11px] text-slate-300">Located element {target} in just <strong className="text-white">{comparisons}</strong> comparisons.</p>
+                  <h3 className="text-slate-900 dark:text-slate-900 dark:text-white font-bold mb-1">Target Found!</h3>
+                  <p className="text-[11px] text-slate-700 dark:text-slate-700 dark:text-slate-300">Located element {target} in just <strong className="text-slate-900 dark:text-slate-900 dark:text-white">{comparisons}</strong> comparisons.</p>
                 </motion.div>
               )}
               {low > high && !found && (
@@ -341,7 +341,7 @@ export default function BinarySearchLab({ hex }: BinarySearchLabProps) {
                   className="bg-red-500/10 p-5 rounded-2xl border border-red-500/30 text-center"
                 >
                   <h3 className="text-red-400 font-bold mb-1">Target Not Found</h3>
-                  <p className="text-[11px] text-slate-400">Element {target} does not exist in this array.</p>
+                  <p className="text-[11px] text-slate-600 dark:text-slate-400">Element {target} does not exist in this array.</p>
                 </motion.div>
               )}
             </AnimatePresence>

@@ -37,9 +37,11 @@ const STEPS = [
   { title: 'Record All Results', instruction: 'Test all 8 solutions and record their pH values. A pH < 7 is acidic, = 7 neutral, > 7 basic (alkaline).', action: 'Record Results 📝' },
 ];
 
-const PHScene = ({ solution, step, dipped, dipAnimProgress }: any) => {
+const PHScene = ({ solution, step, dipped, dipAnimProgress, dropping, dropProgress }: any) => {
   const paperRef = useRef<THREE.Group>(null);
   const liquidMaterialRef = useRef<THREE.MeshPhysicalMaterial>(null);
+  const dropRef = useRef<THREE.Mesh>(null);
+  const liquidMeshRef = useRef<THREE.Mesh>(null);
 
   // Animate the dip logic
   useFrame(() => {
@@ -55,6 +57,31 @@ const PHScene = ({ solution, step, dipped, dipAnimProgress }: any) => {
         const targetColor = new THREE.Color(solution.color);
         liquidMaterialRef.current.color.lerp(targetColor, 0.1);
     }
+    
+    if (liquidMeshRef.current) {
+        // Rule 1: Conservation of Volume (paper displaces liquid)
+        const displacement = dipAnimProgress > 0.3 ? (dipAnimProgress - 0.3) * 0.15 : 0;
+        // Base scale is 1
+        liquidMeshRef.current.scale.y = 1 + displacement;
+        liquidMeshRef.current.position.y = -0.3 + (displacement * 1.8) / 2;
+    }
+    
+    if (dropRef.current) {
+        // Rule 2: Realistic drop physics
+        // dropProgress goes 0 to 1
+        if (dropProgress > 0 && dropProgress < 1) {
+             const yPos = THREE.MathUtils.lerp(3.2, 0.5, dropProgress);
+             dropRef.current.position.y = yPos;
+             // Stretch drop as it falls
+             const stretch = dropProgress < 0.8 ? 1 + dropProgress * 2 : 1; 
+             dropRef.current.scale.y = stretch;
+             dropRef.current.scale.x = 1 / Math.sqrt(stretch);
+             dropRef.current.scale.z = 1 / Math.sqrt(stretch);
+             dropRef.current.visible = true;
+        } else {
+             dropRef.current.visible = false;
+        }
+    }
   });
 
   const phColor = getPHColor(solution.ph);
@@ -62,9 +89,9 @@ const PHScene = ({ solution, step, dipped, dipAnimProgress }: any) => {
 
   return (
     <group position={[0, -1, 0]}>
-      {/* 1. Laboratory Table */}
+      {/* 1. Laboratory Table (Glassmorphic) */}
       <Cylinder args={[5, 5, 0.2, 32]} position={[0, -0.1, 0]} castShadow receiveShadow>
-        <meshPhysicalMaterial color="#0f172a" roughness={0.7} />
+        <meshPhysicalMaterial color="#0a0a0a" roughness={0.1} metalness={0.8} clearcoat={1} transmission={0.2} />
       </Cylinder>
 
       {/* 2. Glass Beaker */}
@@ -72,30 +99,50 @@ const PHScene = ({ solution, step, dipped, dipAnimProgress }: any) => {
         {/* Glass wall */}
         <Cylinder args={[1.6, 1.6, 2.5, 32]} castShadow>
           <meshPhysicalMaterial 
-             color="#ffffff" transmission={0.99} opacity={1} roughness={0.0} ior={1.5} thickness={0.1} transparent side={THREE.DoubleSide}
+             color="#ffffff" transmission={0.99} opacity={1} roughness={0.05} ior={1.3} thickness={0.5} transparent side={THREE.DoubleSide} clearcoat={1}
           />
         </Cylinder>
         {/* Beaker lip */}
         <Cylinder args={[1.65, 1.65, 0.1, 32]} position={[0, 1.25, 0]}>
-          <meshPhysicalMaterial color="#ffffff" transmission={0.9} roughness={0.1} />
+          <meshPhysicalMaterial color="#ffffff" transmission={0.95} roughness={0.1} clearcoat={1} />
         </Cylinder>
 
         {/* Liquid Volume */}
-        <Cylinder args={[1.55, 1.55, 1.8, 32]} position={[0, -0.3, 0]} castShadow receiveShadow>
+        <mesh ref={liquidMeshRef} position={[0, -0.3, 0]} castShadow receiveShadow>
+          <cylinderGeometry args={[1.55, 1.55, 1.8, 32]} />
           <meshPhysicalMaterial 
              ref={liquidMaterialRef}
-             color={solution.color} transmission={0.6} opacity={0.9} roughness={0.1} transparent ior={1.33}
+             color={solution.color} transmission={0.8} opacity={0.9} roughness={0.1} transparent ior={1.33} clearcoat={0.5}
           />
-        </Cylinder>
+        </mesh>
 
         {/* Beaker Label */}
         <Html position={[0, -0.5, 1.65]} center transform>
-            <div className="bg-white/90 backdrop-blur-md px-3 py-1 rounded-xl shadow-lg border border-white text-center w-32">
+            <div className="bg-black/60 backdrop-blur-xl px-3 py-1 rounded-xl shadow-[0_0_15px_rgba(0,255,136,0.2)] border border-[#00ff88]/30 text-center w-32">
                 <span className="text-xl inline-block mb-1">{solution.icon}</span>
-                <p className="text-slate-800 font-bold text-[10px] uppercase tracking-wider">{solution.name}</p>
+                <p className="text-[#00ff88] font-bold text-[10px] uppercase tracking-wider tooltip-glow">{solution.name}</p>
             </div>
         </Html>
       </group>
+
+      {/* Dropper & Drop (Rule 2) */}
+      {dropping && step < 3 && (
+        <group position={[0, 4.5, 0]}>
+           <Cylinder args={[0.08, 0.08, 1.5, 16]} position={[0, 0, 0]}>
+              <meshPhysicalMaterial color="#ffffff" transmission={0.99} roughness={0.0} ior={1.5} transparent />
+           </Cylinder>
+           <mesh position={[0, 0.9, 0]}>
+              <sphereGeometry args={[0.25, 16, 16]} />
+              <meshStandardMaterial color="#222" roughness={0.8} />
+           </mesh>
+        </group>
+      )}
+      
+      {/* The Drop itself */}
+      <mesh ref={dropRef} position={[0, 4, 0]} visible={false}>
+         <sphereGeometry args={[0.08, 16, 16]} />
+         <meshPhysicalMaterial color={solution.color} transmission={0.9} roughness={0} ior={1.33} />
+      </mesh>
 
       {/* 3. pH Paper Strip (Animates dipping based on state) */}
       <group ref={paperRef} position={[0, 3.5, 0]}>
@@ -107,7 +154,7 @@ const PHScene = ({ solution, step, dipped, dipAnimProgress }: any) => {
           {/* Tween/Morph indicator text */}
           <Html position={[0.7, 0, 0]} center>
             {(dipped || step >= 3) && (
-                <div className="px-2 py-1 rounded-md font-bold text-[10px] text-white shadow-lg whitespace-nowrap animate-fade-in" style={{ backgroundColor: phColor, textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}>
+                <div className="px-2 py-1 rounded-md font-bold text-[10px] text-slate-900 dark:text-slate-900 dark:text-white shadow-[0_0_10px_rgba(255,255,255,0.2)] whitespace-nowrap animate-fade-in border border-white/20" style={{ backgroundColor: phColor, textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}>
                     pH {solution.ph} Match
                 </div>
             )}
@@ -117,16 +164,16 @@ const PHScene = ({ solution, step, dipped, dipAnimProgress }: any) => {
       {/* 4. Background Standard pH Scale Board */}
       <group position={[0, 2.5, -3]}>
         <Box args={[9, 2, 0.2]} castShadow>
-            <meshStandardMaterial color="#ffffff" roughness={0.5} />
+            <meshStandardMaterial color="#1a1a1a" roughness={0.5} metalness={0.8} />
         </Box>
         <Html position={[0, 0, 0.11]} center transform>
-            <div className="bg-white w-[880px] h-[190px] rounded flex flex-col p-4 shadow-inner">
-                <h3 className="text-xl font-black text-slate-800 text-center mb-2 tracking-widest uppercase">Universal pH Scale Grid</h3>
+            <div className="bg-black/80 backdrop-blur-md w-[880px] h-[190px] rounded flex flex-col p-4 shadow-inner border border-black/10 dark:border-white/10">
+                <h3 className="text-xl font-black text-slate-900 dark:text-slate-900 dark:text-white text-center mb-2 tracking-widest uppercase" style={{ textShadow: `0 0 10px #00ff88` }}>Universal pH Scale Grid</h3>
                 <div className="flex-1 flex w-full">
                     {[...Array(15)].map((_, i) => (
                         <div key={i} className="flex-1 flex flex-col items-center">
-                            <div className="w-full flex-1 rounded-sm shadow-sm" style={{ backgroundColor: getPHColor(i) }} />
-                            <span className="text-lg font-bold text-slate-600 mt-2">{i}</span>
+                            <div className="w-full flex-1 rounded-sm shadow-sm" style={{ backgroundColor: getPHColor(i), boxShadow: `0 0 10px ${getPHColor(i)}40` }} />
+                            <span className="text-lg font-bold text-slate-700 dark:text-slate-700 dark:text-slate-300 mt-2">{i}</span>
                         </div>
                     ))}
                 </div>
@@ -144,8 +191,29 @@ const PHLabSimulation: React.FC<PHLabSimulationProps> = ({ hex }) => {
   const [dipped, setDipped] = useState(false);
   const [tested, setTested] = useState<Set<number>>(new Set());
   const [dipAnimProgress, setDipAnimProgress] = useState(0);
+  
+  const [dropping, setDropping] = useState(true);
+  const [dropProgress, setDropProgress] = useState(0);
 
   const sol = SOLUTIONS[selectedSol];
+
+  const handleSolutionChange = (idx: number) => {
+      setSelectedSol(idx); 
+      setDipped(false); 
+      setDipAnimProgress(0);
+      
+      setDropping(true);
+      setDropProgress(0);
+      let progress = 0;
+      const interval = setInterval(() => {
+          progress += 0.05;
+          setDropProgress(progress);
+          if (progress >= 1.2) {
+              clearInterval(interval);
+              setDropping(false);
+          }
+      }, 30);
+  };
 
   const handleDip = () => {
     if (step < 2) return;
@@ -189,22 +257,24 @@ const PHLabSimulation: React.FC<PHLabSimulationProps> = ({ hex }) => {
       setDipped(false); 
       setDipAnimProgress(0); 
       setTested(new Set()); 
+      setDropping(true);
+      setDropProgress(0);
   };
 
   const current = STEPS[step];
 
   return (
-    <div className="flex flex-col md:flex-row h-full w-full bg-[#050505] overflow-hidden text-slate-200 select-none">
+    <div className="flex flex-col md:flex-row h-full w-full bg-[#050505] overflow-hidden text-slate-800 dark:text-slate-200 select-none">
       
       {/* 3D Visualization */}
-      <div className="flex-1 flex flex-col relative rounded-2xl overflow-hidden m-4 border border-white/10 shadow-2xl">
-        <div className="absolute inset-x-0 top-0 p-4 bg-gradient-to-b from-black/80 to-transparent z-10 flex justify-between items-start">
+      <div className="flex-1 flex flex-col relative rounded-2xl overflow-hidden m-4 border border-black/10 dark:border-white/10 shadow-2xl">
+        <div className="absolute inset-x-0 top-0 p-4 bg-gradient-to-b from-black/80 to-transparent z-10 flex justify-between items-start pointer-events-none">
             <div>
-                <h2 className="text-xl font-bold tracking-tight text-white flex items-center gap-2">
-                    <span className="p-1.5 rounded-lg bg-cyan-500/20 text-cyan-400"><FlaskConical size={18} /></span>
+                <h2 className="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-900 dark:text-white flex items-center gap-2">
+                    <span className="p-1.5 rounded-lg shadow-[0_0_15px_rgba(0,255,136,0.3)]" style={{ backgroundColor: hex + '33', color: hex }}><FlaskConical size={18} /></span>
                     pH Value Determination (3D)
                 </h2>
-                <p className="text-[11px] font-medium text-slate-400 uppercase tracking-widest mt-1">Universal Indicator Mechanism</p>
+                <p className="text-[11px] font-medium text-slate-600 dark:text-slate-400 uppercase tracking-widest mt-1">Universal Indicator Mechanism</p>
             </div>
         </div>
 
@@ -212,9 +282,9 @@ const PHLabSimulation: React.FC<PHLabSimulationProps> = ({ hex }) => {
             <Environment preset="city" />
             <ambientLight intensity={0.5} />
             <pointLight position={[5, 10, 5]} intensity={1.5} />
-            <pointLight position={[-5, 5, -5]} color="#06b6d4" intensity={1} />
+            <pointLight position={[-5, 5, -5]} color={hex} intensity={1} />
             
-            <PHScene solution={sol} step={step} dipped={dipped} dipAnimProgress={dipAnimProgress} />
+            <PHScene solution={sol} step={step} dipped={dipped} dipAnimProgress={dipAnimProgress} dropping={dropping} dropProgress={dropProgress} />
 
             <ContactShadows position={[0, -1.1, 0]} opacity={0.6} scale={15} blur={2.5} far={4} color="#000" />
             <OrbitControls enablePan={true} enableZoom={true} maxPolarAngle={Math.PI / 2 - 0.1} />
@@ -222,38 +292,38 @@ const PHLabSimulation: React.FC<PHLabSimulationProps> = ({ hex }) => {
 
         {/* HUD: Result Banner overlay */}
         {dipped && step >= 3 && (
-            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-4 bg-black/80 p-4 rounded-2xl backdrop-blur-xl border border-white/10 shadow-2xl animate-fade-in-up">
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-4 bg-black/80 p-4 rounded-2xl backdrop-blur-xl border border-black/10 dark:border-white/10 shadow-2xl animate-fade-in-up">
                 <div className="w-12 h-12 rounded-full flex items-center justify-center text-2xl shadow-inner border" style={{ backgroundColor: getPHColor(sol.ph), borderColor: 'rgba(255,255,255,0.5)' }}>
                     {sol.ph < 7 ? '🔴' : sol.ph === 7 ? '🟢' : '🔵'}
                 </div>
                 <div>
-                     <p className="text-[10px] uppercase font-bold tracking-widest text-slate-400 mb-1">Measured Value</p>
-                     <p className="text-2xl font-black text-white leading-none">pH {sol.ph.toFixed(1)} <span className="text-sm font-medium ml-2 text-slate-300">({sol.ph < 7 ? 'Acidic' : sol.ph === 7 ? 'Neutral' : 'Basic/Alkaline'})</span></p>
+                     <p className="text-[10px] uppercase font-bold tracking-widest text-slate-600 dark:text-slate-400 mb-1">Measured Value</p>
+                     <p className="text-2xl font-black text-slate-900 dark:text-slate-900 dark:text-white leading-none">pH {sol.ph.toFixed(1)} <span className="text-sm font-medium ml-2 text-slate-700 dark:text-slate-700 dark:text-slate-300">({sol.ph < 7 ? 'Acidic' : sol.ph === 7 ? 'Neutral' : 'Basic/Alkaline'})</span></p>
                 </div>
             </div>
         )}
       </div>
 
       {/* Control Panel */}
-      <div className="w-full md:w-[340px] shrink-0 bg-[#0a0a0a] border-l border-white/10 flex flex-col z-20 shadow-[-10px_0_30px_rgba(0,0,0,0.5)]">
-        <div className="p-6 border-b border-white/5">
-          <p className="text-xs font-bold uppercase tracking-widest text-cyan-400 mb-2 border-b border-cyan-500/20 inline-block pb-1">Procedure — Step {step + 1} of {STEPS.length}</p>
-          <h2 className="text-xl font-bold text-white tracking-tight">{current.title}</h2>
+      <div className="w-full md:w-[340px] shrink-0 bg-[#0a0a0a] border-l border-black/10 dark:border-white/10 flex flex-col z-20 shadow-[-10px_0_30px_rgba(0,0,0,0.5)]">
+        <div className="p-6 border-b border-black/5 dark:border-white/5">
+          <p className="text-xs font-bold uppercase tracking-widest mb-2 border-b inline-block pb-1" style={{ color: hex, borderColor: hex + '66' }}>Procedure — Step {step + 1} of {STEPS.length}</p>
+          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-900 dark:text-white tracking-tight">{current.title}</h2>
         </div>
         
         <div className="flex-1 p-6 space-y-6 overflow-y-auto">
           {completed ? (
             <div className="text-center py-6 animate-fade-in">
               <CheckCircle size={48} className="mx-auto mb-4 text-emerald-400 drop-shadow-[0_0_15px_rgba(52,211,153,0.5)]" />
-              <h3 className="text-xl font-bold text-white mb-6 tracking-tight">Experiment Complete!</h3>
+              <h3 className="text-xl font-bold text-slate-900 dark:text-slate-900 dark:text-white mb-6 tracking-tight">Experiment Complete!</h3>
               
               <div className="space-y-2 mb-8">
                 {SOLUTIONS.map((s, i) => (
-                  <div key={i} className="flex items-center gap-3 p-3 rounded-xl border border-white/5" style={{ backgroundColor: tested.has(i) ? getPHColor(s.ph) + '15' : 'transparent', opacity: tested.has(i) ? 1 : 0.4 }}>
+                  <div key={i} className="flex items-center gap-3 p-3 rounded-xl border border-black/5 dark:border-white/5" style={{ backgroundColor: tested.has(i) ? getPHColor(s.ph) + '15' : 'transparent', opacity: tested.has(i) ? 1 : 0.4 }}>
                     <span className="text-xl">{s.icon}</span>
-                    <span className="text-sm font-medium text-white flex-1 text-left">{s.name}</span>
+                    <span className="text-sm font-medium text-slate-900 dark:text-slate-900 dark:text-white flex-1 text-left">{s.name}</span>
                     {tested.has(i) && (
-                         <div className="px-2 py-1 rounded text-xs font-bold text-black" style={{ backgroundColor: getPHColor(s.ph) }}>
+                         <div className="px-2 py-1 rounded text-xs font-bold text-black dark:text-slate-900 dark:text-white" style={{ backgroundColor: getPHColor(s.ph) }}>
                             pH {s.ph}
                          </div>
                     )}
@@ -264,15 +334,15 @@ const PHLabSimulation: React.FC<PHLabSimulationProps> = ({ hex }) => {
             </div>
           ) : (
             <>
-              <div className="bg-cyan-900/20 border border-cyan-500/20 p-4 rounded-xl backdrop-blur-md">
-                <p className="text-cyan-100 text-sm leading-relaxed">{current.instruction}</p>
+              <div className="p-4 rounded-xl backdrop-blur-md border" style={{ backgroundColor: hex + '15', borderColor: hex + '40' }}>
+                <p className="text-slate-800 dark:text-slate-800 dark:text-slate-200 text-sm leading-relaxed">{current.instruction}</p>
               </div>
               
               <div className="pt-2">
                 <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3 flex items-center gap-2"><Droplets size={12}/> Solution Reservoir</p>
                 <div className="grid grid-cols-2 gap-2">
                   {SOLUTIONS.map((s, i) => (
-                    <button key={i} onClick={() => { setSelectedSol(i); setDipped(false); setDipAnimProgress(0); }}
+                    <button key={i} onClick={() => handleSolutionChange(i)}
                       className="p-3 rounded-xl text-xs font-bold flex items-center gap-2 transition-all relative overflow-hidden group"
                       style={{ 
                           backgroundColor: i === selectedSol ? s.color + '20' : '#111', 
@@ -291,7 +361,7 @@ const PHLabSimulation: React.FC<PHLabSimulationProps> = ({ hex }) => {
               <button 
                 onClick={handleNext}
                 disabled={dipAnimProgress > 0 && dipAnimProgress < 1}
-                className="w-full py-4 rounded-xl font-bold text-white transition-all active:scale-95 shadow-lg flex items-center justify-center gap-2 disabled:opacity-50"
+                className="w-full py-4 rounded-xl font-bold text-slate-900 dark:text-slate-900 dark:text-white transition-all active:scale-95 shadow-lg flex items-center justify-center gap-2 disabled:opacity-50"
                 style={{ backgroundColor: hex, boxShadow: `0 8px 20px -8px ${hex}` }}>
                 {step === STEPS.length - 1 ? '✅ View Final Report' : `${current.action}`}
               </button>

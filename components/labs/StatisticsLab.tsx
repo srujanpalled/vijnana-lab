@@ -142,24 +142,24 @@ const StatisticsLab: React.FC<Props> = ({ hex }) => {
           </button>
         </div>
         <canvas ref={canvasRef} width={440} height={340}
-          className="rounded-2xl border border-white/10 shadow-2xl w-full max-w-[440px]" />
+          className="rounded-2xl border border-black/10 dark:border-white/10 shadow-2xl w-full max-w-[440px]" />
       </div>
 
-      <div className="w-full md:w-72 bg-slate-900 border-l border-white/5 flex flex-col">
-        <div className="p-4 border-b border-white/5">
+      <div className="w-full md:w-72 bg-slate-900 border-l border-black/5 dark:border-white/5 flex flex-col">
+        <div className="p-4 border-b border-black/5 dark:border-white/5">
           <p className="text-xs font-bold uppercase tracking-widest text-blue-400 mb-1">Mathematics Lab — m8</p>
-          <h2 className="text-lg font-bold text-white">Statistics Lab</h2>
-          <p className="text-xs text-slate-400 mt-1">Mean, median, mode, variance, standard deviation</p>
+          <h2 className="text-lg font-bold text-slate-900 dark:text-slate-900 dark:text-white">Statistics Lab</h2>
+          <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">Mean, median, mode, variance, standard deviation</p>
         </div>
         <div className="flex-1 p-4 space-y-4 overflow-y-auto">
           <div className="bg-blue-500/10 border border-blue-500/30 p-3 rounded-xl">
-            <p className="text-blue-200 text-xs">Add values to the dataset or remove them. Statistics are computed live. The histogram shows frequency distribution with a normal curve overlay.</p>
+            <p className="text-blue-600 dark:text-blue-200 text-xs">Add values to the dataset or remove them. Statistics are computed live. The histogram shows frequency distribution with a normal curve overlay.</p>
           </div>
 
           <div className="flex gap-2 items-center">
             <DraggableSlider label="New Value" min={5} max={40} value={newVal} onChange={setNewVal} color="#3b82f6" />
             <button onClick={() => setRawData(prev => [...prev, newVal])}
-              className="px-3 py-1.5 rounded-xl text-xs font-bold text-white shrink-0" style={{ backgroundColor: hex }}>
+              className="px-3 py-1.5 rounded-xl text-xs font-bold text-slate-900 dark:text-slate-900 dark:text-white shrink-0" style={{ backgroundColor: hex }}>
               + Add
             </button>
           </div>
@@ -173,20 +173,20 @@ const StatisticsLab: React.FC<Props> = ({ hex }) => {
               { label: 'Variance', val: variance.toFixed(2), color: '#fb923c' },
               { label: 'Std Dev (σ)', val: sd.toFixed(2), color: '#10b981' },
             ].map(m => (
-              <div key={m.label} className="bg-slate-950 border border-white/10 rounded-lg p-2 text-center">
+              <div key={m.label} className="bg-slate-950 border border-black/10 dark:border-white/10 rounded-lg p-2 text-center">
                 <div className="text-[9px] text-slate-500 uppercase font-bold mb-1">{m.label}</div>
                 <div className="font-mono font-bold text-xs" style={{ color: m.color }}>{m.val}</div>
               </div>
             ))}
           </div>
 
-          <div className="bg-slate-950 p-2 rounded-xl border border-white/10 text-[10px]">
-            <p className="text-slate-400 font-bold mb-1">Dataset ({n} values):</p>
-            <p className="font-mono text-slate-300 break-all">[{rawData.join(', ')}]</p>
+          <div className="bg-slate-950 p-2 rounded-xl border border-black/10 dark:border-white/10 text-[10px]">
+            <p className="text-slate-600 dark:text-slate-400 font-bold mb-1">Dataset ({n} values):</p>
+            <p className="font-mono text-slate-700 dark:text-slate-700 dark:text-slate-300 break-all">[{rawData.join(', ')}]</p>
           </div>
 
           <button onClick={() => setRawData([12, 15, 18, 22, 25, 17, 14, 20, 16, 19, 23, 13, 21, 16, 18])}
-            className="w-full py-2 rounded-xl text-xs bg-slate-800 text-red-400 hover:text-red-300 flex items-center justify-center gap-1.5">
+            className="w-full py-2 rounded-xl text-xs bg-slate-800 text-red-400 hover:text-red-600 dark:text-red-300 flex items-center justify-center gap-1.5">
             <RotateCcw size={11} /> Reset Dataset
           </button>
         </div>

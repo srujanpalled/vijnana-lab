@@ -110,8 +110,8 @@ const Profile: React.FC = () => {
         </div>
 
         <div className="max-w-5xl mx-auto">
-            <h1 className="text-3xl md:text-4xl font-display font-bold text-white mb-2">My Profile</h1>
-            <p className="text-gray-400 mb-8">Manage your personal information and account settings.</p>
+            <h1 className="text-3xl md:text-4xl font-display font-bold text-slate-900 dark:text-slate-900 dark:text-white mb-2">My Profile</h1>
+            <p className="text-gray-600 dark:text-gray-400 mb-8">Manage your personal information and account settings.</p>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 
@@ -119,36 +119,36 @@ const Profile: React.FC = () => {
                 <GlassCard className="flex flex-col items-center text-center p-8 h-fit" color="blue">
                     <div className="relative mb-6 group">
                         {userData.avatar && userData.avatar.startsWith('http') ? (
-                            <img src={userData.avatar} alt="Profile" className="w-32 h-32 rounded-full object-cover shadow-2xl border-4 border-white/10" />
+                            <img src={userData.avatar} alt="Profile" className="w-32 h-32 rounded-full object-cover shadow-2xl border-4 border-black/10 dark:border-white/10" />
                         ) : (
                             <div className={`w-32 h-32 rounded-full ${userData.avatar} flex items-center justify-center shadow-2xl border-4 border-white/10 transition-all duration-300`}>
-                                <span className="text-4xl font-bold text-white">{userData.name.charAt(0).toUpperCase()}</span>
+                                <span className="text-4xl font-bold text-slate-900 dark:text-slate-900 dark:text-white">{userData.name.charAt(0).toUpperCase()}</span>
                             </div>
                         )}
                         {isEditing && (
                             <div className="absolute -bottom-2 left-0 right-0 flex justify-center">
-                                <span className="bg-black/50 text-xs text-white px-2 py-1 rounded-full backdrop-blur">Editable</span>
+                                <span className="bg-slate-200 dark:bg-black/50 text-xs text-slate-900 dark:text-white px-2 py-1 rounded-full backdrop-blur">Editable</span>
                             </div>
                         )}
                     </div>
 
-                    <h2 className="text-2xl font-bold text-white mb-1">{userData.name}</h2>
+                    <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-900 dark:text-white mb-1">{userData.name}</h2>
                     <div className="flex items-center gap-2 mb-6">
                         <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase ${userData.role === 'Teacher' ? 'bg-green-500/20 text-green-400' : 'bg-blue-500/20 text-blue-400'}`}>
                             {userData.role}
                         </span>
                     </div>
 
-                    <div className="w-full border-t border-white/10 pt-6 space-y-4 text-left">
-                         <div className="flex items-center gap-3 text-gray-300">
-                             <div className="p-2 bg-white/5 rounded-lg"><Mail size={16} className="text-blue-400" /></div>
+                    <div className="w-full border-t border-black/10 dark:border-white/10 pt-6 space-y-4 text-left">
+                         <div className="flex items-center gap-3 text-gray-700 dark:text-gray-700 dark:text-gray-300">
+                             <div className="p-2 bg-black/5 dark:bg-white/5 rounded-lg"><Mail size={16} className="text-blue-400" /></div>
                              <div>
                                  <p className="text-xs text-gray-500">Email</p>
                                  <p className="text-sm font-medium truncate">{userData.email}</p>
                              </div>
                          </div>
-                         <div className="flex items-center gap-3 text-gray-300">
-                             <div className="p-2 bg-white/5 rounded-lg"><Shield size={16} className="text-purple-400" /></div>
+                         <div className="flex items-center gap-3 text-gray-700 dark:text-gray-700 dark:text-gray-300">
+                             <div className="p-2 bg-black/5 dark:bg-white/5 rounded-lg"><Shield size={16} className="text-purple-400" /></div>
                              <div>
                                  <p className="text-xs text-gray-500">User ID</p>
                                  <p className="text-sm font-mono opacity-70">{userData.uid.substring(0, 8)}...</p>
@@ -163,11 +163,11 @@ const Profile: React.FC = () => {
                         
                         {/* Action Buttons */}
                         <div className="flex justify-between items-center mb-8">
-                            <h3 className="text-xl font-bold text-white">Account Details</h3>
+                            <h3 className="text-xl font-bold text-slate-900 dark:text-slate-900 dark:text-white">Account Details</h3>
                             {!isEditing ? (
                                 <button 
                                     onClick={() => setIsEditing(true)}
-                                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-white text-sm font-medium transition-colors"
+                                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:bg-white/10 border border-black/10 dark:border-white/10 text-slate-900 dark:text-white text-sm font-medium transition-colors"
                                 >
                                     <Edit2 size={16} /> Edit
                                 </button>
@@ -175,7 +175,7 @@ const Profile: React.FC = () => {
                                 <div className="flex gap-2">
                                     <button 
                                         onClick={() => setIsEditing(false)}
-                                        className="p-2 rounded-lg bg-red-500/20 hover:bg-red-500/30 text-red-200 transition-colors border border-red-500/20"
+                                        className="p-2 rounded-lg bg-red-500/20 hover:bg-red-500/30 text-red-600 dark:text-red-200 transition-colors border border-red-500/20"
                                     >
                                         <X size={20} />
                                     </button>
@@ -195,7 +195,7 @@ const Profile: React.FC = () => {
                             
                             {/* Name Input */}
                             <div className="space-y-2">
-                                <label className="flex items-center gap-2 text-sm font-medium text-gray-400">
+                                <label className="flex items-center gap-2 text-sm font-medium text-gray-600 dark:text-gray-400">
                                     <User size={16} /> Full Name
                                 </label>
                                 {isEditing ? (
@@ -203,16 +203,16 @@ const Profile: React.FC = () => {
                                         type="text" 
                                         value={userData.name}
                                         onChange={(e) => setUserData({...userData, name: e.target.value})}
-                                        className="w-full bg-black/20 border border-white/10 rounded-xl p-3 text-white focus:border-blue-500/50 focus:outline-none transition-all"
+                                        className="w-full bg-transparent dark:bg-black/20 border border-black/10 dark:border-white/10 rounded-xl p-3 text-slate-900 dark:text-white focus:border-blue-500/50 focus:outline-none transition-all"
                                     />
                                 ) : (
-                                    <div className="p-3 bg-white/5 rounded-xl text-gray-200 border border-transparent font-medium">{userData.name}</div>
+                                    <div className="p-3 bg-black/5 dark:bg-white/5 rounded-xl text-gray-800 dark:text-gray-200 border border-transparent font-medium">{userData.name}</div>
                                 )}
                             </div>
 
                             {/* Institution Input */}
                             <div className="space-y-2">
-                                <label className="flex items-center gap-2 text-sm font-medium text-gray-400">
+                                <label className="flex items-center gap-2 text-sm font-medium text-gray-600 dark:text-gray-400">
                                     <Building size={16} /> Institution
                                 </label>
                                 {isEditing ? (
@@ -220,17 +220,17 @@ const Profile: React.FC = () => {
                                         type="text" 
                                         value={userData.institution}
                                         onChange={(e) => setUserData({...userData, institution: e.target.value})}
-                                        className="w-full bg-black/20 border border-white/10 rounded-xl p-3 text-white focus:border-blue-500/50 focus:outline-none transition-all"
+                                        className="w-full bg-transparent dark:bg-black/20 border border-black/10 dark:border-white/10 rounded-xl p-3 text-slate-900 dark:text-white focus:border-blue-500/50 focus:outline-none transition-all"
                                     />
                                 ) : (
-                                    <div className="p-3 bg-white/5 rounded-xl text-gray-200 border border-transparent">{userData.institution}</div>
+                                    <div className="p-3 bg-black/5 dark:bg-white/5 rounded-xl text-gray-800 dark:text-gray-200 border border-transparent">{userData.institution}</div>
                                 )}
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 {/* Grade / Standard */}
                                 <div className="space-y-2">
-                                    <label className="flex items-center gap-2 text-sm font-medium text-gray-400">
+                                    <label className="flex items-center gap-2 text-sm font-medium text-gray-600 dark:text-gray-400">
                                         <GraduationCap size={16} /> Grade / Standard
                                     </label>
                                     {isEditing ? (
@@ -238,7 +238,7 @@ const Profile: React.FC = () => {
                                             <select 
                                                 value={userData.grade}
                                                 onChange={(e) => setUserData({...userData, grade: e.target.value})}
-                                                className="w-full bg-black/20 border border-white/10 rounded-xl p-3 text-white focus:border-blue-500/50 focus:outline-none transition-all appearance-none cursor-pointer"
+                                                className="w-full bg-transparent dark:bg-black/20 border border-black/10 dark:border-white/10 rounded-xl p-3 text-slate-900 dark:text-white focus:border-blue-500/50 focus:outline-none transition-all appearance-none cursor-pointer"
                                             >
                                                 <option className="bg-slate-900" value="" disabled>Select Standard</option>
                                                 <option className="bg-slate-900" value="1st PUC / Class 11">11th / 1st PUC</option>
@@ -249,7 +249,7 @@ const Profile: React.FC = () => {
                                             </div>
                                         </div>
                                     ) : (
-                                        <div className="p-3 bg-white/5 rounded-xl text-gray-200 border border-transparent">
+                                        <div className="p-3 bg-black/5 dark:bg-white/5 rounded-xl text-gray-800 dark:text-gray-200 border border-transparent">
                                             {userData.grade || 'Not Set'}
                                         </div>
                                     )}
@@ -257,7 +257,7 @@ const Profile: React.FC = () => {
 
                                 {/* Syllabus / Board */}
                                 <div className="space-y-2">
-                                    <label className="flex items-center gap-2 text-sm font-medium text-gray-400">
+                                    <label className="flex items-center gap-2 text-sm font-medium text-gray-600 dark:text-gray-400">
                                         <BookOpen size={16} /> Syllabus / Board
                                     </label>
                                     {isEditing ? (
@@ -265,7 +265,7 @@ const Profile: React.FC = () => {
                                             <select 
                                                 value={userData.syllabus}
                                                 onChange={(e) => setUserData({...userData, syllabus: e.target.value})}
-                                                className="w-full bg-black/20 border border-white/10 rounded-xl p-3 text-white focus:border-blue-500/50 focus:outline-none transition-all appearance-none cursor-pointer"
+                                                className="w-full bg-transparent dark:bg-black/20 border border-black/10 dark:border-white/10 rounded-xl p-3 text-slate-900 dark:text-white focus:border-blue-500/50 focus:outline-none transition-all appearance-none cursor-pointer"
                                             >
                                                 <option className="bg-slate-900" value="" disabled>Select Syllabus</option>
                                                 <option className="bg-slate-900" value="CBSE">CBSE (NCERT)</option>
@@ -277,7 +277,7 @@ const Profile: React.FC = () => {
                                             </div>
                                         </div>
                                     ) : (
-                                        <div className="p-3 bg-white/5 rounded-xl text-gray-200 border border-transparent">
+                                        <div className="p-3 bg-black/5 dark:bg-white/5 rounded-xl text-gray-800 dark:text-gray-200 border border-transparent">
                                             {userData.syllabus || 'Not Set'}
                                         </div>
                                     )}
@@ -285,7 +285,7 @@ const Profile: React.FC = () => {
 
                                 {/* Language Input */}
                                 <div className="space-y-2">
-                                    <label className="flex items-center gap-2 text-sm font-medium text-gray-400">
+                                    <label className="flex items-center gap-2 text-sm font-medium text-gray-600 dark:text-gray-400">
                                         <Globe size={16} /> Preferred Language
                                     </label>
                                     {isEditing ? (
@@ -293,7 +293,7 @@ const Profile: React.FC = () => {
                                             <select 
                                                 value={userData.language}
                                                 onChange={(e) => setUserData({...userData, language: e.target.value})}
-                                                className="w-full bg-black/20 border border-white/10 rounded-xl p-3 text-white focus:border-blue-500/50 focus:outline-none transition-all appearance-none cursor-pointer"
+                                                className="w-full bg-transparent dark:bg-black/20 border border-black/10 dark:border-white/10 rounded-xl p-3 text-slate-900 dark:text-white focus:border-blue-500/50 focus:outline-none transition-all appearance-none cursor-pointer"
                                             >
                                                 <option className="bg-slate-900" value="English">English</option>
                                                 <option className="bg-slate-900" value="Hindi">Hindi</option>
@@ -304,15 +304,15 @@ const Profile: React.FC = () => {
                                             </div>
                                         </div>
                                     ) : (
-                                        <div className="p-3 bg-white/5 rounded-xl text-gray-200 border border-transparent">{userData.language}</div>
+                                        <div className="p-3 bg-black/5 dark:bg-white/5 rounded-xl text-gray-800 dark:text-gray-200 border border-transparent">{userData.language}</div>
                                     )}
                                 </div>
                             </div>
 
                             {/* Avatar Selection */}
                             {isEditing && (
-                                <div className="pt-6 border-t border-white/10">
-                                    <label className="block text-sm font-medium text-gray-400 mb-3">Update Avatar Theme</label>
+                                <div className="pt-6 border-t border-black/10 dark:border-white/10">
+                                    <label className="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-3">Update Avatar Theme</label>
                                     <div className="flex flex-wrap gap-3">
                                         {AVATARS.map((av) => (
                                             <button
@@ -321,7 +321,7 @@ const Profile: React.FC = () => {
                                                 className={`w-10 h-10 rounded-full ${av} transition-all relative ${userData.avatar === av ? 'ring-2 ring-white scale-110' : 'opacity-60 hover:opacity-100'}`}
                                                 type="button"
                                             >
-                                                {userData.avatar === av && <Check size={14} className="text-white absolute inset-0 m-auto"/>}
+                                                {userData.avatar === av && <Check size={14} className="text-slate-900 dark:text-slate-900 dark:text-white absolute inset-0 m-auto"/>}
                                             </button>
                                         ))}
                                     </div>

@@ -178,17 +178,9 @@ const AIFloatingTutor: React.FC = () => {
       }
     } catch (error: any) {
       console.error("Gemini API Error:", error);
-      let errorMessage = "⚠️ I'm having trouble connecting right now. Please check your internet connection and try again.";
-      
-      if (error && error.message) {
-        if (error.message.includes("429") || error.message.includes("Quota")) {
-           errorMessage = "⚠️ Google API Rate Limit Exceeded (429). You are sending messages too fast for the free tier. Please wait 1 minute and try again.";
-        } else if (error.message.includes("400") || error.message.includes("API key not valid")) {
-           errorMessage = "⚠️ Invalid API Key. Please make sure you have the correct key in your `.env.local` file and that you've refreshed the browser.";
-        } else {
-           errorMessage = `⚠️ API Error: ${error.message}`;
-        }
-      }
+      const errorMessage = (error && error.message)
+        ? `⚠️ ${error.message}`
+        : "⚠️ I'm having trouble connecting right now. Please check your internet connection and try again.";
 
       setMessages(prev => [
         ...prev,
@@ -233,7 +225,7 @@ const AIFloatingTutor: React.FC = () => {
             {/* Context badge — shows when a lab is active */}
             {labContext && (
               <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-green-500 border-2 border-white flex items-center justify-center">
-                <Sparkles size={8} className="text-white" />
+                <Sparkles size={8} className="text-slate-900 dark:text-slate-900 dark:text-white" />
               </span>
             )}
           </MotionButton>
@@ -252,17 +244,17 @@ const AIFloatingTutor: React.FC = () => {
             id="ai-tutor-panel"
           >
             {/* ── Header ── */}
-            <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-purple-900/60 to-blue-900/60 border-b border-white/10">
+            <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-purple-900/60 to-blue-900/60 border-b border-black/10 dark:border-white/10">
               <div className="flex items-center gap-3 min-w-0">
                 <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-purple-500 to-blue-500 flex items-center justify-center shadow-lg shadow-purple-500/30 flex-shrink-0">
-                  <Bot size={18} className="text-white" />
+                  <Bot size={18} className="text-slate-900 dark:text-slate-900 dark:text-white" />
                 </div>
                 <div className="min-w-0">
-                  <h2 className="text-sm font-bold text-white flex items-center gap-1.5 truncate">
+                  <h2 className="text-sm font-bold text-slate-900 dark:text-slate-900 dark:text-white flex items-center gap-1.5 truncate">
                     AI Lab Tutor <Sparkles size={12} className="text-yellow-400 animate-pulse flex-shrink-0" />
                   </h2>
                   {labContext ? (
-                    <p className="text-[10px] text-purple-300 font-mono truncate">
+                    <p className="text-[10px] text-purple-600 dark:text-purple-300 font-mono truncate">
                       📍 {labContext.labTitle}
                     </p>
                   ) : (
@@ -276,14 +268,14 @@ const AIFloatingTutor: React.FC = () => {
               <div className="flex items-center gap-1 flex-shrink-0">
                 <button
                   onClick={() => setIsExpanded(e => !e)}
-                  className="p-1.5 rounded-lg hover:bg-white/10 text-gray-400 hover:text-white transition-colors"
+                  className="p-1.5 rounded-lg hover:bg-black/10 dark:bg-white/10 text-gray-400 hover:text-slate-900 dark:text-white transition-colors"
                   aria-label={isExpanded ? 'Minimize' : 'Expand'}
                 >
                   {isExpanded ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
                 </button>
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="p-1.5 rounded-lg hover:bg-white/10 text-gray-400 hover:text-white transition-colors"
+                  className="p-1.5 rounded-lg hover:bg-black/10 dark:bg-white/10 text-gray-400 hover:text-slate-900 dark:text-white transition-colors"
                   aria-label="Close tutor"
                 >
                   <X size={14} />
@@ -292,7 +284,7 @@ const AIFloatingTutor: React.FC = () => {
             </div>
 
             {/* ── Messages area ── */}
-            <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4 custom-scrollbar bg-black/20">
+            <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4 custom-scrollbar bg-transparent dark:bg-black/20">
               {messages.map(msg => (
                 <div
                   key={msg.id}
@@ -334,7 +326,7 @@ const AIFloatingTutor: React.FC = () => {
 
             {/* ── Quick-action chips (only when on a lab) ── */}
             {labContext && messages.length <= 2 && (
-              <div className="px-4 py-2 border-t border-white/5 flex gap-2 overflow-x-auto scrollbar-hide">
+              <div className="px-4 py-2 border-t border-black/5 dark:border-white/5 flex gap-2 overflow-x-auto scrollbar-hide">
                 {[
                   'Explain this experiment',
                   'Key formulas?',
@@ -395,7 +387,7 @@ const AIFloatingTutor: React.FC = () => {
                       }, 50);
                     }}
                     disabled={isLoading}
-                    className="flex-shrink-0 px-3 py-1.5 rounded-full text-[11px] font-medium bg-purple-500/15 text-purple-300 border border-purple-500/20 hover:bg-purple-500/25 hover:text-purple-200 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                    className="flex-shrink-0 px-3 py-1.5 rounded-full text-[11px] font-medium bg-purple-500/15 text-purple-600 dark:text-purple-300 border border-purple-500/20 hover:bg-purple-500/25 hover:text-purple-600 dark:text-purple-200 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
                   >
                     {chip}
                   </button>
@@ -404,12 +396,12 @@ const AIFloatingTutor: React.FC = () => {
             )}
 
             {/* ── Input area ── */}
-            <div className="px-3 py-3 bg-black/30 border-t border-white/10">
+            <div className="px-3 py-3 bg-black/30 border-t border-black/10 dark:border-white/10">
               <div className="relative flex items-center">
                 <input
                   ref={inputRef}
                   type="text"
-                  className="w-full bg-white/5 border border-white/10 rounded-full py-3 pl-4 pr-12 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-purple-500/50 focus:bg-white/[0.08] transition-all"
+                  className="w-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-full py-3 pl-4 pr-12 text-sm text-slate-900 dark:text-white placeholder-gray-500 focus:outline-none focus:border-purple-500/50 focus:bg-white/[0.08] transition-all"
                   placeholder={
                     labContext
                       ? `Ask about ${labContext.labTitle}…`

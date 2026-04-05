@@ -106,12 +106,12 @@ export default function ConvexLensLab3D({ hex }: ConvexLensLabProps) {
   const isVirtual = v_cm < 0;
 
   return (
-    <div className="flex flex-col h-full w-full bg-[#030712] overflow-hidden font-sans text-slate-200">
+    <div className="flex flex-col h-full w-full bg-[#030712] overflow-hidden font-sans text-slate-800 dark:text-slate-200">
       
       {/* HEADER */}
-      <div className="flex shrink-0 items-center justify-between px-6 py-4 border-b border-white/5 bg-white/[0.02] backdrop-blur-xl z-20">
+      <div className="flex shrink-0 items-center justify-between px-6 py-4 border-b border-black/5 dark:border-white/5 bg-white/[0.02] backdrop-blur-xl z-20">
         <div>
-          <h2 className="text-xl font-semibold tracking-tight text-white flex items-center gap-2">
+          <h2 className="text-xl font-semibold tracking-tight text-slate-900 dark:text-slate-900 dark:text-white flex items-center gap-2">
             <span className="p-1.5 rounded-lg bg-blue-500/20 text-blue-400"><Crosshair size={16} /></span>
             Convex Lens Simulation
           </h2>
@@ -120,13 +120,13 @@ export default function ConvexLensLab3D({ hex }: ConvexLensLabProps) {
         
         {/* Apple-styled Glass Readout Card */}
         <motion.div 
-          className="flex gap-6 px-5 py-2.5 rounded-2xl bg-white/5 border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.3)] backdrop-blur-2xl"
+          className="flex gap-6 px-5 py-2.5 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.3)] backdrop-blur-2xl"
           initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
         >
-          <div className="flex flex-col"><span className="text-[10px] uppercase font-semibold text-slate-400">Object (u)</span><span className="font-mono text-sm font-semibold text-white">{u_cm} cm</span></div>
-          <div className="flex flex-col"><span className="text-[10px] uppercase font-semibold text-slate-400">Focal (f)</span><span className="font-mono text-sm font-semibold text-amber-400">{f_cm} cm</span></div>
-          <div className="flex flex-col"><span className="text-[10px] uppercase font-semibold text-slate-400">Image (v)</span><span className="font-mono text-sm font-semibold" style={{color: isVirtual?'#f87171':'#34d399'}}>{isFinite(v_cm) ? v_cm.toFixed(1) : '∞'} cm</span></div>
-          <div className="flex flex-col"><span className="text-[10px] uppercase font-semibold text-slate-400">Mag (m)</span><span className="font-mono text-sm font-semibold text-blue-300">{isFinite(mag) ? Math.abs(mag).toFixed(2) : '∞'}×</span></div>
+          <div className="flex flex-col"><span className="text-[10px] uppercase font-semibold text-slate-600 dark:text-slate-400">Object (u)</span><span className="font-mono text-sm font-semibold text-slate-900 dark:text-slate-900 dark:text-white">{u_cm} cm</span></div>
+          <div className="flex flex-col"><span className="text-[10px] uppercase font-semibold text-slate-600 dark:text-slate-400">Focal (f)</span><span className="font-mono text-sm font-semibold text-amber-400">{f_cm} cm</span></div>
+          <div className="flex flex-col"><span className="text-[10px] uppercase font-semibold text-slate-600 dark:text-slate-400">Image (v)</span><span className="font-mono text-sm font-semibold" style={{color: isVirtual?'#f87171':'#34d399'}}>{isFinite(v_cm) ? v_cm.toFixed(1) : '∞'} cm</span></div>
+          <div className="flex flex-col"><span className="text-[10px] uppercase font-semibold text-slate-600 dark:text-slate-400">Mag (m)</span><span className="font-mono text-sm font-semibold text-blue-600 dark:text-blue-300">{isFinite(mag) ? Math.abs(mag).toFixed(2) : '∞'}×</span></div>
         </motion.div>
       </div>
 
@@ -232,14 +232,14 @@ export default function ConvexLensLab3D({ hex }: ConvexLensLabProps) {
         </div>
 
         {/* RIGHT CONTROL PANEL - Apple Glass Style */}
-        <div className="w-80 shrink-0 bg-white/[0.01] backdrop-blur-2xl border-l border-white/5 flex flex-col z-20 shadow-[-10px_0_30px_rgba(0,0,0,0.5)]">
+        <div className="w-80 shrink-0 bg-white/[0.01] backdrop-blur-2xl border-l border-black/5 dark:border-white/5 flex flex-col z-20 shadow-[-10px_0_30px_rgba(0,0,0,0.5)]">
           <div className="p-6 flex-1 overflow-y-auto space-y-8">
             
             {/* Control: Object Distance */}
             <div className="space-y-3">
               <div className="flex justify-between items-baseline">
-                <label className="text-sm font-semibold text-slate-200">Object Dist (u)</label>
-                <span className="text-xs font-mono px-2 py-1 rounded-md bg-white/10 text-slate-100">{u_cm} cm</span>
+                <label className="text-sm font-semibold text-slate-800 dark:text-slate-800 dark:text-slate-200">Object Dist (u)</label>
+                <span className="text-xs font-mono px-2 py-1 rounded-md bg-black/10 dark:bg-white/10 text-slate-100">{u_cm} cm</span>
               </div>
               {/* Apple-style custom slider */}
               <div className="relative h-6 flex items-center group">
@@ -258,8 +258,8 @@ export default function ConvexLensLab3D({ hex }: ConvexLensLabProps) {
             {/* Control: Focal Length */}
             <div className="space-y-3">
               <div className="flex justify-between items-baseline">
-                <label className="text-sm font-semibold text-slate-200">Focal Length (f)</label>
-                <span className="text-xs font-mono px-2 py-1 rounded-md bg-white/10 text-amber-300">{f_cm} cm</span>
+                <label className="text-sm font-semibold text-slate-800 dark:text-slate-800 dark:text-slate-200">Focal Length (f)</label>
+                <span className="text-xs font-mono px-2 py-1 rounded-md bg-black/10 dark:bg-white/10 text-amber-600 dark:text-amber-300">{f_cm} cm</span>
               </div>
               <div className="relative h-6 flex items-center group">
                 <div className="absolute w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
@@ -283,15 +283,15 @@ export default function ConvexLensLab3D({ hex }: ConvexLensLabProps) {
                 <div className="space-y-4">
                   <div>
                     <div className="text-[10px] uppercase text-slate-500 mb-1">Image Nature</div>
-                    <div className="text-sm font-medium text-white">
+                    <div className="text-sm font-medium text-slate-900 dark:text-slate-900 dark:text-white">
                       {!isFinite(v_cm) ? 'Formed at Infinity (Parallel Rays)' : isVirtual ? 'Virtual & Erect (Behind object)' : 'Real & Inverted (On screen)'}
                     </div>
                   </div>
                   <div>
                     <div className="text-[10px] uppercase text-slate-500 mb-1">Magnification</div>
-                    <div className="text-sm font-medium text-white flex items-end gap-2">
+                    <div className="text-sm font-medium text-slate-900 dark:text-slate-900 dark:text-white flex items-end gap-2">
                       <span className="text-2xl font-light">{isFinite(mag) ? Math.abs(mag).toFixed(2) : '∞'}x</span>
-                      <span className="text-xs pb-1 text-slate-400">{isFinite(mag) ? (Math.abs(mag) > 1 ? 'Magnified' : Math.abs(mag) < 1 ? 'Diminished' : 'Same Size') : ''}</span>
+                      <span className="text-xs pb-1 text-slate-600 dark:text-slate-400">{isFinite(mag) ? (Math.abs(mag) > 1 ? 'Magnified' : Math.abs(mag) < 1 ? 'Diminished' : 'Same Size') : ''}</span>
                     </div>
                   </div>
                 </div>
@@ -326,10 +326,10 @@ export default function ConvexLensLab3D({ hex }: ConvexLensLabProps) {
             
           </div>
           
-          <div className="p-4 border-t border-white/5 shrink-0">
+          <div className="p-4 border-t border-black/5 dark:border-white/5 shrink-0">
             <button 
               onClick={() => { setUCm(-30); setFCm(15); }}
-              className="w-full py-3 flex items-center justify-center gap-2 rounded-xl bg-white/5 hover:bg-white/10 text-sm font-medium text-slate-300 transition-colors"
+              className="w-full py-3 flex items-center justify-center gap-2 rounded-xl bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:bg-white/10 text-sm font-medium text-slate-700 dark:text-slate-300 transition-colors"
             >
               <RotateCcw size={16} /> Reset Lab
             </button>

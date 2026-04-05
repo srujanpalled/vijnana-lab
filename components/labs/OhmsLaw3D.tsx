@@ -11,10 +11,10 @@ function Meter({ pos, label, value, unit, color }: { pos: [number, number, numbe
   return (
     <group position={pos}>
       <Box args={[0.8, 0.6, 0.2]} castShadow>
-        <meshStandardMaterial color="#1e293b" metalness={0.3} roughness={0.5} />
+        <meshPhysicalMaterial color="#ffffff" transmission={0.9} ior={1.3} roughness={0.05} metalness={0.1} clearcoat={1} transparent opacity={0.6} />
       </Box>
       <Box args={[0.65, 0.45, 0.05]} position={[0, 0, 0.125]}>
-        <meshStandardMaterial color="#0f172a" />
+        <meshPhysicalMaterial color="#0f172a" roughness={0.9} />
       </Box>
       {/* Circular face indicator */}
       <mesh position={[0, 0.02, 0.14]}>
@@ -180,17 +180,17 @@ const OhmsLaw3D: React.FC<Props> = ({ hex }) => {
           <OhmsScene resistance={resistance} voltage={voltage} />
           <OrbitControls target={[0, 0, 0]} minDistance={5} maxDistance={15} />
         </Canvas>
-        <div className="absolute top-3 left-3 bg-black/60 backdrop-blur-sm border border-white/10 rounded-xl px-3 py-2">
-          <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">3D Physics Lab — p4</p>
-          <p className="text-white font-bold text-sm">Ohm's Law</p>
+        <div className="absolute top-3 left-3 bg-black/60 backdrop-blur-sm border border-black/10 dark:border-white/10 rounded-xl px-3 py-2">
+          <p className="text-[10px] text-slate-600 dark:text-slate-400 font-bold uppercase tracking-widest">3D Physics Lab — p4</p>
+          <p className="text-slate-900 dark:text-slate-900 dark:text-white font-bold text-sm">Ohm's Law</p>
         </div>
       </div>
 
-      <div className="w-full md:w-72 bg-slate-900 border-l border-white/5 flex flex-col">
-        <div className="p-4 border-b border-white/5">
+      <div className="w-full md:w-72 bg-slate-900 border-l border-black/5 dark:border-white/5 flex flex-col">
+        <div className="p-4 border-b border-black/5 dark:border-white/5">
           <p className="text-xs font-bold uppercase tracking-widest text-blue-400 mb-1">Physics 3D Lab</p>
-          <h2 className="text-xl font-bold text-white">Ohm's Law</h2>
-          <p className="text-xs text-slate-400 mt-1">Interactive circuit with flowing electrons</p>
+          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-900 dark:text-white">Ohm's Law</h2>
+          <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">Interactive circuit with flowing electrons</p>
         </div>
         <div className="flex-1 p-4 space-y-5 overflow-y-auto">
           {/* Live readings */}
@@ -200,7 +200,7 @@ const OhmsLaw3D: React.FC<Props> = ({ hex }) => {
               { label: 'Current', val: `${(current * 1000).toFixed(1)}`, unit: 'mA', color: '#3b82f6' },
               { label: 'Resistance', val: `${resistance}`, unit: 'Ω', color: '#ef4444' },
             ].map(m => (
-              <div key={m.label} className="bg-slate-950 border border-white/10 rounded-xl p-3 text-center">
+              <div key={m.label} className="bg-slate-950 border border-black/10 dark:border-white/10 rounded-xl p-3 text-center">
                 <div className="text-[9px] text-slate-500 uppercase font-bold">{m.label}</div>
                 <div className="font-mono font-bold text-lg" style={{ color: m.color }}>{m.val}</div>
                 <div className="text-[10px]" style={{ color: m.color }}>{m.unit}</div>
@@ -210,7 +210,7 @@ const OhmsLaw3D: React.FC<Props> = ({ hex }) => {
 
           <div className="space-y-1">
             <div className="flex justify-between text-xs">
-              <span className="text-slate-400">Voltage (V)</span>
+              <span className="text-slate-600 dark:text-slate-400">Voltage (V)</span>
               <span className="font-mono font-bold text-yellow-400">{voltage} V</span>
             </div>
             <input type="range" min={1} max={24} step={0.5} value={voltage}
@@ -220,7 +220,7 @@ const OhmsLaw3D: React.FC<Props> = ({ hex }) => {
 
           <div className="space-y-1">
             <div className="flex justify-between text-xs">
-              <span className="text-slate-400">Resistance (R)</span>
+              <span className="text-slate-600 dark:text-slate-400">Resistance (R)</span>
               <span className="font-mono font-bold text-red-400">{resistance} Ω</span>
             </div>
             <input type="range" min={1} max={100} step={1} value={resistance}
@@ -229,16 +229,16 @@ const OhmsLaw3D: React.FC<Props> = ({ hex }) => {
           </div>
 
           {/* Power calc */}
-          <div className="bg-slate-950 border border-white/10 rounded-xl p-4 space-y-2">
-            <p className="text-[10px] text-slate-400 uppercase font-bold">Derived Values</p>
-            <div className="flex justify-between"><span className="text-slate-400 text-xs">Power (P = VI)</span><span className="font-mono text-xs text-green-400">{(voltage * current).toFixed(3)} W</span></div>
-            <div className="flex justify-between"><span className="text-slate-400 text-xs">Power (P = I²R)</span><span className="font-mono text-xs text-green-400">{(current * current * resistance).toFixed(3)} W</span></div>
-            <div className="flex justify-between"><span className="text-slate-400 text-xs">Power (P = V²/R)</span><span className="font-mono text-xs text-green-400">{((voltage * voltage) / resistance).toFixed(3)} W</span></div>
+          <div className="bg-slate-950 border border-black/10 dark:border-white/10 rounded-xl p-4 space-y-2">
+            <p className="text-[10px] text-slate-600 dark:text-slate-400 uppercase font-bold">Derived Values</p>
+            <div className="flex justify-between"><span className="text-slate-600 dark:text-slate-400 text-xs">Power (P = VI)</span><span className="font-mono text-xs text-green-400">{(voltage * current).toFixed(3)} W</span></div>
+            <div className="flex justify-between"><span className="text-slate-600 dark:text-slate-400 text-xs">Power (P = I²R)</span><span className="font-mono text-xs text-green-400">{(current * current * resistance).toFixed(3)} W</span></div>
+            <div className="flex justify-between"><span className="text-slate-600 dark:text-slate-400 text-xs">Power (P = V²/R)</span><span className="font-mono text-xs text-green-400">{((voltage * voltage) / resistance).toFixed(3)} W</span></div>
           </div>
 
           <div className="bg-blue-900/20 border border-blue-500/30 rounded-xl p-3">
-            <p className="text-center text-2xl font-mono font-black text-white">V = IR</p>
-            <p className="text-center text-xs text-blue-300 mt-1">{voltage.toFixed(1)} = {(current * 1000).toFixed(1)}mA × {resistance}Ω</p>
+            <p className="text-center text-2xl font-mono font-black text-slate-900 dark:text-slate-900 dark:text-white">V = IR</p>
+            <p className="text-center text-xs text-blue-600 dark:text-blue-300 mt-1">{voltage.toFixed(1)} = {(current * 1000).toFixed(1)}mA × {resistance}Ω</p>
           </div>
 
           <p className="text-[10px] text-slate-500 text-center">🖱️ Drag to rotate view • Scroll to zoom</p>

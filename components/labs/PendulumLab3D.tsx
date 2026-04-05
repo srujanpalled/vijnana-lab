@@ -6,26 +6,22 @@ import { RotateCcw, Play, Pause } from 'lucide-react';
 
 interface Props { hex: string; }
 
-// --- 3D Pendulum Physics Scene ---
+// --- 3D Pendulum Physics Scene — ULTRA REALISTIC ---
+// Brass bob, phosphor-bronze wire, machined pivot bearing, retort stand system
 function PendulumScene({
   length, gravity, damping, running
 }: { length: number; gravity: number; damping: number; running: boolean }) {
   const bobRef = useRef<THREE.Mesh>(null);
   const stringRef = useRef<THREE.Group>(null);
-  const trailRef = useRef<THREE.Points>(null);
-  const angleRef = useRef(Math.PI / 4); // initial angle
+  const angleRef = useRef(Math.PI / 4);
   const angVelRef = useRef(0);
-  const timeRef = useRef(0);
   const trailPositions = useRef<THREE.Vector3[]>([]);
 
   const pivotY = 3.5;
 
-  useFrame((state, delta) => {
+  useFrame((_, delta) => {
     if (!running) return;
     const dt = Math.min(delta, 0.05);
-    timeRef.current += dt;
-
-    // Physics: α = -g/L sin(θ) - damping * ω
     const alpha = -(gravity / length) * Math.sin(angleRef.current) - damping * angVelRef.current;
     angVelRef.current += alpha * dt;
     angleRef.current += angVelRef.current * dt;
@@ -34,109 +30,103 @@ function PendulumScene({
       const x = Math.sin(angleRef.current) * length;
       const y = pivotY - Math.cos(angleRef.current) * length;
       bobRef.current.position.set(x, y, 0);
-
-      // Trail
       trailPositions.current.push(new THREE.Vector3(x, y, 0));
       if (trailPositions.current.length > 80) trailPositions.current.shift();
     }
-
-    // Rotate string group
-    if (stringRef.current) {
-      stringRef.current.rotation.z = angleRef.current;
-    }
+    if (stringRef.current) { stringRef.current.rotation.z = angleRef.current; }
   });
 
   const T = 2 * Math.PI * Math.sqrt(length / gravity);
 
   return (
     <group>
-      {/* Ceiling mount */}
-      <mesh position={[0, pivotY + 0.15, 0]}>
-        <boxGeometry args={[0.8, 0.3, 0.5]} />
-        <meshStandardMaterial color="#334155" metalness={0.8} roughness={0.2} />
+      {/* ── RETORT STAND BASE ── */}
+      <mesh position={[0.6, -1.42, 0]} castShadow receiveShadow>
+        <boxGeometry args={[1.8, 0.12, 0.8]} />
+        <meshStandardMaterial color="#1c2534" metalness={0.65} roughness={0.55} />
+      </mesh>
+      {/* ── Vertical rod ── */}
+      <mesh position={[0, pivotY / 2 - 0.7, 0]} castShadow>
+        <cylinderGeometry args={[0.052, 0.052, pivotY + 1.42, 16]} />
+        <meshStandardMaterial color="#8898a8" metalness={0.88} roughness={0.25} />
+      </mesh>
+      {/* ── Horizontal clamp arm ── */}
+      <mesh position={[0, pivotY + 0.05, -0.35]} rotation={[Math.PI / 2, 0, 0]} castShadow>
+        <cylinderGeometry args={[0.038, 0.038, 0.8, 16]} />
+        <meshStandardMaterial color="#8898a8" metalness={0.88} roughness={0.25} />
+      </mesh>
+      {/* ── Boss head collar ── */}
+      <mesh position={[0, pivotY + 0.05, 0]} castShadow>
+        <cylinderGeometry args={[0.11, 0.11, 0.18, 20]} />
+        <meshStandardMaterial color="#1c2534" metalness={0.60} roughness={0.55} />
       </mesh>
 
-      {/* Pivot pivot sphere */}
+      {/* ── Clamp pivot bearing (machined brass) ── */}
+      <mesh position={[0, pivotY, 0]} castShadow>
+        <cylinderGeometry args={[0.075, 0.075, 0.09, 24]} />
+        <meshStandardMaterial color="#c8a840" metalness={0.88} roughness={0.18} />
+      </mesh>
+      {/* Small bearing hole visual */}
       <mesh position={[0, pivotY, 0]}>
-        <sphereGeometry args={[0.08, 16, 16]} />
-        <meshStandardMaterial color="#64748b" metalness={0.9} roughness={0.1} />
+        <cylinderGeometry args={[0.018, 0.018, 0.10, 16]} />
+        <meshStandardMaterial color="#0f1a24" />
       </mesh>
 
-      {/* String — rotates around pivot */}
+      {/* ── Phosphor-bronze wire string ── */}
       <group ref={stringRef} position={[0, pivotY, 0]}>
-        <mesh position={[0, -length / 2, 0]}>
-          <cylinderGeometry args={[0.015, 0.015, length, 8]} />
-          <meshStandardMaterial color="#e2e8f0" metalness={0.1} roughness={0.9} />
+        <mesh position={[0, -length / 2, 0]} castShadow>
+          <cylinderGeometry args={[0.008, 0.008, length, 8]} />
+          <meshStandardMaterial color="#cda84a" metalness={0.82} roughness={0.28} />
         </mesh>
       </group>
 
-      {/* Bob — independently positioned by physics */}
+      {/* ── Brass pendulum bob (ultra realistic) ── */}
       <mesh ref={bobRef} position={[0, pivotY - length, 0]} castShadow>
-        <sphereGeometry args={[0.22, 32, 32]} />
-        <meshStandardMaterial
-          color="#3b82f6"
-          metalness={0.8}
-          roughness={0.1}
-          envMapIntensity={1.5}
+        {/* Primary sphere */}
+        <sphereGeometry args={[0.22, 48, 48]} />
+        <meshPhysicalMaterial
+          color="#c8a030"
+          metalness={0.90}
+          roughness={0.12}
+          clearcoat={0.8}
+          clearcoatRoughness={0.06}
+          envMapIntensity={2.5}
         />
       </mesh>
+      {/* Bob's eye ring (attachment ring) */}
+      <mesh position={[0, pivotY - length + 0.24, 0]}>
+        <torusGeometry args={[0.04, 0.012, 8, 20]} />
+        <meshStandardMaterial color="#c8a030" metalness={0.88} roughness={0.18} />
+      </mesh>
 
-      {/* Trail using Line */}
+      {/* ── Trail ── */}
       {trailPositions.current.length > 2 && (
         <Line
           points={trailPositions.current}
-          color="#3b82f6"
-          lineWidth={1}
-          opacity={0.3}
+          color="#c8a030"
+          lineWidth={1.2}
+          opacity={0.25}
           transparent
         />
       )}
 
-      {/* Floor */}
+      {/* ── Granite-look floor ── */}
       <mesh position={[0, -1.5, 0]} receiveShadow rotation={[-Math.PI / 2, 0, 0]}>
-        <planeGeometry args={[12, 12]} />
-        <meshStandardMaterial color="#0f172a" metalness={0} roughness={1} />
+        <planeGeometry args={[14, 14]} />
+        <meshStandardMaterial color="#0e1620" roughness={0.85} metalness={0.05} />
       </mesh>
+      <gridHelper args={[12, 24, '#14203a', '#14203a']} position={[0, -1.49, 0]} />
 
-      {/* Gridlines on floor */}
-      <gridHelper args={[10, 20, '#1e3a5f', '#1e3a5f']} position={[0, -1.49, 0]} />
-
-      {/* Period indicator text */}
-      <Text
-        position={[2.5, 2.5, 0]}
-        fontSize={0.22}
-        color="#60a5fa"
-        anchorX="left"
-        font={undefined}
-      >
+      {/* ── Period readout labels ── */}
+      <Text position={[2.5, 2.5, 0]} fontSize={0.22} color="#c8a030" anchorX="left" font={undefined}>
         {`T = ${T.toFixed(3)} s`}
       </Text>
-      <Text
-        position={[2.5, 2.1, 0]}
-        fontSize={0.17}
-        color="#94a3b8"
-        anchorX="left"
-        font={undefined}
-      >
+      <Text position={[2.5, 2.1, 0]} fontSize={0.17} color="#94a3b8" anchorX="left" font={undefined}>
         {`L = ${length.toFixed(2)} m`}
       </Text>
-      <Text
-        position={[2.5, 1.75, 0]}
-        fontSize={0.17}
-        color="#94a3b8"
-        anchorX="left"
-        font={undefined}
-      >
+      <Text position={[2.5, 1.75, 0]} fontSize={0.17} color="#94a3b8" anchorX="left" font={undefined}>
         {`g = ${gravity.toFixed(1)} m/s²`}
       </Text>
-
-      {/* Wall support posts */}
-      {[-0.4, 0.4].map((x, i) => (
-        <mesh key={i} position={[x, pivotY - 0.6, 0]}>
-          <cylinderGeometry args={[0.04, 0.04, 1.2, 8]} />
-          <meshStandardMaterial color="#475569" metalness={0.6} roughness={0.3} />
-        </mesh>
-      ))}
     </group>
   );
 }
@@ -147,7 +137,7 @@ function Slider({ label, min, max, step = 0.01, value, onChange, color, unit }:
   return (
     <div className="space-y-1">
       <div className="flex justify-between text-xs">
-        <span className="text-slate-400 font-medium">{label}</span>
+        <span className="text-slate-600 dark:text-slate-400 font-medium">{label}</span>
         <span className="font-mono font-bold" style={{ color }}>{value.toFixed(2)} {unit}</span>
       </div>
       <div className="relative h-2 bg-slate-700 rounded-full cursor-pointer">
@@ -218,25 +208,25 @@ const PendulumLab3D: React.FC<Props> = ({ hex }) => {
         </Canvas>
 
         {/* Overlay badge */}
-        <div className="absolute top-3 left-3 bg-black/60 backdrop-blur-sm border border-white/10 rounded-xl px-3 py-2">
-          <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">3D Physics Lab — p2</p>
-          <p className="text-white font-bold text-sm">Simple Pendulum</p>
+        <div className="absolute top-3 left-3 bg-black/60 backdrop-blur-sm border border-black/10 dark:border-white/10 rounded-xl px-3 py-2">
+          <p className="text-[10px] text-slate-600 dark:text-slate-400 font-bold uppercase tracking-widest">3D Physics Lab — p2</p>
+          <p className="text-slate-900 dark:text-slate-900 dark:text-white font-bold text-sm">Simple Pendulum</p>
         </div>
       </div>
 
       {/* Control panel */}
-      <div className="w-full md:w-72 bg-slate-900 border-l border-white/5 flex flex-col">
-        <div className="p-4 border-b border-white/5">
+      <div className="w-full md:w-72 bg-slate-900 border-l border-black/5 dark:border-white/5 flex flex-col">
+        <div className="p-4 border-b border-black/5 dark:border-white/5">
           <p className="text-xs font-bold uppercase tracking-widest text-blue-400 mb-1">Physics Lab — 3D</p>
-          <h2 className="text-xl font-bold text-white">Simple Pendulum</h2>
-          <p className="text-xs text-slate-400 mt-1">Study periodic motion and verify T = 2π√(L/g)</p>
+          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-900 dark:text-white">Simple Pendulum</h2>
+          <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">Study periodic motion and verify T = 2π√(L/g)</p>
         </div>
 
         <div className="flex-1 p-4 space-y-5 overflow-y-auto">
           {/* Live period display */}
           <div className="bg-blue-500/10 border border-blue-500/30 rounded-2xl p-4 text-center">
             <p className="text-[10px] text-blue-400 uppercase font-bold tracking-widest mb-1">Time Period</p>
-            <p className="text-4xl font-black text-white font-mono">{T.toFixed(3)}</p>
+            <p className="text-4xl font-black text-slate-900 dark:text-slate-900 dark:text-white font-mono">{T.toFixed(3)}</p>
             <p className="text-blue-400 text-sm font-bold mt-1">seconds</p>
           </div>
 
@@ -246,7 +236,7 @@ const PendulumLab3D: React.FC<Props> = ({ hex }) => {
 
           {/* Planets presets */}
           <div>
-            <p className="text-[10px] text-slate-400 uppercase font-bold mb-2">Gravity Presets</p>
+            <p className="text-[10px] text-slate-600 dark:text-slate-400 uppercase font-bold mb-2">Gravity Presets</p>
             <div className="grid grid-cols-3 gap-1.5">
               {[
                 { label: '🌙 Moon', g: 1.62 },
@@ -272,7 +262,7 @@ const PendulumLab3D: React.FC<Props> = ({ hex }) => {
               { label: 'Length L', val: `${length} m`, color: '#f59e0b' },
               { label: 'Gravity g', val: `${gravity} m/s²`, color: '#f472b6' },
             ].map(m => (
-              <div key={m.label} className="bg-slate-950 border border-white/10 rounded-xl p-3 text-center">
+              <div key={m.label} className="bg-slate-950 border border-black/10 dark:border-white/10 rounded-xl p-3 text-center">
                 <div className="text-[9px] text-slate-500 uppercase font-bold mb-1">{m.label}</div>
                 <div className="font-mono font-bold text-xs" style={{ color: m.color }}>{m.val}</div>
               </div>
@@ -280,15 +270,15 @@ const PendulumLab3D: React.FC<Props> = ({ hex }) => {
           </div>
 
           {/* Formula */}
-          <div className="bg-slate-950 rounded-xl p-3 border border-white/10">
-            <p className="text-[10px] text-slate-400 uppercase font-bold mb-2">Formula</p>
+          <div className="bg-slate-950 rounded-xl p-3 border border-black/10 dark:border-white/10">
+            <p className="text-[10px] text-slate-600 dark:text-slate-400 uppercase font-bold mb-2">Formula</p>
             <p className="font-mono text-sm text-blue-400 text-center">T = 2π √(L ÷ g)</p>
           </div>
 
           {/* Controls */}
           <div className="flex gap-2">
             <button onClick={() => setRunning(r => !r)}
-              className="flex-1 py-3 rounded-xl font-bold text-white flex items-center justify-center gap-2 transition-all active:scale-95"
+              className="flex-1 py-3 rounded-xl font-bold text-slate-900 dark:text-slate-900 dark:text-white flex items-center justify-center gap-2 transition-all active:scale-95"
               style={{ backgroundColor: running ? '#dc2626' : hex }}>
               {running ? <><Pause size={16} /> Pause</> : <><Play size={16} /> Swing!</>}
             </button>

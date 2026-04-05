@@ -133,18 +133,18 @@ const Login: React.FC = () => {
                 <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-indigo-600/10 rounded-full blur-[100px]" />
             </div>
 
-            <div className="w-full max-w-4xl bg-white/5 backdrop-blur-xl rounded-3xl border border-white/10 shadow-2xl overflow-hidden flex flex-col md:flex-row relative z-10">
+            <div className="w-full max-w-4xl bg-black/5 dark:bg-white/5 backdrop-blur-xl rounded-3xl border border-black/10 dark:border-white/10 shadow-2xl overflow-hidden flex flex-col md:flex-row relative z-10">
 
                 {/* Left Side - Visual */}
                 <div className="md:w-1/2 p-8 md:p-12 bg-gradient-to-br from-slate-900 to-indigo-950 flex flex-col justify-between relative overflow-hidden">
                     <div className="relative z-10">
                         <div className="flex items-center gap-3 mb-8">
                             <div className="p-2 bg-emerald-600 rounded-lg shadow-lg shadow-emerald-500/20">
-                                <Atom className="text-white w-6 h-6" />
+                                <Atom className="text-slate-900 dark:text-slate-900 dark:text-white w-6 h-6" />
                             </div>
-                            <span className="text-2xl font-display font-bold text-white tracking-tight">Vijnana Lab</span>
+                            <span className="text-2xl font-display font-bold text-slate-900 dark:text-slate-900 dark:text-white tracking-tight">Vijnana Lab</span>
                         </div>
-                        <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 leading-tight">
+                        <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-slate-900 dark:text-white mb-4 leading-tight">
                             {isSignup ? "Start Your Scientific Journey." : "Welcome Back, Explorer."}
                         </h2>
                         <p className="text-emerald-100/70 leading-relaxed font-light">
@@ -158,11 +158,11 @@ const Login: React.FC = () => {
                 </div>
 
                 {/* Right Side - Form */}
-                <div className="md:w-1/2 p-8 md:p-12 bg-black/20">
+                <div className="md:w-1/2 p-8 md:p-12 bg-transparent dark:bg-black/20">
                     <div className="flex justify-end mb-8">
                         <button
                             onClick={() => { setIsSignup(!isSignup); setStep(1); setError(''); }}
-                            className="text-sm text-gray-400 hover:text-white transition-colors"
+                            className="text-sm text-gray-600 dark:text-gray-400 hover:text-slate-900 dark:text-slate-900 dark:text-white transition-colors"
                         >
                             {isSignup ? "Already have an account? Log In" : "Don't have an account? Sign Up"}
                         </button>
@@ -184,7 +184,7 @@ const Login: React.FC = () => {
                                         <input
                                             type="text"
                                             placeholder="Full Name"
-                                            className="w-full bg-black/20 border border-white/10 rounded-xl py-3.5 pl-12 pr-4 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 focus:bg-white/5 transition-all"
+                                            className="w-full bg-transparent dark:bg-black/20 border border-black/10 dark:border-white/10 rounded-xl py-3.5 pl-12 pr-4 text-slate-900 dark:text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 focus:bg-black/5 dark:bg-white/5 transition-all"
                                             value={name}
                                             onChange={e => setName(e.target.value)}
                                             required={isSignup}
@@ -196,7 +196,7 @@ const Login: React.FC = () => {
                                     <input
                                         type="email"
                                         placeholder="Email Address"
-                                        className="w-full bg-black/20 border border-white/10 rounded-xl py-3.5 pl-12 pr-4 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 focus:bg-white/5 transition-all"
+                                        className="w-full bg-transparent dark:bg-black/20 border border-black/10 dark:border-white/10 rounded-xl py-3.5 pl-12 pr-4 text-slate-900 dark:text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 focus:bg-black/5 dark:bg-white/5 transition-all"
                                         value={email}
                                         onChange={e => setEmail(e.target.value)}
                                         required
@@ -207,7 +207,7 @@ const Login: React.FC = () => {
                                     <input
                                         type="password"
                                         placeholder="Password"
-                                        className="w-full bg-black/20 border border-white/10 rounded-xl py-3.5 pl-12 pr-4 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 focus:bg-white/5 transition-all"
+                                        className="w-full bg-transparent dark:bg-black/20 border border-black/10 dark:border-white/10 rounded-xl py-3.5 pl-12 pr-4 text-slate-900 dark:text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 focus:bg-black/5 dark:bg-white/5 transition-all"
                                         value={password}
                                         onChange={e => setPassword(e.target.value)}
                                         required
@@ -222,13 +222,13 @@ const Login: React.FC = () => {
                                 <div className="relative group">
                                     <User className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-blue-400 transition-colors" size={18} />
                                     <select
-                                        className="w-full bg-black/20 border border-white/10 rounded-xl py-3.5 pl-12 pr-10 text-white focus:outline-none focus:border-blue-500/50 focus:bg-white/5 transition-all appearance-none cursor-pointer"
+                                        className="w-full bg-transparent dark:bg-black/20 border border-black/10 dark:border-white/10 rounded-xl py-3.5 pl-12 pr-10 text-slate-900 dark:text-white focus:outline-none focus:border-blue-500/50 focus:bg-black/5 dark:bg-white/5 transition-all appearance-none cursor-pointer"
                                         value={profileData.role}
                                         onChange={e => setProfileData({ ...profileData, role: e.target.value as any })}
                                         required
                                     >
-                                        <option className="bg-slate-900 text-white" value="Student">I am a Student</option>
-                                        <option className="bg-slate-900 text-white" value="Teacher">I am a Teacher</option>
+                                        <option className="bg-slate-900 text-slate-900 dark:text-white" value="Student">I am a Student</option>
+                                        <option className="bg-slate-900 text-slate-900 dark:text-white" value="Teacher">I am a Teacher</option>
                                     </select>
                                     <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500">
                                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6" /></svg>
@@ -237,14 +237,14 @@ const Login: React.FC = () => {
                                 <div className="relative group">
                                     <BookOpen className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-blue-400 transition-colors" size={18} />
                                     <select
-                                        className="w-full bg-black/20 border border-white/10 rounded-xl py-3.5 pl-12 pr-10 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 focus:bg-white/5 transition-all appearance-none cursor-pointer"
+                                        className="w-full bg-transparent dark:bg-black/20 border border-black/10 dark:border-white/10 rounded-xl py-3.5 pl-12 pr-10 text-slate-900 dark:text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 focus:bg-black/5 dark:bg-white/5 transition-all appearance-none cursor-pointer"
                                         value={profileData.grade}
                                         onChange={e => setProfileData({ ...profileData, grade: e.target.value })}
                                         required
                                     >
                                         <option className="bg-slate-900 text-gray-500" value="" disabled>Select Grade / Class</option>
-                                        <option className="bg-slate-900 text-white" value="1st PUC / Class 11">11th / 1st PUC</option>
-                                        <option className="bg-slate-900 text-white" value="2nd PUC / Class 12">12th / 2nd PUC</option>
+                                        <option className="bg-slate-900 text-slate-900 dark:text-white" value="1st PUC / Class 11">11th / 1st PUC</option>
+                                        <option className="bg-slate-900 text-slate-900 dark:text-white" value="2nd PUC / Class 12">12th / 2nd PUC</option>
                                     </select>
                                     <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500">
                                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6" /></svg>
@@ -255,15 +255,15 @@ const Login: React.FC = () => {
                                 <div className="relative group">
                                     <BookOpen className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-blue-400 transition-colors" size={18} />
                                     <select
-                                        className="w-full bg-black/20 border border-white/10 rounded-xl py-3.5 pl-12 pr-10 text-white focus:outline-none focus:border-blue-500/50 focus:bg-white/5 transition-all appearance-none cursor-pointer"
+                                        className="w-full bg-transparent dark:bg-black/20 border border-black/10 dark:border-white/10 rounded-xl py-3.5 pl-12 pr-10 text-slate-900 dark:text-white focus:outline-none focus:border-blue-500/50 focus:bg-black/5 dark:bg-white/5 transition-all appearance-none cursor-pointer"
                                         value={profileData.syllabus}
                                         onChange={e => setProfileData({ ...profileData, syllabus: e.target.value })}
                                         required
                                     >
                                         <option className="bg-slate-900 text-gray-500" value="" disabled>Select Board / Syllabus</option>
-                                        <option className="bg-slate-900 text-white" value="CBSE">CBSE</option>
-                                        <option className="bg-slate-900 text-white" value="Karnataka PUC">Karnataka PUC</option>
-                                        <option className="bg-slate-900 text-white" value="ICSE">ICSE</option>
+                                        <option className="bg-slate-900 text-slate-900 dark:text-white" value="CBSE">CBSE</option>
+                                        <option className="bg-slate-900 text-slate-900 dark:text-white" value="Karnataka PUC">Karnataka PUC</option>
+                                        <option className="bg-slate-900 text-slate-900 dark:text-white" value="ICSE">ICSE</option>
                                     </select>
                                     <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500">
                                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6" /></svg>
@@ -275,7 +275,7 @@ const Login: React.FC = () => {
                                     <input
                                         type="text"
                                         placeholder="Institution Name"
-                                        className="w-full bg-black/20 border border-white/10 rounded-xl py-3.5 pl-12 pr-4 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 focus:bg-white/5 transition-all"
+                                        className="w-full bg-transparent dark:bg-black/20 border border-black/10 dark:border-white/10 rounded-xl py-3.5 pl-12 pr-4 text-slate-900 dark:text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 focus:bg-black/5 dark:bg-white/5 transition-all"
                                         value={profileData.institution}
                                         onChange={e => setProfileData({ ...profileData, institution: e.target.value })}
                                         required
@@ -285,13 +285,13 @@ const Login: React.FC = () => {
                                 <div className="relative group">
                                     <Globe className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-blue-400 transition-colors" size={18} />
                                     <select
-                                        className="w-full bg-black/20 border border-white/10 rounded-xl py-3.5 pl-12 pr-10 text-white focus:outline-none focus:border-blue-500/50 focus:bg-white/5 transition-all appearance-none cursor-pointer"
+                                        className="w-full bg-transparent dark:bg-black/20 border border-black/10 dark:border-white/10 rounded-xl py-3.5 pl-12 pr-10 text-slate-900 dark:text-white focus:outline-none focus:border-blue-500/50 focus:bg-black/5 dark:bg-white/5 transition-all appearance-none cursor-pointer"
                                         value={profileData.language}
                                         onChange={e => setProfileData({ ...profileData, language: e.target.value })}
                                     >
-                                        <option className="bg-slate-900 text-white" value="English">English</option>
-                                        <option className="bg-slate-900 text-white" value="Hindi">Hindi</option>
-                                        <option className="bg-slate-900 text-white" value="Kannada">Kannada</option>
+                                        <option className="bg-slate-900 text-slate-900 dark:text-white" value="English">English</option>
+                                        <option className="bg-slate-900 text-slate-900 dark:text-white" value="Hindi">Hindi</option>
+                                        <option className="bg-slate-900 text-slate-900 dark:text-white" value="Kannada">Kannada</option>
                                     </select>
                                     <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500">
                                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6" /></svg>
@@ -299,7 +299,7 @@ const Login: React.FC = () => {
                                 </div>
 
                                 <div className="pt-2">
-                                    <span className="block text-xs text-gray-400 mb-2 ml-1 uppercase">Choose Avatar</span>
+                                    <span className="block text-xs text-gray-600 dark:text-gray-400 mb-2 ml-1 uppercase">Choose Avatar</span>
                                     <div className="flex flex-wrap gap-3 justify-center">
                                         {AVATARS.map((av) => (
                                             <button
@@ -308,7 +308,7 @@ const Login: React.FC = () => {
                                                 onClick={() => setProfileData({ ...profileData, avatar: av })}
                                                 className={`w-10 h-10 rounded-full ${av} transition-transform hover:scale-110 relative ${profileData.avatar === av ? 'ring-2 ring-white ring-offset-2 ring-offset-slate-900 scale-110' : 'opacity-70 hover:opacity-100'}`}
                                             >
-                                                {profileData.avatar === av && <Check size={14} className="text-white absolute inset-0 m-auto" />}
+                                                {profileData.avatar === av && <Check size={14} className="text-slate-900 dark:text-slate-900 dark:text-white absolute inset-0 m-auto" />}
                                             </button>
                                         ))}
                                     </div>
@@ -330,7 +330,7 @@ const Login: React.FC = () => {
                         </button>
 
                         <div className="relative py-4">
-                            <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-white/10"></div></div>
+                            <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-black/10 dark:border-white/10"></div></div>
                             <div className="relative flex justify-center text-xs uppercase"><span className="bg-[#020617] px-2 text-gray-500">Or continue with</span></div>
                         </div>
 
